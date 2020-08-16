@@ -30,8 +30,6 @@ client.on('message', async (message: any) => {
 		let action = result.queryResult.action;
 		let cardId = result.queryResult.parameters.fields?.number?.numberValue || null;
 
-		console.log(cardId);
-
 		//Only if AI detects the action as card.info
 		if (action !== 'card.info' || cardId === null) {
 			//TODO - PROCESS IT USING OLD-SCHOOL METHODS
