@@ -1,8 +1,8 @@
-const { card: CARD_DATA } = require('../download_card_data.json');
-const { skill: SKILL_DATA } = require('../download_skill_data.json');
-import { MONSTER_ATTRIBUTES } from './monster.attributes';
-import { AWAKEN_EMOTES, AWAKENS } from './monster.awakens';
-import { MONSTER_TYPES } from './monster.types';
+const { card: CARD_DATA } = require("../download_card_data.json");
+const { skill: SKILL_DATA } = require("../download_skill_data.json");
+import { MONSTER_ATTRIBUTES } from "./monster.attributes";
+import { AWAKEN_EMOTES, AWAKENS } from "./monster.awakens";
+import { MONSTER_TYPES } from "./monster.types";
 
 export class Monster {
 	private enemyHpCurve;
@@ -113,23 +113,23 @@ export class Monster {
 		this.devoMaterials = [data[46], data[47], data[48], data[49], data[50]]; // list of evo mats to unult
 
 		this.enemySkills = [];
-		var skillCount = data[57]; // number of skills to push
-		var iter = 58;
-		for (var i = 0; i < skillCount * 3; i++) {
+		let skillCount = data[57]; // number of skills to push
+		let iter = 58;
+		for (let i = 0; i < skillCount * 3; i++) {
 			// each skill is a triple or something
 			this.enemySkills.push(data[iter]);
 			iter++;
 		}
 
 		this.awakenings = [];
-		var awakeningCount = data[iter]; // number of awakenings to push
+		let awakeningCount = data[iter]; // number of awakenings to push
 		iter++;
-		for (var i = 0; i < awakeningCount; i++) {
+		for (let i = 0; i < awakeningCount; i++) {
 			this.awakenings.push(data[iter]);
 			iter++;
 		}
 
-		this.superAwakenings = data[iter].split(',');
+		this.superAwakenings = data[iter].split(",");
 		this.evoTreeBaseId = data[iter + 1];
 
 		this.gkey = data[iter + 2]; // grouping key thing?
@@ -196,38 +196,38 @@ export class Monster {
 		for (let i = 0; i < typeInput.length; i++) {
 			let typeId = typeInput[i];
 			let type = MONSTER_TYPES[typeId];
-			if (typeId !== '-1' && typeId !== -1) {
+			if (typeId !== "-1" && typeId !== -1) {
 				result.push(type);
 			}
 		}
 		return result;
 	}
 
-	private awakenEmotesMapping(awakenList) {
-		let result = '';
+	private awakenEmotesMapping(awakenList): string {
+		let result = "";
 		for (let i = 0; i < awakenList.length; i++) {
-			if (awakenList[i] === '') {
-				return 'No Awakenings';
+			if (awakenList[i] === "") {
+				return "No Awakenings";
 			}
 			let temp = AWAKEN_EMOTES[awakenList[i]];
-			if (temp != 'None') {
-				result += ' ' + temp;
+			if (temp != "None") {
+				result += " " + temp;
 			}
 		}
 
-		return result ? result : 'No Awakenings';
+		return result ? result : "No Awakenings";
 	}
 
-	public getAwakenEmotes() {
+	public getAwakenEmotes(): string {
 		return this.awakenEmotesMapping(this.awakenings);
 	}
 
-	public getSuperAwakenEmotes() {
+	public getSuperAwakenEmotes(): string {
 		return this.awakenEmotesMapping(this.superAwakenings);
 	}
 
 	public getGenericInfo(): string {
-		let info = '';
+		let info = "";
 		info += `${this.mapTypes(this.types)}\n`;
 		info += `Rarity: ${this.starCount}\n`;
 		info += `Cost: ${this.cost}\n`;
@@ -238,7 +238,7 @@ export class Monster {
 	}
 
 	public getStats(): string {
-		let stats = '';
+		let stats = "";
 
 		if (!this.isLimitBreakable) {
 			stats += `HP: ${this.maxHp}\n`;
@@ -247,16 +247,22 @@ export class Monster {
 			return stats;
 		}
 
-		stats += `HP: ${this.maxHp} (${Math.round(this.maxHp * (1 + this.limitBreakStatGain / 100))})\n`;
-		stats += `ATK: ${this.maxAtk} (${Math.round(this.maxAtk * (1 + this.limitBreakStatGain / 100))})\n`;
-		stats += `RCV: ${this.maxRcv} (${Math.round(this.maxRcv * (1 + this.limitBreakStatGain / 100))})`;
+		stats += `HP: ${this.maxHp} (${Math.round(
+			this.maxHp * (1 + this.limitBreakStatGain / 100)
+		)})\n`;
+		stats += `ATK: ${this.maxAtk} (${Math.round(
+			this.maxAtk * (1 + this.limitBreakStatGain / 100)
+		)})\n`;
+		stats += `RCV: ${this.maxRcv} (${Math.round(
+			this.maxRcv * (1 + this.limitBreakStatGain / 100)
+		)})`;
 
 		return stats;
 	}
 
 	public getActiveSkillHeader(): string {
 		if (this.activeSkillId === 0) {
-			return 'Active Skill';
+			return "Active Skill";
 		}
 		return `Active Skill (${SKILL_DATA[this.activeSkillId][4]} -> ${
 			SKILL_DATA[this.activeSkillId][4] - SKILL_DATA[this.activeSkillId][3] + 1
@@ -265,14 +271,14 @@ export class Monster {
 
 	public getActiveSkillBody() {
 		if (this.activeSkillId === 0) {
-			return 'None';
+			return "None";
 		}
 		return SKILL_DATA[this.activeSkillId][1];
 	}
 
 	public getLeaderSkill() {
 		if (this.leaderSkillId === 0) {
-			return 'None';
+			return "None";
 		}
 		return SKILL_DATA[this.leaderSkillId][1];
 	}
