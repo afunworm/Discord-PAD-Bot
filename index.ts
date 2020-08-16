@@ -21,6 +21,11 @@ client.on('message', async (message: any) => {
 	//Do not run if it is from the bot itself
 	if (message.author.bot) return;
 
+	//If message is NOT DM, and it is also not a message that mentioned the bot, then do nothing
+	if (message.channel.type !== 'dm' && message.isMemberMentioned(client.user)) {
+		return;
+	}
+
 	let userId = message.author.id;
 	let ai = new AI(userId);
 	let input = message.content;
