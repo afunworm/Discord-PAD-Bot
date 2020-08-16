@@ -1,0 +1,4 @@
+node_modules
+AIServiceAccount.json
+environment.ts
+**/*.js
