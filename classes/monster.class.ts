@@ -1,8 +1,8 @@
-const { card: CARD_DATA } = require("../download_card_data.json");
-const { skill: SKILL_DATA } = require("../download_skill_data.json");
-import { MONSTER_ATTRIBUTES } from "./monster.attributes";
-import { AWAKEN_EMOTES, AWAKENS } from "./monster.awakens";
-import { MONSTER_TYPES } from "./monster.types";
+const { card: CARD_DATA } = require('../download_card_data.json');
+const { skill: SKILL_DATA } = require('../download_skill_data.json');
+import { MONSTER_ATTRIBUTES } from './monster.attributes';
+import { AWAKEN_EMOTES, AWAKENS } from './monster.awakens';
+import { MONSTER_TYPES } from './monster.types';
 
 export class Monster {
 	private enemyHpCurve;
@@ -129,7 +129,7 @@ export class Monster {
 			iter++;
 		}
 
-		this.superAwakenings = data[iter].split(",");
+		this.superAwakenings = data[iter].split(',');
 		this.evoTreeBaseId = data[iter + 1];
 
 		this.gkey = data[iter + 2]; // grouping key thing?
@@ -196,7 +196,7 @@ export class Monster {
 		for (let i = 0; i < typeInput.length; i++) {
 			let typeId = typeInput[i];
 			let type = MONSTER_TYPES[typeId];
-			if (typeId !== "-1" && typeId !== -1) {
+			if (typeId !== '-1' && typeId !== -1) {
 				result.push(type);
 			}
 		}
@@ -204,18 +204,18 @@ export class Monster {
 	}
 
 	private awakenEmotesMapping(awakenList): string {
-		let result = "";
+		let result = '';
 		for (let i = 0; i < awakenList.length; i++) {
-			if (awakenList[i] === "") {
-				return "No Awakenings";
+			if (awakenList[i] === '') {
+				return 'No Awakenings';
 			}
 			let temp = AWAKEN_EMOTES[awakenList[i]];
-			if (temp != "None") {
-				result += " " + temp;
+			if (temp != 'None') {
+				result += ' ' + temp;
 			}
 		}
 
-		return result ? result : "No Awakenings";
+		return result ? result : 'No Awakenings';
 	}
 
 	public getAwakenEmotes(): string {
@@ -227,7 +227,7 @@ export class Monster {
 	}
 
 	public getGenericInfo(): string {
-		let info = "";
+		let info = '';
 		info += `${this.mapTypes(this.types)}\n`;
 		info += `Rarity: ${this.starCount}\n`;
 		info += `Cost: ${this.cost}\n`;
@@ -238,7 +238,7 @@ export class Monster {
 	}
 
 	public getStats(): string {
-		let stats = "";
+		let stats = '';
 
 		if (!this.isLimitBreakable) {
 			stats += `HP: ${this.maxHp}\n`;
@@ -247,22 +247,16 @@ export class Monster {
 			return stats;
 		}
 
-		stats += `HP: ${this.maxHp} (${Math.round(
-			this.maxHp * (1 + this.limitBreakStatGain / 100)
-		)})\n`;
-		stats += `ATK: ${this.maxAtk} (${Math.round(
-			this.maxAtk * (1 + this.limitBreakStatGain / 100)
-		)})\n`;
-		stats += `RCV: ${this.maxRcv} (${Math.round(
-			this.maxRcv * (1 + this.limitBreakStatGain / 100)
-		)})`;
+		stats += `HP: ${this.maxHp} (${Math.round(this.maxHp * (1 + this.limitBreakStatGain / 100))})\n`;
+		stats += `ATK: ${this.maxAtk} (${Math.round(this.maxAtk * (1 + this.limitBreakStatGain / 100))})\n`;
+		stats += `RCV: ${this.maxRcv} (${Math.round(this.maxRcv * (1 + this.limitBreakStatGain / 100))})`;
 
 		return stats;
 	}
 
 	public getActiveSkillHeader(): string {
 		if (this.activeSkillId === 0) {
-			return "Active Skill";
+			return 'Active Skill';
 		}
 		return `Active Skill (${SKILL_DATA[this.activeSkillId][4]} -> ${
 			SKILL_DATA[this.activeSkillId][4] - SKILL_DATA[this.activeSkillId][3] + 1
@@ -271,19 +265,50 @@ export class Monster {
 
 	public getActiveSkillBody() {
 		if (this.activeSkillId === 0) {
-			return "None";
+			return 'None';
 		}
 		return SKILL_DATA[this.activeSkillId][1];
 	}
 
 	public getLeaderSkill() {
 		if (this.leaderSkillId === 0) {
-			return "None";
+			return 'None';
 		}
 		return SKILL_DATA[this.leaderSkillId][1];
 	}
 
 	public getAvailableKillers() {
 		return `(function in development)`;
+	}
+
+	getThumbnailUrl() {
+		return `http://puzzledragonx.com/en/img/book/${this.id}.png`;
+	}
+
+	getUrl() {
+		return `http://puzzledragonx.com/en/monster.asp?n=${this.id}`;
+	}
+
+	getImageUrl() {
+		let cardId = this.id.toString();
+
+		switch (cardId.length) {
+			case 1:
+				cardId = '0000' + cardId;
+				break;
+			case 2:
+				cardId = '000' + cardId;
+				break;
+			case 3:
+				cardId = '00' + cardId;
+				break;
+			case 4:
+				cardId = '0' + cardId;
+				break;
+			default:
+				break;
+		}
+
+		return `https://pad.byh.uy/images/monsters/${cardId}.png`;
 	}
 }
