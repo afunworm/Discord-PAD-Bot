@@ -51,12 +51,10 @@ client.on('message', async (message: any) => {
 			.setColor('#0099ff')
 			.setTitle(`${card.getId()}: ${card.getName()}`)
 			.setURL(`http://puzzledragonx.com/en/monster.asp?n=${card.getId()}`)
-			//.setAuthor('Some name', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
-			//.setDescription('Some description here')
 			.setThumbnail(`http://puzzledragonx.com/en/img/book/${card.getId()}.png`)
 			.addFields(
 				{ name: card.getAwakenEmotes(), value: card.getSuperAwakenEmotes() },
-				// { name: '\u200B', value: '\u200B' },
+
 				{ name: 'Available killers', value: card.getAvailableKillers() },
 				{ name: 'Info', value: card.getGenericInfo(), inline: true },
 				{ name: 'Stats', value: card.getStats(), inline: true },
