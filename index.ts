@@ -54,7 +54,6 @@ client.on('message', async (message: any) => {
 			.setThumbnail(`http://puzzledragonx.com/en/img/book/${card.getId()}.png`)
 			.addFields(
 				{ name: card.getAwakenEmotes(), value: card.getSuperAwakenEmotes() },
-
 				{ name: 'Available killers', value: card.getAvailableKillers() },
 				{ name: 'Info', value: card.getGenericInfo(), inline: true },
 				{ name: 'Stats', value: card.getStats(), inline: true },
