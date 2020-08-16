@@ -3,7 +3,7 @@
 	"scripts": {
 		"lint": "tslint --project tsconfig.json",
 		"build": "tsc index",
-		"start": "npm run build && node index"
+		"start": "node index"
 	},
 	"engines": {
 		"node": "10"
