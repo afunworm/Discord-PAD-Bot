@@ -141,7 +141,7 @@ export class Monster {
 		this.latents = data[iter + 5]; // Says what latent it gives when fed. Non latent tamas should give no latents when fed, and have value 0.
 		this.collab = data[iter + 6];
 
-		this.latentKillers = []; // idk
+		this.latentKillers = this.getLatentKillers();
 
 		this.inheritanceType = data[iter + 7];
 		this.isInheritable = (this.inheritanceType & 1) == 1; // idk, this tells us Supergirl is inheritable so I assume we're good
@@ -228,7 +228,8 @@ export class Monster {
 
 	public getGenericInfo(): string {
 		let info = '';
-		info += `${this.mapTypes(this.types)}\n`;
+
+		info += `${this.mapTypes(this.types).join('/')}\n`;
 		info += `Rarity: ${this.starCount}\n`;
 		info += `Cost: ${this.cost}\n`;
 		info += `MP: ${this.monsterPoints}\n`;
@@ -277,38 +278,88 @@ export class Monster {
 		return SKILL_DATA[this.leaderSkillId][1];
 	}
 
+	public getLatentKillers(): number[] {
+		let map: { [key: string]: number[] } = {
+			'1': [1, 2, 3, 4, 5, 6, 7, 8], //Balanced (1) can take all
+			'2': [3, 8], //Physical (2) can take Healer/Machine
+			'3': [4, 6], //Healer (3) can take Dragon/Attacker
+			'4': [3, 8], //Dragon (4) can take Healer/Machine
+			'5': [7], //God (5) can take Devil
+			'6': [2, 7], //Attacker (6) can take Physical/Devil
+			'7': [5], //Devil (7) can take God
+			'8': [1, 5], //Machine (8) can take Balanced/God
+		};
+
+		let result = [];
+		let monsterTypes = this.types;
+
+		for (let i = 0; i < monsterTypes.length; i++) {
+			let monsterType = monsterTypes[i];
+			let killers = map[monsterType];
+
+			if (killers) {
+				killers.forEach((killer) => {
+					result.push(killer);
+				});
+			}
+		}
+
+		//Remove duplicates
+		result = result.filter((item, index, accumulator) => accumulator.indexOf(item) === index);
+
+		return result;
+	}
+
 	public getAvailableKillers() {
-		return `(function in development)`;
+		return this.mapTypes(this.latentKillers).join(' ');
+	}
+
+	private fixCardNoLength(no: number | string): string {
+		switch (no.toString().length) {
+			case 1:
+				return '0000' + no;
+			case 2:
+				return '000' + no;
+			case 3:
+				return '00' + no;
+			case 4:
+				return '0' + no;
+			default:
+				return no.toString();
+		}
 	}
 
 	getThumbnailUrl() {
+		let cardId = this.id.toString();
+		cardId = this.fixCardNoLength(cardId);
 		return `http://puzzledragonx.com/en/img/book/${this.id}.png`;
+
+		//The following needs to be fixed
+		return `https://static.pad.byh.uy/icons/${cardId}.png`;
+	}
+
+	getImageUrl() {
+		let cardId = this.id.toString();
+		cardId = this.fixCardNoLength(cardId);
+		return `https://static.pad.byh.uy/images/${cardId}.png`;
 	}
 
 	getUrl() {
 		return `http://puzzledragonx.com/en/monster.asp?n=${this.id}`;
 	}
 
-	getImageUrl() {
-		let cardId = this.id.toString();
-
-		switch (cardId.length) {
-			case 1:
-				cardId = '0000' + cardId;
-				break;
-			case 2:
-				cardId = '000' + cardId;
-				break;
-			case 3:
-				cardId = '00' + cardId;
-				break;
-			case 4:
-				cardId = '0' + cardId;
-				break;
-			default:
-				break;
+	getDebugData(type: 'raw' | 'active' | number = 'raw') {
+		let data = CARD_DATA[this.id];
+		if (type === 'raw') {
+			let result = {};
+			for (let i = 0; i < data.length; i++) {
+				result[i] = data[i];
+			}
+			return result;
+		} else if (type === 'active') {
+			return SKILL_DATA[this.activeSkillId];
+		} else {
+			return data[type];
 		}
-
-		return `https://pad.byh.uy/images/monsters/${cardId}.png`;
 	}
 }
