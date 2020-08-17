@@ -275,7 +275,8 @@ export class Monster {
 		if (this.leaderSkillId === 0) {
 			return 'None';
 		}
-		return SKILL_DATA[this.leaderSkillId][1];
+		// Regex to remove color formatting text - https://regex101.com/r/pMMKCH/1
+		return SKILL_DATA[this.leaderSkillId][1].replace(/\^[0-9a-f]{6}\^([^^]+)\^\w+/g, '$1');
 	}
 
 	public getLatentKillers(): number[] {
