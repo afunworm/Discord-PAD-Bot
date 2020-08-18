@@ -5,25 +5,40 @@ import { LeaderSkill } from './leaderSkill.class';
 // Find all cards with ID
 let SEARCH_FOR = 17;
 try {
-	for (let i = 1; i <= 7804; i++) {
+	for (let i = 1; i <= 6450; i++) {
 		let monster = new MonsterParser(i);
 		let leaderSkillId = monster.getLeaderSkill().id;
-		let skill = SKILL_DATA[leaderSkillId];
-		let firstSkill = skill[6];
-		let secondSkill = skill[7];
+        let skill = SKILL_DATA[leaderSkillId];
+        
+        let isMultipart = skill[2] === 138;
 
-		let firstSkilLDetails = SKILL_DATA[firstSkill];
-		if (!firstSkilLDetails) continue;
-		let firstSkillType = firstSkilLDetails[2];
+        if (isMultipart) {
+            let firstSkill = skill[6];
+            let secondSkill = skill[7];
 
-		if (firstSkillType === SEARCH_FOR) console.log(monster.getName());
+            let firstSkilLDetails = SKILL_DATA[firstSkill];
+            if (!firstSkilLDetails) continue;
+            let firstSkillType = firstSkilLDetails[2];)
 
-		if (!secondSkill) continue;
+            if (firstSkillType === SEARCH_FOR) {
+                console.log(monster.getId() + ' - ' + monster.getName());
+            }
 
-		let secondSkillDetail = SKILL_DATA[secondSkill];
-		let secondSkillType = secondSkillDetail[2];
+            if (!secondSkill) continue;
 
-		if (secondSkillType === SEARCH_FOR) console.log(monster.getName());
+            let secondSkillDetail = SKILL_DATA[secondSkill];
+            let secondSkillType = secondSkillDetail[2];
+
+            if (secondSkillType === SEARCH_FOR) {
+                console.log(monster.getId() + ' - ' + monster.getName());
+            }
+        } else {
+            if (skill[2] === SEARCH_FOR) {
+                console.log(monster.getId() + ' - ' + monster.getName());
+            }
+        }
+
+  
 	}
 } catch (error) {
 	process.exit();

@@ -49,7 +49,7 @@ export class MonsterParser {
 	}
 
 	public getId(): number {
-		return this.data[0];
+		return this.id;
 	}
 
 	public getName(): string {
