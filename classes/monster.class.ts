@@ -1,8 +1,8 @@
 const { card: CARD_DATA } = require('../download_card_data.json');
 const { skill: SKILL_DATA } = require('../download_skill_data.json');
-import { MONSTER_ATTRIBUTES } from './monster.attributes';
-import { AWAKEN_EMOTES, AWAKENS } from './monster.awakens';
-import { MONSTER_TYPES } from './monster.types';
+import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
+import { AWAKEN_EMOTES } from '../shared/monster.awakens';
+import { MONSTER_TYPES } from '../shared/monster.types';
 
 export class Monster {
 	private enemyHpCurve;
