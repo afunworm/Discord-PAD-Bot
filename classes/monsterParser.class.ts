@@ -66,7 +66,7 @@ export class MonsterParser {
 	}
 
 	public getSubAttribute(): number {
-		return this.data[3];
+		return this.data[3] === -1 ? null : this.data[3];
 	}
 
 	public getReadableSubAttribute(): string {
