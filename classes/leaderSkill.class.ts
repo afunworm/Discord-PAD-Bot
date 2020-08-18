@@ -73,7 +73,9 @@ export class LeaderSkill {
 	}
 
 	public LSResolve(): string {
-		return ``;
+		let data = this.mergeDefaults(this.params, [0]);
+		let threshold = data[0];
+		return `While your HP is ${threshold}% or above, a single hit that normally kills you will instead leave you with 1 HP. For the consecutive hits, this skill will only affect the first hit.`;
 	}
 
 	public LSMovementTimeIncrease(): string {
