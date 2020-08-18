@@ -79,7 +79,9 @@ export class LeaderSkill {
 	}
 
 	public LSMovementTimeIncrease(): string {
-		return ``;
+		let data = this.mergeDefaults(this.params, [0]);
+		let extra = this.mult(data[0]);
+		return `Increases time limit of orb movement by ${extra} seconds.`;
 	}
 
 	public LSDamageReduction(): string {
