@@ -340,7 +340,12 @@ export class LeaderSkill {
 		}
 
 		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxAttributesRequired - minAttributesRequired);
-		return `All attribute cards ATK x${minATKMultiplier} when attacking with ${minAttributesRequired} of following orb types: ${requiredAttributeString}. ATK x${ATKStep} for each additional orb type, up to ATK x${maxATKMultiplier} for all ${maxAttributesRequired} matches.`;
+
+		if (minATKMultiplier === maxATKMultiplier) {
+			return `All attribute cards ATK x${minATKMultiplier} when attacking with ${minAttributesRequired} of following orb types: ${requiredAttributeString}.`;
+		} else {
+			return `All attribute cards ATK x${minATKMultiplier} when attacking with ${minAttributesRequired} of following orb types: ${requiredAttributeString}. ATK x${ATKStep} for each additional orb type, up to ATK x${maxATKMultiplier} for all ${maxAttributesRequired} matches.`;
+		}
 	}
 	// 62: 'LSTypeHpAtkBoost',
 	// 63: 'LSTypeHpRcvBoost',
