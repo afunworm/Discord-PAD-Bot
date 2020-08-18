@@ -3,12 +3,14 @@ import { MonsterParser } from '../classes/monsterParser.class';
 import { LeaderSkill } from './leaderSkill.class';
 
 //Skill test
-const MONSTER_ID = 22;
+const MONSTER_ID = 5944;
 let monster = new MonsterParser(MONSTER_ID);
 let leaderSkillId = monster.getLeaderSkill().id;
 
+console.log('\n===========');
+
 try {
-	if (SKILL_DATA[leaderSkillId][2] === 138) {
+	if (SKILL_DATA[leaderSkillId][2] === 138 || SKILL_DATA[leaderSkillId][2] === 116) {
 		//Multipart
 		let skillId = SKILL_DATA[leaderSkillId][6];
 		let skillData = SKILL_DATA[skillId];
@@ -35,15 +37,15 @@ try {
 	console.log(result);
 }
 
-// Find all cards with ID
-let SEARCH_FOR = 24;
+// Find all cards with skill type of
+let SEARCH_FOR = 61;
 try {
 	for (let i = 1; i <= 6450; i++) {
 		let monster = new MonsterParser(i);
 		let leaderSkillId = monster.getLeaderSkill().id;
 		let skill = SKILL_DATA[leaderSkillId];
 
-		let isMultipart = skill[2] === 138;
+		let isMultipart = skill[2] === 138 || skill[2] === 116;
 
 		if (isMultipart) {
 			let firstSkill = skill[6];

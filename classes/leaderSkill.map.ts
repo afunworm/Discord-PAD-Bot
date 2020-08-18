@@ -26,7 +26,6 @@ export const LEADERSKILL_MAP = {
 	46: 'LSTwoAttrHpBoost',
 	48: 'LSAttrHpBoost',
 	49: 'LSAttrRcvBoost',
-	//DINO IS ABOVE
 	53: 'LSEggDropRateBoost',
 	54: 'LSCoinDropBoost',
 	61: 'LSRainbow',

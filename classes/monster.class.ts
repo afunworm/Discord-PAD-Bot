@@ -8,8 +8,8 @@ import { MONSTER_TYPES } from '../shared/monster.types';
 // console.log(SKILL_DATA[CARD_DATA[5204][26]][2]); //Ra
 // console.log(SKILL_DATA[CARD_DATA[2068][26]][2]); //Aamir
 // console.log(SKILL_DATA[CARD_DATA[2278][26]][2]); //Ameno Uzume
-console.log(SKILL_DATA[CARD_DATA[229][26]]);
-console.log(SKILL_DATA[24]);
+console.log(SKILL_DATA[CARD_DATA[1002][26]]);
+console.log(SKILL_DATA[9486]);
 
 export class Monster {
 	private enemyHpCurve;
