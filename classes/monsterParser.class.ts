@@ -245,11 +245,13 @@ export class MonsterParser {
 	public getReadableAwakenings(): string[] {
 		let result = [];
 
-		this.getAwakenings().forEach((awakeningId) => {
+		let awakenings = this.getAwakenings();
+
+		if (awakenings.length === 0) return result;
+
+		awakenings.forEach((awakeningId) => {
 			result.push(AWAKENINGS[awakeningId]);
 		});
-
-		return result;
 	}
 
 	public getSuperAwakenings(): number[] {
@@ -272,7 +274,11 @@ export class MonsterParser {
 	public getReadableSuperAwakenings(): string[] {
 		let result = [];
 
-		this.getSuperAwakenings().forEach((awakeningId) => {
+		let awakenings = this.getSuperAwakenings();
+
+		if (awakenings.length === 0) return result;
+
+		awakenings.forEach((awakeningId) => {
 			result.push(AWAKENINGS[awakeningId]);
 		});
 

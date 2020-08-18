@@ -129,7 +129,8 @@ let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 				limitBreakPercentage: monster.getLimitBreakPercentage(),
 				transformIntoId: monster.getTransformIntoId(),
 			};
-			await firestore.collection('Monsters').doc(id.toString()).set(data);
+			console.log(data);
+			//await firestore.collection('Monsters').doc(id.toString()).set(data);
 			console.log(`Parsed data for monster id ${id}`);
 		} catch (error) {
 			console.log(error.message);
