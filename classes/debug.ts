@@ -3,7 +3,7 @@ import { MonsterParser } from '../classes/monsterParser.class';
 import { LeaderSkill } from './leaderSkill.class';
 
 //Skill test
-const MONSTER_ID = 2242;
+const MONSTER_ID = 1532;
 let monster = new MonsterParser(MONSTER_ID);
 let leaderSkillId = monster.getLeaderSkill().id;
 
@@ -36,9 +36,9 @@ try {
 	let result = ls.testOutput();
 	console.log(result);
 }
-process.exit();
+
 // Find all cards with skill type of
-let SEARCH_FOR = 61;
+let SEARCH_FOR = 100;
 try {
 	for (let i = 1; i <= 6450; i++) {
 		let monster = new MonsterParser(i);

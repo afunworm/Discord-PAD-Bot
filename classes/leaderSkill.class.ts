@@ -10,10 +10,13 @@ export class LeaderSkill {
 	private id: number;
 	private type: number;
 	private params: number[];
+	private raw;
 
 	constructor(skillData: any[]) {
+		//Assign raw data
+		this.raw = skillData;
+
 		//[ 'Some name?', '', skillType, 0, 0, '', params1, params2, params3... ]
-		// let data = SKILL_DATA[this.id];
 		this.type = skillData[2];
 
 		//Map params
@@ -30,7 +33,7 @@ export class LeaderSkill {
 	}
 
 	private getRawSkillData(): any[] {
-		return SKILL_DATA[this.id];
+		return this.raw;
 	}
 
 	private mult(stat: number): number {
@@ -62,12 +65,12 @@ export class LeaderSkill {
 		return MONSTER_TYPES[typeId];
 	}
 
-	private ATKFromSlice(): number {
-		return this.params[1] === 1 ? this.params[3] / 100 : 1;
+	private ATKFromSlice(padding: number = 0): number {
+		return this.params[1 + padding] === 1 ? this.params[3 + padding] / 100 : 1;
 	}
 
-	private RCVFromSlice(): number {
-		return this.params[1] === 2 ? this.params[3] / 100 : 1;
+	private RCVFromSlice(padding: number = 0): number {
+		return this.params[2 + padding] === 2 ? this.params[3 + padding] / 100 : 1;
 	}
 
 	private stringifyBoost(HPBoost: number = 1, ATKBoost: number = 1, RCVBoost: number = 1): string {
@@ -347,24 +350,177 @@ export class LeaderSkill {
 			return `All attribute cards ATK x${minATKMultiplier} when attacking with ${minAttributesRequired} of following orb types: ${requiredAttributeString}. ATK x${ATKStep} for each additional orb type, up to ATK x${maxATKMultiplier} for all ${maxAttributesRequired} matches.`;
 		}
 	}
-	// 62: 'LSTypeHpAtkBoost',
-	// 63: 'LSTypeHpRcvBoost',
-	// 64: 'LSTypeAtkRcvBoost',
-	// 65: 'LSTypeAllStatBoost',
-	// 66: 'LSComboFlatMultiplier',
-	// 67: 'LSAttrHpRcvBoost',
-	// 69: 'LSAttrTypeAtkBoost',
-	// 73: 'LSAttrTypeHpAtkBoost',
-	// 75: 'LSAttrTypeAtkRcvBoost',
-	// 76: 'LSAttrTypeAllStatBoost',
-	// 77: 'LSTwoTypeHpAtkBoost',
-	// 79: 'LSTwoTypeAtkRcvBoost',
-	// 94: 'LSLowHpConditionalAttrAtkBoost',
-	// 95: 'LSLowHpConditionalTypeAtkBoost',
-	// 96: 'LSHighHpConditionalAttrAtkBoost',
-	// 97: 'LSHighHpConditionalTypeAtkBoost',
-	// 98: 'LSComboScaledMultiplier',
-	// 100: 'LSSkillActivationAtkRcvBoost',
+
+	//Untested from this point onwards
+
+	public LSTypeHpAtkBoost(): string {
+		let data = this.params;
+		let type = this.mapType(data[0]);
+		let boost = this.mult(data[1]);
+
+		return `${type} type cards HP x${boost}, ATK x${boost}.`;
+	}
+
+	public LSTypeHpRcvBoost(): string {
+		let data = this.params;
+		let type = this.mapType(data[0]);
+		let boost = this.mult(data[1]);
+
+		return `${type} type cards HP x${boost}, RCV x${boost}.`;
+	}
+
+	public LSTypeAtkRcvBoost(): string {
+		let data = this.params;
+		let type = this.mapType(data[0]);
+		let boost = this.mult(data[1]);
+
+		return `${type} type cards ATK x${boost}, RCV x${boost}.`;
+	}
+
+	public LSTypeAllStatBoost(): string {
+		let data = this.params;
+		let type = this.mapType(data[0]);
+		let boost = this.mult(data[1]);
+
+		return `${type} type cards HP x${boost}, ATK x${boost}, RCV x${boost}.`;
+	}
+
+	public LSComboFlatMultiplier(): string {
+		let data = this.mergeDefaults([0, 100]);
+		let combosRequired = data[0];
+		let minATKMultiplier = this.mult(data[1]);
+
+		return `All attribute cards ATK x${minATKMultiplier} when reaching ${combosRequired} combos or above.`;
+	}
+
+	public LSAttrHpRcvBoost(): string {
+		let data = this.params;
+		let attribute = this.mapAttribute(data[0]);
+		let boost = this.mult(data[1]);
+
+		return `${attribute} attribute cards HP x${boost}, RCV x${boost}.`;
+	}
+
+	public LSAttrTypeAtkBoost(): string {
+		let data = this.params;
+		let attribute = this.mapAttribute(data[0]);
+		let type = this.mapType(data[1]);
+		let boost = this.mult(data[2]);
+
+		return `${attribute} attribute & ${type} type cards ATK x${boost}.`;
+	}
+
+	public LSAttrTypeHpAtkBoost(): string {
+		let data = this.params;
+		let attribute = this.mapAttribute(data[0]);
+		let type = data[1];
+		let boost = this.mult(data[2]);
+
+		return `${attribute} attribute & ${type} type cards HP x${boost}, ATK x${boost}.`;
+	}
+
+	public LSAttrTypeAtkRcvBoost(): string {
+		let data = this.params;
+		let attribute = this.mapAttribute(data[0]);
+		let type = data[1];
+		let boost = this.mult(data[2]);
+
+		return `${attribute} attribute & ${type} type cards ATK x${boost}, RCV x${boost}.`;
+	}
+
+	public LSAttrTypeAllStatBoost(): string {
+		let data = this.params;
+		let attribute = this.mapAttribute(data[0]);
+		let type = data[1];
+		let boost = this.mult(data[2]);
+
+		return `${attribute} attribute & ${type} type cards HP x${boost}, ATK x${boost}, RCV x${boost}.`;
+	}
+
+	public LSTwoTypeHpAtkBoost(): string {
+		let data = this.params;
+		let firstType = this.mapType(data[0]);
+		let secondType = this.mapType(data[1]);
+		let boost = this.mult(data[2]);
+
+		return `${firstType} & ${secondType} type cards HP x${boost}, ATK x${boost}.`;
+	}
+
+	public LSTwoTypeAtkRcvBoost(): string {
+		let data = this.params;
+		let firstType = this.mapType(data[0]);
+		let secondType = this.mapType(data[1]);
+		let boost = this.mult(data[2]);
+
+		return `${firstType} & ${secondType} type cards ATK x${boost}, RCV x${boost}.`;
+	}
+
+	public LSLowHpConditionalAttrAtkBoost(): string {
+		let data = this.params;
+		let threshold = data[0];
+		let attribute = this.mapAttribute(data[1]);
+		let ATKMultiplier = this.ATKFromSlice(1);
+		let RCVMultiplier = this.RCVFromSlice(1);
+		let boost = this.stringifyBoost(1, ATKMultiplier, RCVMultiplier);
+
+		return `${attribute} attribute cards ${boost} when HP is less than ${threshold}%.`;
+	}
+
+	public LSLowHpConditionalTypeAtkBoost(): string {
+		let data = this.params;
+		let threshold = data[0];
+		let type = this.mapType(data[1]);
+		let ATKMultiplier = this.ATKFromSlice(1);
+
+		return `${type} type cards ATK x${ATKMultiplier} when HP is less than ${threshold}%.`;
+	}
+
+	public LSHighHpConditionalAttrAtkBoost(): string {
+		let data = this.params;
+		let threshold = data[0];
+		let attribute = this.mapAttribute(data[1]);
+		let ATKMultiplier = this.ATKFromSlice(1);
+
+		return `${attribute} attribute cards ATK x${ATKMultiplier} when HP is ${
+			threshold === 100 ? 'full' : `${threshold}% or more`
+		}.`;
+	}
+
+	public LSHighHpConditionalTypeAtkBoost(): string {
+		let data = this.params;
+		let threshold = data[0];
+		let type = this.mapType(data[1]);
+		let ATKMultiplier = this.ATKFromSlice(1);
+
+		return `${type} type cards ATK x${ATKMultiplier} when HP is ${
+			threshold === 100 ? 'full' : `${threshold}% or more`
+		}.`;
+	}
+
+	public LSComboScaledMultiplier(): string {
+		let data = this.mergeDefaults([0, 100, 0, 0]);
+		let minCombosRequired = data[0];
+		let minATKMultiplier = this.mult(data[1]);
+		let ATKStep = this.mult(data[2]);
+		let maxCombosRequired = data[3] || minCombosRequired;
+		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCombosRequired - minCombosRequired);
+
+		return `ATK x${minATKMultiplier} at ${minCombosRequired} combos. ATK x${ATKStep} for each additional combo, up to ATK x${maxATKMultiplier} at ${maxCombosRequired} combos.`;
+	}
+
+	public LSSkillActivationAtkRcvBoost(): string {
+		let ATKMultiplier = this.ATKFromSlice(-1);
+		let RCVMultiplier = this.RCVFromSlice(-1);
+
+		console.log(this.getRawSkillData());
+
+		return `All attribute cards ATK x${ATKMultiplier}, RCV x${RCVMultiplier} on the turn a skill is used. (Multiple skills will not stack).`;
+	}
+
+	// 96: '',
+	// 97: '',
+	// 98: '',
+	// 100: '',
 	// 101: 'LSAtkBoostWithExactCombos',
 	// 103: 'LSComboFlatAtkRcvBoost',
 	// 104: 'LSComboFlatMultiplierAttrAtkBoost',
