@@ -247,11 +247,11 @@ export class MonsterParser {
 
 		let awakenings = this.getAwakenings();
 
-		if (awakenings.length === 0) return result;
-
 		awakenings.forEach((awakeningId) => {
 			result.push(AWAKENINGS[awakeningId]);
 		});
+
+		return result;
 	}
 
 	public getSuperAwakenings(): number[] {
@@ -262,12 +262,11 @@ export class MonsterParser {
 		let superAwakeningsIndex = numberOfAwakeningsIndex + numberOfAwakenings + 1;
 
 		let superAwakening = this.data[superAwakeningsIndex];
-		console.log(superAwakening);
 
 		if (superAwakening.toString().includes(',')) {
 			return superAwakening.split(',');
 		} else {
-			return superAwakening === '' ? [] : superAwakening;
+			return superAwakening === '' ? [] : [superAwakening];
 		}
 	}
 
@@ -275,8 +274,6 @@ export class MonsterParser {
 		let result = [];
 
 		let awakenings = this.getSuperAwakenings();
-
-		if (awakenings.length === 0) return result;
 
 		awakenings.forEach((awakeningId) => {
 			result.push(AWAKENINGS[awakeningId]);
