@@ -88,6 +88,7 @@ let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 			let data = {
 				_lastUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
 				id: monster.getId(),
+				name: monster.getName(),
 				mainAttribute: monster.getMainAttribute(),
 				mainAttributeReadable: monster.getReadableMainAttribute(),
 				subAttribute: monster.getSubAttribute(),
