@@ -1,48 +1,32 @@
 //Reference: https://github.com/nachoapps/dadguide-data/blob/master/etl/pad/raw/skills/leader_skill_info.py
 const { skill: SKILL_DATA } = require('../download_skill_data.json');
 import { LEADERSKILL_MAP } from './leaderSkill.map';
-import { MonsterParser } from '../classes/monsterParser.class';
-import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 
 export class LeaderSkill {
 	private id: number;
 	private type: number;
 	private params: number[];
 
-	constructor(skillId: number, isMultipart: boolean = true) {
-		if (isMultipart) {
-			//Assign id
-			this.id = skillId;
+	constructor(skillData: any[]) {
+		//[ 'Some name?', '', skillType, 0, 0, '', params1, params2, params3... ]
+		// let data = SKILL_DATA[this.id];
+		this.type = skillData[2];
 
-			//[ 'Some name?', '', skillType, 0, 0, '', params1, params2, params3... ]
-			let data = SKILL_DATA[this.id];
-			this.type = data[2];
-
-			//Map params
-			let params = [];
-			for (let i = 6; i < data.length; i++) {
-				params.push(data[i]);
-			}
-			this.params = params;
-		} else {
-			//Assign id
-			this.id = skillId;
-			//Type will be the same as id
-			this.type = skillId;
-
-			//Map params
-			let data = SKILL_DATA[this.id];
-			let params = [];
-			for (let i = 6; i < data.length; i++) {
-				params.push(data[i]);
-			}
-			this.params = params;
+		//Map params
+		let params = [];
+		for (let i = 6; i < skillData.length; i++) {
+			params.push(skillData[i]);
 		}
+		this.params = params;
 	}
 
 	public getDetailDescription(): string {
 		let map = LEADERSKILL_MAP;
 		return '';
+	}
+
+	private getRawSkillData(): any[] {
+		return SKILL_DATA[this.id];
 	}
 
 	private mult(stat: number): number {
@@ -67,7 +51,40 @@ export class LeaderSkill {
 	}
 
 	private mapAttribute(attributeId: number): string {
+		//TODO - VERIFY MAP
+		const MONSTER_ATTRIBUTES = {
+			'-1': 'None',
+			0: 'Fire',
+			1: 'Water',
+			2: 'Wood',
+			3: 'Light',
+			4: 'Dark',
+			5: 'Heart',
+			6: 'Jammer',
+			7: 'Poison',
+			8: 'Mortal Poison',
+		};
 		return MONSTER_ATTRIBUTES[attributeId];
+	}
+
+	private mapType(typeId: number): string {
+		//TODO - VERIFY MAP
+		const MONSTER_TYPES = {
+			'-1': 'None',
+			0: 'Evo Material',
+			1: 'Balanced',
+			2: 'Physical',
+			3: 'Healer',
+			4: 'Dragon',
+			5: 'God',
+			6: 'Attacker',
+			7: 'Devil',
+			8: 'Machine',
+			12: 'Awaken Material',
+			14: 'Enhance Material',
+			15: 'Redeemable Material',
+		};
+		return MONSTER_TYPES[typeId];
 	}
 
 	public testOutput(): string {
@@ -107,19 +124,36 @@ export class LeaderSkill {
 	public LSDamageReduction(): string {
 		let data = this.mergeDefaults([0]);
 		let shield = data[0];
-
 		return `While your HP is ${shield}% or above, a single hit that normally kills you will instead leave you with 1 HP. For the consecutive hits, this skill will only affect the first hit.`;
 	}
 
 	public LSAttrDamageReduction(): string {
 		let data = this.mergeDefaults([0, 0]);
 		let attribute = this.mapAttribute(data[0]);
-		let shield = this.mult(data[1]);
+		let shield = data[1];
 		return `${shield}% ${attribute} damage reduction.`;
 	}
-	// 22: 'LSTypeAtkBoost',
-	// 23: 'LSTypeHpBoost',
-	// 24: 'LSTypeRcvBoost',
+
+	public LSTypeAtkBoost(): string {
+		let data = this.mergeDefaults([0, 100]);
+		let type = this.mapType(data[0]);
+		let ATKMultiplier = this.mult(data[1]);
+		return `${type} type cards ATK x${ATKMultiplier}.`;
+	}
+
+	public LSTypeHpBoost(): string {
+		let data = this.mergeDefaults([0, 100]);
+		let type = this.mapType(data[0]);
+		let HPMultiplier = this.mult(data[1]);
+		return `${type} type cards HP x${HPMultiplier}.`;
+	}
+
+	public LSTypeRcvBoost() {
+		let data = this.mergeDefaults([0, 100]);
+		let type = this.mapType(data[0]);
+		let RCVMultiplier = this.mult(data[1]);
+		return `${type} type cards RCV x${RCVMultiplier}.`;
+	}
 	// 26: 'LSStaticAtkBoost',
 	// 28: 'LSAttrAtkRcvBoost',
 	// 29: 'LSAllStatBoost',
