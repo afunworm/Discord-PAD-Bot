@@ -51,7 +51,7 @@ export class LeaderSkill {
 	}
 
 	public testOutput(): string {
-		let functionToCall = this.getMap()[this.type];
+		let functionToCall = LEADERSKILL_MAP[this.type];
 		return this[functionToCall].call(this);
 	}
 
