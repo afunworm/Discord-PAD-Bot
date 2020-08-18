@@ -1,5 +1,5 @@
 const dialogflow = require('dialogflow');
-const AIEnv = require('../AIServiceAccount.json');
+const AIEnv = require('../' + process.env.AI_SERVICE_ACCOUNT);
 
 export interface QueryResultInterface {
 	queryResult: {

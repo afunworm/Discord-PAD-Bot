@@ -1,7 +1,7 @@
 /*-------------------------------------------------------*
  * LIBRARIES
  *-------------------------------------------------------*/
-import { env } from './environment';
+require('dotenv').config();
 import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
 const Discord = require('discord.js');
@@ -10,8 +10,13 @@ const Discord = require('discord.js');
  * CONST
  *-------------------------------------------------------*/
 const client = new Discord.Client();
-const DISCORD_TOKEN = env.DISCORD_TOKEN;
-const COMMAND_PREFIX = env.COMMAND_PREFIX;
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+
+import { MonsterParser } from './classes/monsterParser.class';
+
+let monsterParser = new MonsterParser(5740);
+console.log(monsterParser.getReadableSuperAwakenings());
+process.exit();
 
 /*-------------------------------------------------------*
  * Handlers

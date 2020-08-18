@@ -1,4 +1,4 @@
-export const AWAKENS = {
+export const AWAKENINGS = {
 	// 0: None,  // No need.
 	1: 'Enhanced HP',
 	2: 'Enhanced Attack',
