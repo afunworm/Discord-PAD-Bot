@@ -3,28 +3,29 @@ const { skill: SKILL_DATA } = require('../download_skill_data.json');
 import { MonsterParser } from '../classes/monsterParser.class';
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 
-//Find all cards with ID
-let SEARCH_FOR = 12;
-for (let i = 1; i <= 7804; i++) {
-	let monster = new MonsterParser(i);
-	let leaderSkillId = monster.getLeaderSkill().id;
-	let skill = SKILL_DATA[leaderSkillId];
-	let firstSkill = skill[6];
-	let secondSkill = skill[7];
+// Find all cards with ID
+let SEARCH_FOR = 13;
+// for (let i = 1; i <= 7804; i++) {
+// 	let monster = new MonsterParser(i);
+// 	let leaderSkillId = monster.getLeaderSkill().id;
+// 	let skill = SKILL_DATA[leaderSkillId];
+// 	let firstSkill = skill[6];
+// 	let secondSkill = skill[7];
 
-	let firstSkilLDetails = SKILL_DATA[firstSkill];
-	if (!firstSkilLDetails) continue;
-	let firstSkillType = firstSkilLDetails[2];
+// 	let firstSkilLDetails = SKILL_DATA[firstSkill];
+// 	if (!firstSkilLDetails) continue;
+// 	let firstSkillType = firstSkilLDetails[2];
 
-	if (firstSkillType === SEARCH_FOR) console.log(monster.getName());
+// 	if (firstSkillType === SEARCH_FOR) console.log(monster.getName());
 
-	if (!secondSkill) continue;
+// 	if (!secondSkill) continue;
 
-	let secondSkillDetail = SKILL_DATA[secondSkill];
-	let secondSkillType = secondSkillDetail[2];
+// 	let secondSkillDetail = SKILL_DATA[secondSkill];
+// 	let secondSkillType = secondSkillDetail[2];
 
-	if (secondSkillType === SEARCH_FOR) console.log(monster.getName());
-}
+// 	if (secondSkillType === SEARCH_FOR) console.log(monster.getName());
+// }
+// process.exit();
 
 export class LeaderSkill {
 	private id: number;
@@ -41,14 +42,14 @@ export class LeaderSkill {
 
 		//Map params
 		let params = [];
-		for (let i = 6; i <= data.length; i++) {
+		for (let i = 6; i < data.length; i++) {
 			params.push(data[i]);
 		}
 		this.params = params;
 	}
 
-	public getDetailDescription(): string {
-		let map = {
+	private getMap() {
+		return {
 			11: 'LSAttrAtkBoost',
 			12: 'LSBonusAttack',
 			13: 'LSAutoheal',
@@ -76,6 +77,7 @@ export class LeaderSkill {
 			46: 'LSTwoAttrHpBoost',
 			48: 'LSAttrHpBoost',
 			49: 'LSAttrRcvBoost',
+			//DINO IS ABOVE
 			53: 'LSEggDropRateBoost',
 			54: 'LSCoinDropBoost',
 			61: 'LSRainbow',
@@ -156,7 +158,10 @@ export class LeaderSkill {
 			203: 'LSGroupConditionalBoost',
 			206: 'LSColorComboBonusCombo',
 		};
+	}
 
+	public getDetailDescription(): string {
+		let map = this.getMap();
 		return '';
 	}
 
@@ -164,8 +169,29 @@ export class LeaderSkill {
 		return stat / 100;
 	}
 
+	private mergeDefaults(providedData: number[], defaultData: number[]) {
+		let result = [];
+
+		providedData.forEach((item) => {
+			result.push(item);
+		});
+
+		if (defaultData[providedData.length] === undefined) return result;
+
+		for (let i = providedData.length; i < defaultData.length; i++) {
+			result.push(defaultData[i]);
+		}
+
+		return result;
+	}
+
+	public testOutput(): string {
+		let functionToCall = this.getMap()[this.type];
+		return this[functionToCall].call(this);
+	}
+
 	public LSAttrAtkBoost(): string {
-		let attribute = this.params[0];
+		let attribute = MONSTER_ATTRIBUTES[this.params[0]];
 		let ATKMultiplier = this.mult(this.params[1]);
 		return `${attribute} attribute cards ATK x${ATKMultiplier}.`;
 	}
@@ -176,14 +202,40 @@ export class LeaderSkill {
 	}
 
 	public LSAutoheal(): string {
-		return '';
+		let data = this.mergeDefaults(this.params, [0]);
+		let multiplier = this.mult(data[0]);
+		return `Heal RCV x${multiplier} as HP after every orbs elimination.`;
 	}
 
 	public LSResolve(): string {
-		return '';
+		return ``;
 	}
 
 	public LSMovementTimeIncrease(): string {
-		return '';
+		return ``;
+	}
+
+	public LSDamageReduction(): string {
+		let data = this.mergeDefaults(this.params, [0]);
+		let shield = data[0];
+
+		return `While your HP is ${shield}% or above, a single hit that normally kills you will instead leave you with 1 HP. For the consecutive hits, this skill will only affect the first hit.`;
 	}
 }
+
+const MONSTER_ID = 2519;
+let monster = new MonsterParser(MONSTER_ID);
+let leaderSkillId = monster.getLeaderSkill().id;
+let result;
+
+try {
+	let skillId = SKILL_DATA[leaderSkillId][6];
+	let ls = new LeaderSkill(skillId);
+	result = ls.testOutput();
+} catch (error) {
+	let skillId = SKILL_DATA[leaderSkillId][7];
+	let ls = new LeaderSkill(skillId);
+	result = ls.testOutput();
+}
+
+console.log(result);
