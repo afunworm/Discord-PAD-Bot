@@ -14,8 +14,8 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 import { MonsterParser } from './classes/monsterParser.class';
 
-let monsterParser = new MonsterParser(5740);
-console.log(monsterParser.getReadableSuperAwakenings());
+//UNCOMMENT THE FOLLOWING TO KNOW THE SIZE OF THE CURRENT DATABASE
+console.log('Database size: ' + Monster.getDatabaseLength());
 process.exit();
 
 /*-------------------------------------------------------*

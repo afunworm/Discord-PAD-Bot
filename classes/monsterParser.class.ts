@@ -71,7 +71,7 @@ export class MonsterParser {
 
 	public getReadableSubAttribute(): string {
 		let attribute = this.getSubAttribute();
-		return MONSTER_ATTRIBUTES[attribute];
+		return attribute === null ? 'None' : MONSTER_ATTRIBUTES[attribute];
 	}
 
 	public isEvoReversible(): boolean {
