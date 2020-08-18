@@ -110,6 +110,10 @@ export class MonsterParser {
 		return result;
 	}
 
+	public getRarity(): number {
+		return this.data[7];
+	}
+
 	public getCost(): number {
 		return this.data[8];
 	}
