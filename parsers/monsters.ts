@@ -82,7 +82,7 @@ let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 
 (async () => {
-	for (let id = startNumber; id <= endNumber; id++) {
+	for (let id = startNumber; id < endNumber; id++) {
 		try {
 			let monster = new MonsterParser(id);
 
