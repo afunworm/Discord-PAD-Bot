@@ -5,40 +5,41 @@ import { LeaderSkill } from './leaderSkill.class';
 console.log('\n===========');
 
 //Skill test
-// const MONSTER_ID = 5930;
-// let monster = new MonsterParser(MONSTER_ID);
-// let leaderSkillId = monster.getLeaderSkill().id;
+const MONSTER_ID = 6272;
+let monster = new MonsterParser(MONSTER_ID);
+let leaderSkillId = monster.getLeaderSkill().id;
 
-// try {
-// 	if (SKILL_DATA[leaderSkillId][2] === 138 || SKILL_DATA[leaderSkillId][2] === 116) {
-// 		//Multipart
-// 		let skillId = SKILL_DATA[leaderSkillId][6];
-// 		let skillData = SKILL_DATA[skillId];
-// 		let ls = new LeaderSkill(skillData);
-// 		let result = ls.testOutput();
-// 		console.log(result);
+if (SKILL_DATA[leaderSkillId][2] === 138 || SKILL_DATA[leaderSkillId][2] === 116) {
+	//Multipart
+	let skills = SKILL_DATA[leaderSkillId];
+	let skillIds = [];
 
-// 		skillId = SKILL_DATA[leaderSkillId][7];
-// 		skillData = SKILL_DATA[skillId];
-// 		ls = new LeaderSkill(skillData);
-// 		result = ls.testOutput();
-// 		console.log('---\n' + result);
-// 	} else {
-// 		let skillData = SKILL_DATA[leaderSkillId];
-// 		let ls = new LeaderSkill(skillData);
-// 		let result = ls.testOutput();
-// 		console.log(result);
-// 	}
-// } catch (error) {
-// 	//Only multipart skill will catch errors
-// 	let skillId = SKILL_DATA[leaderSkillId][7];
-// 	let ls = new LeaderSkill(skillId);
-// 	let result = ls.testOutput();
-// 	console.log(result);
-// }
-// process.exit();
+	for (let i = 6; i < skills.length; i++) {
+		skillIds.push(skills[i]);
+	}
+
+	skillIds.forEach((skillId, index) => {
+		let skillData = SKILL_DATA[skillId];
+		let ls = new LeaderSkill(skillData);
+		let result = ls.testOutput();
+		console.log((index !== 0 ? '---\n' : '') + result);
+	});
+	// let skillId = SKILL_DATA[leaderSkillId][6];
+
+	// skillId = SKILL_DATA[leaderSkillId][7];
+	// skillData = SKILL_DATA[skillId];
+	// ls = new LeaderSkill(skillData);
+	// result = ls.testOutput();
+	// console.log('---\n' + result);
+} else {
+	let skillData = SKILL_DATA[leaderSkillId];
+	let ls = new LeaderSkill(skillData);
+	let result = ls.testOutput();
+	console.log(result);
+}
+process.exit();
 // Find all cards with skill type of
-let SEARCH_FOR = 167;
+let SEARCH_FOR = 206;
 try {
 	for (let i = 1; i <= 6450; i++) {
 		let monster = new MonsterParser(i);

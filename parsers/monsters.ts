@@ -30,6 +30,7 @@ interface LeaderSkillData {
 	id: number;
 	name: string;
 	description: string;
+	descriptionDetails: string[];
 }
 interface EnemyData {
 	turnTimer: number;

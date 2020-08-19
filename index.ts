@@ -12,11 +12,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-import { MonsterParser } from './classes/monsterParser.class';
-
 //UNCOMMENT THE FOLLOWING TO KNOW THE SIZE OF THE CURRENT DATABASE
-console.log('Database size: ' + Monster.getDatabaseLength());
-process.exit();
+// console.log('Database size: ' + Monster.getDatabaseLength());
+// process.exit();
 
 /*-------------------------------------------------------*
  * Handlers

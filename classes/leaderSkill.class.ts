@@ -28,8 +28,8 @@ export class LeaderSkill {
 	}
 
 	public getDetailDescription(): string {
-		let map = LEADERSKILL_MAP;
-		return '';
+		let functionToCall = LEADERSKILL_MAP[this.type];
+		return typeof this[functionToCall] === 'function' ? this[functionToCall].call(this) : null;
 	}
 
 	private getRawSkillData(): any[] {
@@ -87,6 +87,8 @@ export class LeaderSkill {
 
 		if (shield !== 0) boost.push(`reduce damage taken by ${shield}%`);
 
+		if (boost.length === 0) return '';
+
 		if (shield === 0) {
 			return boost.length > 1 ? boost.join(', ') : boost[0];
 		} else {
@@ -98,7 +100,7 @@ export class LeaderSkill {
 		return threshold === 100 ? 'full' : threshold + '% or ' + (isAbove ? 'more' : 'less');
 	}
 
-	private decimalToBinary = (dec) => (dec >>> 0).toString(2);
+	private decimalToBinary = (dec: number) => (dec >>> 0).toString(2);
 
 	private getAttributesFromBinary(dec: number): number[] {
 		let binary = this.decimalToBinary(dec).padStart(9, '0');
@@ -181,6 +183,8 @@ export class LeaderSkill {
 	private listConcat(list: number[]) {
 		return list.filter((id) => id > 0);
 	}
+
+	private numberWithCommas = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 	public testOutput(): string {
 		let functionToCall = LEADERSKILL_MAP[this.type];
@@ -1139,28 +1143,304 @@ export class LeaderSkill {
 		return `ATK x${maxATKMultiplier}, RCV x${maxRCVMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs.`;
 	}
 
-	// 164: '',
-	// 165: '',
-	// 166: '',
-	// 167: '',
-	// 169: 'LSComboMultPlusShield',
-	// 170: 'LSRainbowMultPlusShield',
-	// 171: 'LSMatchAttrPlusShield',
-	// 175: 'LSCollabConditionalBoost',
-	// 177: 'LSOrbRemainingMultiplier',
-	// 178: 'LSFixedMovementTime',
-	// 182: 'LSRowMatcHPlusDamageReduction',
-	// 183: 'LSDualThresholdBoost',
-	// 185: 'LSBonusTimeStatBoost',
-	// 186: 'LSSevenBySixStatBoost',
-	// 192: 'LSBlobMatchBonusCombo',
-	// 193: 'LSLMatchBoost',
-	// 194: 'LSAttrMatchBonusCombo',
-	// 197: 'LSDisablePoisonEffects',
-	// 198: 'LSHealMatchBoostUnbind',
-	// 199: 'LSRainbowBonusDamage',
-	// 200: 'LSBlobBonusDamage',
-	// 201: 'LSColorComboBonusDamage',
-	// 203: 'LSGroupConditionalBoost',
-	// 206: 'LSColorComboBonusCombo',
+	public LSComboMultPlusShield(): string {
+		let data = this.mergeDefaults([0, 100, 0]);
+		let combosRequired = data[0];
+		let ATKMultipler = this.mult(data[1]);
+		let shield = data[2];
+
+		return `All attribute cards ATK x${ATKMultipler}, ${shield}% all damage reduction when reaching ${combosRequired} combos.`;
+	}
+
+	public LSRainbowMultPlusShield(): string {
+		let data = this.mergeDefaults([0, 0, 100, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let attributesRequired = data[1];
+		let ATKMultiplier = this.mult(data[2]);
+		let shield = data[3];
+
+		return `All attribute cards ATK x${ATKMultiplier}, ${shield}% all damage reduction when attacking with ${attributeString} orb types at the same time.`;
+	}
+
+	public LSMatchAttrPlusShield(): string {
+		let data = this.params;
+		let attributes = this.getAttributesFromMultipleBinary([data[0], data[1], data[2], data[3]]);
+		let attributeString = this.toAttributeString(attributes);
+		let attributesRequired = data[4];
+		let ATKMultipler = this.mult(data[5]);
+		let shield = data[6];
+
+		return `All attribute cards ATK x${ATKMultipler}, ${shield}% all damage reduction when attacking with ${attributeString} combos at the same time.`;
+	}
+
+	public LSCollabConditionalBoost(): string {
+		let data = this.mergeDefaults([0, null, null, 100, 100, 100]);
+		let collabId = data[0];
+		let HPMultiplier = this.multiFloor(data[3]);
+		let ATKMultipler = this.multiFloor(data[4]);
+		let RCVMultiplier = this.multiFloor(data[5]);
+
+		return `HP x${HPMultiplier}, ATK x${ATKMultipler}, RCV ${RCVMultiplier} when all subs are from {{${collabId}}} Collab.`;
+	}
+
+	public LSOrbRemainingMultiplier(): string {
+		let data = this.mergeDefaults([0, 0, 100, 100, 100, 0, 100, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+		let orbCount = data[5];
+		let minATKMultiplier = this.multiFloor(data[3]);
+		let baseATKMultiplier = this.mult(data[6]);
+		let bonusATK = this.mult(data[7]);
+		let maxBonusATK = baseATKMultiplier + bonusATK * orbCount;
+		let HPMultiplier = this.multiFloor(data[2]);
+		let RCVMultiplier = this.multiFloor(data[4]);
+		let ATKMultipler = minATKMultiplier * maxBonusATK; //What is this?
+		console.log(HPMultiplier);
+		console.log(minATKMultiplier);
+		console.log(RCVMultiplier);
+		let boost = this.stringifyBoost(HPMultiplier, minATKMultiplier, RCVMultiplier);
+
+		let result = [];
+		result.push('No skyfall combos.');
+
+		if (boost) result.push(boost);
+
+		result.push(`ATK x${baseATKMultiplier} when there are ${orbCount} or less orbs on the board after matching.`);
+
+		if (baseATKMultiplier !== maxBonusATK) {
+			result.push(`ATK x1 for every missing orb afterwards, up to ATK x${maxBonusATK}.`);
+		}
+
+		return result.join(' ');
+	}
+
+	public LSFixedMovementTime(): string {
+		let data = this.mergeDefaults([0, 0, 0, 100, 100, 100]);
+		let time = data[0];
+		let attributes = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[2]);
+		let typeString = this.toTypeString(types);
+
+		//@TODO: This needs to be overhauled, just accept the value here if it != 0.
+		if (time === 0) {
+			//Ignore this case; bad skill
+			return '';
+		}
+
+		let HPMultiplier = this.multiFloor(data[3]);
+		let ATKMultipler = this.multiFloor(data[4]);
+		let RCVMultiplier = this.multiFloor(data[5]);
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier);
+
+		if (attributes.length > 0) {
+			return `Fixed orb movement time at ${time} seconds. ${attributeString} attribute cards ${boost}.`;
+		}
+
+		if (types.length > 0) {
+			return `Fixed orb movement time at ${time} seconds. ${typeString} type cards ${boost}.`;
+		}
+
+		return `Fixed orb movement time at ${time} seconds.`;
+	}
+
+	public LSRowMatcHPlusDamageReduction(): string {
+		let data = this.mergeDefaults([0, 0, 100, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let count = data[1];
+		let ATKMultipler = this.multiFloor(data[2]);
+		let shield = data[3];
+		let boost = this.stringifyBoost(1, ATKMultipler, 1, shield);
+
+		return `${boost} when matching ${count}+ ${attributeString} orbs.`;
+	}
+
+	public LSDualThresholdBoost(): string {
+		let data = this.mergeDefaults([0, 0, 0, 100, 0, 0, 100, 100]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+
+		//More than x%
+		let firstThreshold = data[2];
+		let firstATKMultiplier = this.mult(data[3]) || 1;
+		let firstRCVMultiplier = 1;
+		let firstShield = data[4];
+		let firstBoost = this.stringifyBoost(1, firstATKMultiplier, firstRCVMultiplier, firstShield);
+
+		//Less than x%
+		let secondThreshold = data[5];
+		let secondATKMultiplier = this.mult(data[6]);
+		let secondRCVMultiplier = this.mult(data[7]);
+		let secondShield = 0;
+		let secondBoost = this.stringifyBoost(1, secondATKMultiplier, secondRCVMultiplier, secondShield);
+
+		let ATKMultipler = firstATKMultiplier > secondATKMultiplier ? firstATKMultiplier : secondATKMultiplier;
+		let RCVMultiplier = firstRCVMultiplier > secondRCVMultiplier ? firstRCVMultiplier : secondRCVMultiplier;
+		let shield = firstShield > secondShield ? firstShield : secondShield;
+
+		if (firstThreshold) {
+			return `All attribute cards ${firstBoost} when HP ${this.stringifyHPCondition(firstThreshold, true)}.`;
+		} else {
+			return `All attribute cards ${secondBoost} when HP ${this.stringifyHPCondition(secondThreshold, false)}.`;
+		}
+	}
+
+	public LSBonusTimeStatBoost(): string {
+		let data = this.mergeDefaults([0, 0, 0, 100, 100, 100]);
+		let time = this.mult(data[0]);
+		let attributes = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[2]);
+		let typeString = this.toTypeString(types);
+
+		let HPMultiplier = this.multiFloor(data[3]);
+		let ATKMultipler = this.multiFloor(data[4]);
+		let RCVMultiplier = this.multiFloor(data[5]);
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier);
+
+		if (attributes.length > 0) {
+			return `${attributeString} attribute cards ${boost}. Increases time limit of orb movement by ${time} seconds.`;
+		}
+
+		if (types.length > 0) {
+			return `${typeString} type cards ${boost}. Increases time limit of orb movement by ${time} seconds.`;
+		}
+
+		return `Increases time limit of orb movement by ${time} seconds.`;
+	}
+
+	public LSSevenBySixStatBoost(): string {
+		let data = this.mergeDefaults([0, 0, 100, 100, 100]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+
+		let HPMultiplier = this.multiFloor(data[2]);
+		let ATKMultipler = this.multiFloor(data[3]);
+		let RCVMultiplier = this.multiFloor(data[4]);
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier);
+
+		if (attributes.length > 0) {
+			return `Change the board to 7x6 size. ${attributeString} attribute cards ${boost}.`;
+		}
+
+		if (types.length > 0) {
+			return `Change the board to 7x6 size. ${typeString} type cards ${boost}.`;
+		}
+
+		return '';
+	}
+
+	public LSBlobMatchBonusCombo(): string {
+		let data = this.mergeDefaults([0, 0, 100, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let minMatch = data[1];
+		let bonusCombo = data[3];
+		let ATKMultipler = this.multiFloor(data[2]);
+
+		return `All attribute cards ATK x${ATKMultipler} and +${bonusCombo} combo when matching ${minMatch}+ connected ${attributeString} orbs.`;
+	}
+
+	public LSLMatchBoost(): string {
+		let data = this.mergeDefaults([0, 100, 100, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes, 'or');
+		let ATKMultipler = this.multiFloor(data[1]);
+		let RCVMultiplier = this.multiFloor(data[2]);
+		let shield = data[3];
+		let boost = this.stringifyBoost(1, ATKMultipler, RCVMultiplier, shield);
+
+		return `All attribute cards cards ${boost} when matching ${attributeString} orbs in a L formation.`;
+	}
+
+	public LSAttrMatchBonusCombo(): string {
+		let data = this.params;
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let minAttributesRequired = data[1];
+		let bonusCombo = data[3];
+		let ATKMultipler = this.multiFloor(data[2]);
+
+		return `All attribute cards ATK x${ATKMultipler} and +${bonusCombo} combo when attacking with ${minAttributesRequired} of ${attributeString} orbs at the same time.`;
+	}
+
+	public LSDisablePoisonEffects(): string {
+		return `Gain immunity to poison damage.`;
+	}
+
+	public LSHealMatchBoostUnbind(): string {
+		let data = this.mergeDefaults([0, 100, 0, 0]);
+		let healAmount = data[0];
+		let unbindAmount = data[3];
+		let ATKMultipler = this.multiFloor(data[1]);
+		let shield = data[2];
+		let boost = this.stringifyBoost(1, ATKMultipler, 1, shield);
+
+		return `All attribute cards ${boost} when recovering ${this.numberWithCommas(healAmount)}+ HP with Heal orbs.`;
+	}
+
+	public LSRainbowBonusDamage(): string {
+		let data = this.params;
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let minAttributesRequired = data[1];
+		let bonusDamage = data[2];
+
+		return `${this.numberWithCommas(
+			bonusDamage
+		)} damage to all enemies, ignore enemy element and defense when attacking with ${minAttributesRequired} of following orb types: ${attributeString}.`;
+	}
+
+	public LSBlobBonusDamage(): string {
+		let data = this.params;
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes, 'or');
+		let minMatch = data[1];
+		let bonusDamage = data[2];
+
+		return `${this.numberWithCommas(
+			bonusDamage
+		)} damage to all enemies, ignore enemy element and defense when simultaneously clearing ${minMatch}+ ${attributeString} orbs at the same time.`;
+	}
+
+	public LSColorComboBonusDamage(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0, 0, 0]);
+		let attributes = this.getAttributesFromMultipleBinary([data[0], data[1], data[2], data[3]]);
+		let attributeString = this.toAttributeString(attributes, 'or');
+		let minCombosRequired = data[4];
+		let bonusDamage = data[5];
+
+		return `${this.numberWithCommas(
+			bonusDamage
+		)} damage to all enemies, ignore enemy element and defense when attack with ${minCombosRequired} ${attributeString} combos at the same time.`;
+	}
+
+	public LSGroupConditionalBoost(): string {
+		let data = this.mergeDefaults([0, 100, 100, 100]);
+		let groupId = data[0];
+		let HPMultiplier = this.multiFloor(data[1]);
+		let ATKMultipler = this.multiFloor(data[2]);
+		let RCVMultiplier = this.multiFloor(data[3]);
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier);
+
+		return `${boost} when all subs are from {{${groupId}}}.`;
+	}
+
+	public LSColorComboBonusCombo(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0, 0, 0, 0]);
+		let attributes = this.getAttributesFromMultipleBinary([data[0], data[1], data[2], data[3]]);
+		let attributeString = this.toAttributeString(attributes, 'and');
+		let minCombosRequired = data[5];
+		let bonusCombo = data[6];
+
+		return `+${bonusCombo} combo when ${attributeString} attack at once.`;
+	}
 }
