@@ -69,7 +69,7 @@ export const LEADERSKILL_MAP = {
 	133: 'LSSkillUsedAttrTypeAtkRcvBoost',
 	136: 'LSMultiAttrConditionalStatBoost',
 	137: 'LSMultiTypeConditionalStatBoost',
-	138: 'LSMultiPartSkill',
+	// 138: 'LSMultiPartSkill', //This is not needed, will parsed manually
 	139: 'LSHpMultiConditionalAtkBoost',
 	148: 'LSRankXpBoost',
 	149: 'LSHealMatchRcvBoost',

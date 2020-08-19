@@ -2,43 +2,43 @@ const { skill: SKILL_DATA } = require('../download_skill_data.json');
 import { MonsterParser } from '../classes/monsterParser.class';
 import { LeaderSkill } from './leaderSkill.class';
 
-//Skill test
-const MONSTER_ID = 1532;
-let monster = new MonsterParser(MONSTER_ID);
-let leaderSkillId = monster.getLeaderSkill().id;
-
 console.log('\n===========');
 
-try {
-	if (SKILL_DATA[leaderSkillId][2] === 138 || SKILL_DATA[leaderSkillId][2] === 116) {
-		//Multipart
-		let skillId = SKILL_DATA[leaderSkillId][6];
-		let skillData = SKILL_DATA[skillId];
-		let ls = new LeaderSkill(skillData);
-		let result = ls.testOutput();
-		console.log(result);
+//Skill test
+// const MONSTER_ID = 5930;
+// let monster = new MonsterParser(MONSTER_ID);
+// let leaderSkillId = monster.getLeaderSkill().id;
 
-		skillId = SKILL_DATA[leaderSkillId][7];
-		skillData = SKILL_DATA[skillId];
-		ls = new LeaderSkill(skillData);
-		result = ls.testOutput();
-		console.log('---\n' + result);
-	} else {
-		let skillData = SKILL_DATA[leaderSkillId];
-		let ls = new LeaderSkill(skillData);
-		let result = ls.testOutput();
-		console.log(result);
-	}
-} catch (error) {
-	//Only multipart skill will catch errors
-	let skillId = SKILL_DATA[leaderSkillId][7];
-	let ls = new LeaderSkill(skillId);
-	let result = ls.testOutput();
-	console.log(result);
-}
+// try {
+// 	if (SKILL_DATA[leaderSkillId][2] === 138 || SKILL_DATA[leaderSkillId][2] === 116) {
+// 		//Multipart
+// 		let skillId = SKILL_DATA[leaderSkillId][6];
+// 		let skillData = SKILL_DATA[skillId];
+// 		let ls = new LeaderSkill(skillData);
+// 		let result = ls.testOutput();
+// 		console.log(result);
 
+// 		skillId = SKILL_DATA[leaderSkillId][7];
+// 		skillData = SKILL_DATA[skillId];
+// 		ls = new LeaderSkill(skillData);
+// 		result = ls.testOutput();
+// 		console.log('---\n' + result);
+// 	} else {
+// 		let skillData = SKILL_DATA[leaderSkillId];
+// 		let ls = new LeaderSkill(skillData);
+// 		let result = ls.testOutput();
+// 		console.log(result);
+// 	}
+// } catch (error) {
+// 	//Only multipart skill will catch errors
+// 	let skillId = SKILL_DATA[leaderSkillId][7];
+// 	let ls = new LeaderSkill(skillId);
+// 	let result = ls.testOutput();
+// 	console.log(result);
+// }
+// process.exit();
 // Find all cards with skill type of
-let SEARCH_FOR = 100;
+let SEARCH_FOR = 167;
 try {
 	for (let i = 1; i <= 6450; i++) {
 		let monster = new MonsterParser(i);

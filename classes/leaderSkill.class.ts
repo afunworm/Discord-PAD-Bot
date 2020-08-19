@@ -70,41 +70,116 @@ export class LeaderSkill {
 	}
 
 	private RCVFromSlice(padding: number = 0): number {
-		return this.params[2 + padding] === 2 ? this.params[3 + padding] / 100 : 1;
+		return this.params[1 + padding] === 2 || this.params[2 + padding] === 2 ? this.params[3 + padding] / 100 : 1;
 	}
 
-	private stringifyBoost(HPBoost: number = 1, ATKBoost: number = 1, RCVBoost: number = 1): string {
+	private stringifyBoost(
+		HPBoost: number = 1,
+		ATKBoost: number = 1,
+		RCVBoost: number = 1,
+		shield: number = 0
+	): string {
 		let boost = [];
 
 		if (HPBoost !== 1) boost.push(`HP x${HPBoost}`);
 		if (ATKBoost !== 1) boost.push(`ATK x${ATKBoost}`);
 		if (RCVBoost !== 1) boost.push(`RCV x${RCVBoost}`);
 
-		return boost.length > 1 ? boost.join(', ') : boost[0];
+		if (shield !== 0) boost.push(`reduce damage taken by ${shield}%`);
+
+		if (shield === 0) {
+			return boost.length > 1 ? boost.join(', ') : boost[0];
+		} else {
+			return boost.length > 1 ? boost.join(', ') : boost[0];
+		}
+	}
+
+	private stringifyHPCondition(threshold: number, isAbove: boolean = true): string {
+		return threshold === 100 ? 'full' : threshold + '% or ' + (isAbove ? 'more' : 'less');
 	}
 
 	private decimalToBinary = (dec) => (dec >>> 0).toString(2);
 
 	private getAttributesFromBinary(dec: number): number[] {
-		let binary = this.decimalToBinary(dec).padStart(5, '0');
+		let binary = this.decimalToBinary(dec).padStart(9, '0');
 		let result = [];
 
 		//Refer to monster attribute maps to map properly
-		//The binary will be {dark}{light}{wood}{water}{fire}
-		if (binary[0] === '1') result.push(4); //Dark
-		if (binary[1] === '1') result.push(3); //Light
-		if (binary[2] === '1') result.push(2); //Wood
-		if (binary[3] === '1') result.push(1); //Water
-		if (binary[4] === '1') result.push(0); //Fire
+		//The binary will be {MORTAL POISON}{POISON}{JAMMER}{HEART}{DARK}{LIGHT}{WOOD}{WATER}{FIRE}
+		if (binary[0] === '1') result.push(8); //Mortal Poison
+		if (binary[1] === '1') result.push(7); //Poison
+		if (binary[2] === '1') result.push(6); //Jammer
+		if (binary[3] === '1') result.push(5); //Heart
+		if (binary[4] === '1') result.push(4); //Dark
+		if (binary[5] === '1') result.push(3); //Light
+		if (binary[6] === '1') result.push(2); //Wood
+		if (binary[7] === '1') result.push(1); //Water
+		if (binary[8] === '1') result.push(0); //Fire
 
 		return result;
 	}
 
-	private toAttributeString(attributes: number[]): string {
+	private getAttributesFromMultipleBinary(decs: number[]): number[] {
+		let result = [];
+
+		decs.forEach((dec) => {
+			let attributes = this.getAttributesFromBinary(dec);
+			attributes.forEach((attribute) => {
+				result.push(attribute);
+			});
+		});
+
+		return result;
+	}
+
+	private toAttributeString(attributes: number[], connector: string = '&'): string {
 		if (attributes.length === 0) return '';
 
-		let attributesArray = attributes.map((attribute) => MONSTER_ATTRIBUTES[attribute]);
-		return attributesArray.length > 1 ? attributesArray.join(', ') : attributesArray[0];
+		let attributesArray: any[] = attributes.sort((a, b) => a - b); //Sort it
+		attributesArray = attributesArray.map((attribute) => MONSTER_ATTRIBUTES[attribute]);
+
+		return attributesArray.length > 1
+			? attributesArray.join(', ').replace(/,([^,]*)$/, ` ${connector}$1`)
+			: attributesArray[0];
+	}
+
+	private getTypesFromBinary(dec: number): number[] {
+		let binary = this.decimalToBinary(dec).padStart(15, '0');
+		let result = [];
+
+		//Refer to monster type maps to map properly
+		//The binary will be {REDEEMABLE}{ENHANCE}0{AWAKEN}00{MACHINE}{DEVIL}{ATTACKER}{GOD}{DRAGON}{HEALER}{PHYSICAL}{BALANCED}{EVO}
+		if (binary[0] === '1') result.push(15); //Redeemable
+		if (binary[1] === '1') result.push(14); //Enhance
+		if (binary[3] === '1') result.push(12); //Awaken
+		if (binary[6] === '1') result.push(8); //Machine
+		if (binary[7] === '1') result.push(7); //Devil
+		if (binary[8] === '1') result.push(6); //Attacker
+		if (binary[9] === '1') result.push(5); //God
+		if (binary[10] === '1') result.push(4); //Dragon
+		if (binary[11] === '1') result.push(3); //Healer
+		if (binary[12] === '1') result.push(2); //Physical
+		if (binary[13] === '1') result.push(1); //Balanced
+		if (binary[14] === '1') result.push(0); //Evo
+
+		return result;
+	}
+
+	private toTypeString(types: number[], connector: string = '&'): string {
+		if (types.length === 0) return '';
+
+		let typeArray: any[] = types.sort((a, b) => a - b); //Sort it
+		typeArray = typeArray.map((type) => MONSTER_TYPES[type]);
+
+		return typeArray.length > 1 ? typeArray.join(', ').replace(/,([^,]*)$/, ` ${connector}$1`) : typeArray[0];
+	}
+
+	private multiFloor(stat: number) {
+		return stat !== 0 ? stat / 100 : 1;
+	}
+
+	private listConcat(list: number[]) {
+		return list.filter((id) => id > 0);
 	}
 
 	public testOutput(): string {
@@ -264,9 +339,9 @@ export class LeaderSkill {
 		let threshold = data[0];
 		let chance = data[1];
 		let shield = data[2];
-		return `${chance}% chance to have ${shield}% all damage reduction when HP is ${
-			threshold === 100 ? 'full' : `${threshold}% or more`
-		}.`;
+		return `${chance}% chance to have ${shield}% all damage reduction when HP is ${this.stringifyHPCondition(
+			threshold
+		)}.`;
 	}
 
 	public LSHighHpAtkBoost(): string {
@@ -276,7 +351,7 @@ export class LeaderSkill {
 		let RCVBoost = this.RCVFromSlice();
 		let boost = this.stringifyBoost(1, ATKBoost, RCVBoost);
 
-		return `All attribute cards ${boost} when HP is ${threshold === 100 ? 'full' : `${threshold}% or more`}.`;
+		return `All attribute cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
 	}
 
 	public LSAttrAtkHpBoost(): string {
@@ -481,9 +556,7 @@ export class LeaderSkill {
 		let attribute = this.mapAttribute(data[1]);
 		let ATKMultiplier = this.ATKFromSlice(1);
 
-		return `${attribute} attribute cards ATK x${ATKMultiplier} when HP is ${
-			threshold === 100 ? 'full' : `${threshold}% or more`
-		}.`;
+		return `${attribute} attribute cards ATK x${ATKMultiplier} when HP is ${this.stringifyHPCondition(threshold)}.`;
 	}
 
 	public LSHighHpConditionalTypeAtkBoost(): string {
@@ -492,9 +565,7 @@ export class LeaderSkill {
 		let type = this.mapType(data[1]);
 		let ATKMultiplier = this.ATKFromSlice(1);
 
-		return `${type} type cards ATK x${ATKMultiplier} when HP is ${
-			threshold === 100 ? 'full' : `${threshold}% or more`
-		}.`;
+		return `${type} type cards ATK x${ATKMultiplier} when HP is ${this.stringifyHPCondition(threshold)}.`;
 	}
 
 	public LSComboScaledMultiplier(): string {
@@ -512,53 +583,566 @@ export class LeaderSkill {
 		let ATKMultiplier = this.ATKFromSlice(-1);
 		let RCVMultiplier = this.RCVFromSlice(-1);
 
-		console.log(this.getRawSkillData());
-
 		return `All attribute cards ATK x${ATKMultiplier}, RCV x${RCVMultiplier} on the turn a skill is used. (Multiple skills will not stack).`;
 	}
 
-	// 96: '',
-	// 97: '',
-	// 98: '',
-	// 100: '',
-	// 101: 'LSAtkBoostWithExactCombos',
-	// 103: 'LSComboFlatAtkRcvBoost',
-	// 104: 'LSComboFlatMultiplierAttrAtkBoost',
-	// 105: 'LSReducedRcvAtkBoost',
-	// 106: 'LSReducedHpAtkBoost',
-	// 107: 'LSHpReduction',
-	// 108: 'LSReducedHpTypeAtkBoost',
-	// 109: 'LSBlobFlatAtkBoost',
-	// 111: 'LSTwoAttrHpAtkBoost',
-	// 114: 'LSTwoAttrAllStatBoost',
-	// 119: 'LSBlobScalingAtkBoost',
-	// 121: 'LSAttrOrTypeStatBoost',
-	// 122: 'LSLowHpConditionalAttrTypeAtkRcvBoost',
-	// 123: 'LSHighHpConditionalAttrTypeAtkRcvBoost',
-	// 124: 'LSAttrComboScalingAtkBoost',
-	// 125: 'LSTeamUnitConditionalStatBoost',
-	// 129: 'LSMultiAttrTypeStatBoost',
-	// 130: 'LSLowHpAttrAtkStatBoost',
-	// 131: 'LSHighHpAttrTypeStatBoost',
-	// 133: 'LSSkillUsedAttrTypeAtkRcvBoost',
-	// 136: 'LSMultiAttrConditionalStatBoost',
-	// 137: 'LSMultiTypeConditionalStatBoost',
-	// 138: 'LSMultiPartSkill',
-	// 139: 'LSHpMultiConditionalAtkBoost',
-	// 148: 'LSRankXpBoost',
-	// 149: 'LSHealMatchRcvBoost',
-	// 150: 'LSEnhanceOrbMatch5',
-	// 151: 'LSHeartCross',
-	// 155: 'LSMultiboost',
-	// 157: 'LSAttrCross',
-	// 158: 'LSMatchXOrMoreOrbs',
-	// 159: 'LSAdvancedBlobMatch',
-	// 162: 'LSSevenBySix',
-	// 163: 'LSNoSkyfallBoost',
-	// 164: 'LSAttrComboConditionalAtkRcvBoost',
-	// 165: 'LSRainbowAtkRcv',
-	// 166: 'LSAtkRcvComboScale',
-	// 167: 'LSBlobAtkRcvBoost',
+	public LSAtkBoostWithExactCombos(): string {
+		let data = this.params;
+		let combo = data[0];
+		let boost = this.mult(data[1]);
+
+		return `All attribute cards ATK x${boost} when reaching exactly ${combo} combos.`;
+	}
+
+	public LSComboFlatAtkRcvBoost(): string {
+		let data = this.params;
+		let combo = data[0];
+		let ATKMultipler = this.ATKFromSlice();
+		let RCVMultiplier = this.RCVFromSlice();
+
+		return `All attribute cards ATK x${ATKMultipler}, RCV x${RCVMultiplier} when reaching ${combo} or more combos.`;
+	}
+
+	public LSComboFlatMultiplierAttrAtkBoost(): string {
+		let data = this.params;
+		let combo = data[0];
+		let attributes = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attributes);
+		let ATKMultiplier = this.ATKFromSlice(1);
+
+		return `${attributeString} attribute cards ATK x${ATKMultiplier} at ${combo} combos or above.`;
+	}
+
+	public LSReducedRcvAtkBoost(): string {
+		let data = this.params;
+		let RCVReduction = data[0];
+		let ATKMultiplier = this.mult(data[1]);
+
+		return `${RCVReduction}% RCV reduction. All attribute cards ATK x${ATKMultiplier}.`;
+	}
+
+	public LSReducedHpAtkBoost(): string {
+		let data = this.params;
+		let HPReduction = data[0];
+		let ATKMultiplier = this.mult(data[1]);
+
+		return `${HPReduction}% HP reduction. All attribute cards ATK x${ATKMultiplier}.`;
+	}
+
+	public LSHpReduction(): string {
+		let data = this.params;
+		let HPReduction = data[0];
+
+		return `${HPReduction}% HP reduction.`;
+	}
+
+	public LSReducedHpTypeAtkBoost(): string {
+		let data = this.params;
+		let type = this.mapType(data[1]);
+		let HPReduction = data[0];
+		let ATKMultiplier = this.mult(data[2]);
+
+		return `${HPReduction}% HP reduction. ${type} type cards ATK x${ATKMultiplier}.`;
+	}
+
+	public LSBlobFlatAtkBoost(): string {
+		let data = this.params;
+		let attribute = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attribute);
+		let minCount = data[1];
+		let ATKMultiplier = this.mult(data[2]);
+
+		return `ATK x${ATKMultiplier} when simultaneously clearing ${minCount}+ connected ${attributeString} orbs.`;
+	}
+
+	public LSTwoAttrHpAtkBoost(): string {
+		let data = this.params;
+		let firstAttribute = this.mapAttribute(data[0]);
+		let secondAttribute = this.mapAttribute(data[1]);
+		let boost = this.mult(data[2]);
+
+		return `${firstAttribute} & ${secondAttribute} attribute cards HP x${boost}, ATK x${boost}.`;
+	}
+
+	public LSTwoAttrAllStatBoost(): string {
+		let data = this.params;
+		let firstAttribute = this.mapAttribute(data[0]);
+		let secondAttribute = this.mapAttribute(data[1]);
+		let boost = this.mult(data[2]);
+
+		return `${firstAttribute} & ${secondAttribute} attribute cards HP x${boost}, ATK x${boost} RCV x${boost}.`;
+	}
+
+	public LSBlobScalingAtkBoost(): string {
+		let data = this.params;
+		let attribute = this.getAttributesFromBinary(data[0]);
+		let minCount = data[1];
+		let minATKMultiplier = this.mult(data[2]);
+		let ATKStep = this.mult(data[3]);
+		let maxCount = data[4];
+		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCount - minCount);
+
+		if (minATKMultiplier === maxATKMultiplier) {
+			return `All attribute cards ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attribute} orbs.`;
+		} else {
+			return `All attribute cards ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attribute} orbs. ATK x${ATKStep} for each additional connected orb, up to ATK x${maxATKMultiplier} at ${maxCount} connected orbs.`;
+		}
+	}
+
+	public LSAttrOrTypeStatBoost(): string {
+		//@TODO 121
+		return `Physical type cards RCV x1.5.`;
+	}
+
+	public LSLowHpConditionalAttrTypeAtkRcvBoost(): string {
+		let data = this.params;
+		let threshold = data[0];
+		let attributes = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[2]);
+		let typeString = this.toTypeString(types);
+		let ATKMultiplier = this.multiFloor(data[3]);
+		let RCVMultiplier = data.length > 4 ? this.multiFloor(data[4]) : 1;
+		let boost = this.stringifyBoost(1, ATKMultiplier, RCVMultiplier);
+
+		if (attributes.length > 0) {
+			return `${attributeString} attribute cards ${boost} when HP is less than ${threshold}%.`;
+		}
+
+		if (types.length > 0) {
+			return `${typeString} type cards ${boost} when HP is less than ${threshold}%.`;
+		}
+
+		return '';
+	}
+
+	public LSHighHpConditionalAttrTypeAtkRcvBoost(): string {
+		let data = this.params;
+		let threshold = data[0];
+		let attributes = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[2]);
+		let typeString = this.toTypeString(types);
+		let ATKMultipler = this.multiFloor(data[3]);
+		let RCVMultiplier = data.length > 4 ? this.multiFloor(data[4]) : 1;
+		let boost = this.stringifyBoost(1, ATKMultipler, RCVMultiplier);
+
+		if (attributes.length > 0) {
+			return `${attributeString} attribute cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
+		}
+
+		if (types.length > 0) {
+			return `${typeString} type cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
+		}
+
+		return '';
+	}
+
+	public LSAttrComboScalingAtkBoost(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0, 0, 0, 100, 0]);
+		let attributes = this.getAttributesFromMultipleBinary([data[0], data[1], data[2], data[3], data[4]]);
+		let attributeString = this.toAttributeString(attributes);
+		let minMatch = data[5];
+		let maxMatch = attributes.length;
+		let minATKMultiplier = this.mult(data[6]);
+		let ATKStep = this.mult(data[7]);
+		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxMatch - minMatch);
+
+		return `All attribute cards ATK x${maxATKMultiplier} when reaching ${attributeString} combos.`;
+	}
+
+	public LSTeamUnitConditionalStatBoost(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0, 0, 100, 100, 100]);
+		let ids = this.listConcat([data[0], data[1], data[2], data[3], data[4]]);
+		let HPMultiplier = this.multiFloor(data[5]);
+		let ATKMultipler = this.multiFloor(data[6]);
+		let RCVMultiplier = this.multiFloor(data[7]);
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier);
+
+		return `All attribute cards ${boost} when {{${ids}}} in the same team.`;
+	}
+
+	public LSMultiAttrTypeStatBoost(): string {
+		let data = this.mergeDefaults([0, 0, 100, 100, 100, 0, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+		let reductionAttribute = this.getAttributesFromBinary(data[5]);
+		let reductionAttributeString = this.toAttributeString(reductionAttribute);
+
+		let HPMultiplier = this.multiFloor(data[2]);
+		let ATKMultipler = this.multiFloor(data[3]);
+		let RCVMultiplier = this.multiFloor(data[4]);
+		let shield = data.length > 6 ? data[6] : 0;
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier, shield);
+
+		if (attributes.length > 0) {
+			return `${attributeString} attribute cards ${boost}.`;
+		}
+
+		if (types.length > 0) {
+			return `${typeString} type cards ${boost}.`;
+		}
+
+		return '';
+	}
+
+	public LSLowHpAttrAtkStatBoost(): string {
+		let data = this.mergeDefaults([0, 0, 0, 100, 100, 0, 0]);
+		let threshold = data[0];
+		let attributes = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[2]);
+		let typeString = this.toTypeString(types);
+		let reductionAttribute = this.getAttributesFromBinary(data[5]);
+		let reductionAttributeString = this.toAttributeString(reductionAttribute);
+		let ATKMultipler = this.multiFloor(data[3]);
+		let RCVMultiplier = this.multiFloor(data[4]);
+		let shield = data.length > 6 ? data[6] : 0;
+		let boost = this.stringifyBoost(1, ATKMultipler, RCVMultiplier, shield);
+
+		if (attributes.length > 0) {
+			return `${attributeString} attribute cards ${boost} when HP is less than ${threshold}%.`;
+		}
+
+		if (types.length > 0) {
+			return `${typeString} type cards ${boost} when HP is less than ${threshold}%.`;
+		}
+
+		return '';
+	}
+
+	public LSHighHpAttrTypeStatBoost(): string {
+		let data = this.mergeDefaults([0, 0, 0, 100, 100, 0, 0]);
+		let threshold = data[0];
+		let attributes = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[2]);
+		let typeString = this.toTypeString(types);
+		let reductionAttribute = this.getAttributesFromBinary(data[5]);
+		let reductionAttributeString = this.toAttributeString(reductionAttribute);
+		let ATKMultipler = this.multiFloor(data[3]);
+		let RCVMultiplier = this.multiFloor(data[4]);
+		let shield = data.length > 6 ? data[6] : 0;
+		let boost = this.stringifyBoost(1, ATKMultipler, RCVMultiplier, shield);
+
+		if (attributes.length > 0) {
+			return `${attributeString} attribute cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
+		}
+
+		if (types.length > 0) {
+			return `${typeString} type cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
+		}
+
+		return '';
+	}
+
+	public LSSkillUsedAttrTypeAtkRcvBoost(): string {
+		let data = this.mergeDefaults([0, 0, 100, 100]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+		let ATKMultipler = this.multiFloor(data[2]);
+		let RCVMultiplier = this.multiFloor(data[3]);
+		let boost = this.stringifyBoost(1, ATKMultipler, RCVMultiplier);
+
+		if (attributes.length > 0) {
+			return `${attributeString} attribute cards ${boost} on the turn a skill is used. (Multiple skills will not stack).`;
+		}
+
+		if (types.length > 0) {
+			return `${typeString} type cards ${boost} on the turn a skill is used. (Multiple skills will not stack).`;
+		}
+
+		return '';
+	}
+
+	public LSMultiAttrConditionalStatBoost(): string {
+		let data = this.mergeDefaults([0, 100, 100, 100, 0, 100, 100, 100]);
+
+		let firstAttributes = this.getAttributesFromBinary(data[0]);
+		let firstAttributeString = this.toAttributeString(firstAttributes);
+		let firstHPMultiplier = this.multiFloor(data[1]);
+		let firstATKMultiplier = this.multiFloor(data[2]);
+		let firstRCVMultiplier = this.multiFloor(data[3]);
+		let firstBoost = this.stringifyBoost(firstHPMultiplier, firstATKMultiplier, firstRCVMultiplier);
+
+		let secondAttributes = this.getAttributesFromBinary(data[4]);
+		let secondAttributeString = this.toAttributeString(secondAttributes);
+		let secondHPMultiplier = this.multiFloor(data[5]);
+		let secondATKMultiplier = this.multiFloor(data[6]);
+		let secondRCVMultiplier = this.multiFloor(data[7]);
+		let secondBoost = this.stringifyBoost(secondHPMultiplier, secondATKMultiplier, secondRCVMultiplier);
+
+		let max = (a, b) => (a > b ? a : b);
+
+		//Not sure what the followings are for
+		function min_1_if_set(settable, value) {
+			//Only constrain the value to 1 if it is optional.
+			return settable.length < 5 ? max(value, 1) : value;
+		}
+
+		let HPMultiplier =
+			min_1_if_set(firstAttributes, firstHPMultiplier) * min_1_if_set(secondAttributes, secondHPMultiplier);
+		let ATKMultiplier =
+			min_1_if_set(firstAttributes, firstATKMultiplier) * min_1_if_set(secondAttributes, secondATKMultiplier);
+		let RCVMultiplier =
+			min_1_if_set(firstAttributes, firstRCVMultiplier) * min_1_if_set(secondAttributes, secondRCVMultiplier);
+
+		return `${firstAttributeString} attribute cards ${firstBoost}. ${secondAttributeString} attribute cards ${secondBoost}.`;
+	}
+
+	public LSMultiTypeConditionalStatBoost(): string {
+		let data = this.mergeDefaults([0, 100, 100, 100, 0, 100, 100, 100]);
+		let firstTypes = this.getTypesFromBinary(data[0]);
+		let firstTypeString = this.toTypeString(firstTypes);
+		let firstHPMultiplier = this.multiFloor(data[1]);
+		let firstATKMultiplier = this.multiFloor(data[2]);
+		let firstRCVMultiplier = this.multiFloor(data[3]);
+		let firstBoost = this.stringifyBoost(firstHPMultiplier, firstATKMultiplier, firstRCVMultiplier);
+
+		let secondTypes = this.getTypesFromBinary(data[4]);
+		let secondTypeString = this.toTypeString(secondTypes);
+		let secondHPMultiplier = this.multiFloor(data[5]);
+		let secondATKMultiplier = this.multiFloor(data[6]);
+		let secondRCVMultiplier = this.multiFloor(data[7]);
+		let secondBoost = this.stringifyBoost(secondHPMultiplier, secondATKMultiplier, secondRCVMultiplier);
+
+		return `${firstTypeString} attribute cards ${firstBoost}. ${secondTypeString} attribute cards ${secondBoost}.`;
+	}
+
+	public LSHpMultiConditionalAtkBoost(): string {
+		let data = this.mergeDefaults([0, 0, 0, 100, 0, 0, 100, 100]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+
+		let firstThreshold = data[2];
+		let firstIsAbove = !data[3];
+		let firstATKMultiplier = this.mult(data[4]) || 1;
+
+		let secondThreshold = data[5];
+		let secondIsAbove = !data[6];
+		let secondATKMultiplier = this.mult(data[7]) || 1;
+
+		return `${attributeString} cards ATK x${firstATKMultiplier} when HP is ${this.stringifyHPCondition(
+			firstThreshold,
+			firstIsAbove
+		)}. ATK x${secondATKMultiplier} when HP is ${this.stringifyHPCondition(secondThreshold, secondIsAbove)}.`;
+	}
+
+	public LSRankXpBoost(): string {
+		let data = this.mergeDefaults([0]);
+		let multiplier = this.mult(data[0]);
+
+		return `Get x${multiplier} experience after a battle.`;
+	}
+
+	public LSHealMatchRcvBoost(): string {
+		let data = this.mergeDefaults([100]);
+		let RCVMultiplier = this.mult(data[0]);
+
+		return `RCV x${RCVMultiplier} when matching exactly 4 connected heart orbs.`;
+	}
+
+	public LSEnhanceOrbMatch5(): string {
+		let data = this.mergeDefaults([100]);
+		let ATKMultipler = this.mult(data[1]);
+
+		return `Matched attribute ATK x${ATKMultipler} when matching exactly 5 connected orbs with at least 1 enhanced orb.`;
+	}
+
+	public LSHeartCross(): string {
+		let data = this.mergeDefaults([100, 100, 0]);
+		let ATKMultipler = this.multiFloor(data[0]);
+		let RCVMultiplier = this.multiFloor(data[1]);
+		let shield = data[2];
+		let boost = this.stringifyBoost(1, ATKMultipler, RCVMultiplier, shield);
+
+		return `${boost} after matching Heal orbs in a cross formation.`;
+	}
+
+	public LSMultiboost(): string {
+		let data = this.mergeDefaults([0, 0, 100, 100, 100]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+		let HPMultiplier = this.multiFloor(data[2]);
+		let ATKMultipler = this.multiFloor(data[3]);
+		let RCVMultiplier = this.multiFloor(data[4]);
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier);
+
+		return `${boost} in cooperation mode.`;
+	}
+
+	public LSAttrCross(): string {
+		//@TODO 157
+		// self.atks = sorted(ms.data[1::2])
+		// if len(set(self.atks)) > 1:
+		//     human_fix_logger.error('Bad assumption; cross LS has multiple attack values: %s', ms.skill_id)
+		// self.multiplier = mult(ms.data[1])
+		// self.attributes = ms.data[::2]
+		// self.crossmults = [CrossMultiplier(ms.data[i], ms.data[i + 1]) for i in range(0, len(ms.data), 2)]
+		// atk = self.multiplier ** (2 if len(self.attributes) == 1 else 3)
+		return `ATK x3.5 for clearing each Wood or Dark orbs in a cross formation.`;
+	}
+
+	public LSMatchXOrMoreOrbs(): string {
+		let data = this.mergeDefaults([0, 0, 0, 100, 100, 100]);
+		let minMatch = data[0];
+		let attributes = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[2]);
+		let typeString = this.toTypeString(types);
+		let HPMultiplier = this.multiFloor(data[4]);
+		let ATKMultipler = this.multiFloor(data[3]);
+		let RCVMultiplier = this.multiFloor(data[5]);
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier);
+
+		if (attributes.length > 0) {
+			return `Can no longer clear ${minMatch} connected orbs. ${attributeString} attribute cards ${boost}`;
+		}
+
+		if (types.length > 0) {
+			return `Can no longer clear ${minMatch} connected orbs. ${typeString} attribute cards ${boost}`;
+		}
+
+		return '';
+	}
+
+	public LSAdvancedBlobMatch(): string {
+		let data = this.params;
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let minCount = data[1];
+		let minATKMultiplier = this.mult(data[2]);
+		let ATKStep = this.mult(data[3]);
+		let maxCount = data[4];
+		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCount - minCount);
+
+		return `ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs. ATK x${ATKStep} for each additional orb, up to ATK x${maxATKMultiplier} at ${maxCount} connected orbs.`;
+	}
+
+	public LSSevenBySix(): string {
+		return `Change the board to 7x6 size.`;
+	}
+
+	public LSNoSkyfallBoost(): string {
+		let data = this.mergeDefaults([0, 0, 100, 100, 100, 0, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+		let reductionAttribute = this.getAttributesFromBinary(data[5]);
+		let reductionAttributeString = this.toAttributeString(reductionAttribute);
+
+		let HPMultiplier = this.multiFloor(data[2]);
+		let ATKMultipler = this.multiFloor(data[3]);
+		let RCVMultiplier = this.multiFloor(data[4]);
+		let shield = data[6];
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultipler, RCVMultiplier, shield);
+
+		if (attributes.length > 0) {
+			return `No skyfall matches. ${attributeString} attribute cards ${boost}.`;
+		}
+
+		if (types.length > 0) {
+			return `No skyfall matches. ${typeString} type cards ${boost}.`;
+		}
+
+		return `No skyfall matches.`;
+	}
+
+	public LSAttrComboConditionalAtkRcvBoost(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0, 0, 100, 100, 0]);
+		let attributes = this.getAttributesFromMultipleBinary([data[0], data[1], data[2], data[3]]);
+		let attributeString = this.toAttributeString(attributes);
+		let minMatch = data[4];
+		let minATKMultiplier = this.mult(data[5]);
+		let minRCVMultiplier = this.mult(data[6]);
+		let ATKStep = this.mult(data[7]);
+		let RCVStep = ATKStep;
+		let maxMatch = attributes.length;
+		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxMatch - minMatch);
+		let maxRCVMultiplier = minRCVMultiplier + RCVStep * (maxMatch - minMatch);
+
+		return `All attribute cards ATK x${maxATKMultiplier}, RCV x${maxRCVMultiplier} when reaching ${attributeString} combos.`;
+	}
+
+	public LSRainbowAtkRcv(): string {
+		let data = this.mergeDefaults([0, 0, 100, 100, 0, 0, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let minAttributesRequired = data[1];
+		let minATKMultiplier = this.mult(data[2]);
+		let minRCVMultiplier = this.mult(data[3]);
+		let ATKStep = this.mult(data[4]);
+		let RCVStep = this.mult(data[5]);
+		let maxAttributesRequired = data[6] || attributes.length;
+
+		if (ATKStep === 0) {
+			maxAttributesRequired = minAttributesRequired;
+		} else if (maxAttributesRequired < minAttributesRequired) {
+			maxAttributesRequired = minAttributesRequired + maxAttributesRequired;
+		} else if (maxAttributesRequired + minAttributesRequired < attributes.length) {
+			maxAttributesRequired = minAttributesRequired + maxAttributesRequired;
+		}
+
+		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxAttributesRequired - minAttributesRequired);
+		let maxRCVMultiplier = minRCVMultiplier + RCVStep * (maxAttributesRequired - minAttributesRequired);
+
+		return `All attribute cards ATK x${minATKMultiplier}, RCV x${minRCVMultiplier} when attacking with ${minAttributesRequired} of following orb types: ${attributeString}. ATK x${ATKStep}, RCV x${RCVStep} for each additional orb type, up to ATK x${maxATKMultiplier}, RCV x${maxRCVMultiplier} for ${maxAttributesRequired} matches.`;
+	}
+
+	public LSAtkRcvComboScale(): string {
+		let data = this.mergeDefaults([1, 100, 100, 0, 0, 0]);
+		let minCombosRequired = data[0];
+		let minATKMultiplier = this.mult(data[1]);
+		let minRCVMultiplier = this.mult(data[2]);
+		let ATKStep = this.mult(data[3]);
+		let RCVStep = this.mult(data[4]);
+		let maxCombosRequired = data[5];
+		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCombosRequired - minCombosRequired);
+		let maxRCVMultiplier = minRCVMultiplier + RCVStep * (maxCombosRequired - minCombosRequired);
+
+		return `ATK x${maxATKMultiplier}, RCV x${maxRCVMultiplier} when reaching ${minCombosRequired} combos.`;
+	}
+
+	public LSBlobAtkRcvBoost(): string {
+		let data = this.mergeDefaults([0, 0, 100, 100, 0, 0, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes, 'or');
+		let minCount = data[1];
+		let minATKMultiplier = this.mult(data[2]);
+		let minRCVMultiplier = this.mult(data[3]);
+		let ATKStep = this.mult(data[4]);
+		let RCVStep = this.mult(data[5]);
+		let maxCount = data[6];
+		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCount - minCount);
+		let maxRCVMultiplier = minRCVMultiplier + RCVStep * (maxCount - minCount);
+
+		//Overrides for optional ATK/RCV
+		if (minATKMultiplier === 0 && maxATKMultiplier === 0) {
+			minATKMultiplier = 1;
+			maxATKMultiplier = 1;
+		}
+
+		if (minRCVMultiplier === 0 && maxRCVMultiplier === 0) {
+			minRCVMultiplier = 1;
+			maxRCVMultiplier = 1;
+		}
+
+		return `ATK x${maxATKMultiplier}, RCV x${maxRCVMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs.`;
+	}
+
+	// 164: '',
+	// 165: '',
+	// 166: '',
+	// 167: '',
 	// 169: 'LSComboMultPlusShield',
 	// 170: 'LSRainbowMultPlusShield',
 	// 171: 'LSMatchAttrPlusShield',
