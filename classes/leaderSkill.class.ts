@@ -1,5 +1,4 @@
 //Reference: https://github.com/nachoapps/dadguide-data/blob/master/etl/pad/raw/skills/leader_skill_info.py
-const { skill: SKILL_DATA } = require('../download_skill_data.json');
 import { LEADERSKILL_MAP } from './leaderSkill.map';
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { MONSTER_TYPES } from '../shared/monster.types';
@@ -192,6 +191,8 @@ export class LeaderSkill {
 
 	private numberWithCommas = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+	private capitalizeFirstLetter = (input: string) => input[0].toUpperCase() + input.substring(1);
+
 	public testOutput(): string {
 		let functionToCall = LEADERSKILL_MAP[this.type];
 		return typeof this[functionToCall] === 'function' ? this[functionToCall].call(this) : null;
@@ -236,9 +237,8 @@ export class LeaderSkill {
 		let data = this.mergeDefaults([0]);
 		let shield = data[0];
 		let boost = this.stringifyBoost(1, 1, 1, shield);
-		boost = boost[0].toUpperCase() + boost.substring(1);
 
-		return `${boost}.`;
+		return `${this.capitalizeFirstLetter(boost)}.`;
 	}
 
 	public LSAttrDamageReduction(): string {
@@ -911,6 +911,10 @@ export class LeaderSkill {
 
 		if (types.length > 0) {
 			return `${typeString} Type cards ${boost}.`;
+		}
+
+		if (shield > 0) {
+			return `${this.capitalizeFirstLetter(boost)}.`;
 		}
 
 		return '';
