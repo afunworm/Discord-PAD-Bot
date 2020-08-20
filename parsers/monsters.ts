@@ -139,8 +139,13 @@ let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 			console.log(`Parsed data for monster id ${id}`);
 		} catch (error) {
 			console.log(error.message);
-			console.log('An error has occurred. Parser exited.');
-			process.exit();
+			console.log('An error has occurred. Logged for debuggin.');
+			await firestore.collection('Logs').add({
+				_createdAt: admin.firestore.FieldValue.serverTimestamp(),
+				type: 'MONSTER_PARSER',
+				data: { id: id },
+				error: error,
+			});
 		}
 	}
 
