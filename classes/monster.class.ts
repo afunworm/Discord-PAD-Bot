@@ -4,13 +4,14 @@ import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { AWAKEN_EMOTES } from '../shared/monster.awakens';
 import { MONSTER_TYPES } from '../shared/monster.types';
 
-let monsterId = 4035;
+let monsterId = 5316;
 let leaderSkillId = CARD_DATA[monsterId][26];
 let rawSkill = SKILL_DATA[leaderSkillId];
 
 console.log(rawSkill);
-console.log(SKILL_DATA[9479]);
-console.log(SKILL_DATA[9480]);
+console.log(SKILL_DATA[13718]);
+console.log(SKILL_DATA[13719]);
+console.log(SKILL_DATA[13720]);
 
 export class Monster {
 	private enemyHpCurve;

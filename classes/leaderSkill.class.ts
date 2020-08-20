@@ -778,24 +778,42 @@ export class LeaderSkill {
 	}
 
 	public LSBlobScalingAtkBoost(): string {
-		let data = this.params;
+		let data = this.mergeDefaults([0, 1, 100, 0, 0]);
 		let attribute = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attribute);
 		let minCount = data[1];
 		let minATKMultiplier = this.mult(data[2]);
 		let ATKStep = this.mult(data[3]);
-		let maxCount = data[4];
+		let maxCount = data[4] || minCount;
 		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCount - minCount);
 
-		if (minATKMultiplier === maxATKMultiplier) {
-			return `All Attribute cards ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attribute} orbs.`;
+		if (minATKMultiplier === maxATKMultiplier || !ATKStep) {
+			return `All Attribute cards ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs.`;
 		} else {
-			return `All Attribute cards ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attribute} orbs. ATK x${ATKStep} for each additional connected orb, up to ATK x${maxATKMultiplier} at ${maxCount} connected orbs.`;
+			return `All Attribute cards ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs. ATK x${ATKStep} for each additional connected orb, up to ATK x${maxATKMultiplier} at ${maxCount} connected orbs.`;
 		}
 	}
 
 	public LSAttrOrTypeStatBoost(): string {
-		//@TODO 121
-		return `Physical Type cards RCV x1.5.`;
+		let data = this.mergeDefaults([0, 0, 100, 100, 100]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let types = this.getTypesFromBinary(data[1]);
+		let typeString = this.toTypeString(types);
+		let HPMultiplier = this.multiFloor(data[2]);
+		let ATKMultiplier = this.multiFloor(data[3]);
+		let RCVMultiplier = this.multiFloor(data[4]);
+		let boost = this.stringifyBoost(HPMultiplier, ATKMultiplier, RCVMultiplier);
+
+		if (attributes.length > 0) {
+			return `${attributeString} Attribute cards ${boost}.`;
+		}
+
+		if (types.length > 0) {
+			return `${typeString} Type cards ${boost}.`;
+		}
+
+		return '';
 	}
 
 	public LSLowHpConditionalAttrTypeAtkRcvBoost(): string {
@@ -845,14 +863,20 @@ export class LeaderSkill {
 	public LSAttrComboScalingAtkBoost(): string {
 		let data = this.mergeDefaults([0, 0, 0, 0, 0, 0, 100, 0]);
 		let attributes = this.getAttributesFromMultipleBinary([data[0], data[1], data[2], data[3], data[4]]);
+		let singleAttribute = [attributes[0]];
 		let attributeString = this.toAttributeString(attributes);
+		let singleAttributeString = this.toAttributeString(singleAttribute);
 		let minMatch = data[5];
 		let maxMatch = attributes.length;
 		let minATKMultiplier = this.mult(data[6]);
 		let ATKStep = this.mult(data[7]);
 		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxMatch - minMatch);
 
-		return `All Attribute cards ATK x${maxATKMultiplier} when reaching ${attributeString} combos.`;
+		if (ATKStep > 0) {
+			return `All Attribute cards ATK x${minATKMultiplier} when reaching ${minMatch} ${singleAttributeString} combos. Attack multiplier increases by ${ATKStep} for each additional combo, up to ATK x${maxATKMultiplier} when reaching ${maxMatch} ${singleAttributeString} combos.`;
+		} else {
+			return `All Attribute cards ATK x${minATKMultiplier} when reaching ${minMatch} ${singleAttributeString} combos.`;
+		}
 	}
 
 	public LSTeamUnitConditionalStatBoost(): string {
@@ -1084,15 +1108,28 @@ export class LeaderSkill {
 	}
 
 	public LSAttrCross(): string {
-		//@TODO 157
-		// self.atks = sorted(ms.data[1::2])
-		// if len(set(self.atks)) > 1:
-		//     human_fix_logger.error('Bad assumption; cross LS has multiple attack values: %s', ms.skill_id)
-		// self.multiplier = mult(ms.data[1])
-		// self.attributes = ms.data[::2]
-		// self.crossmults = [CrossMultiplier(ms.data[i], ms.data[i + 1]) for i in range(0, len(ms.data), 2)]
-		// atk = self.multiplier ** (2 if len(self.attributes) == 1 else 3)
-		return `ATK x3.5 for clearing each Wood or Dark orbs in a cross formation.`;
+		let data = this.params;
+		let group = {};
+		let result = [];
+
+		data.forEach((datum, index) => {
+			if (index % 2 === 0) return; //We will process all the data in pairs
+
+			let multiplier = datum;
+			let attribute = data[index - 1];
+
+			group[multiplier] = group[multiplier] === undefined ? [attribute] : [attribute, ...group[multiplier]];
+		});
+
+		for (let multiplierString in group) {
+			let attributes = group[multiplierString];
+			let attributeString = this.toAttributeString(attributes, 'or');
+			let multiplier = this.mult(Number(multiplierString));
+
+			result.push(`ATK x${multiplier} for clearing each ${attributeString} orbs in a cross formation.`);
+		}
+
+		return result.length === 0 ? '' : result.join(' ');
 	}
 
 	public LSMatchXOrMoreOrbs(): string {
@@ -1119,16 +1156,20 @@ export class LeaderSkill {
 	}
 
 	public LSAdvancedBlobMatch(): string {
-		let data = this.params;
+		let data = this.mergeDefaults([0, 1, 100, 0, 0]);
 		let attributes = this.getAttributesFromBinary(data[0]);
 		let attributeString = this.toAttributeString(attributes);
 		let minCount = data[1];
 		let minATKMultiplier = this.mult(data[2]);
 		let ATKStep = this.mult(data[3]);
-		let maxCount = data[4];
+		let maxCount = data[4] || minCount;
 		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCount - minCount);
 
-		return `ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs. ATK x${ATKStep} for each additional orb, up to ATK x${maxATKMultiplier} at ${maxCount} connected orbs.`;
+		if (minATKMultiplier === maxATKMultiplier || !ATKStep) {
+			return `ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs.`;
+		} else {
+			return `ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs. ATK x${ATKStep} for each additional orb, up to ATK x${maxATKMultiplier} at ${maxCount} connected orbs.`;
+		}
 	}
 
 	public LSSevenBySix(): string {
