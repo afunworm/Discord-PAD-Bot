@@ -37,7 +37,7 @@ export const ACTIVESKILL_MAP = {
 	93: 'ASLeaderSwap',
 	110: 'ASLowHpConditionalAttrDamageBoost',
 	115: 'ASMiniNukeandHpRecovery',
-	116: 'ASMultiPartSkill',
+	// 116: 'ASMultiPartSkill', Indication for multipart skill
 	117: 'ASHpRecoveryandBindClear',
 	118: 'ASRandomSkill',
 	126: 'ASIncreasedSkyfallChance',

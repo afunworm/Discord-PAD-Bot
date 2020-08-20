@@ -2,6 +2,8 @@
 import { ACTIVESKILL_MAP } from './activeSkill.map';
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { MONSTER_TYPES } from '../shared/monster.types';
+import { AWAKENINGS as MONSTER_AWAKENS } from '../shared/monster.awakens';
+const { skill: SKILL_DATA } = require('../download_skill_data.json');
 
 export class ActiveSkill {
 	private id: number;
@@ -180,6 +182,37 @@ export class ActiveSkill {
 		typeArray = typeArray.map((type) => MONSTER_TYPES[type]);
 
 		return typeArray.length > 1 ? typeArray.join(', ').replace(/,([^,]*)$/, ` ${connector}$1`) : typeArray[0];
+	}
+
+	private toAwakenString(awakens: number[] | number, connector: string = 'and'): string {
+		if (awakens.toString().length === 0 || (Array.isArray(awakens) && awakens.length === 0)) return '';
+
+		if (!Array.isArray(awakens)) awakens = [awakens];
+
+		let awakenArray: any[] = awakens.sort((a, b) => a - b); //Sort it
+		awakenArray = awakenArray.map((awaken) => MONSTER_AWAKENS[awaken]);
+
+		return awakenArray.length > 1 ? awakenArray.join(', ').replace(/,([^,]*)$/, ` ${connector}$1`) : awakenArray[0];
+	}
+
+	private getRowPositionFromBinary(dec: number, connector: string = 'and'): string {
+		if (dec === 0) return '';
+
+		let binary = this.decimalToBinary(dec).padStart(5, '0');
+		let rowPosition = [];
+
+		//Refer 00000 - 00001 = top row, 00010 = second row and so on
+		if (binary[0] === '1') rowPosition.push('bottom'); //Bottom
+		if (binary[1] === '1') rowPosition.push('2nd from the bottom'); //4th from top
+		if (binary[2] === '1') rowPosition.push('the middle'); //3rd from top
+		if (binary[3] === '1') rowPosition.push('2nd from the top'); //2nd from top
+		if (binary[4] === '1') rowPosition.push('top'); //Top row
+
+		//Reverse to get top as the first element
+		return rowPosition
+			.reverse()
+			.join(', ')
+			.replace(/,([^,]*)$/, ` ${connector}$1`);
 	}
 
 	private multiFloor(stat: number) {
@@ -434,7 +467,7 @@ export class ActiveSkill {
 
 		let toAttributeString = this.toAttributeString(toAttributes);
 
-		return `Change all orbs to ${toAttributeString}`;
+		return `Change all orbs to ${toAttributeString} orbs.`;
 	}
 
 	public ASHpConditionalTargetNuke(): string {
@@ -586,44 +619,401 @@ export class ActiveSkill {
 		return `Inflict ${ATKMultiplier}x ${attributeString} damage to 1 enemy. Recover ${RCVMultiplier}% of the damage dealt as HP. Affected by enemy element and defense.`;
 	}
 
-	/*
-        let data = this.mergeDefaults([0, 0]);
-        let a = data[0];
-        let b = data[1];
-    */
-	// 116: 'ASMultiPartSkill',
-	// 117: 'ASHpRecoveryandBindClear',
-	// 118: 'ASRandomSkill',
-	// 126: 'ASIncreasedSkyfallChance',
-	// 127: 'ASColumnOrbChange',
-	// 128: 'ASRowOrbChange',
-	// 132: 'ASIncreasedOrbMovementTime',
-	// 140: 'ASOrbEnhanceNew',
-	// 141: 'ASRandomLocationOrbSpawn',
-	// 142: 'ASAttributeChange',
-	// 143: 'ASHpMultiplierNuke',
-	// 144: 'ASAttrNukeOfAttrTwoAtk',
-	// 145: 'ASHpRecovery',
-	// 146: 'ASHaste',
-	// 152: 'ASOrbLock',
-	// 153: 'ASEnemyAttrChange',
-	// 154: 'ASThreeAttrtoOneAttr',
-	// 156: 'ASAwokenSkillBurst',
-	// 168: 'ASAwokenSkillBurst2',
-	// 160: 'ASAddAdditionalCombos',
-	// 161: 'ASTrueGravity',
-	// 172: 'ASOrbLockRemoval',
-	// 173: 'ASVoidDamageAbsorption',
-	// 176: 'ASFixedPosConvertSomething',
-	// 179: 'ASAutoHealConvert',
-	// 180: 'ASIncreasedEnhanceOrbSkyfall',
-	// 184: 'ASNoSkyfallForXTurns',
-	// 188: 'ASMultiLaserConvert',
-	// 189: 'ASShowComboPath',
-	// 191: 'ASReduceVoidDamage',
-	// 195: 'ASSuicide195',
-	// 196: 'ASReduceDisableMatch',
-	// 202: 'ASChangeMonster',
-	// 205: 'ASSkyfallLock',
-	// 207: 'ASSpawnSpinner',
+	public ASHpRecoveryandBindClear(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0, 0]);
+		let bindRecovery = data[0];
+		let RCVMultiplierAsHP = this.mult(data[1]); //Uused
+		let HP = data[2]; //Unused
+		let maxHPPercentageRecovery = data[3];
+		let awokenBindRecovery = data[4];
+
+		let result = [];
+
+		if (maxHPPercentageRecovery > 0) result.push(`Recover ${maxHPPercentageRecovery}% of max HP.`);
+		if (bindRecovery > 0) result.push(`${bindRecovery} turn bind recovery.`);
+		if (awokenBindRecovery > 0) result.push(`${awokenBindRecovery} turn awoken bind recovery.`);
+
+		return result.length > 0 ? result.join(' ') : '';
+	}
+
+	public ASRandomSkill(): string[] {
+		//@TODO: CHECK ON DOROTHY'S SKILL TYPES
+		let skillIds = this.params;
+		let skillNames = [];
+
+		skillIds.forEach((skillId) => skillNames.push('{{' + skillId + '}} ' + SKILL_DATA[skillId][0]));
+
+		return skillNames;
+	}
+
+	public ASIncreasedSkyfallChance(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let duration = data[1];
+		let maxDuration = data[2];
+		let percentage = data[3];
+
+		return `Increase skyfall chance of ${attributeString} orbs by ${percentage}% for ${duration} turns.`;
+	}
+
+	public ASColumnOrbChange(): string {
+		//NEED HELP
+		let data = this.mergeDefaults([]);
+		//[0]: 1 = bottom row,
+
+		// console.log(this.getRawSkillData());
+
+		return ``;
+	}
+
+	public ASRowOrbChange(): string {
+		let data = this.mergeDefaults([]);
+		let result = [];
+
+		data.forEach((datum, index) => {
+			if (index % 2 === 0) return; //Process in pair
+
+			let attribute = this.getAttributesFromBinary(datum);
+			let attributeString = this.toAttributeString(attribute);
+			let position = data[index - 1];
+			let positionString = this.getRowPositionFromBinary(position);
+
+			result.push(`Change the ${positionString} row into ${attributeString} orbs.`);
+		});
+
+		return result.join(' ');
+	}
+
+	public ASIncreasedOrbMovementTime(): string {
+		let data = this.mergeDefaults([0, 0, 0]);
+		let duration = data[0];
+		let staticOrbMovementTime = data[1] / 10;
+		let percentageOrbMovementTime = this.mult(data[2]);
+
+		if (staticOrbMovementTime !== 0) {
+			return `Orb move time ${
+				staticOrbMovementTime < 0 ? '' : '+'
+			}${staticOrbMovementTime} seconds for ${duration} turn.`;
+		}
+
+		if (percentageOrbMovementTime) {
+			return `${percentageOrbMovementTime}x orb move time for ${duration} turn.`;
+		}
+
+		return '';
+	}
+
+	public ASOrbEnhanceNew(): string {
+		let data = this.mergeDefaults([0]);
+		let attribute = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attribute);
+
+		return `Enhance ${attributeString} orbs.`;
+	}
+
+	public ASRandomLocationOrbSpawn(): string {
+		let data = this.mergeDefaults([0, 0, 0]);
+		let amount = data[0];
+		let spawnAttributes = this.getAttributesFromBinary(data[1]);
+		let spawnAttributeString = this.toAttributeString(spawnAttributes);
+		let excluding = this.getAttributesFromBinary(data[2]);
+		let excludingString = this.toAttributeString(excluding);
+
+		return `Randomly spawn ${amount} ${spawnAttributeString} orbs each from non ${excludingString} orbs.`;
+	}
+
+	public ASAttributeChange(): string {
+		let data = this.mergeDefaults([0, 0]);
+		let duration = data[0];
+		let attribute = data[1];
+		let attributeString = this.toAttributeString(attribute);
+
+		return `Change own attribute to ${attributeString} for ${duration} turns.`;
+	}
+
+	public ASHpMultiplierNuke(): string {
+		let data = this.mergeDefaults([0]);
+		let multiplier = this.mult(data[0]);
+		//Note: another slot must contain the attribute, since this is a fixed nuke.
+		let attribute = this.getAttributesFromBinary(data[1]);
+		let attributeString = this.toAttributeString(attribute);
+
+		return `Inflict a ${attributeString} attack to all enemies equal to ${multiplier}x of entire team's HP.`;
+	}
+
+	public ASAttrNukeOfAttrTwoAtk(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0]);
+		console.log(this.getRawSkillData());
+		let teamAttribute = this.getAttributesFromBinary(data[0]);
+		let teamAttributeString = this.toAttributeString(teamAttribute);
+		let multiplier = this.mult(data[1]);
+		let isMassAttack = data[2] === 0;
+		let attackAttribute = data[3];
+		let attackAttributeString = this.toAttributeString(attackAttribute);
+
+		return `Inflict a ${attackAttributeString} attack to ${
+			isMassAttack ? 'all enemies' : '1 enemy'
+		} equal to ${multiplier}x of entire team's ${teamAttributeString} ATK.`;
+	}
+
+	public ASHpRecovery(): string {
+		let data = this.mergeDefaults([0]);
+		let amount = this.mult(data[0]);
+
+		return `Heal ${amount}x of entire team's RCV.`;
+	}
+
+	public ASHaste(): string {
+		let data = this.mergeDefaults([0, 0]);
+		let turns = data[0];
+		let maxTurns = data[1] || turns;
+
+		if (maxTurns) {
+			return `Team skills charged by ${turns} to ${maxTurns} turns.`;
+		} else {
+			return `Team skills charged by ${turns} turns.`;
+		}
+	}
+
+	public ASOrbLock(): string {
+		let data = this.mergeDefaults([0, 0]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let count = data[1]; //This can be 42 (7x6 board)/99 (just max?) (both mean 'all') or a fixed number
+
+		if (!count || [42, 49].includes(count)) {
+			return `Lock ${attributeString} orbs.`;
+		} else {
+			return `Randomly lock ${count} of the following orbs: ${attributeString}.`;
+		}
+	}
+
+	public ASEnemyAttrChange(): string {
+		let data = this.mergeDefaults([0]);
+		let attribute = data[0];
+		let attributeString = this.toAttributeString(attribute);
+
+		return `Change all enemies attributes to ${attributeString}, iIgnoring status shield.`;
+	}
+
+	public ASThreeAttrtoOneAttr(): string {
+		let data = this.mergeDefaults([0, 0]);
+		let fromAttributes = this.getAttributesFromBinary(data[0]);
+		let fromAttributeString = this.toAttributeString(fromAttributes);
+		let toAttributes = this.getAttributesFromBinary(data[1]);
+		let toAttributeString = this.toAttributeString(toAttributes);
+
+		return `Changes ${fromAttributeString} orbs into ${toAttributeString} orbs.`;
+	}
+
+	public ASAwokenSkillBurst(): string {
+		let data = this.mergeDefaults([1, 0, 0, 0, 0, 0]);
+		let duration = data[0];
+		let awakens = [data[1], data[2], data[3]]; //The reference file uses [1:4]
+		awakens = awakens.filter((awakening) => awakening !== 0);
+		let awakenString = this.toAwakenString(awakens);
+
+		let toggle = data[4];
+		let amountPer = null;
+
+		if (toggle === 1) {
+			amountPer = data[5] / 100;
+		} else if (toggle === 2) {
+			amountPer = data[5] - 100;
+		} else if (toggle === 3) {
+			amountPer = data[5];
+		}
+
+		if (amountPer === null) return '';
+
+		switch (toggle) {
+			case 1:
+				return `Heal ${amountPer}x RCV as HP for every ${awakenString} awakening on team.`;
+				break;
+			case 2:
+				return `For ${duration} turns, ATK increases by ${amountPer}% for every ${awakenString} awakening on team.`;
+				break;
+			case 3:
+				return `For ${duration} turns, gain ${amountPer}% damage reduction for every ${awakenString} awakening on team.`;
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
+
+	public ASAwokenSkillBurst2(): string {
+		let data = this.mergeDefaults([1, 1, 0, 0, 0, 0, 0, 1]);
+		let duration = data[0];
+		let awakens = [data[1], data[2], data[3], data[4]];
+		awakens = awakens.filter((awakening) => awakening !== 0);
+		let awakenString = this.toAwakenString(awakens);
+		let unknown = data[5];
+		let toggle = data[6];
+		let amountPer = null;
+
+		if (toggle === 1) {
+			amountPer = data[7];
+		} else if ([0, 2].includes(toggle)) {
+			amountPer = data[7];
+		} else if (toggle === 3) {
+			amountPer = data[7];
+		}
+
+		if (amountPer === null) return '';
+
+		switch (toggle) {
+			case 0:
+				return `For ${duration} turns, ATK increases by ${amountPer}% for every ${awakenString} awakening on team.`;
+				break;
+			case 1:
+				return `Heal ${amountPer}x RCV as HP for every ${awakenString} awakening on team.`;
+				break;
+			case 2:
+				return `For ${duration} turns, ATK increases by ${amountPer}% for every ${awakenString} awakening on team.`;
+				break;
+			case 3:
+				return `For ${duration} turns, gain ${amountPer}% damage reduction for every ${awakenString} awakening on team.`;
+				break;
+			default:
+				return '';
+				break;
+		}
+	}
+
+	public ASAddAdditionalCombos(): string {
+		let data = this.mergeDefaults([0, 0]);
+		let duration = data[0];
+		let combo = data[1];
+
+		return `+${combo} combo counts for ${duration} turn.`;
+	}
+
+	public ASTrueGravity(): string {
+		let data = this.mergeDefaults([0]);
+		let trueGravityPercentage = data[0];
+
+		return `Reduce all enemies' current HP by ${trueGravityPercentage}% of their max HP.`;
+	}
+
+	public ASOrbLockRemoval(): string {
+		return `Unlock all orbs.`;
+	}
+
+	public ASVoidDamageAbsorption(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0]);
+		let duration = data[0];
+		let isAttributeAbsorbVoid = !!data[1];
+		let isDamageAbsorbVoid = !!data[3];
+
+		if (isAttributeAbsorbVoid && isDamageAbsorbVoid) {
+			return `Voids attribute absorption and damage absorption for ${duration} turns.`;
+		} else {
+			if (isAttributeAbsorbVoid) {
+				return `Voids attribute absorption for ${duration} turns.`;
+			}
+
+			if (isDamageAbsorbVoid) {
+				return `Voids attribute damage absorption for ${duration} turns.`;
+			}
+		}
+
+		return '';
+	}
+
+	public ASFixedPosConvertSomething(): string {
+		let data = this.mergeDefaults([0, 0, 0, 0, 0, 0]);
+		let row_1 = this.decimalToBinary(data[0]).toString().split('').reverse().join('').padEnd(6, '0');
+		let row_2 = this.decimalToBinary(data[1]).toString().split('').reverse().join('').padEnd(6, '0');
+		let row_3 = this.decimalToBinary(data[2]).toString().split('').reverse().join('').padEnd(6, '0');
+		let row_4 = this.decimalToBinary(data[3]).toString().split('').reverse().join('').padEnd(6, '0');
+		let row_5 = this.decimalToBinary(data[4]).toString().split('').reverse().join('').padEnd(6, '0');
+
+		return `${row_1}\n${row_2}\n${row_3}\n${row_4}\n${row_5}`;
+	}
+
+	public ASAutoHealConvert(): string {
+		let data = this.mergeDefaults([0, null, 0, 0, 0]);
+		let duration = data[0];
+		let percentage = data[2];
+		let bind = data[3]; //Why do we need this?
+		let awokenBind = data[4]; //Why do we need this?
+
+		return `Heal for ${percentage}% of max HP every turn for ${duration} turns.`;
+	}
+
+	public ASIncreasedEnhanceOrbSkyfall(): string {
+		let data = this.mergeDefaults([0, 0]);
+		let duration = data[0];
+		let percentageIncrease = data[1];
+
+		return `Increase skyfall chance of enhanced orb by ${percentageIncrease}% for ${duration} turns.`;
+	}
+
+	public ASNoSkyfallForXTurns(): string {
+		let data = this.mergeDefaults([0]);
+		let duration = data[0];
+
+		return `No skyfall combos for ${duration} turns.`;
+	}
+
+	public ASMultiLaserConvert(): string {
+		let data = this.mergeDefaults([0]);
+		let damage = data[0];
+
+		return `Inflict ${this.numberWithCommas(damage)} damage to 1 enemy 5 times. Ignore enemy element and defense.`;
+	}
+
+	public ASShowComboPath(): string {
+		return `Display path to make 3 combos (only in Normal dungeon and 3-orb-match cases).`;
+	}
+
+	public ASReduceVoidDamage(): string {
+		let data = this.mergeDefaults([0]);
+		let duration = data[0];
+
+		return `Ignores enemy damage void effects for ${duration} turn (does not include combo shield, attribute absorb, and damage absorb).`;
+	}
+
+	public ASSuicide195(): string {
+		let data = this.mergeDefaults([0]);
+		let HPRemaining = data[0];
+
+		return `Reduces own HP by ${100 - HPRemaining}%.`;
+	}
+
+	public ASReduceDisableMatch(): string {
+		let data = this.mergeDefaults([0]);
+		let duration = data[0];
+
+		return `Reduces unmatchable orb status by ${duration} turns.`;
+	}
+
+	public ASChangeMonster(): string {
+		let data = this.mergeDefaults([0]);
+		let changeToId = data[0];
+
+		return `Transform into {{${changeToId}}}.`;
+	}
+
+	public ASSkyfallLock(): string {
+		//The '1' in slot 0 is suspicious but it seems set for everything so it changes nothing
+		let data = this.mergeDefaults([1, 1]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes);
+		let duration = data[1];
+
+		return `${attributeString} orbs skyfall as locked orbs for ${duration} turns.`;
+	}
+
+	public ASSpawnSpinner(): string {
+		let data = this.mergeDefaults([1, 100, 0, 0, 0, 0, 0, 1]);
+		//Only one example of this so far, so these are all just guesses
+		let turns = data[0];
+		let speed = this.mult(data[1]);
+		let count = data[7];
+
+		return `Randomly spawns spinner orbs for a certain number of turns.`;
+	}
 }

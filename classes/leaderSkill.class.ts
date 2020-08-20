@@ -1305,7 +1305,7 @@ export class LeaderSkill {
 		let ATKMultiplier = this.mult(data[2]);
 		let shield = data[3];
 
-		return `All Attribute cards ATK x${ATKMultiplier}, ${shield}% all damage reduction when attacking with ${attributeString} orb types at the same time.`;
+		return `All Attribute cards ATK x${ATKMultiplier}, ${shield}% all damage reduction when attacking with ${attributesRequired} of ${attributeString} orb types at the same time.`;
 	}
 
 	public LSMatchAttrPlusShield(): string {
@@ -1316,7 +1316,7 @@ export class LeaderSkill {
 		let ATKMultiplier = this.mult(data[5]);
 		let shield = data[6];
 
-		return `All Attribute cards ATK x${ATKMultiplier}, ${shield}% all damage reduction when attacking with ${attributeString} combos at the same time.`;
+		return `All Attribute cards ATK x${ATKMultiplier}, ${shield}% all damage reduction when attacking with ${attributesRequired} ${attributeString} combos at the same time.`;
 	}
 
 	public LSCollabConditionalBoost(): string {

@@ -2,37 +2,40 @@ const { skill: SKILL_DATA } = require('../download_skill_data.json');
 import { MonsterParser } from '../classes/monsterParser.class';
 import { ActiveSkill } from './activeSkill.class';
 
-console.log('\n===========');
-
 //Skill test
-const MONSTER_ID = 3914; //    5584        4351ccc960
-let monster = new MonsterParser(MONSTER_ID);
-let skillId = monster.getActiveSkill().id;
+// const MONSTER_ID = 6081;
+// let monster = new MonsterParser(MONSTER_ID);
+// let skillId = monster.getActiveSkill().id;
 
-if (SKILL_DATA[skillId][2] === 116) {
-	//Multipart
-	let skills = SKILL_DATA[skillId];
-	let skillIds = [];
+// console.log('\n+=======================================================+');
+// console.log('| ' + monster.getName().padEnd(54, ' ') + '|');
+// console.log('+=======================================================+');
 
-	for (let i = 6; i < skills.length; i++) {
-		skillIds.push(skills[i]);
-	}
+// if (SKILL_DATA[skillId][2] === 116) {
+// 	//Multipart
+// 	let skills = SKILL_DATA[skillId];
+// 	let skillIds = [];
 
-	skillIds.forEach((skillId, index) => {
-		let skillData = SKILL_DATA[skillId];
-		let ls = new ActiveSkill(skillData);
-		let result = ls.testOutput();
-		console.log((index !== 0 ? '---\n' : '') + result);
-	});
-} else {
-	let skillData = SKILL_DATA[skillId];
-	let ls = new ActiveSkill(skillData);
-	let result = ls.testOutput();
-	console.log(result);
-}
-process.exit();
+// 	for (let i = 6; i < skills.length; i++) {
+// 		skillIds.push(skills[i]);
+// 	}
+
+// 	skillIds.forEach((skillId, index) => {
+// 		let skillData = SKILL_DATA[skillId];
+// 		let ls = new ActiveSkill(skillData);
+// 		let result = ls.testOutput();
+// 		console.log(`[${index + 1}] ` + result);
+// 	});
+// } else {
+// 	let skillData = SKILL_DATA[skillId];
+// 	let ls = new ActiveSkill(skillData);
+// 	let result = ls.testOutput();
+// 	console.log(`[1] ` + result);
+// }
+// console.log('');
+// process.exit();
 // Find all cards with skill type of
-let SEARCH_FOR = 115;
+let SEARCH_FOR = 207;
 try {
 	for (let i = 1; i <= 6450; i++) {
 		let monster = new MonsterParser(i);

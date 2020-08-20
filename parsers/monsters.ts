@@ -25,12 +25,14 @@ interface ActiveSkillData {
 	description: string;
 	cooldownAtLevelMax: string;
 	cooldownAtLevel1: string;
+	types: number[];
 }
 interface LeaderSkillData {
 	id: number;
 	name: string;
 	description: string;
 	descriptionDetails: string[];
+	types: number[];
 }
 interface EnemyData {
 	turnTimer: number;

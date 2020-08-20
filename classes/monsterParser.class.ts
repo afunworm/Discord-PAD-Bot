@@ -4,6 +4,7 @@ import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { AWAKENINGS } from '../shared/monster.awakens';
 import { MONSTER_TYPES } from '../shared/monster.types';
 import { LeaderSkill } from './leaderSkill.class';
+import { ActiveSkill } from './activeSkill.class';
 
 export class MonsterParser {
 	private id;
@@ -159,6 +160,54 @@ export class MonsterParser {
 		return this.data[23];
 	}
 
+	public getActiveSkillDescriptionDetails(activeSkillId: number): string[] {
+		let result = [];
+
+		if (SKILL_DATA[activeSkillId][2] === 116) {
+			//Multipart
+			let skills = SKILL_DATA[activeSkillId];
+			let skillIds = [];
+
+			for (let i = 6; i < skills.length; i++) {
+				skillIds.push(skills[i]);
+			}
+
+			skillIds.forEach((skillId) => {
+				let skillData = SKILL_DATA[skillId];
+				let leaderSkill = new ActiveSkill(skillData);
+				result.push(leaderSkill.getDetailDescription());
+			});
+		} else {
+			let skillData = SKILL_DATA[activeSkillId];
+			let leaderSkill = new LeaderSkill(skillData);
+			result.push(leaderSkill.getDetailDescription());
+		}
+
+		return result;
+	}
+
+	public getActiveSkillTypes(activeSkillId: number): number[] {
+		let result = [];
+
+		if (SKILL_DATA[activeSkillId][2] === 116) {
+			//Multipart
+			let skills = SKILL_DATA[activeSkillId];
+			let skillIds = [];
+
+			for (let i = 6; i < skills.length; i++) {
+				skillIds.push(skills[i]);
+			}
+
+			skillIds.forEach((skillId) => {
+				result.push(SKILL_DATA[skillId][2]);
+			});
+		} else {
+			result.push(SKILL_DATA[activeSkillId][2]);
+		}
+
+		return result;
+	}
+
 	public getActiveSkill() {
 		let skillId = this.data[25];
 		let skillData = SKILL_DATA[skillId];
@@ -166,15 +215,17 @@ export class MonsterParser {
 			id: skillId,
 			name: skillData[0],
 			description: skillData[1],
+			descriptionDetails: this.getActiveSkillDescriptionDetails(skillId),
 			cooldownAtLevelMax: skillData[3],
 			cooldownAtLevel1: skillData[4],
+			types: this.getActiveSkillTypes(skillId),
 		};
 	}
 
 	public getLeaderSkillDescriptionDetails(leaderSkillId: number): string[] {
 		let result = [];
 
-		if (SKILL_DATA[leaderSkillId][2] === 138 || SKILL_DATA[leaderSkillId][2] === 116) {
+		if (SKILL_DATA[leaderSkillId][2] === 138) {
 			//Multipart
 			let skills = SKILL_DATA[leaderSkillId];
 			let skillIds = [];
@@ -183,7 +234,7 @@ export class MonsterParser {
 				skillIds.push(skills[i]);
 			}
 
-			skillIds.forEach((skillId, index) => {
+			skillIds.forEach((skillId) => {
 				let skillData = SKILL_DATA[skillId];
 				let leaderSkill = new LeaderSkill(skillData);
 				result.push(leaderSkill.getDetailDescription());
@@ -197,6 +248,28 @@ export class MonsterParser {
 		return result;
 	}
 
+	public getLeaderSkillTypes(leaderSkillId: number): number[] {
+		let result = [];
+
+		if (SKILL_DATA[leaderSkillId][2] === 138) {
+			//Multipart
+			let skills = SKILL_DATA[leaderSkillId];
+			let skillIds = [];
+
+			for (let i = 6; i < skills.length; i++) {
+				skillIds.push(skills[i]);
+			}
+
+			skillIds.forEach((skillId) => {
+				result.push(SKILL_DATA[skillId][2]);
+			});
+		} else {
+			result.push(SKILL_DATA[leaderSkillId][2]);
+		}
+
+		return result;
+	}
+
 	public getLeaderSkill() {
 		let skillId = this.data[26];
 		let skillData = SKILL_DATA[skillId];
@@ -205,6 +278,7 @@ export class MonsterParser {
 			name: skillData[0],
 			description: skillData[1],
 			descriptionDetails: this.getLeaderSkillDescriptionDetails(skillId),
+			types: this.getLeaderSkillTypes(skillId),
 		};
 	}
 
