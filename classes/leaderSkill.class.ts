@@ -96,8 +96,14 @@ export class LeaderSkill {
 		}
 	}
 
-	private stringifyHPCondition(threshold: number, isAbove: boolean = true): string {
-		return threshold === 100 ? 'full' : threshold + '% or ' + (isAbove ? 'more' : 'less');
+	private stringifyHPCondition(threshold: number, isAbove: boolean = true, incudesEqual: boolean = true): string {
+		if (threshold === 100) return 'full';
+
+		if (incudesEqual) {
+			return isAbove ? `${threshold}% or more` : `${threshold}% or less`;
+		} else {
+			return isAbove ? `more than ${threshold}%` : `less than ${threshold}%`;
+		}
 	}
 
 	private decimalToBinary = (dec: number) => (dec >>> 0).toString(2);
@@ -194,7 +200,9 @@ export class LeaderSkill {
 	public LSAttrAtkBoost(): string {
 		let attribute = this.mapAttribute(this.params[0]);
 		let ATKMultiplier = this.mult(this.params[1]);
-		return `${attribute} attribute cards ATK x${ATKMultiplier}.`;
+		let boost = this.stringifyBoost(1, ATKMultiplier);
+
+		return `${attribute} attribute cards ${boost}.`;
 	}
 
 	public LSBonusAttack(): string {
@@ -223,13 +231,16 @@ export class LeaderSkill {
 	public LSDamageReduction(): string {
 		let data = this.mergeDefaults([0]);
 		let shield = data[0];
-		return `While your HP is ${shield}% or above, a single hit that normally kills you will instead leave you with 1 HP. For the consecutive hits, this skill will only affect the first hit.`;
+		let boost = this.stringifyBoost(1, 1, 1, shield);
+
+		return `${boost}.`;
 	}
 
 	public LSAttrDamageReduction(): string {
 		let data = this.mergeDefaults([0, 0]);
 		let attribute = this.mapAttribute(data[0]);
 		let shield = data[1];
+
 		return `${shield}% ${attribute} damage reduction.`;
 	}
 
@@ -237,21 +248,25 @@ export class LeaderSkill {
 		let data = this.mergeDefaults([0, 100]);
 		let type = this.mapType(data[0]);
 		let ATKMultiplier = this.mult(data[1]);
-		return `${type} type cards ATK x${ATKMultiplier}.`;
+		let boost = this.stringifyBoost(1, ATKMultiplier);
+
+		return `${type} Type cards ${boost}.`;
 	}
 
 	public LSTypeHpBoost(): string {
 		let data = this.mergeDefaults([0, 100]);
 		let type = this.mapType(data[0]);
 		let HPMultiplier = this.mult(data[1]);
-		return `${type} type cards HP x${HPMultiplier}.`;
+		let boost = this.stringifyBoost(HPMultiplier);
+
+		return `${type} Type cards ${boost}.`;
 	}
 
 	public LSTypeRcvBoost() {
 		let data = this.mergeDefaults([0, 100]);
 		let type = this.mapType(data[0]);
 		let RCVMultiplier = this.mult(data[1]);
-		return `${type} type cards RCV x${RCVMultiplier}.`;
+		return `${type} Type cards RCV x${RCVMultiplier}.`;
 	}
 
 	public LSStaticAtkBoost(): string {
@@ -280,7 +295,7 @@ export class LeaderSkill {
 		let firstType = this.mapType(data[0]);
 		let secondType = this.mapType(data[1]);
 		let boost = this.mult(data[2]);
-		return `${firstType} & ${secondType} type cards HP x${boost}.`;
+		return `${firstType} & ${secondType} Type cards HP x${boost}.`;
 	}
 
 	public LSTwoTypeAtkBoost(): string {
@@ -288,7 +303,7 @@ export class LeaderSkill {
 		let firstType = this.mapType(data[0]);
 		let secondType = this.mapType(data[1]);
 		let boost = this.mult(data[2]);
-		return `${firstType} & ${secondType} type cards ATK x${boost}.`;
+		return `${firstType} & ${secondType} Type cards ATK x${boost}.`;
 	}
 
 	public LSTaikoDrum(): string {
@@ -335,7 +350,12 @@ export class LeaderSkill {
 		let chance = data[0];
 		let boost = this.mult(data[1]);
 		let attribute = this.mapAttribute(data[2]);
-		return `${chance}% chance to deal counter ${attribute} damage of ${boost}x damage taken.`;
+
+		if (chance === 100) {
+			return `Deal counter ${attribute} damage of ${boost}x damage taken.`;
+		} else {
+			return `${chance}% chance to deal counter ${attribute} damage of ${boost}x damage taken.`;
+		}
 	}
 
 	public LSHighHpShield(): string {
@@ -437,7 +457,7 @@ export class LeaderSkill {
 		let type = this.mapType(data[0]);
 		let boost = this.mult(data[1]);
 
-		return `${type} type cards HP x${boost}, ATK x${boost}.`;
+		return `${type} Type cards HP x${boost}, ATK x${boost}.`;
 	}
 
 	public LSTypeHpRcvBoost(): string {
@@ -445,7 +465,7 @@ export class LeaderSkill {
 		let type = this.mapType(data[0]);
 		let boost = this.mult(data[1]);
 
-		return `${type} type cards HP x${boost}, RCV x${boost}.`;
+		return `${type} Type cards HP x${boost}, RCV x${boost}.`;
 	}
 
 	public LSTypeAtkRcvBoost(): string {
@@ -453,7 +473,7 @@ export class LeaderSkill {
 		let type = this.mapType(data[0]);
 		let boost = this.mult(data[1]);
 
-		return `${type} type cards ATK x${boost}, RCV x${boost}.`;
+		return `${type} Type cards ATK x${boost}, RCV x${boost}.`;
 	}
 
 	public LSTypeAllStatBoost(): string {
@@ -461,7 +481,7 @@ export class LeaderSkill {
 		let type = this.mapType(data[0]);
 		let boost = this.mult(data[1]);
 
-		return `${type} type cards HP x${boost}, ATK x${boost}, RCV x${boost}.`;
+		return `${type} Type cards HP x${boost}, ATK x${boost}, RCV x${boost}.`;
 	}
 
 	public LSComboFlatMultiplier(): string {
@@ -486,34 +506,34 @@ export class LeaderSkill {
 		let type = this.mapType(data[1]);
 		let boost = this.mult(data[2]);
 
-		return `${attribute} attribute & ${type} type cards ATK x${boost}.`;
+		return `${attribute} attribute & ${type} Type cards ATK x${boost}.`;
 	}
 
 	public LSAttrTypeHpAtkBoost(): string {
 		let data = this.params;
 		let attribute = this.mapAttribute(data[0]);
-		let type = data[1];
+		let type = this.mapType(data[1]);
 		let boost = this.mult(data[2]);
 
-		return `${attribute} attribute & ${type} type cards HP x${boost}, ATK x${boost}.`;
+		return `${attribute} attribute & ${type} Type cards HP x${boost}, ATK x${boost}.`;
 	}
 
 	public LSAttrTypeAtkRcvBoost(): string {
 		let data = this.params;
 		let attribute = this.mapAttribute(data[0]);
-		let type = data[1];
+		let type = this.mapType(data[1]);
 		let boost = this.mult(data[2]);
 
-		return `${attribute} attribute & ${type} type cards ATK x${boost}, RCV x${boost}.`;
+		return `${attribute} attribute & ${type} Type cards ATK x${boost}, RCV x${boost}.`;
 	}
 
 	public LSAttrTypeAllStatBoost(): string {
 		let data = this.params;
 		let attribute = this.mapAttribute(data[0]);
-		let type = data[1];
+		let type = this.mapType(data[1]);
 		let boost = this.mult(data[2]);
 
-		return `${attribute} attribute & ${type} type cards HP x${boost}, ATK x${boost}, RCV x${boost}.`;
+		return `${attribute} attribute & ${type} Type cards HP x${boost}, ATK x${boost}, RCV x${boost}.`;
 	}
 
 	public LSTwoTypeHpAtkBoost(): string {
@@ -522,7 +542,7 @@ export class LeaderSkill {
 		let secondType = this.mapType(data[1]);
 		let boost = this.mult(data[2]);
 
-		return `${firstType} & ${secondType} type cards HP x${boost}, ATK x${boost}.`;
+		return `${firstType} & ${secondType} Type cards HP x${boost}, ATK x${boost}.`;
 	}
 
 	public LSTwoTypeAtkRcvBoost(): string {
@@ -531,7 +551,7 @@ export class LeaderSkill {
 		let secondType = this.mapType(data[1]);
 		let boost = this.mult(data[2]);
 
-		return `${firstType} & ${secondType} type cards ATK x${boost}, RCV x${boost}.`;
+		return `${firstType} & ${secondType} Type cards ATK x${boost}, RCV x${boost}.`;
 	}
 
 	public LSLowHpConditionalAttrAtkBoost(): string {
@@ -551,7 +571,7 @@ export class LeaderSkill {
 		let type = this.mapType(data[1]);
 		let ATKMultiplier = this.ATKFromSlice(1);
 
-		return `${type} type cards ATK x${ATKMultiplier} when HP is less than ${threshold}%.`;
+		return `${type} Type cards ATK x${ATKMultiplier} when HP ${this.stringifyHPCondition(threshold, false)}.`;
 	}
 
 	public LSHighHpConditionalAttrAtkBoost(): string {
@@ -569,7 +589,7 @@ export class LeaderSkill {
 		let type = this.mapType(data[1]);
 		let ATKMultiplier = this.ATKFromSlice(1);
 
-		return `${type} type cards ATK x${ATKMultiplier} when HP is ${this.stringifyHPCondition(threshold)}.`;
+		return `${type} Type cards ATK x${ATKMultiplier} when HP is ${this.stringifyHPCondition(threshold)}.`;
 	}
 
 	public LSComboScaledMultiplier(): string {
@@ -580,14 +600,19 @@ export class LeaderSkill {
 		let maxCombosRequired = data[3] || minCombosRequired;
 		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCombosRequired - minCombosRequired);
 
-		return `ATK x${minATKMultiplier} at ${minCombosRequired} combos. ATK x${ATKStep} for each additional combo, up to ATK x${maxATKMultiplier} at ${maxCombosRequired} combos.`;
+		if (ATKStep) {
+			return `ATK x${minATKMultiplier} at ${minCombosRequired} combos. ATK multiplier increases by ${ATKStep} for each additional combo, up to ATK x${maxATKMultiplier} at ${maxCombosRequired} combos.`;
+		} else {
+			return `ATK x${minATKMultiplier} at ${minCombosRequired} combos.`;
+		}
 	}
 
 	public LSSkillActivationAtkRcvBoost(): string {
 		let ATKMultiplier = this.ATKFromSlice(-1);
 		let RCVMultiplier = this.RCVFromSlice(-1);
+		let boost = this.stringifyBoost(1, ATKMultiplier, RCVMultiplier);
 
-		return `All attribute cards ATK x${ATKMultiplier}, RCV x${RCVMultiplier} on the turn a skill is used. (Multiple skills will not stack).`;
+		return `All attribute cards ${boost} on the turn a skill is used. (Multiple skills will not stack).`;
 	}
 
 	public LSAtkBoostWithExactCombos(): string {
@@ -646,7 +671,7 @@ export class LeaderSkill {
 		let HPReduction = data[0];
 		let ATKMultiplier = this.mult(data[2]);
 
-		return `${HPReduction}% HP reduction. ${type} type cards ATK x${ATKMultiplier}.`;
+		return `${HPReduction}% HP reduction. ${type} Type cards ATK x${ATKMultiplier}.`;
 	}
 
 	public LSBlobFlatAtkBoost(): string {
@@ -695,7 +720,7 @@ export class LeaderSkill {
 
 	public LSAttrOrTypeStatBoost(): string {
 		//@TODO 121
-		return `Physical type cards RCV x1.5.`;
+		return `Physical Type cards RCV x1.5.`;
 	}
 
 	public LSLowHpConditionalAttrTypeAtkRcvBoost(): string {
@@ -714,7 +739,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `${typeString} type cards ${boost} when HP is less than ${threshold}%.`;
+			return `${typeString} Type cards ${boost} when HP is less than ${threshold}%.`;
 		}
 
 		return '';
@@ -736,7 +761,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `${typeString} type cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
+			return `${typeString} Type cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
 		}
 
 		return '';
@@ -786,7 +811,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `${typeString} type cards ${boost}.`;
+			return `${typeString} Type cards ${boost}.`;
 		}
 
 		return '';
@@ -811,7 +836,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `${typeString} type cards ${boost} when HP is less than ${threshold}%.`;
+			return `${typeString} Type cards ${boost} when HP is less than ${threshold}%.`;
 		}
 
 		return '';
@@ -836,7 +861,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `${typeString} type cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
+			return `${typeString} Type cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
 		}
 
 		return '';
@@ -857,7 +882,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `${typeString} type cards ${boost} on the turn a skill is used. (Multiple skills will not stack).`;
+			return `${typeString} Type cards ${boost} on the turn a skill is used. (Multiple skills will not stack).`;
 		}
 
 		return '';
@@ -1055,7 +1080,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `No skyfall matches. ${typeString} type cards ${boost}.`;
+			return `No skyfall matches. ${typeString} Type cards ${boost}.`;
 		}
 
 		return `No skyfall matches.`;
@@ -1198,9 +1223,7 @@ export class LeaderSkill {
 		let HPMultiplier = this.multiFloor(data[2]);
 		let RCVMultiplier = this.multiFloor(data[4]);
 		let ATKMultipler = minATKMultiplier * maxBonusATK; //What is this?
-		console.log(HPMultiplier);
-		console.log(minATKMultiplier);
-		console.log(RCVMultiplier);
+
 		let boost = this.stringifyBoost(HPMultiplier, minATKMultiplier, RCVMultiplier);
 
 		let result = [];
@@ -1241,7 +1264,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `Fixed orb movement time at ${time} seconds. ${typeString} type cards ${boost}.`;
+			return `Fixed orb movement time at ${time} seconds. ${typeString} Type cards ${boost}.`;
 		}
 
 		return `Fixed orb movement time at ${time} seconds.`;
@@ -1309,7 +1332,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `${typeString} type cards ${boost}. Increases time limit of orb movement by ${time} seconds.`;
+			return `${typeString} Type cards ${boost}. Increases time limit of orb movement by ${time} seconds.`;
 		}
 
 		return `Increases time limit of orb movement by ${time} seconds.`;
@@ -1332,7 +1355,7 @@ export class LeaderSkill {
 		}
 
 		if (types.length > 0) {
-			return `Change the board to 7x6 size. ${typeString} type cards ${boost}.`;
+			return `Change the board to 7x6 size. ${typeString} Type cards ${boost}.`;
 		}
 
 		return '';
