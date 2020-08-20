@@ -780,7 +780,7 @@ export class LeaderSkill {
 	public LSBlobScalingAtkBoost(): string {
 		let data = this.mergeDefaults([0, 1, 100, 0, 0]);
 		let attribute = this.getAttributesFromBinary(data[0]);
-		let attributeString = this.toAttributeString(attribute);
+		let attributeString = this.toAttributeString(attribute, 'or');
 		let minCount = data[1];
 		let minATKMultiplier = this.mult(data[2]);
 		let ATKStep = this.mult(data[3]);
