@@ -6,7 +6,6 @@ import { AWAKENINGS as MONSTER_AWAKENS } from '../shared/monster.awakens';
 const { skill: SKILL_DATA } = require('../download_skill_data.json');
 
 export class ActiveSkill {
-	private id: number;
 	private type: number;
 	private params: number[];
 	private raw;
@@ -64,14 +63,6 @@ export class ActiveSkill {
 		return MONSTER_TYPES[typeId];
 	}
 
-	private ATKFromSlice(padding: number = 0): number {
-		return this.params[1 + padding] === 1 ? this.params[3 + padding] / 100 : 1;
-	}
-
-	private RCVFromSlice(padding: number = 0): number {
-		return this.params[1 + padding] === 2 || this.params[2 + padding] === 2 ? this.params[3 + padding] / 100 : 1;
-	}
-
 	private stringifyBoost(
 		HPBoost: number = 1,
 		ATKBoost: number = 1,
@@ -92,16 +83,6 @@ export class ActiveSkill {
 			return boost.length > 1 ? boost.join(', ') : boost[0];
 		} else {
 			return boost.length > 1 ? boost.join(', ') : boost[0];
-		}
-	}
-
-	private stringifyHPCondition(threshold: number, isAbove: boolean = true, incudesEqual: boolean = true): string {
-		if (threshold === 100) return 'full';
-
-		if (incudesEqual) {
-			return isAbove ? `${threshold}% or more` : `${threshold}% or less`;
-		} else {
-			return isAbove ? `more than ${threshold}%` : `less than ${threshold}%`;
 		}
 	}
 

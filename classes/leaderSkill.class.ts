@@ -6,7 +6,6 @@ import { MONSTER_TYPES } from '../shared/monster.types';
 //@TODO - Check on evo, enhanced, etc. because they have some interesting and overlapping skill types
 
 export class LeaderSkill {
-	private id: number;
 	private type: number;
 	private params: number[];
 	private raw;
