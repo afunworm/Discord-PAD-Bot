@@ -710,7 +710,7 @@ export class ActiveSkill {
 			return `${percentageOrbMovementTime}x orb move time for ${duration} turn.`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public ASOrbEnhanceNew(): string {
@@ -833,7 +833,7 @@ export class ActiveSkill {
 			amountPer = data[5];
 		}
 
-		if (amountPer === null) return '';
+		if (amountPer === null) return 'None';
 
 		switch (toggle) {
 			case 1:
@@ -846,7 +846,7 @@ export class ActiveSkill {
 				return `For ${duration} turns, gain ${amountPer}% damage reduction for every ${awakenString} awakening on team.`;
 				break;
 			default:
-				return '';
+				return 'None';
 				break;
 		}
 	}
@@ -869,7 +869,7 @@ export class ActiveSkill {
 			amountPer = data[7];
 		}
 
-		if (amountPer === null) return '';
+		if (amountPer === null) return 'None';
 
 		switch (toggle) {
 			case 0:
@@ -885,7 +885,7 @@ export class ActiveSkill {
 				return `For ${duration} turns, gain ${amountPer}% damage reduction for every ${awakenString} awakening on team.`;
 				break;
 			default:
-				return '';
+				return 'None';
 				break;
 		}
 	}
@@ -927,7 +927,7 @@ export class ActiveSkill {
 			}
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public ASFixedPosConvertSomething(): string {

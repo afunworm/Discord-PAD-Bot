@@ -819,7 +819,7 @@ export class LeaderSkill {
 			return `${typeString} Type cards ${boost}.`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSLowHpConditionalAttrTypeAtkRcvBoost(): string {
@@ -841,7 +841,7 @@ export class LeaderSkill {
 			return `${typeString} Type cards ${boost} when HP is less than ${threshold}%.`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSHighHpConditionalAttrTypeAtkRcvBoost(): string {
@@ -863,7 +863,7 @@ export class LeaderSkill {
 			return `${typeString} Type cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSAttrComboScalingAtkBoost(): string {
@@ -923,7 +923,7 @@ export class LeaderSkill {
 			return `${shield}% ${reductionAttributeString} damage reduction.`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSLowHpAttrAtkStatBoost(): string {
@@ -956,7 +956,7 @@ export class LeaderSkill {
 			)}%.`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSHighHpAttrTypeStatBoost(): string {
@@ -981,7 +981,7 @@ export class LeaderSkill {
 			return `${typeString} Type cards ${boost} when HP is ${this.stringifyHPCondition(threshold)}.`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSSkillUsedAttrTypeAtkRcvBoost(): string {
@@ -1002,7 +1002,7 @@ export class LeaderSkill {
 			return `${typeString} Type cards ${boost} on the turn a skill is used. (Multiple skills will not stack).`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSMultiAttrConditionalStatBoost(): string {
@@ -1170,7 +1170,7 @@ export class LeaderSkill {
 			return `Can no longer clear ${minMatch} or less connected orbs. ${typeString} Attribute cards ${boost}`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSAdvancedBlobMatch(): string {
@@ -1434,7 +1434,7 @@ export class LeaderSkill {
 		//@TODO: This needs to be overhauled, just accept the value here if it != 0.
 		if (time === 0) {
 			//Ignore this case; bad skill
-			return '';
+			return 'None';
 		}
 
 		let HPMultiplier = this.multiFloor(data[3]);
@@ -1492,6 +1492,8 @@ export class LeaderSkill {
 
 		if (firstThreshold && !secondThreshold) {
 			return `All Attribute cards ${firstBoost} when HP ${this.stringifyHPCondition(firstThreshold, true)}.`;
+		} else if (secondThreshold && !firstThreshold) {
+			return `All Attribute cards ${secondBoost} when HP ${this.stringifyHPCondition(secondThreshold, false)}.`;
 		} else if (firstThreshold && secondThreshold) {
 			return `All Attribute cards ${firstBoost} when HP ${this.stringifyHPCondition(
 				firstThreshold,
@@ -1499,7 +1501,7 @@ export class LeaderSkill {
 			)}. All Attribute cards ${secondBoost} when HP ${this.stringifyHPCondition(secondThreshold, false)}.`;
 		}
 
-		return;
+		return 'None';
 	}
 
 	public LSBonusTimeStatBoost(): string {
@@ -1546,7 +1548,7 @@ export class LeaderSkill {
 			return `Change the board to 7x6 size. ${typeString} Type cards ${boost}.`;
 		}
 
-		return '';
+		return 'None';
 	}
 
 	public LSBlobMatchBonusCombo(): string {

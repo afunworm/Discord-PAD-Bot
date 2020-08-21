@@ -3,7 +3,7 @@ import { MonsterParser } from '../classes/monsterParser.class';
 import { LeaderSkill } from './leaderSkill.class';
 
 //Skill test
-const MONSTER_ID = 6092;
+const MONSTER_ID = 2249;
 let monster = new MonsterParser(MONSTER_ID);
 let leaderSkillId = monster.getLeaderSkill().id;
 
