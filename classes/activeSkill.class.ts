@@ -196,6 +196,27 @@ export class ActiveSkill {
 			.replace(/,([^,]*)$/, ` ${connector}$1`);
 	}
 
+	private getColumnPositionFromBinary(dec: number, connector: string = 'and'): string {
+		if (dec === 0) return '';
+
+		let binary = this.decimalToBinary(dec).padStart(6, '0');
+		let columnPosition = [];
+
+		//Refer 000000 - 000001 = rightmost, 1000000 = leftmost
+		if (binary[0] === '1') columnPosition.push('rightmost'); //Right
+		if (binary[1] === '1') columnPosition.push('2nd from the right'); //2nd from the right
+		if (binary[2] === '1') columnPosition.push('3rd from the right'); //3rd from the right
+		if (binary[3] === '1') columnPosition.push('3rd from the left'); //4th from right
+		if (binary[4] === '1') columnPosition.push('2nd from the left'); //5th from right
+		if (binary[5] === '1') columnPosition.push('leftmost'); //6th from right
+
+		//Reverse to get top as the first element
+		return columnPosition
+			.reverse()
+			.join(', ')
+			.replace(/,([^,]*)$/, ` ${connector}$1`);
+	}
+
 	private multiFloor(stat: number) {
 		return stat !== 0 ? stat / 100 : 1;
 	}
@@ -618,7 +639,6 @@ export class ActiveSkill {
 	}
 
 	public ASRandomSkill(): string {
-		//@TODO: CHECK ON DOROTHY'S SKILL TYPES
 		let skillIds = this.params;
 		let result = [];
 
@@ -639,13 +659,21 @@ export class ActiveSkill {
 	}
 
 	public ASColumnOrbChange(): string {
-		//NEED HELP
 		let data = this.mergeDefaults([]);
-		//[0]: 1 = bottom row,
+		let result = [];
 
-		// console.log(this.getRawSkillData());
+		data.forEach((datum, index) => {
+			if (index % 2 === 0) return; //Process in pair
 
-		return ``;
+			let attribute = this.getAttributesFromBinary(datum);
+			let attributeString = this.toAttributeString(attribute);
+			let position = data[index - 1];
+			let positionString = this.getColumnPositionFromBinary(position);
+
+			result.push(`Change the ${positionString} column into ${attributeString} orbs.`);
+		});
+
+		return result.join(' ');
 	}
 
 	public ASRowOrbChange(): string {

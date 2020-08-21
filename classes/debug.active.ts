@@ -3,7 +3,7 @@ import { MonsterParser } from '../classes/monsterParser.class';
 import { ActiveSkill } from './activeSkill.class';
 
 //Skill test
-const MONSTER_ID = 5359;
+const MONSTER_ID = 4691;
 let monster = new MonsterParser(MONSTER_ID);
 let skillId = monster.getActiveSkill().id;
 
@@ -35,7 +35,7 @@ if (SKILL_DATA[skillId][2] === 116) {
 console.log('');
 process.exit();
 // Find all cards with skill type of
-let SEARCH_FOR = 47;
+let SEARCH_FOR = 127;
 try {
 	for (let i = 1; i <= 6450; i++) {
 		let monster = new MonsterParser(i);
