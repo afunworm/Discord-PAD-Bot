@@ -3,7 +3,7 @@ import { MonsterParser } from '../classes/monsterParser.class';
 import { LeaderSkill } from './leaderSkill.class';
 
 //Skill test
-const MONSTER_ID = 5390;
+const MONSTER_ID = 6092;
 let monster = new MonsterParser(MONSTER_ID);
 let leaderSkillId = monster.getLeaderSkill().id;
 
@@ -24,17 +24,17 @@ if (SKILL_DATA[leaderSkillId][2] === 138) {
 		let skillData = SKILL_DATA[skillId];
 		let ls = new LeaderSkill(skillData);
 		let result = ls.testOutput();
-		console.log((index !== 0 ? '---\n' : '') + result);
+		console.log(`[${index + 1}] ` + result);
 	});
 } else {
 	let skillData = SKILL_DATA[leaderSkillId];
 	let ls = new LeaderSkill(skillData);
 	let result = ls.testOutput();
-	console.log(result);
+	console.log(`[1] ` + result);
 }
 process.exit();
 // Find all cards with skill type of
-let SEARCH_FOR = 129;
+let SEARCH_FOR = 166;
 try {
 	for (let i = 1; i <= 6450; i++) {
 		let monster = new MonsterParser(i);

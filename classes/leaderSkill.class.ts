@@ -87,11 +87,18 @@ export class LeaderSkill {
 
 		if (boost.length === 0) return '';
 
-		if (shield === 0) {
-			return boost.length > 1 ? boost.join(', ') : boost[0];
-		} else {
-			return boost.length > 1 ? boost.join(', ') : boost[0];
-		}
+		return boost.length > 1 ? boost.join(', ') : boost[0];
+	}
+
+	private stringifyScaleBoost(ATKBoost: number = 0, RCVBoost: number = 0): string {
+		let boost = [];
+
+		if (ATKBoost !== 0) boost.push(`ATK multiplier increases by ${ATKBoost}`);
+		if (RCVBoost !== 0) boost.push(`RCV multiplier increases by ${RCVBoost}`);
+
+		if (boost.length === 0) return '';
+
+		return boost.length > 1 ? boost.join(', ') : boost[0];
 	}
 
 	private stringifyHPCondition(threshold: number, isAbove: boolean = true, incudesEqual: boolean = true): string {
@@ -346,7 +353,7 @@ export class LeaderSkill {
 		let shield = data[2];
 		let boost = this.stringifyBoost(1, 1, 1, shield);
 
-		return `${boost} when HP is ${this.stringifyHPCondition(threshold, above, false)}.`;
+		return `${this.capitalizeFirstLetter(boost)} when HP is ${this.stringifyHPCondition(threshold, above, true)}.`;
 	}
 
 	public LSLowHpAtkOrRcvBoost(): string {
@@ -913,7 +920,7 @@ export class LeaderSkill {
 		}
 
 		if (shield > 0) {
-			return `${this.capitalizeFirstLetter(boost)}.`;
+			return `${shield}% ${reductionAttributeString} damage reduction.`;
 		}
 
 		return '';
@@ -934,11 +941,19 @@ export class LeaderSkill {
 		let boost = this.stringifyBoost(1, ATKMultiplier, RCVMultiplier, shield);
 
 		if (attributes.length > 0) {
-			return `${attributeString} Attribute cards ${boost} when HP is less than ${threshold}%.`;
+			return `${attributeString} Attribute cards ${boost} when HP is ${this.stringifyHPCondition(
+				threshold,
+				false,
+				true
+			)}%.`;
 		}
 
 		if (types.length > 0) {
-			return `${typeString} Type cards ${boost} when HP is less than ${threshold}%.`;
+			return `${typeString} Type cards ${boost} when HP is ${this.stringifyHPCondition(
+				threshold,
+				false,
+				true
+			)}%.`;
 		}
 
 		return '';
@@ -1148,11 +1163,11 @@ export class LeaderSkill {
 		let boost = this.stringifyBoost(HPMultiplier, ATKMultiplier, RCVMultiplier);
 
 		if (attributes.length > 0) {
-			return `Can no longer clear ${minMatch} connected orbs. ${attributeString} Attribute cards ${boost}`;
+			return `Can no longer clear ${minMatch} or less connected orbs. ${attributeString} Attribute cards ${boost}`;
 		}
 
 		if (types.length > 0) {
-			return `Can no longer clear ${minMatch} connected orbs. ${typeString} Attribute cards ${boost}`;
+			return `Can no longer clear ${minMatch} or less connected orbs. ${typeString} Attribute cards ${boost}`;
 		}
 
 		return '';
@@ -1171,7 +1186,7 @@ export class LeaderSkill {
 		if (minATKMultiplier === maxATKMultiplier || !ATKStep) {
 			return `ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs.`;
 		} else {
-			return `ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs. ATK x${ATKStep} for each additional orb, up to ATK x${maxATKMultiplier} at ${maxCount} connected orbs.`;
+			return `ATK x${minATKMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs. ATK multiplier increases by ${ATKStep} for each additional orb, up to ATK x${maxATKMultiplier} at ${maxCount} connected orbs.`;
 		}
 	}
 
@@ -1243,7 +1258,23 @@ export class LeaderSkill {
 		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxAttributesRequired - minAttributesRequired);
 		let maxRCVMultiplier = minRCVMultiplier + RCVStep * (maxAttributesRequired - minAttributesRequired);
 
-		return `All Attribute cards ATK x${minATKMultiplier}, RCV x${minRCVMultiplier} when attacking with ${minAttributesRequired} of following orb types: ${attributeString}. ATK x${ATKStep}, RCV x${RCVStep} for each additional orb type, up to ATK x${maxATKMultiplier}, RCV x${maxRCVMultiplier} for ${maxAttributesRequired} matches.`;
+		let stepBoost = this.stringifyScaleBoost(ATKStep === 0 ? 1 : ATKStep, RCVStep === 0 ? 1 : RCVStep);
+		let minBoost = this.stringifyBoost(
+			1,
+			minATKMultiplier === 0 ? 1 : minATKMultiplier,
+			minRCVMultiplier === 0 ? 1 : minRCVMultiplier
+		);
+		let maxBoost = this.stringifyBoost(
+			1,
+			maxATKMultiplier === 0 ? 1 : maxATKMultiplier,
+			maxRCVMultiplier === 0 ? 1 : maxRCVMultiplier
+		);
+
+		if (ATKStep !== 0 || RCVStep !== 0) {
+			return `All Attribute cards ${minBoost} when attacking with ${minAttributesRequired} of following orb types: ${attributeString}. ${stepBoost} for each additional orb type, up to ${maxBoost} for ${maxAttributesRequired} matches.`;
+		} else {
+			return `All Attribute cards ${minBoost} when attacking with ${minAttributesRequired} of following orb types: ${attributeString}.`;
+		}
 	}
 
 	public LSAtkRcvComboScale(): string {
@@ -1257,7 +1288,23 @@ export class LeaderSkill {
 		let maxATKMultiplier = minATKMultiplier + ATKStep * (maxCombosRequired - minCombosRequired);
 		let maxRCVMultiplier = minRCVMultiplier + RCVStep * (maxCombosRequired - minCombosRequired);
 
-		return `ATK x${maxATKMultiplier}, RCV x${maxRCVMultiplier} when reaching ${minCombosRequired} combos.`;
+		let stepBoost = this.stringifyScaleBoost(ATKStep === 0 ? 1 : ATKStep, RCVStep === 0 ? 1 : RCVStep);
+		let minBoost = this.stringifyBoost(
+			1,
+			minATKMultiplier === 0 ? 1 : minATKMultiplier,
+			minRCVMultiplier === 0 ? 1 : minRCVMultiplier
+		);
+		let maxBoost = this.stringifyBoost(
+			1,
+			maxATKMultiplier === 0 ? 1 : maxATKMultiplier,
+			maxRCVMultiplier === 0 ? 1 : maxRCVMultiplier
+		);
+
+		if (ATKStep !== 0 || RCVStep !== 0) {
+			return `${minBoost} when reaching ${minCombosRequired} combos. ${stepBoost} for each additional combo, up to ${maxBoost} at ${maxCombosRequired} combos.`;
+		} else {
+			return `${minBoost} when reaching ${minCombosRequired} combos.`;
+		}
 	}
 
 	public LSBlobAtkRcvBoost(): string {
@@ -1284,7 +1331,23 @@ export class LeaderSkill {
 			maxRCVMultiplier = 1;
 		}
 
-		return `ATK x${maxATKMultiplier}, RCV x${maxRCVMultiplier} when simultaneously clearing ${minCount} connected ${attributeString} orbs.`;
+		let stepBoost = this.stringifyScaleBoost(ATKStep === 0 ? 1 : ATKStep, RCVStep === 0 ? 1 : RCVStep);
+		let minBoost = this.stringifyBoost(
+			1,
+			minATKMultiplier === 0 ? 1 : minATKMultiplier,
+			minRCVMultiplier === 0 ? 1 : minRCVMultiplier
+		);
+		let maxBoost = this.stringifyBoost(
+			1,
+			maxATKMultiplier === 0 ? 1 : maxATKMultiplier,
+			maxRCVMultiplier === 0 ? 1 : maxRCVMultiplier
+		);
+
+		if (ATKStep !== 0 || RCVStep !== 0) {
+			return `All Attribute cards ${minBoost} when simultaneously clearing ${minCount} connected ${attributeString} orbs. ${stepBoost} for each additional orb, up to ${maxBoost} at ${maxCount} connected orbs.`;
+		} else {
+			return `All Attribute cards ${minBoost} when simultaneously clearing ${minCount} connected ${attributeString} orbs.`;
+		}
 	}
 
 	public LSComboMultPlusShield(): string {
@@ -1303,8 +1366,9 @@ export class LeaderSkill {
 		let attributesRequired = data[1];
 		let ATKMultiplier = this.mult(data[2]);
 		let shield = data[3];
+		let boost = this.stringifyBoost(1, ATKMultiplier, shield);
 
-		return `All Attribute cards ATK x${ATKMultiplier}, ${shield}% all damage reduction when attacking with ${attributesRequired} of ${attributeString} orb types at the same time.`;
+		return `All Attribute cards ${boost} when attacking with ${attributesRequired} of ${attributeString} orb types at the same time.`;
 	}
 
 	public LSMatchAttrPlusShield(): string {
@@ -1353,7 +1417,7 @@ export class LeaderSkill {
 		result.push(`ATK x${baseATKMultiplier} when there are ${orbCount} or less orbs on the board after matching.`);
 
 		if (baseATKMultiplier !== maxBonusATK) {
-			result.push(`ATK x1 for every missing orb afterwards, up to ATK x${maxBonusATK}.`);
+			result.push(`ATK multiplier increases by 1 for every missing orb afterwards, up to ATK x${maxBonusATK}.`);
 		}
 
 		return result.join(' ');
@@ -1398,7 +1462,7 @@ export class LeaderSkill {
 		let shield = data[3];
 		let boost = this.stringifyBoost(1, ATKMultiplier, 1, shield);
 
-		return `${boost} when matching ${count}+ ${attributeString} orbs.`;
+		return `${this.capitalizeFirstLetter(boost)} when matching ${count}+ ${attributeString} orbs.`;
 	}
 
 	public LSDualThresholdBoost(): string {
@@ -1426,11 +1490,16 @@ export class LeaderSkill {
 		let RCVMultiplier = firstRCVMultiplier > secondRCVMultiplier ? firstRCVMultiplier : secondRCVMultiplier;
 		let shield = firstShield > secondShield ? firstShield : secondShield;
 
-		if (firstThreshold) {
+		if (firstThreshold && !secondThreshold) {
 			return `All Attribute cards ${firstBoost} when HP ${this.stringifyHPCondition(firstThreshold, true)}.`;
-		} else {
-			return `All Attribute cards ${secondBoost} when HP ${this.stringifyHPCondition(secondThreshold, false)}.`;
+		} else if (firstThreshold && secondThreshold) {
+			return `All Attribute cards ${firstBoost} when HP ${this.stringifyHPCondition(
+				firstThreshold,
+				true
+			)}. All Attribute cards ${secondBoost} when HP ${this.stringifyHPCondition(secondThreshold, false)}.`;
 		}
+
+		return;
 	}
 
 	public LSBonusTimeStatBoost(): string {
@@ -1488,7 +1557,11 @@ export class LeaderSkill {
 		let bonusCombo = data[3];
 		let ATKMultiplier = this.multiFloor(data[2]);
 
-		return `All Attribute cards ATK x${ATKMultiplier} and +${bonusCombo} combo when matching ${minMatch}+ connected ${attributeString} orbs.`;
+		if (ATKMultiplier !== 1) {
+			return `All Attribute cards ATK x${ATKMultiplier} and +${bonusCombo} combo when matching ${minMatch}+ connected ${attributeString} orbs.`;
+		} else {
+			return `+${bonusCombo} combo when matching ${minMatch}+ connected ${attributeString} orbs.`;
+		}
 	}
 
 	public LSLMatchBoost(): string {
@@ -1511,7 +1584,11 @@ export class LeaderSkill {
 		let bonusCombo = data[3];
 		let ATKMultiplier = this.multiFloor(data[2]);
 
-		return `All Attribute cards ATK x${ATKMultiplier} and +${bonusCombo} combo when attacking with ${minAttributesRequired} of ${attributeString} orbs at the same time.`;
+		if (ATKMultiplier !== 1) {
+			return `All Attribute cards ATK x${ATKMultiplier} and +${bonusCombo} combo when attacking with ${minAttributesRequired} of ${attributeString} orbs at the same time.`;
+		} else {
+			return `+${bonusCombo} combo when attacking with ${minAttributesRequired} of ${attributeString} orbs at the same time.`;
+		}
 	}
 
 	public LSDisablePoisonEffects(): string {
@@ -1556,13 +1633,14 @@ export class LeaderSkill {
 	public LSColorComboBonusDamage(): string {
 		let data = this.mergeDefaults([0, 0, 0, 0, 0, 0]);
 		let attributes = this.getAttributesFromMultipleBinary([data[0], data[1], data[2], data[3]]);
-		let attributeString = this.toAttributeString(attributes, 'or');
+
+		let attributeString = this.toAttributeString(attributes, 'and');
 		let minCombosRequired = data[4];
 		let bonusDamage = data[5];
 
 		return `${this.numberWithCommas(
 			bonusDamage
-		)} damage to all enemies, ignore enemy element and defense when attack with ${minCombosRequired} ${attributeString} combos at the same time.`;
+		)} damage to all enemies, ignoring enemy element and defense when attack with ${attributeString} combos at the same time.`;
 	}
 
 	public LSGroupConditionalBoost(): string {
