@@ -174,13 +174,13 @@ export class MonsterParser {
 
 			skillIds.forEach((skillId) => {
 				let skillData = SKILL_DATA[skillId];
-				let leaderSkill = new ActiveSkill(skillData);
-				result.push(leaderSkill.getDetailDescription());
+				let activeSkill = new ActiveSkill(skillData);
+				result.push(activeSkill.getDetailDescription() === null ? 'None' : activeSkill.getDetailDescription());
 			});
 		} else {
 			let skillData = SKILL_DATA[activeSkillId];
-			let leaderSkill = new LeaderSkill(skillData);
-			result.push(leaderSkill.getDetailDescription());
+			let activeSkill = new ActiveSkill(skillData);
+			result.push(activeSkill.getDetailDescription() === null ? 'None' : activeSkill.getDetailDescription());
 		}
 
 		return result;
@@ -237,12 +237,12 @@ export class MonsterParser {
 			skillIds.forEach((skillId) => {
 				let skillData = SKILL_DATA[skillId];
 				let leaderSkill = new LeaderSkill(skillData);
-				result.push(leaderSkill.getDetailDescription());
+				result.push(leaderSkill.getDetailDescription() === null ? 'None' : leaderSkill.getDetailDescription());
 			});
 		} else {
 			let skillData = SKILL_DATA[leaderSkillId];
 			let leaderSkill = new LeaderSkill(skillData);
-			result.push(leaderSkill.getDetailDescription());
+			result.push(leaderSkill.getDetailDescription() === null ? 'None' : leaderSkill.getDetailDescription());
 		}
 
 		return result;

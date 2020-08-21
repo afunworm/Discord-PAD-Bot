@@ -2,12 +2,14 @@ const { skill: SKILL_DATA } = require('../download_skill_data.json');
 import { MonsterParser } from '../classes/monsterParser.class';
 import { LeaderSkill } from './leaderSkill.class';
 
-console.log('\n===========');
-
 //Skill test
-const MONSTER_ID = 3945;
+const MONSTER_ID = 5390;
 let monster = new MonsterParser(MONSTER_ID);
 let leaderSkillId = monster.getLeaderSkill().id;
+
+console.log('\n+=======================================================+');
+console.log('| ' + monster.getName().padEnd(54, ' ') + '|');
+console.log('+=======================================================+');
 
 if (SKILL_DATA[leaderSkillId][2] === 138) {
 	//Multipart

@@ -25,8 +25,8 @@ export class LeaderSkill {
 		this.params = params;
 	}
 
-	public getDetailDescription(): string {
-		let functionToCall = LEADERSKILL_MAP[this.type];
+	public getDetailDescription(): string | null {
+		let functionToCall = LEADERSKILL_MAP[this.type.toString()];
 		return typeof this[functionToCall] === 'function' ? this[functionToCall].call(this) : null;
 	}
 
@@ -388,7 +388,7 @@ export class LeaderSkill {
 		let chance = data[1];
 		let shield = data[2];
 
-		if (chance === 100) {
+		if (chance !== 100) {
 			return `${chance}% chance to have ${shield}% all damage reduction when HP is ${this.stringifyHPCondition(
 				threshold
 			)}.`;

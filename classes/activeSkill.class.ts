@@ -25,8 +25,8 @@ export class ActiveSkill {
 		this.params = params;
 	}
 
-	public getDetailDescription(): string {
-		let functionToCall = ACTIVESKILL_MAP[this.type];
+	public getDetailDescription(): string | null {
+		let functionToCall = ACTIVESKILL_MAP[this.type.toString()];
 		return typeof this[functionToCall] === 'function' ? this[functionToCall].call(this) : null;
 	}
 
@@ -225,9 +225,9 @@ export class ActiveSkill {
 		let data = this.mergeDefaults([0, 1]);
 		let attribute = [data[0]];
 		let attributeString = this.toAttributeString(attribute);
-		let multiplier = this.mult(data[1]);
+		let damage = this.mult(data[1]);
 
-		return `Inflict ${attributeString} damage equal to ATK x${multiplier} to all enemies. Affected by enemy element and defense.`;
+		return `Inflict ${this.numberWithCommas(damage)} ${attributeString} damage on all enemies.`;
 	}
 
 	public ASMultiplierSelfAttrSingleTargetNuke(): string {
@@ -617,14 +617,14 @@ export class ActiveSkill {
 		return result.length > 0 ? result.join(' ') : '';
 	}
 
-	public ASRandomSkill(): string[] {
+	public ASRandomSkill(): string {
 		//@TODO: CHECK ON DOROTHY'S SKILL TYPES
 		let skillIds = this.params;
-		let skillNames = [];
+		let result = [];
 
-		skillIds.forEach((skillId) => skillNames.push('{{' + skillId + '}} ' + SKILL_DATA[skillId][0]));
+		skillIds.forEach((skillId) => result.push('{{' + skillId + '}} ' + SKILL_DATA[skillId][0]));
 
-		return skillNames;
+		return result.join('\n');
 	}
 
 	public ASIncreasedSkyfallChance(): string {
@@ -725,7 +725,6 @@ export class ActiveSkill {
 
 	public ASAttrNukeOfAttrTwoAtk(): string {
 		let data = this.mergeDefaults([0, 0, 0, 0]);
-		console.log(this.getRawSkillData());
 		let teamAttribute = this.getAttributesFromBinary(data[0]);
 		let teamAttributeString = this.toAttributeString(teamAttribute);
 		let multiplier = this.mult(data[1]);
