@@ -36,6 +36,7 @@ let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 				isEvoReversible: monster.isEvoReversible(),
 				isInheritable: monster.isInheritable(),
 				isExtraSlottable: monster.isExtraSlottable(),
+				isLimitBreakable: monster.isLimitBreakable(),
 				types: monster.getTypes(),
 				typesReadable: monster.getReadableTypes(),
 				rarity: monster.getRarity(),

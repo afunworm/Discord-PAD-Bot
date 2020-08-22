@@ -36,6 +36,7 @@ export interface MonsterData {
 	isEvoReversible: boolean;
 	isInheritable: boolean;
 	isExtraSlottable: boolean;
+	isLimitBreakable: boolean;
 	types: number[];
 	typesReadable: string[];
 	rarity: number;
