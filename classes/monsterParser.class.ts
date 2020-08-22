@@ -19,6 +19,14 @@ export class MonsterParser {
 		this.data = MONSTER_DATA[id];
 	}
 
+	static getMonsterDatabaseLength(): number {
+		return MONSTER_DATA.length;
+	}
+
+	static getSkillDatabaseLength(): number {
+		return SKILL_DATA.length;
+	}
+
 	private getLatentKillers(types): number[] {
 		let map: { [key: string]: number[] } = {
 			'1': [1, 2, 3, 4, 5, 6, 7, 8], //Balanced (1) can take all
@@ -370,7 +378,7 @@ export class MonsterParser {
 		let superAwakening = this.data[superAwakeningsIndex];
 
 		if (superAwakening.toString().includes(',')) {
-			return superAwakening.split(',');
+			return superAwakening.split(',').map((awakening) => Number(awakening));
 		} else {
 			return superAwakening === '' ? [] : [superAwakening];
 		}
