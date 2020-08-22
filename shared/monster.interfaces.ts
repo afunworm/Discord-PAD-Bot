@@ -2,8 +2,9 @@ export interface ActiveSkillData {
 	id: number;
 	name: string;
 	description: string;
-	cooldownAtLevelMax: string;
-	cooldownAtLevel1: string;
+	cooldown: number;
+	maxSkillLevel: number;
+	cooldownAtMaxLevel: number;
 	types: number[];
 }
 export interface LeaderSkillData {
