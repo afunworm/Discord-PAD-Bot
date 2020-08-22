@@ -2,6 +2,7 @@ export interface ActiveSkillData {
 	id: number;
 	name: string;
 	description: string;
+	descriptionDetails: string[];
 	cooldown: number;
 	maxSkillLevel: number;
 	cooldownAtMaxLevel: number;
