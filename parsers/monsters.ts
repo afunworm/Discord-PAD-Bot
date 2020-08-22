@@ -4,6 +4,7 @@
 require('dotenv').config({ path: '../.env' });
 import * as admin from 'firebase-admin';
 import { MonsterParser } from '../classes/monsterParser.class';
+import { MonsterData } from '../shared/monster.interfaces';
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -16,70 +17,6 @@ if (admin.apps.length === 0) {
 }
 const firestore = admin.firestore();
 
-/*-------------------------------------------------------*
- * INTERFACES
- *-------------------------------------------------------*/
-interface ActiveSkillData {
-	id: number;
-	name: string;
-	description: string;
-	cooldownAtLevelMax: string;
-	cooldownAtLevel1: string;
-	types: number[];
-}
-interface LeaderSkillData {
-	id: number;
-	name: string;
-	description: string;
-	descriptionDetails: string[];
-	types: number[];
-}
-interface EnemyData {
-	turnTimer: number;
-	minHP: number;
-	maxHP: number;
-	minATK: number;
-	maxATK: number;
-	minDEF: number;
-	maxDEF: number;
-	coinDropped: number;
-	expDropped: number;
-}
-interface MonsterData {
-	id: number;
-	mainAttribute: number;
-	mainAttributeReadable: string;
-	subAttribute: number;
-	subAttributeReadable: string;
-	isEvoReversible: boolean;
-	types: number[];
-	typesReadable: string[];
-	cost: number;
-	maxLevel: number;
-	feedExp: number;
-	sellPrice: number;
-	minHP: number;
-	maxHP: number;
-	minATK: number;
-	maxATK: number;
-	minRCV: number;
-	maxRCV: number;
-	expCurve: number;
-	activeSkill: ActiveSkillData;
-	leaderSkill: LeaderSkillData;
-	asEnemy: EnemyData;
-	previousEvoId: number;
-	evoMaterial: number[];
-	devoMaterial: number[];
-	awakenings: number[];
-	awakeningsReadable: string[];
-	superAwakenings: number[];
-	superAwakeningsReadable: string[];
-	monsterPoints: number;
-	limitBreakPercentage: number;
-	transformIntoId: number;
-}
-
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 
@@ -88,7 +25,7 @@ let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 		try {
 			let monster = new MonsterParser(id);
 
-			let data = {
+			let data: MonsterData = {
 				_lastUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
 				id: monster.getId(),
 				name: monster.getName(),
@@ -97,6 +34,8 @@ let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 				subAttribute: monster.getSubAttribute(),
 				subAttributeReadable: monster.getReadableSubAttribute(),
 				isEvoReversible: monster.isEvoReversible(),
+				isInheritable: monster.isInheritable(),
+				isExtraSlottable: monster.isExtraSlottable(),
 				types: monster.getTypes(),
 				typesReadable: monster.getReadableTypes(),
 				rarity: monster.getRarity(),
@@ -135,7 +74,8 @@ let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 				limitBreakPercentage: monster.getLimitBreakPercentage(),
 				transformIntoId: monster.getTransformIntoId(),
 			};
-			await firestore.collection('Monsters').doc(id.toString()).set(data);
+			console.log(data);
+			// await firestore.collection('Monsters').doc(id.toString()).set(data);
 			console.log(`Parsed data for monster id ${id}`);
 		} catch (error) {
 			console.log(error.message);
