@@ -460,4 +460,28 @@ export class MonsterParser {
 
 		return this.getLatentKillers(types);
 	}
+
+	public isInheritable(): boolean {
+		let skillCount = this.data[57];
+		let moveSets = skillCount * 3;
+		let numberOfAwakeningsIndex = 57 + moveSets + 1;
+		let numberOfAwakenings = this.data[numberOfAwakeningsIndex];
+		let superAwakeningsIndex = numberOfAwakeningsIndex + numberOfAwakenings + 1;
+		let inheritanceTypeIndex = superAwakeningsIndex + 7;
+		let inheritanceType = this.data[inheritanceTypeIndex];
+
+		return !!(inheritanceType & 1); //Last index, so 0b000001 is inheritable
+	}
+
+	public isExtraSlottable(): boolean {
+		let skillCount = this.data[57];
+		let moveSets = skillCount * 3;
+		let numberOfAwakeningsIndex = 57 + moveSets + 1;
+		let numberOfAwakenings = this.data[numberOfAwakeningsIndex];
+		let superAwakeningsIndex = numberOfAwakeningsIndex + numberOfAwakenings + 1;
+		let inheritanceTypeIndex = superAwakeningsIndex + 7;
+		let inheritanceType = this.data[inheritanceTypeIndex];
+
+		return !!(inheritanceType & 32); //0b100000 is extra slottable
+	}
 }
