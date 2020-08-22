@@ -224,8 +224,9 @@ export class MonsterParser {
 			name: skillData[0],
 			description: skillData[1],
 			descriptionDetails: this.getActiveSkillDescriptionDetails(skillId),
-			cooldownAtLevelMax: skillData[3],
-			cooldownAtLevel1: skillData[4],
+			cooldown: skillData[4],
+			maxSkillLevel: skillData[3],
+			cooldownAtMaxLevel: Number(skillData[4]) - Number(skillData[3]) + 1,
 			types: this.getActiveSkillTypes(skillId),
 		};
 	}
