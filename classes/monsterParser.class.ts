@@ -435,6 +435,10 @@ export class MonsterParser {
 		return this.data[limitBreakPercentageIndex];
 	}
 
+	public isLimitBreakable(): boolean {
+		return this.getLimitBreakPercentage() > 0;
+	}
+
 	public getTransformIntoId(): number | null {
 		let skillCount = this.data[57];
 		let moveSets = skillCount * 3;
