@@ -4,6 +4,7 @@
 require('dotenv').config({ path: '../.env' });
 import * as admin from 'firebase-admin';
 import { AWAKEN_EMOTES } from '../shared/monster.awakens';
+import { KILLER_EMOTES } from '../shared/monster.awakens';
 import { MonsterData } from '../shared/monster.interfaces';
 import { MONSTER_TYPES } from '../shared/monster.types';
 import { MonsterParser } from './monsterParser.class';
@@ -74,6 +75,18 @@ export class Monster {
 
 	public getName(): string {
 		return this.monsterData.name;
+	}
+
+	private killerEmotesMapping(killerLatents): string[] {
+		let result = [];
+		for (let i = 0; i < killerLatents.length; i++) {
+			let temp = KILLER_EMOTES[killerLatents[i]];
+			if (temp != 'None') {
+				result.push(temp);
+			}
+		}
+
+		return result;
 	}
 
 	private awakenEmotesMapping(awakenList): string {
@@ -293,6 +306,7 @@ export class Monster {
 
 	public getAvailableKillers(): string {
 		let killerLatents = this.getLatentKillers();
-		return killerLatents.length ? this.mapTypes(this.getLatentKillers()).join(' | ') : 'None';
+		return this.killerEmotesMapping(killerLatents).join(' ');
+		//return killerLatents.length ? this.mapTypes(this.getLatentKillers()).join(' | ') : 'None';
 	}
 }
