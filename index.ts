@@ -57,7 +57,7 @@ client.on('message', async (message: any) => {
 		//Always initialize card before further processing
 		await card.init();
 
-		if ((!infoType || infoType === 'info') && !actionType) {
+		if ((!infoType && !actionType) || (!infoType && actionType) || infoType === 'info') {
 			await helper.sendMonsterInfo(card);
 		} else if (infoType === 'photo') {
 			await helper.sendMonsterImage(card);

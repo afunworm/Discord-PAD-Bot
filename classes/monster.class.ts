@@ -104,22 +104,6 @@ export class Monster {
 		return result ? result : '';
 	}
 
-	private killerEmotesMapping(awakenList): string {
-		//@TODO: Modify to use killers instead
-		let result = '';
-		for (let i = 0; i < awakenList.length; i++) {
-			if (awakenList[i] === '') {
-				return '';
-			}
-			let temp = AWAKEN_EMOTES[awakenList[i]];
-			if (temp != 'None') {
-				result += ' ' + temp;
-			}
-		}
-
-		return result ? result : '';
-	}
-
 	private getAwakenings(): number[] {
 		return this.monsterData.awakenings;
 	}
@@ -342,6 +326,5 @@ export class Monster {
 	public getAvailableKillers(): string {
 		let killerLatents = this.getLatentKillers();
 		return this.killerEmotesMapping(killerLatents).join(' ');
-		//return killerLatents.length ? this.mapTypes(this.getLatentKillers()).join(' | ') : 'None';
 	}
 }
