@@ -76,7 +76,6 @@ client.on('message', async (message: any) => {
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
-		console.log(result.queryResult.parameters);
 		let action = result.queryResult.action;
 		let infoType = result.queryResult.parameters.fields?.infoType.stringValue || null;
 		let cardId = result.queryResult.parameters.fields?.number?.numberValue || null;
