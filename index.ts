@@ -30,10 +30,16 @@ class Helper {
 				{ name: card.getAwakenEmotes(), value: card.getSuperAwakenEmotes() },
 				{ name: 'Available Killers', value: card.getAvailableKillers() },
 				{ name: 'Info', value: card.getGenericInfo(), inline: true },
-				{ name: 'Stats', value: card.getStats(), inline: true },
-				{ name: card.getActiveSkillHeader(), value: card.getActiveSkillDescription() },
-				{ name: card.getLeaderSkillHeader(), value: card.getLeaderSkillDescription() }
+				{ name: 'Stats', value: card.getStats(), inline: true }
 			);
+
+		if (card.hasActiveSkill()) {
+			embed.addFields({ name: card.getActiveSkillHeader(), value: card.getActiveSkillDescription() });
+		}
+
+		if (card.hasLeaderSkill()) {
+			embed.addFields({ name: card.getLeaderSkillHeader(), value: card.getLeaderSkillDescription() });
+		}
 
 		return this._channel.send(embed);
 	}

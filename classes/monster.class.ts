@@ -80,7 +80,7 @@ export class Monster {
 		let result = '';
 		for (let i = 0; i < awakenList.length; i++) {
 			if (awakenList[i] === '') {
-				return 'No Awakenings';
+				return '';
 			}
 			let temp = AWAKEN_EMOTES[awakenList[i]];
 			if (temp != 'None') {
@@ -88,7 +88,7 @@ export class Monster {
 			}
 		}
 
-		return result ? result : 'No Awakenings';
+		return result ? result : '';
 	}
 
 	private getAwakenings(): number[] {
@@ -96,7 +96,8 @@ export class Monster {
 	}
 
 	public getAwakenEmotes(): string {
-		return this.awakenEmotesMapping(this.getAwakenings());
+		let awakenings = this.getAwakenings();
+		return awakenings.length ? this.awakenEmotesMapping(awakenings) : 'No Awakenings';
 	}
 
 	public getSuperAwakenings(): number[] {
@@ -104,7 +105,8 @@ export class Monster {
 	}
 
 	public getSuperAwakenEmotes(): string {
-		return this.awakenEmotesMapping(this.getSuperAwakenings());
+		let superAwakenings = this.getSuperAwakenings();
+		return superAwakenings.length ? this.awakenEmotesMapping(superAwakenings) : 'No Super Awakenings';
 	}
 
 	public getTypesReadable(): string[] {
@@ -225,7 +227,7 @@ export class Monster {
 	public getActiveSkillDescription(): string {
 		let activeSkill = this.monsterData.activeSkill;
 
-		if (this.hasActiveSkill()) {
+		if (!this.hasActiveSkill()) {
 			return 'None';
 		}
 
@@ -252,7 +254,7 @@ export class Monster {
 	public getLeaderSkillDescription(): string {
 		let leaderSkill = this.monsterData.leaderSkill;
 
-		if (this.hasLeaderSkill()) {
+		if (!this.hasLeaderSkill()) {
 			return 'None';
 		}
 
@@ -290,6 +292,7 @@ export class Monster {
 	}
 
 	public getAvailableKillers(): string {
-		return this.mapTypes(this.getLatentKillers()).join(' | ');
+		let killerLatents = this.getLatentKillers();
+		return killerLatents.length ? this.mapTypes(this.getLatentKillers()).join(' | ') : 'None';
 	}
 }
