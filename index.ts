@@ -31,8 +31,8 @@ class Helper {
 				{ name: 'Available Killers', value: card.getAvailableKillers() },
 				{ name: 'Info', value: card.getGenericInfo(), inline: true },
 				{ name: 'Stats', value: card.getStats(), inline: true },
-				{ name: card.getActiveSkillHeader(), value: card.getActiveSkillBody() },
-				{ name: 'Leader Skill', value: card.getLeaderSkill() }
+				{ name: card.getActiveSkillHeader(), value: card.getActiveSkillDescription() },
+				{ name: card.getLeaderSkillHeader(), value: card.getLeaderSkillDescription() }
 			);
 
 		return this._channel.send(embed);

@@ -212,14 +212,20 @@ export class Monster {
 		let activeSkill = this.monsterData.activeSkill;
 
 		return activeSkill.id === 0
-			? 'Active Skill'
-			: `Active Skill (${activeSkill.cooldown} -> ${activeSkill.cooldownAtMaxLevel})`;
+			? ''
+			: `Active Skill: ${activeSkill.name} (${activeSkill.cooldown} -> ${activeSkill.cooldownAtMaxLevel})`;
 	}
 
-	public getActiveSkillBody(): string {
+	public hasActiveSkill(): boolean {
 		let activeSkill = this.monsterData.activeSkill;
 
-		if (activeSkill.id === 0 || this.monsterData.activeSkill.descriptionDetails.length === 0) {
+		return !(activeSkill.id === 0 || !activeSkill.descriptionDetails);
+	}
+
+	public getActiveSkillDescription(): string {
+		let activeSkill = this.monsterData.activeSkill;
+
+		if (this.hasActiveSkill()) {
 			return 'None';
 		}
 
@@ -231,10 +237,22 @@ export class Monster {
 		return result.length <= 0 ? 'None' : result.join('\n');
 	}
 
-	public getLeaderSkill(): string {
+	public getLeaderSkillHeader(): string {
 		let leaderSkill = this.monsterData.leaderSkill;
 
-		if (leaderSkill.id === 0) {
+		return leaderSkill.id === 0 ? '' : `Leader Skill: ${leaderSkill.name}`;
+	}
+
+	public hasLeaderSkill(): boolean {
+		let leaderSkill = this.monsterData.leaderSkill;
+
+		return leaderSkill.id !== 0;
+	}
+
+	public getLeaderSkillDescription(): string {
+		let leaderSkill = this.monsterData.leaderSkill;
+
+		if (this.hasLeaderSkill()) {
 			return 'None';
 		}
 
