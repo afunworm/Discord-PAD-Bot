@@ -12,10 +12,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-//UNCOMMENT THE FOLLOWING TO KNOW THE SIZE OF THE CURRENT DATABASE
-console.log('Database size: ' + Monster.getDatabaseLength());
-process.exit();
-
 /*-------------------------------------------------------*
  * Handlers
  *-------------------------------------------------------*/
@@ -48,6 +44,13 @@ class Helper {
 			files: [imageUrl],
 		});
 	}
+
+	public sendMonsterIcon(card: Monster) {
+		const imageUrl = card.getThumbnailUrl();
+		this._channel.send(`${card.getId()}: ${card.getName()}`, {
+			files: [imageUrl],
+		});
+	}
 }
 
 /*-------------------------------------------------------*
@@ -73,9 +76,11 @@ client.on('message', async (message: any) => {
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
+		console.log(result.queryResult.parameters);
 		let action = result.queryResult.action;
+		let infoType = result.queryResult.parameters.fields?.infoType.stringValue || null;
 		let cardId = result.queryResult.parameters.fields?.number?.numberValue || null;
-		let acceptedActions = ['card.info', 'card.image'];
+		let acceptedActions = ['card.info'];
 
 		//Only if AI detects the card id and the actions
 		if (!acceptedActions.includes(action) || cardId === null) {
@@ -84,20 +89,19 @@ client.on('message', async (message: any) => {
 			return;
 		}
 
-		//Check if card exists in the database
-		if (!Number.isInteger(cardId) || cardId > Monster.getDatabaseLength()) {
-			await message.channel.send(`Cannot find card.`);
-			return;
-		}
-
 		//Get info
 		let card = new Monster(cardId);
 		let helper = new Helper(message.channel);
 
-		if (action === 'card.info') {
+		//Always initialize card before further processing
+		await card.init();
+
+		if (!infoType || infoType === 'info') {
 			await helper.sendMonsterInfo(card);
-		} else if (action === 'card.image') {
+		} else if (infoType === 'photo') {
 			await helper.sendMonsterImage(card);
+		} else if (infoType === 'icon') {
+			await helper.sendMonsterIcon(card);
 		}
 	} catch (error) {
 		console.log('ERROR: ', error);

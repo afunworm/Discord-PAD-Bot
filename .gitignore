@@ -4,3 +4,4 @@ serviceAccount.json
 environment.ts
 **/*.js
 .env
+assets

@@ -8,6 +8,11 @@ export interface QueryResultInterface {
 			fields: {
 				number: {
 					numberValue: number;
+					kind: 'numberValue';
+				};
+				infoType: {
+					stringValue: string;
+					kind: 'stringValue';
 				};
 			};
 		};
