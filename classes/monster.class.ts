@@ -91,6 +91,22 @@ export class Monster {
 		return result ? result : '';
 	}
 
+	private killerEmotesMapping(awakenList): string {
+		//@TODO: Modify to use killers instead
+		let result = '';
+		for (let i = 0; i < awakenList.length; i++) {
+			if (awakenList[i] === '') {
+				return '';
+			}
+			let temp = AWAKEN_EMOTES[awakenList[i]];
+			if (temp != 'None') {
+				result += ' ' + temp;
+			}
+		}
+
+		return result ? result : '';
+	}
+
 	private getAwakenings(): number[] {
 		return this.monsterData.awakenings;
 	}
@@ -231,6 +247,16 @@ export class Monster {
 			return 'None';
 		}
 
+		return activeSkill.description;
+	}
+
+	public getActiveSkillDescriptionDetails(): string {
+		let activeSkill = this.monsterData.activeSkill;
+
+		if (!this.hasActiveSkill()) {
+			return 'None';
+		}
+
 		let result = [];
 		activeSkill.descriptionDetails.forEach((skill, index) => {
 			result.push(`[${index + 1}] ${skill}`);
@@ -258,6 +284,16 @@ export class Monster {
 			return 'None';
 		}
 
+		return leaderSkill.description.replace(/\^[0-9a-f]{6}\^([^^]+)\^\w+/g, '$1');
+	}
+
+	public getLeaderSkillDescriptionDetails(): string {
+		let leaderSkill = this.monsterData.leaderSkill;
+
+		if (!this.hasLeaderSkill()) {
+			return 'None';
+		}
+
 		let result = [];
 		leaderSkill.descriptionDetails.forEach((skill, index) => {
 			// Regex to remove color formatting text - https://regex101.com/r/pMMKCH/1
@@ -275,15 +311,14 @@ export class Monster {
 	public getThumbnailUrl(): string {
 		let cardId = this.id.toString();
 		cardId = this.fixCardNoLength(cardId);
-		// return `http://puzzledragonx.com/en/img/book/${this.id}.png`;
 
-		//The following needs to be fixed
 		return `https://static.pad.byh.uy/icons/${cardId}.png`;
 	}
 
 	public getImageUrl(): string {
 		let cardId = this.id.toString();
 		cardId = this.fixCardNoLength(cardId);
+
 		return `https://static.pad.byh.uy/images/${cardId}.png`;
 	}
 

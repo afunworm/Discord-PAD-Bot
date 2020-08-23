@@ -4,6 +4,7 @@
 require('dotenv').config();
 import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
+import { Helper } from './classes/helper.class';
 const Discord = require('discord.js');
 
 /*-------------------------------------------------------*
@@ -11,53 +12,6 @@ const Discord = require('discord.js');
  *-------------------------------------------------------*/
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
-
-/*-------------------------------------------------------*
- * Handlers
- *-------------------------------------------------------*/
-class Helper {
-	private _channel;
-	constructor(channel) {
-		this._channel = channel;
-	}
-	public sendMonsterInfo(card: Monster) {
-		let embed = new Discord.MessageEmbed()
-			.setColor('#0099ff')
-			.setTitle(`${card.getId()}: ${card.getName()}`)
-			.setURL(card.getUrl())
-			.setThumbnail(card.getThumbnailUrl())
-			.addFields(
-				{ name: card.getAwakenEmotes(), value: card.getSuperAwakenEmotes() },
-				{ name: 'Available Killers', value: card.getAvailableKillers() },
-				{ name: 'Info', value: card.getGenericInfo(), inline: true },
-				{ name: 'Stats', value: card.getStats(), inline: true }
-			);
-
-		if (card.hasActiveSkill()) {
-			embed.addFields({ name: card.getActiveSkillHeader(), value: card.getActiveSkillDescription() });
-		}
-
-		if (card.hasLeaderSkill()) {
-			embed.addFields({ name: card.getLeaderSkillHeader(), value: card.getLeaderSkillDescription() });
-		}
-
-		return this._channel.send(embed);
-	}
-
-	public sendMonsterImage(card: Monster) {
-		const imageUrl = card.getImageUrl();
-		this._channel.send(`${card.getId()}: ${card.getName()}`, {
-			files: [imageUrl],
-		});
-	}
-
-	public sendMonsterIcon(card: Monster) {
-		const imageUrl = card.getThumbnailUrl();
-		this._channel.send(`${card.getId()}: ${card.getName()}`, {
-			files: [imageUrl],
-		});
-	}
-}
 
 /*-------------------------------------------------------*
  * App
@@ -77,18 +31,21 @@ client.on('message', async (message: any) => {
 
 	let userId = message.author.id;
 	let ai = new AI(userId);
+	let helper = new Helper(message.channel);
 	let input = message.content;
 	input = input.replace(client.user.id, ''); // stripping ping from message
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
 		let action = result.queryResult.action;
-		let infoType = result.queryResult.parameters.fields?.infoType.stringValue || null;
+		let infoType = result.queryResult.parameters.fields?.infoType?.stringValue || null;
+		let questionType = result.queryResult.parameters.fields?.questionType?.stringValue || null;
+		let actionType = result.queryResult.parameters.fields?.actionType?.stringValue || null;
 		let cardId = result.queryResult.parameters.fields?.number?.numberValue || null;
 		let acceptedActions = ['card.info'];
 
 		//Only if AI detects the card id and the actions
-		if (!acceptedActions.includes(action) || cardId === null) {
+		if ((!acceptedActions.includes(action) || cardId === null) && (!actionType || cardId === null)) {
 			//TODO - PROCESS IT USING OLD-SCHOOL METHODS
 			await message.channel.send(`I'm sorry. I don't quite understand that.`);
 			return;
@@ -96,19 +53,41 @@ client.on('message', async (message: any) => {
 
 		//Get info
 		let card = new Monster(cardId);
-		let helper = new Helper(message.channel);
 
 		//Always initialize card before further processing
 		await card.init();
 
-		if (!infoType || infoType === 'info') {
+		if ((!infoType || infoType === 'info') && !actionType) {
 			await helper.sendMonsterInfo(card);
 		} else if (infoType === 'photo') {
 			await helper.sendMonsterImage(card);
 		} else if (infoType === 'icon') {
 			await helper.sendMonsterIcon(card);
+		} else if (infoType === 'name' || actionType === 'call' || actionType === 'name') {
+			await helper.sendMonsterName(card);
+		} else if (infoType === 'awakenings' || infoType === 'superAwakenings') {
+			await helper.sendAwakenings(card);
+		} else if (infoType === 'types') {
+			await helper.sendTypes(card);
+		} else if (
+			infoType === 'stats' ||
+			infoType === 'hp' ||
+			infoType === 'attack' ||
+			infoType === 'recover' ||
+			(questionType === 'how' && infoType === 'stats')
+		) {
+			await helper.sendMonsterStats(card);
+		} else if (infoType === 'rarity') {
+			await helper.sendMonsterRarity(card);
+		} else if (infoType === 'assist') {
+			await helper.sendMonsterIsInheritable(card);
+		} else if (infoType === 'activeSkills') {
+			await helper.sendMonsterActiveSkills(card);
+		} else if (infoType === 'leaderSkills') {
+			await helper.sendMonsterLeaderSkills(card);
 		}
 	} catch (error) {
+		await helper.sendMessage('It looks like something went wrong. Can you say it again?');
 		console.log('ERROR: ', error);
 	}
 });

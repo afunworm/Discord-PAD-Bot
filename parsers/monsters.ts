@@ -3,8 +3,6 @@
  *-------------------------------------------------------*/
 require('dotenv').config({ path: '../.env' });
 import * as admin from 'firebase-admin';
-import { MonsterParser } from '../classes/monsterParser.class';
-import { MonsterData } from '../shared/monster.interfaces';
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN

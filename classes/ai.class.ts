@@ -14,6 +14,14 @@ export interface QueryResultInterface {
 					stringValue: string;
 					kind: 'stringValue';
 				};
+				questionType: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				actionType: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
 			};
 		};
 	};
