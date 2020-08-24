@@ -151,7 +151,7 @@ let evoTreeData = [];
 		}
 	}
 
-	await fs.writeFileSync('./evoList.txt', JSON.stringify(data)); //For debugging
+	// await fs.writeFileSync('./evoList.txt', JSON.stringify(data)); //For debugging
 
 	console.log('Database parsing completed');
 	process.exit();
