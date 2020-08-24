@@ -393,9 +393,9 @@ export class ActiveSkill {
 		let multiplier = this.mult(data[2]);
 
 		if (attribute === 5) {
-			return `${attributeString} attribute RCV x${multiplier} for ${duration} turns.`;
+			return `All Attribute cards RCV x${multiplier} for ${duration} turns.`;
 		} else {
-			return `${attributeString} attribute ATK x${multiplier} for ${duration} turns.`;
+			return `${attributeString} Attribute ATK x${multiplier} for ${duration} turns.`;
 		}
 	}
 
