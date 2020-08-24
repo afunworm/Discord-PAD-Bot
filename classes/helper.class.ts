@@ -5,10 +5,27 @@ const Discord = require('discord.js');
 
 export class Helper {
 	private _channel;
+	private _message;
+	private _threads = {};
 
-	constructor(channel) {
-		this._channel = channel;
+	constructor(message) {
+		this._message = message;
+		this._channel = message.channel;
 	}
+
+	public registerMessageThread(userId, monsterId) {
+		if (!this._threads[userId]) {
+			this._threads[userId] = {
+				monsterId: monsterId,
+			};
+		}
+	}
+
+	public getPreviousThreadData(userId) {
+		return this._threads[userId] ? this._threads[userId] : null;
+	}
+
+	private numberWithCommas = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 	private fillTemplate(templateString: string, templateVars: { [key: string]: string }): string {
 		let result = templateString;
@@ -73,7 +90,7 @@ export class Helper {
 
 	public sendMonsterIcon(card: Monster) {
 		const imageUrl = card.getThumbnailUrl();
-		this._channel.send(`${card.getId()}: ${card.getName()}`, {
+		this._channel.send(`**${card.getName()}** (#${card.getId()})`, {
 			files: [imageUrl],
 		});
 	}
@@ -198,5 +215,31 @@ export class Helper {
 			);
 
 		this._channel.send(embed);
+	}
+
+	public sendMonsterMonsterPoints(card: Monster) {
+		let response = this.dynamicResponse('ON_MONSTERPOINTS_REQUEST', {
+			id: card.getId().toString(),
+			name: card.getName(),
+			monsterPoints: this.numberWithCommas(card.getMonsterPoints()),
+		});
+		this._channel.send(response);
+	}
+
+	public async sendMonsterEvoTree(card: Monster) {
+		let reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+
+		let message = await this.sendMonsterInfo(card);
+
+		let numberOfEvos = 10;
+		let promises = [];
+		for (let i = 0; i < numberOfEvos; i++) {
+			let reaction = reactions[i];
+			promises.push(message.react(reaction));
+		}
+
+		Promise.all(promises).catch((error) => {
+			throw new Error('Unable to react to messages. Please tell my master.');
+		});
 	}
 }

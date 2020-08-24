@@ -22,6 +22,10 @@ export interface QueryResultInterface {
 					stringValue: string;
 					kind: 'stringValue';
 				};
+				targetActionType: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
 			};
 		};
 	};

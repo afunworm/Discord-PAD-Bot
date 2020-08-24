@@ -28,4 +28,11 @@ export const RESPONSE_PHRASES = {
 		`**{{name}}** (#{{id}}) doesn't seem to have any leader skills.`,
 		`There is no leader skill for **{{name}}** (#{{id}}).`,
 	],
+	ON_MONSTERPOINTS_REQUEST: [
+		`**{{name}}** (#{{id}}) can be sold for {{monsterPoints}} MP.`,
+		`You can sell **{{name}}** (#{{id}}) for {{monsterPoints}} MP!`,
+		`I sold **{{name}}** (#{{id}}) before, got {{monsterPoints}} MP!`,
+		`**{{name}}** (#{{id}}) will give you {{monsterPoints}} MP if you decide to sell it.`,
+		`I'm pretty sure you can sell **{{name}}** (#{{id}}) for {{monsterPoints}} MP.`,
+	],
 };
