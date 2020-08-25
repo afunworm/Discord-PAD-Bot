@@ -26,6 +26,18 @@ export interface QueryResultInterface {
 					stringValue: string;
 					kind: 'stringValue';
 				};
+				monsterAttribute1: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				monsterAttribute2: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				monsterName: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
 			};
 		};
 	};

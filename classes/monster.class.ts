@@ -69,6 +69,10 @@ export class Monster {
 		});
 	}
 
+	getFullData() {
+		return this.monsterData;
+	}
+
 	public getId(): number {
 		return this.id;
 	}
@@ -326,5 +330,9 @@ export class Monster {
 	public getAvailableKillers(): string {
 		let killerLatents = this.getLatentKillers();
 		return this.killerEmotesMapping(killerLatents).join(' ');
+	}
+
+	public getEvoTree(): number[] {
+		return this.monsterData.evoTree;
 	}
 }

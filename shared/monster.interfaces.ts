@@ -65,4 +65,5 @@ export interface MonsterData {
 	monsterPoints: number;
 	limitBreakPercentage: number;
 	transformIntoId: number;
+	evoTree?: number[];
 }

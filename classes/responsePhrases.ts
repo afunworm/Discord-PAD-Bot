@@ -35,4 +35,16 @@ export const RESPONSE_PHRASES = {
 		`**{{name}}** (#{{id}}) will give you {{monsterPoints}} MP if you decide to sell it.`,
 		`I'm pretty sure you can sell **{{name}}** (#{{id}}) for {{monsterPoints}} MP.`,
 	],
+	ON_EVOLIST_REQUEST: [
+		`I found {{numberOfEvos}} forms for **{{name}}** (#{{id}})!`,
+		`Here are all {{numberOfEvos}} forms of **{{name}}** (#{{id}})!`,
+		,
+		`These are what I found for **{{name}}** (#{{id}})!`,
+	],
+	ON_EVOLIST_REQUEST_SINGLE_EVO: [
+		`**{{name}}** (#{{id}}) only has 1 form:`,
+		`There are no other evolutions for **{{name}}** (#{{id}})!`,
+		,
+		`I cannot find any more evolutions for **{{name}}** (#{{id}})!`,
+	],
 };

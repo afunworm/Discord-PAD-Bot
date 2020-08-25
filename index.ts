@@ -5,6 +5,7 @@ require('dotenv').config();
 import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
 import { Helper } from './classes/helper.class';
+import { request } from 'http';
 const Discord = require('discord.js');
 const NodeCache = require('node-cache');
 const cache = new NodeCache();
@@ -50,7 +51,8 @@ client.on('message', async (message: any) => {
 	let ai = new AI(userId);
 	let helper = new Helper(message);
 	let input = message.content;
-	input = input.replace(client.user.id, ''); // stripping ping from message
+	input = input.replace(client.user.id, ''); //Stripping ping from message
+	input = Helper.replaceCommonAbbreviation(input); //Replace common terms, such as dr, l/d, etc.
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
@@ -75,6 +77,51 @@ client.on('message', async (message: any) => {
 
 		//What type of action the targeted monster is doing? For example: How much does Anubis COST?
 		let targetActionType = result.queryResult.parameters.fields?.targetActionType?.stringValue || null;
+
+		//Monster attributes, if any
+		let attribute1 = result.queryResult.parameters.fields?.monsterAttribute1?.stringValue || null;
+		let attribute2 = result.queryResult.parameters.fields?.monsterAttribute2?.stringValue || null;
+		//Sometimes attribute2 is detected but not attribute1
+		if (attribute2 && !attribute1) {
+			//Don't overwrite attribute2 with null, instead, give it attribute1's old value
+			let temp = attribute1;
+			attribute1 = attribute2;
+			attribute2 = temp;
+		}
+
+		//Monster name, if any
+		let baseMonsterId = result.queryResult.parameters.fields?.monsterName?.stringValue || null;
+
+		//If the ID is not provided, try to see if we can get the ID from guessing the name
+		//But the monster name has to exists
+		if (!cardId && baseMonsterId) {
+			let specific2AttributeFilter =
+				(attribute1 !== null && attribute2 === 'none') || (attribute1 !== null && attribute2 !== null);
+
+			let cardIds = await Helper.detectMonsterIdFromName(
+				baseMonsterId,
+				attribute1 || 'none',
+				attribute2 || 'none',
+				specific2AttributeFilter
+			);
+
+			if (cardIds.length === 0) {
+				await helper.sendMessage(
+					'I am not able to find that monster. Please double check the attributes and name. You can also use ID for precision.'
+				);
+				return;
+			} else if (cardIds.length > 1) {
+				await helper.sendMessage(
+					'There are more than 1 monsters that match your criteria. Please help me narrow it down!'
+				);
+				return;
+			} else if (cardIds.length === 1) {
+				cardId = cardIds[0];
+			}
+		} else if (!cardId && !baseMonsterId) {
+			await helper.sendMessage(`I can't find the card you are looking for! Can you try a different name?`);
+			return;
+		}
 
 		//Register message thread for conversation continuation
 		cache.set(userId, {
@@ -139,7 +186,9 @@ client.on('message', async (message: any) => {
 			await helper.sendMonsterInfo(card);
 		}
 	} catch (error) {
-		await helper.sendMessage('It looks like something went wrong. Can you say it again?');
+		await helper.sendMessage(
+			`It looks like something went wrong. I can't seem to understand your request. Can you try it again?`
+		);
 		console.log('ERROR: ', error);
 	}
 });
