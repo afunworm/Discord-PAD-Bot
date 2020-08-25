@@ -89,6 +89,7 @@ client.on('message', async (message: any) => {
 
 		//If the ID is not provided, try to see if we can get the ID from guessing the name
 		//But the monster name has to exists
+		// console.log(result.queryResult.parameters);
 		if (!cardId && baseMonsterId) {
 			let specific2AttributeFilter =
 				(attribute1 !== null && attribute2 === 'none') || (attribute1 !== null && attribute2 !== null);
@@ -106,12 +107,24 @@ client.on('message', async (message: any) => {
 				);
 				return;
 			} else if (cardIds.length > 1) {
+				let cardList = [];
+				cardIds.forEach((card) => {
+					cardList.push(`${card.id}. ${card.name}`);
+				});
+
 				await helper.sendMessage(
 					'There are more than 1 monsters that match your criteria. Please help me narrow it down!'
 				);
+
+				let embed = new Discord.MessageEmbed().addFields({
+					name: 'Monsters Related to Your Query',
+					value: cardList.join('\n'),
+				});
+
+				await helper.sendMessage(embed);
 				return;
 			} else if (cardIds.length === 1) {
-				cardId = cardIds[0];
+				cardId = cardIds[0].id;
 			}
 		} else if (!cardId && !baseMonsterId) {
 			let previousThreadData = Cache.get(userId);

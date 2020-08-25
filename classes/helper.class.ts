@@ -63,9 +63,11 @@ export class Helper {
 			}
 
 			//Only filter if there is restriction on mainAttribute
-			if (!attribute1String) {
+			if (!attribute1) {
 				let result = _.values(monsters);
-				result = result.map((data) => data.id);
+				result = result.map((data) => {
+					return { id: data.id, name: data.name };
+				});
 				return Promise.resolve(result);
 			}
 
@@ -74,9 +76,11 @@ export class Helper {
 					? m.mainAttribute === attribute1 && m.subAttribute === attribute2
 					: m.mainAttribute === attribute1
 			);
-			result = result.map((data) => data.id);
+			result = result.map((data) => {
+				return { id: data.id, name: data.name };
+			});
 
-			return Promise.resolve(result) || Promise.resolve([]);
+			return Promise.resolve(result);
 		} catch (error) {
 			console.log(error.message);
 			return Promise.reject('Unable to process request. Please try again later.');
