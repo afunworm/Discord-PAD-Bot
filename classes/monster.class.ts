@@ -7,6 +7,7 @@ import { MonsterData } from '../shared/monster.interfaces';
 import { MONSTER_TYPES } from '../shared/monster.types';
 import { MonsterParser } from './monsterParser.class';
 import { Common } from './common.class';
+import { Cache } from './cache.class';
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -18,10 +19,10 @@ if (admin.apps.length === 0) {
 	});
 }
 const firestore = admin.firestore();
+const cache = new Cache('monsters');
 
 export class Monster {
 	private id: number;
-	private monsterDataCache: { [id: string]: MonsterData } = {};
 	private monsterData: MonsterData;
 
 	constructor(id: number) {
@@ -50,6 +51,14 @@ export class Monster {
 				throw new Error('Invalid init. new Monster(id) needs to be called first.');
 			}
 
+			//Check cache
+			let cachedData = cache.get(this.id);
+			if (cachedData) {
+				this.monsterData = cachedData;
+				resolve(this);
+				return;
+			}
+
 			//If the monster data is not in cache, grab it from Firestore
 			let monsterId = this.id.toString();
 			try {
@@ -61,7 +70,7 @@ export class Monster {
 
 				//Assign cache of data
 				this.monsterData = monsterData;
-				this.monsterDataCache[monsterId] = monsterData;
+				cache.set(monsterId, monsterData);
 
 				//Resolve it
 				resolve(this);

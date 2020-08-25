@@ -6,33 +6,14 @@ import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
 import { Helper } from './classes/helper.class';
 import { Common } from './classes/common.class';
+import { Cache } from './classes/cache.class';
 const Discord = require('discord.js');
-const NodeCache = require('node-cache');
-const cache = new NodeCache();
 
 /*-------------------------------------------------------*
  * CONST
  *-------------------------------------------------------*/
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
-
-/*-------------------------------------------------------*
- * CACHE HELPER
- *-------------------------------------------------------*/
-class ConverstationCache {
-	static set(key, value) {
-		let data = {};
-		data[key] = value;
-		cache.set('conversation', JSON.stringify(data));
-	}
-
-	static get(key) {
-		let data = cache.get('conversation');
-		data = typeof data === 'string' ? JSON.parse(data) : data;
-
-		return data[key];
-	}
-}
 
 /*-------------------------------------------------------*
  * App
@@ -54,6 +35,7 @@ client.on('message', async (message: any) => {
 	let ai = new AI(userId);
 	let helper = new Helper(message);
 	let input = message.content;
+	let cache = new Cache('conversation');
 	input = input.replace(client.user.id, ''); //Stripping ping from message
 	input = Helper.replaceCommonAbbreviation(input); //Replace common terms, such as dr, l/d, etc.
 	// console.log(input);
@@ -95,7 +77,7 @@ client.on('message', async (message: any) => {
 		//But the monster name has to exists
 		// console.log(result.queryResult.parameters);
 		if (!baseMonsterId) {
-			let previousThreadData = ConverstationCache.get(userId);
+			let previousThreadData = cache.get(userId);
 
 			if (previousThreadData) {
 				baseMonsterId = previousThreadData.monsterId;
@@ -152,7 +134,7 @@ client.on('message', async (message: any) => {
 		let cardId = Number(baseMonsterId);
 
 		//Register message thread for conversation continuation
-		ConverstationCache.set(userId, {
+		cache.set(userId, {
 			monsterId: cardId,
 		});
 
