@@ -72,7 +72,7 @@ export class Helper {
 			}
 
 			//Only filter if there is restriction on mainAttribute
-			if (!attribute1) {
+			if (attribute1 === null) {
 				let result = _.values(monsters);
 				result = result.map((data) => {
 					let mainAttribute = data.mainAttribute;

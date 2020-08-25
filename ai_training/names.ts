@@ -28,7 +28,7 @@ let data = [];
 	}
 
 	// await fs.writeFileSync('./monsterName.txt', data.join('\n')); //For debugging
-	await fs.writeFileSync('../ai_training_data/monsterNames.json', JSON.stringify(data));
+	await fs.writeFileSync('./monsterNames.json', JSON.stringify(data));
 
 	console.log('Database parsing completed');
 	process.exit();
