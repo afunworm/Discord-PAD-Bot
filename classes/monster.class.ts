@@ -30,7 +30,7 @@ export class Monster {
 			throw new Error('Invalid ID number for monster.');
 		}
 
-		if (id > MonsterParser.getMonsterDatabaseLength() || id < 1) {
+		if (id > this.getHighestValidMonsterId() || id < 1) {
 			throw new Error('Invalid ID number for monster.');
 		}
 
@@ -39,6 +39,10 @@ export class Monster {
 
 	static getDatabaseLength(): number {
 		return MonsterParser.getMonsterDatabaseLength();
+	}
+
+	public getHighestValidMonsterId(): number {
+		return Number(process.env.HIGHEST_VALID_MONSTER_ID);
 	}
 
 	public init() {

@@ -18,7 +18,8 @@ export class Helper {
 		baseMonsterId: string,
 		attribute1String: string = 'notProvided',
 		attribute2String: string = 'notProvided',
-		specific2AttributeFilter: boolean = false
+		specific2AttributeFilter: boolean = false,
+		isExactIdQuery: boolean = false
 	) {
 		//Make sure the attributes are acceptable
 		let acceptables = ['fire', 'water', 'wood', 'light', 'dark', 'none'];
@@ -46,6 +47,14 @@ export class Helper {
 		try {
 			let monster = new Monster(monsterId);
 			await monster.init();
+
+			if (isExactIdQuery) {
+				return Promise.resolve({
+					name: monster.getName(),
+					id: monster.getId(),
+				});
+			}
+
 			let evoTree = monster.getEvoTree();
 
 			//Loop through all evo trees to get data
@@ -63,9 +72,11 @@ export class Helper {
 			}
 
 			//Only filter if there is restriction on mainAttribute
-			if (!attribute1String) {
+			if (!attribute1) {
 				let result = _.values(monsters);
-				result = result.map((data) => data.id);
+				result = result.map((data) => {
+					return { id: data.id, name: data.name };
+				});
 				return Promise.resolve(result);
 			}
 
@@ -74,9 +85,11 @@ export class Helper {
 					? m.mainAttribute === attribute1 && m.subAttribute === attribute2
 					: m.mainAttribute === attribute1
 			);
-			result = result.map((data) => data.id);
+			result = result.map((data) => {
+				return { id: data.id, name: data.name };
+			});
 
-			return Promise.resolve(result) || Promise.resolve([]);
+			return Promise.resolve(result);
 		} catch (error) {
 			console.log(error.message);
 			return Promise.reject('Unable to process request. Please try again later.');
