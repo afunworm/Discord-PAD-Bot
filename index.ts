@@ -5,7 +5,7 @@ require('dotenv').config();
 import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
 import { Helper } from './classes/helper.class';
-import { request } from 'http';
+import { Common } from './classes/common.class';
 const Discord = require('discord.js');
 const NodeCache = require('node-cache');
 const cache = new NodeCache();
@@ -19,15 +19,18 @@ const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 /*-------------------------------------------------------*
  * CACHE HELPER
  *-------------------------------------------------------*/
-class Cache {
+class ConverstationCache {
 	static set(key, value) {
-		cache.set(key, JSON.stringify(value));
+		let data = {};
+		data[key] = value;
+		cache.set('conversation', JSON.stringify(data));
 	}
 
 	static get(key) {
-		let data = cache.get(key);
+		let data = cache.get('conversation');
+		data = typeof data === 'string' ? JSON.parse(data) : data;
 
-		return typeof data === 'string' ? JSON.parse(data) : data;
+		return data[key];
 	}
 }
 
@@ -57,8 +60,6 @@ client.on('message', async (message: any) => {
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
-		let action = result.queryResult.action;
-		let acceptedActions = ['card.info'];
 		let rawInput = result.queryResult.queryText;
 
 		//What information is being requestd? For example: show me Anubis IMAGE
@@ -94,7 +95,7 @@ client.on('message', async (message: any) => {
 		//But the monster name has to exists
 		// console.log(result.queryResult.parameters);
 		if (!baseMonsterId) {
-			let previousThreadData = Cache.get(userId);
+			let previousThreadData = ConverstationCache.get(userId);
 
 			if (previousThreadData) {
 				baseMonsterId = previousThreadData.monsterId;
@@ -103,6 +104,12 @@ client.on('message', async (message: any) => {
 				return;
 			}
 		} else {
+			//Let the user know the bot is working on it
+			await helper.sendMessage(Common.dynamicResponse('WORKING'));
+
+			//Because asking for evo list will have to go through all the monsters anyway
+			if (infoType === 'evoList') isExactIdQuery = true;
+
 			let specific2AttributeFilter =
 				(attribute1 !== null && attribute2 === 'none') || (attribute1 !== null && attribute2 !== null);
 
@@ -122,11 +129,11 @@ client.on('message', async (message: any) => {
 			} else if (cardIds.length > 1) {
 				let cardList = [];
 				cardIds.forEach((card) => {
-					cardList.push(`${card.id}. ${card.name}`);
+					cardList.push(`${card.attributes} | ${card.name} (${card.id})`);
 				});
 
 				await helper.sendMessage(
-					'There are more than 1 monsters that match your criteria. Please help me narrow it down!'
+					'There are more than one monsters that match your criteria. Please help me narrow it down!'
 				);
 
 				let embed = new Discord.MessageEmbed().addFields({
@@ -145,7 +152,7 @@ client.on('message', async (message: any) => {
 		let cardId = Number(baseMonsterId);
 
 		//Register message thread for conversation continuation
-		cache.set(userId, {
+		ConverstationCache.set(userId, {
 			monsterId: cardId,
 		});
 
@@ -191,6 +198,8 @@ client.on('message', async (message: any) => {
 			let isEvo = targetActionType === 'devo' ? false : true;
 		} else if (infoType === 'evoList') {
 			await helper.sendMonsterEvoTree(card);
+		} else if (infoType === 'id') {
+			await helper.sendMonsterId(card);
 		}
 
 		//Final, always

@@ -3,11 +3,10 @@
  *-------------------------------------------------------*/
 require('dotenv').config({ path: '../.env' });
 import * as admin from 'firebase-admin';
-import { AWAKEN_EMOTES } from '../shared/monster.awakens';
-import { KILLER_EMOTES } from '../shared/monster.awakens';
 import { MonsterData } from '../shared/monster.interfaces';
 import { MONSTER_TYPES } from '../shared/monster.types';
 import { MonsterParser } from './monsterParser.class';
+import { Common } from './common.class';
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -85,40 +84,13 @@ export class Monster {
 		return this.monsterData.name;
 	}
 
-	private killerEmotesMapping(killerLatents): string[] {
-		let result = [];
-		for (let i = 0; i < killerLatents.length; i++) {
-			let temp = KILLER_EMOTES[killerLatents[i]];
-			if (temp != 'None') {
-				result.push(temp);
-			}
-		}
-
-		return result;
-	}
-
-	private awakenEmotesMapping(awakenList): string {
-		let result = '';
-		for (let i = 0; i < awakenList.length; i++) {
-			if (awakenList[i] === '') {
-				return '';
-			}
-			let temp = AWAKEN_EMOTES[awakenList[i]];
-			if (temp != 'None') {
-				result += ' ' + temp;
-			}
-		}
-
-		return result ? result : '';
-	}
-
 	private getAwakenings(): number[] {
 		return this.monsterData.awakenings;
 	}
 
 	public getAwakenEmotes(): string {
 		let awakenings = this.getAwakenings();
-		return awakenings.length ? this.awakenEmotesMapping(awakenings) : 'No Awakenings';
+		return awakenings.length ? Common.awakenEmotesMapping(awakenings) : 'No Awakenings';
 	}
 
 	public getSuperAwakenings(): number[] {
@@ -127,7 +99,7 @@ export class Monster {
 
 	public getSuperAwakenEmotes(): string {
 		let superAwakenings = this.getSuperAwakenings();
-		return superAwakenings.length ? this.awakenEmotesMapping(superAwakenings) : 'No Super Awakenings';
+		return superAwakenings.length ? Common.awakenEmotesMapping(superAwakenings) : 'No Super Awakenings';
 	}
 
 	public getTypesReadable(): string[] {
@@ -333,10 +305,20 @@ export class Monster {
 
 	public getAvailableKillers(): string {
 		let killerLatents = this.getLatentKillers();
-		return this.killerEmotesMapping(killerLatents).join(' ');
+		return Common.killerEmotesMapping(killerLatents).join(' ');
 	}
 
 	public getEvoTree(): number[] {
 		return this.monsterData.evoTree;
+	}
+
+	public getAttributeEmotes(): string {
+		if (!this.monsterData.subAttribute) {
+			return Common.attributeEmotesMapping([this.monsterData.mainAttribute]).join('');
+		} else {
+			return Common.attributeEmotesMapping([this.monsterData.mainAttribute, this.monsterData.subAttribute]).join(
+				' '
+			);
+		}
 	}
 }

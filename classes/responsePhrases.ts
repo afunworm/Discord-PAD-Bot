@@ -1,4 +1,13 @@
 export const RESPONSE_PHRASES = {
+	WORKING: [
+		`Alright. Let me work on it.`,
+		`Ok. Gimme a second.`,
+		`Let me look in the database.`,
+		`Hold on a second. I'll get you the result in soon.`,
+		`Working on it!`,
+		`Let me see. Hold up.`,
+		`Let me check the database really quick.`,
+	],
 	ON_NAME_REQUEST: [
 		`{{id}} is called **{{name}}**.`,
 		`You can call {{id}} **{{name}}**.`,
@@ -34,6 +43,13 @@ export const RESPONSE_PHRASES = {
 		`I sold **{{name}}** (#{{id}}) before, got {{monsterPoints}} MP!`,
 		`**{{name}}** (#{{id}}) will give you {{monsterPoints}} MP if you decide to sell it.`,
 		`I'm pretty sure you can sell **{{name}}** (#{{id}}) for {{monsterPoints}} MP.`,
+	],
+	ON_ID_REQUEST: [
+		`The ID for **{{name}}** is #{{id}}.`,
+		`**{{name}}**'s ID is #{{id}}.`,
+		`**{{name}}** is #{{id}} in my monster book.`,
+		`The database says **{{name}}** is #{{id}}`,
+		`I believe **{{name}}**'s ID is #{{id}}`,
 	],
 	ON_EVOLIST_REQUEST: [
 		`I found {{numberOfEvos}} forms for **{{name}}** (#{{id}})!`,

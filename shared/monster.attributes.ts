@@ -12,6 +12,7 @@ export const MONSTER_ATTRIBUTES = {
 };
 
 export const ATTRIBUTE_EMOTES = {
+	'-1': '<:transparent:747711432740569130>',
 	0: '<:orb0:747693982338777108>',
 	1: '<:orb1:747693982959534190>',
 	2: '<:orb2:747693983106596907>',

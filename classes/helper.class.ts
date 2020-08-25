@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '../.env' });
 import { Monster } from './monster.class';
-import { RESPONSE_PHRASES } from './responsePhrases';
+import { Common } from './common.class';
 const _ = require('lodash');
 const Discord = require('discord.js');
 
@@ -75,7 +75,17 @@ export class Helper {
 			if (!attribute1) {
 				let result = _.values(monsters);
 				result = result.map((data) => {
-					return { id: data.id, name: data.name };
+					let mainAttribute = data.mainAttribute;
+					let subAttribute = data.subAttribute === null ? -1 : data.subAttribute;
+					let attributes =
+						Common.attributeEmotesMapping([mainAttribute])[0] +
+						' ' +
+						Common.attributeEmotesMapping([subAttribute])[0];
+					return {
+						id: data.id,
+						name: data.name,
+						attributes: attributes,
+					};
 				});
 				return Promise.resolve(result);
 			}
@@ -86,7 +96,17 @@ export class Helper {
 					: m.mainAttribute === attribute1
 			);
 			result = result.map((data) => {
-				return { id: data.id, name: data.name };
+				let mainAttribute = data.mainAttribute;
+				let subAttribute = data.subAttribute === null ? -1 : data.subAttribute;
+				let attributes =
+					Common.attributeEmotesMapping([mainAttribute])[0] +
+					' ' +
+					Common.attributeEmotesMapping([subAttribute])[0];
+				return {
+					id: data.id,
+					name: data.name,
+					attributes: attributes,
+				};
 			});
 
 			return Promise.resolve(result);
@@ -253,34 +273,8 @@ export class Helper {
 
 	private numberWithCommas = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-	private fillTemplate(templateString: string, templateVars: { [key: string]: string }): string {
-		let result = templateString;
-
-		for (let replace in templateVars) {
-			let replaceWith = templateVars[replace];
-
-			if (replaceWith === undefined || replaceWith === null) {
-				continue;
-			}
-
-			let regex = new RegExp('{{ *' + replace + ' *}}', 'g');
-			result = result.replace(regex, replaceWith);
-		}
-
-		return result;
-	}
-
 	public sendMessage(message: string) {
 		this._channel.send(message);
-	}
-
-	private dynamicResponse(templateId: string, templateVars: { [key: string]: string }): string {
-		let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-		let responses = RESPONSE_PHRASES[templateId];
-		let randomIndex = r(0, responses.length - 1);
-		let response = responses[randomIndex];
-
-		return response ? this.fillTemplate(response, templateVars) : '';
 	}
 
 	public sendMonsterInfo(card: Monster) {
@@ -322,7 +316,7 @@ export class Helper {
 	}
 
 	public sendMonsterName(card: Monster) {
-		let response = this.dynamicResponse('ON_NAME_REQUEST', {
+		let response = Common.dynamicResponse('ON_NAME_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 		});
@@ -345,20 +339,20 @@ export class Helper {
 		let message: string = '';
 
 		if (types.length === 1) {
-			message = this.dynamicResponse('ON_TYPE_REQUEST_1', {
+			message = Common.dynamicResponse('ON_TYPE_REQUEST_1', {
 				id: card.getId().toString(),
 				name: card.getName(),
 				type1: types[0],
 			});
 		} else if (types.length === 2) {
-			message = this.dynamicResponse('ON_TYPE_REQUEST_2', {
+			message = Common.dynamicResponse('ON_TYPE_REQUEST_2', {
 				id: card.getId().toString(),
 				name: card.getName(),
 				type1: types[0],
 				type2: types[1],
 			});
 		} else if (types.length === 3) {
-			message = this.dynamicResponse('ON_TYPE_REQUEST_3', {
+			message = Common.dynamicResponse('ON_TYPE_REQUEST_3', {
 				id: card.getId().toString(),
 				name: card.getName(),
 				type1: types[0],
@@ -382,7 +376,7 @@ export class Helper {
 	}
 
 	public sendMonsterRarity(card: Monster) {
-		let response = this.dynamicResponse('ON_RARITY_REQUEST', {
+		let response = Common.dynamicResponse('ON_RARITY_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 			rarity: card.getRarity().toString(),
@@ -391,7 +385,7 @@ export class Helper {
 	}
 
 	public sendMonsterIsInheritable(card: Monster) {
-		let response = this.dynamicResponse('ON_ISINHERITABLE_REQUEST', {
+		let response = Common.dynamicResponse('ON_ISINHERITABLE_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 			isInheritable: card.isInheritable() ? 'is inheritable' : 'is not inhreitable',
@@ -401,7 +395,7 @@ export class Helper {
 
 	public sendMonsterActiveSkills(card: Monster) {
 		if (!card.hasActiveSkill()) {
-			let response = this.dynamicResponse('ON_NO_ACTIVESKILL_FOUND', {
+			let response = Common.dynamicResponse('ON_NO_ACTIVESKILL_FOUND', {
 				id: card.getId().toString(),
 				name: card.getName(),
 			});
@@ -423,7 +417,7 @@ export class Helper {
 
 	public sendMonsterLeaderSkills(card: Monster) {
 		if (!card.hasLeaderSkill()) {
-			let response = this.dynamicResponse('ON_NO_LEADERSKILL_FOUND', {
+			let response = Common.dynamicResponse('ON_NO_LEADERSKILL_FOUND', {
 				id: card.getId().toString(),
 				name: card.getName(),
 			});
@@ -444,10 +438,18 @@ export class Helper {
 	}
 
 	public sendMonsterMonsterPoints(card: Monster) {
-		let response = this.dynamicResponse('ON_MONSTERPOINTS_REQUEST', {
+		let response = Common.dynamicResponse('ON_MONSTERPOINTS_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 			monsterPoints: this.numberWithCommas(card.getMonsterPoints()),
+		});
+		this._channel.send(response);
+	}
+
+	public sendMonsterId(card: Monster) {
+		let response = Common.dynamicResponse('ON_ID_REQUEST', {
+			id: card.getId().toString(),
+			name: card.getName(),
 		});
 		this._channel.send(response);
 	}
@@ -458,14 +460,14 @@ export class Helper {
 		let message;
 
 		if (numberOfEvos === 1) {
-			message = this.dynamicResponse('ON_EVOLIST_REQUEST_SINGLE_EVO', {
+			message = Common.dynamicResponse('ON_EVOLIST_REQUEST_SINGLE_EVO', {
 				id: card.getId().toString(),
 				name: card.getName(),
 			});
 
 			return this._channel.send(message);
 		} else {
-			message = this.dynamicResponse('ON_EVOLIST_REQUEST', {
+			message = Common.dynamicResponse('ON_EVOLIST_REQUEST', {
 				id: card.getId().toString(),
 				name: card.getName(),
 				numberOfEvos: numberOfEvos.toString(),
@@ -474,30 +476,20 @@ export class Helper {
 			this._channel.send(message);
 		}
 
-		let promises = [];
+		let result = [];
 		for (let i = 0; i < numberOfEvos; i++) {
 			let monsterId = evoList[i];
 			let monster = new Monster(monsterId);
 			await monster.init();
-			promises.push(
-				(() => {
-					let embed = new Discord.MessageEmbed()
-						.setColor('#0099ff')
-						.setTitle(`${monster.getId()}: ${monster.getName()}`)
-						.setURL(monster.getUrl())
-						.setThumbnail(monster.getThumbnailUrl())
-						.addFields(
-							{ name: monster.getAwakenEmotes(), value: monster.getSuperAwakenEmotes() }
-							// { name: ''.padEnd(150, ' ') + `\u200b`, value: ''.padEnd(150, ' ') + `\u200b` }
-						);
 
-					this._channel.send(embed);
-				})()
-			);
+			result.push(`${monsterId}. ${monster.getName()}`);
 		}
 
-		Promise.all(promises).catch((error) => {
-			throw new Error('Sorry. Something went wrong with me. Please try again later.');
+		let embed = new Discord.MessageEmbed().addFields({
+			name: `All Evolutions of ${card.getName()}`,
+			value: result.join('\n'),
 		});
+
+		return this._channel.send(embed);
 	}
 }
