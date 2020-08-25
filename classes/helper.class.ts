@@ -79,7 +79,6 @@ export class Helper {
 					let subAttribute = data.subAttribute === null ? -1 : data.subAttribute;
 					let attributes =
 						Common.attributeEmotesMapping([mainAttribute])[0] +
-						' ' +
 						Common.attributeEmotesMapping([subAttribute])[0];
 					return {
 						id: data.id,
@@ -100,7 +99,6 @@ export class Helper {
 				let subAttribute = data.subAttribute === null ? -1 : data.subAttribute;
 				let attributes =
 					Common.attributeEmotesMapping([mainAttribute])[0] +
-					' ' +
 					Common.attributeEmotesMapping([subAttribute])[0];
 				return {
 					id: data.id,
@@ -481,8 +479,12 @@ export class Helper {
 			let monsterId = evoList[i];
 			let monster = new Monster(monsterId);
 			await monster.init();
+			let mainAttribute = monster.getMainAttribute();
+			let subAttribute = monster.getSubAttribute() === null ? -1 : monster.getSubAttribute();
+			let attributes =
+				Common.attributeEmotesMapping([mainAttribute])[0] + Common.attributeEmotesMapping([subAttribute])[0];
 
-			result.push(`${monsterId}. ${monster.getName()}`);
+			result.push(`${attributes}| ${monster.getName()} (#${monsterId})`);
 		}
 
 		let embed = new Discord.MessageEmbed().addFields({

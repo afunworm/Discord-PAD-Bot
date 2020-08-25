@@ -129,7 +129,7 @@ client.on('message', async (message: any) => {
 			} else if (cardIds.length > 1) {
 				let cardList = [];
 				cardIds.forEach((card) => {
-					cardList.push(`${card.attributes} | ${card.name} (${card.id})`);
+					cardList.push(`${card.attributes} | ${card.name} (#${card.id})`);
 				});
 
 				await helper.sendMessage(

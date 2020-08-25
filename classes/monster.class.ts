@@ -312,6 +312,14 @@ export class Monster {
 		return this.monsterData.evoTree;
 	}
 
+	public getMainAttribute(): number {
+		return this.monsterData.mainAttribute;
+	}
+
+	public getSubAttribute(): number {
+		return this.monsterData.subAttribute;
+	}
+
 	public getAttributeEmotes(): string {
 		if (!this.monsterData.subAttribute) {
 			return Common.attributeEmotesMapping([this.monsterData.mainAttribute]).join('');
