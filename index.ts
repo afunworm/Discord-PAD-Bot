@@ -53,18 +53,13 @@ client.on('message', async (message: any) => {
 	let input = message.content;
 	input = input.replace(client.user.id, ''); //Stripping ping from message
 	input = Helper.replaceCommonAbbreviation(input); //Replace common terms, such as dr, l/d, etc.
+	// console.log(input);
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
 		let action = result.queryResult.action;
 		let acceptedActions = ['card.info'];
 		let cardId = result.queryResult.parameters.fields?.number?.numberValue;
-
-		if (!cardId) {
-			let previousThreadData = Cache.get(userId);
-
-			if (previousThreadData) cardId = previousThreadData.monsterId;
-		}
 
 		//What information is being requestd? For example: show me Anubis IMAGE
 		let infoType = result.queryResult.parameters.fields?.infoType?.stringValue || null;
@@ -119,8 +114,14 @@ client.on('message', async (message: any) => {
 				cardId = cardIds[0];
 			}
 		} else if (!cardId && !baseMonsterId) {
-			await helper.sendMessage(`I can't find the card you are looking for! Can you try a different name?`);
-			return;
+			let previousThreadData = Cache.get(userId);
+
+			if (previousThreadData) {
+				cardId = previousThreadData.monsterId;
+			} else {
+				await helper.sendMessage(`I can't find the card you are looking for! Can you try a different name?`);
+				return;
+			}
 		}
 
 		//Register message thread for conversation continuation

@@ -198,6 +198,9 @@ export class Helper {
 			dx: 'dark none',
 		};
 
+		//Trim it
+		message = message.trim();
+
 		//Check for / first
 		if (message.includes('/')) {
 			//'Show me d/r Anubis' -> 'd/r' -> 'd r'
@@ -208,8 +211,16 @@ export class Helper {
 		//Replace conjuncted terms
 		for (let replaceWhat in dict) {
 			let byWhat = dict[replaceWhat];
-			let reg = new RegExp(' ' + replaceWhat + ' ', 'ig'); //Added spaces to distingush from regular words
-			message = message.replace(reg, ' ' + byWhat + ' ');
+
+			//Added spaces to distingush from regular words, but ignore the beginning space if the sentence starts with it
+			//Eg: (lx) cotton
+			if (message.toLowerCase().startsWith(replaceWhat.toLowerCase())) {
+				let reg = new RegExp(replaceWhat + ' ', 'ig');
+				message = message.replace(reg, byWhat + ' ');
+			} else {
+				let reg = new RegExp(' ' + replaceWhat + ' ', 'ig');
+				message = message.replace(reg, ' ' + byWhat + ' ');
+			}
 		}
 
 		return message;
