@@ -4,6 +4,7 @@ const AIEnv = require('../' + process.env.AI_SERVICE_ACCOUNT);
 export interface QueryResultInterface {
 	queryResult: {
 		action: string;
+		queryText: string;
 		parameters: {
 			fields: {
 				number: {

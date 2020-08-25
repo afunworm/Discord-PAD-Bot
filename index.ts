@@ -59,7 +59,7 @@ client.on('message', async (message: any) => {
 		let result: QueryResultInterface = await ai.detectIntent(input);
 		let action = result.queryResult.action;
 		let acceptedActions = ['card.info'];
-		let cardId = result.queryResult.parameters.fields?.number?.numberValue;
+		let rawInput = result.queryResult.queryText;
 
 		//What information is being requestd? For example: show me Anubis IMAGE
 		let infoType = result.queryResult.parameters.fields?.infoType?.stringValue || null;
@@ -87,10 +87,22 @@ client.on('message', async (message: any) => {
 		//Monster name, if any
 		let baseMonsterId = result.queryResult.parameters.fields?.monsterName?.stringValue || null;
 
+		//Is this the exact query?
+		let isExactIdQuery = rawInput.includes(baseMonsterId);
+
 		//If the ID is not provided, try to see if we can get the ID from guessing the name
 		//But the monster name has to exists
 		// console.log(result.queryResult.parameters);
-		if (!cardId && baseMonsterId) {
+		if (!baseMonsterId) {
+			let previousThreadData = Cache.get(userId);
+
+			if (previousThreadData) {
+				baseMonsterId = previousThreadData.monsterId;
+			} else {
+				await helper.sendMessage(`I can't find the card you are looking for! Can you try a different name?`);
+				return;
+			}
+		} else {
 			let specific2AttributeFilter =
 				(attribute1 !== null && attribute2 === 'none') || (attribute1 !== null && attribute2 !== null);
 
@@ -98,7 +110,8 @@ client.on('message', async (message: any) => {
 				baseMonsterId,
 				attribute1 || 'none',
 				attribute2 || 'none',
-				specific2AttributeFilter
+				specific2AttributeFilter,
+				isExactIdQuery
 			);
 
 			if (cardIds.length === 0) {
@@ -124,32 +137,17 @@ client.on('message', async (message: any) => {
 				await helper.sendMessage(embed);
 				return;
 			} else if (cardIds.length === 1) {
-				cardId = cardIds[0].id;
-			}
-		} else if (!cardId && !baseMonsterId) {
-			let previousThreadData = Cache.get(userId);
-
-			if (previousThreadData) {
-				cardId = previousThreadData.monsterId;
-			} else {
-				await helper.sendMessage(`I can't find the card you are looking for! Can you try a different name?`);
-				return;
+				baseMonsterId = cardIds[0].id;
 			}
 		}
+
+		//Assign cardId
+		let cardId = Number(baseMonsterId);
 
 		//Register message thread for conversation continuation
 		cache.set(userId, {
 			monsterId: cardId,
 		});
-
-		// console.log(result.queryResult.parameters);
-
-		//Only if AI detects the card id and the actions
-		if ((!acceptedActions.includes(action) || cardId === null) && (!actionType || cardId === null)) {
-			//TODO - PROCESS IT USING OLD-SCHOOL METHODS
-			await message.channel.send(`I'm sorry. I don't quite understand that.`);
-			return;
-		}
 
 		//Get info
 		let card = new Monster(cardId);

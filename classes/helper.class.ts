@@ -18,7 +18,8 @@ export class Helper {
 		baseMonsterId: string,
 		attribute1String: string = 'notProvided',
 		attribute2String: string = 'notProvided',
-		specific2AttributeFilter: boolean = false
+		specific2AttributeFilter: boolean = false,
+		isExactIdQuery: boolean = false
 	) {
 		//Make sure the attributes are acceptable
 		let acceptables = ['fire', 'water', 'wood', 'light', 'dark', 'none'];
@@ -46,6 +47,14 @@ export class Helper {
 		try {
 			let monster = new Monster(monsterId);
 			await monster.init();
+
+			if (isExactIdQuery) {
+				return Promise.resolve({
+					name: monster.getName(),
+					id: monster.getId(),
+				});
+			}
+
 			let evoTree = monster.getEvoTree();
 
 			//Loop through all evo trees to get data
