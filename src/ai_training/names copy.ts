@@ -110,21 +110,32 @@ function trainAttributeReading(
 				//For case like dark anubis
 				if (subAttributeAlia === '') {
 					trainedName = mainAttributeAlia + ' ' + name;
-					synonyms.push(trainedName);
+					if (!computedNameTracker.includes(trainedName)) {
+						synonyms.push(trainedName);
+						computedNameTracker.push(trainedName);
+					}
 					return;
 				}
 
 				//Train for ab
 				trainedName = mainAttributeAlia + subAttributeAlia + ' ' + name;
-				synonyms.push(trainedName);
+				if (!computedNameTracker.includes(trainedName)) {
+					synonyms.push(trainedName);
+					computedNameTracker.push(trainedName);
+				}
 
 				//Train for a/b
 				trainedName = mainAttributeAlia + '/' + subAttributeAlia + ' ' + name;
-				synonyms.push(trainedName);
-
+				if (!computedNameTracker.includes(trainedName)) {
+					synonyms.push(trainedName);
+					computedNameTracker.push(trainedName);
+				}
 				//Train for a b
 				trainedName = mainAttributeAlia + ' ' + subAttributeAlia + ' ' + name;
-				synonyms.push(trainedName);
+				if (!computedNameTracker.includes(trainedName)) {
+					synonyms.push(trainedName);
+					computedNameTracker.push(trainedName);
+				}
 			});
 		});
 	});
@@ -156,16 +167,28 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 	if (fullName.includes(',')) {
 		let name = guessName(fullName, false); //Without anything between (***)
 
-		synonyms.push(name);
+		//Only push if the name has never been computed
+		if (!computedNameTracker.includes(name)) {
+			synonyms.push(name);
+			computedNameTracker.push(name);
+		}
 
 		name = guessName(fullName, true); //Without ( and ) only, keep content inside
-		synonyms.push(name);
+		//Only push if the name has never been computed
+		if (!computedNameTracker.includes(name)) {
+			synonyms.push(name);
+			computedNameTracker.push(name);
+		}
 	} else {
 		//Process info for names with '()' but without ',' like 'Superman (Comics)'
 		if (fullName.includes('(') && fullName.includes(')')) {
 			let name = fullName.replace(/(\(.*\))/gi, '').trim();
 
-			synonyms.push(name);
+			//Only push if the name has never been computed
+			if (!computedNameTracker.includes(name)) {
+				synonyms.push(name);
+				computedNameTracker.push(name);
+			}
 		}
 	}
 
@@ -176,7 +199,11 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 		computePrefixes(processedName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 			(computedName) => {
-				synonyms.push(computedName);
+				//Only push if the name has never been computed
+				if (!computedNameTracker.includes(computedName)) {
+					synonyms.push(computedName);
+					computedNameTracker.push(computedName);
+				}
 			}
 		);
 	}
@@ -191,13 +218,21 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		} else {
 			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		}
@@ -212,13 +247,21 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		} else {
 			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		}
@@ -233,13 +276,21 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		} else {
 			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		}
@@ -254,13 +305,21 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		} else {
 			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		}
@@ -275,13 +334,21 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		} else {
 			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		}
@@ -296,13 +363,21 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		} else {
 			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		}
@@ -317,13 +392,21 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		} else {
 			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
 				(computedName) => {
-					synonyms.push(computedName);
+					//Only push if the name has never been computed
+					if (!computedNameTracker.includes(computedName)) {
+						synonyms.push(computedName);
+						computedNameTracker.push(computedName);
+					}
 				}
 			);
 		}
@@ -352,7 +435,7 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 						monster.getReadableSubAttribute()
 					);
 
-					// computedNameTracker.push(...synonyms);
+					computedNameTracker.push(...synonyms);
 					data.push({
 						value: id.toString(),
 						synonyms: synonyms,
@@ -394,6 +477,9 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 
 				monsterName = monsterName.trim().toLowerCase();
 
+				//Use this to overwrite already-existed custom monster main name
+				computedNameTracker.push(monsterName.replace('(', '').replace(')', ''));
+
 				let computedNames = noComputedName.includes(id) ? [] : computeNames(monsterName, monster);
 				synonyms.push(id.toString(), monsterName.replace('(', '').replace(')', ''), ...computedNames);
 
@@ -406,7 +492,10 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 				if (ADDITIONAL_NAMES[id.toString()]) {
 					let additonalNames = ADDITIONAL_NAMES[id.toString()];
 					additonalNames.forEach((additionalName) => {
-						synonyms.push(additionalName);
+						if (!computedNameTracker.includes(additionalName)) {
+							computedNameTracker.push(additionalName);
+							synonyms.push(additionalName);
+						}
 					});
 				}
 
@@ -419,22 +508,6 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 						monster.getReadableSubAttribute()
 					);
 				}
-
-				//Process the synonyms and put it to tracker
-				//Remove all duplication in the synonyms itself
-				//Only add the synonyms that haven't been input int if computedNameTracker
-				synonyms = synonyms.reduce((a, b) => {
-					if (a.indexOf(b) < 0) a.push(b);
-					return a;
-				}, []);
-				synonyms = synonyms
-					.map((synonym) => {
-						if (!computedNameTracker.includes(synonym)) {
-							computedNameTracker.push(synonym);
-							return synonym;
-						}
-					})
-					.filter((synonym) => synonym !== undefined);
 
 				data.push({
 					value: id.toString(),

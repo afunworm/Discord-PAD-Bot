@@ -6,6 +6,7 @@ import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
 import { Helper } from './classes/helper.class';
 import { Cache } from './classes/cache.class';
+import { result } from 'lodash';
 const Discord = require('discord.js');
 
 /*-------------------------------------------------------*
@@ -37,7 +38,6 @@ client.on('message', async (message: any) => {
 	let cache = new Cache('conversation');
 	input = input.replace(client.user.id, ''); //Stripping ping from message
 	input = Helper.replaceCommonAbbreviation(input); //Replace common terms, such as dr, l/d, etc.
-	// console.log(input);
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
@@ -71,6 +71,8 @@ client.on('message', async (message: any) => {
 
 		//Is this the exact query?
 		let isExactIdQuery = rawInput.includes(baseMonsterId);
+
+		console.log(result.queryResult.parameters);
 
 		//If the ID is not provided, try to see if we can get the ID from guessing the name
 		//But the monster name has to exists
