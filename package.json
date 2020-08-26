@@ -2,8 +2,7 @@
 	"name": "functions",
 	"scripts": {
 		"lint": "tslint --project tsconfig.json",
-		"build": "tsc index",
-		"start": "node index"
+		"start": "tsc index && copy download_card_data.json dist/download_card_data.json && copy download_skill_data.json dist/download_skill_data.json && copy serviceAccount.json dist/serviceAccount.json && copy AIServiceAccount.json dist/AIServiceAccount.json && copy .env dist/.env && forever dist/index.js"
 	},
 	"engines": {
 		"node": "10"
@@ -21,9 +20,10 @@
 		"node-cache": "^5.1.2"
 	},
 	"devDependencies": {
+		"firebase-functions-test": "^0.2.0",
+		"ts-loader": "^8.0.3",
 		"tslint": "^5.12.0",
-		"typescript": "^3.8.0",
-		"firebase-functions-test": "^0.2.0"
+		"typescript": "^3.9.7"
 	},
 	"private": true
 }

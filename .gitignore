@@ -1,7 +1,8 @@
 node_modules
-AIServiceAccount.json
-serviceAccount.json
-environment.ts
+src/AIServiceAccount.json
+src/serviceAccount.json
+src/environment.ts
 **/*.js
-.env
+src/.env
 assets
+dist
