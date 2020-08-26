@@ -2,8 +2,8 @@
 	"name": "functions",
 	"scripts": {
 		"lint": "tslint --project tsconfig.json",
-		"start": "tsc ./src/index && cp ./src/download_card_data.json ./dist/download_card_data.json && cp ./src/download_skill_data.json ./dist/download_skill_data.json && cp ./src/serviceAccount.json ./dist/serviceAccount.json && cp ./src/AIServiceAccount.json ./dist/AIServiceAccount.json && cp ./.env ./dist/.env && forever ./dist/index.js",
-		"start-windows": "tsc ./src/index && copy ./src/download_card_data.json ./dist/download_card_data.json && copy ./src/download_skill_data.json ./dist/download_skill_data.json && copy ./src/serviceAccount.json ./dist/serviceAccount.json && copy ./src/AIServiceAccount.json ./dist/AIServiceAccount.json && copy ./.env ./dist/.env && forever ./dist/index.js"
+		"start": "tsc src/index && cp src/download_card_data.json dist/download_card_data.json && cp src/download_skill_data.json dist/download_skill_data.json && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp src/.env dist/.env && forever dist/index.js",
+		"start-windows": "tsc src/index && copy src/download_card_data.json dist/download_card_data.json && copy src/download_skill_data.json dist/download_skill_data.json && copy src/serviceAccount.json dist/serviceAccount.json && copy src/AIServiceAccount.json dist/AIServiceAccount.json && copy src/.env dist/.env && forever dist/index.js"
 	},
 	"engines": {
 		"node": "10"
