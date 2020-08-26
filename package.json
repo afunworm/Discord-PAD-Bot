@@ -2,7 +2,7 @@
 	"name": "functions",
 	"scripts": {
 		"lint": "tslint --project tsconfig.json",
-		"start": "tsc index && copy download_card_data.json dist/download_card_data.json && copy download_skill_data.json dist/download_skill_data.json && copy serviceAccount.json dist/serviceAccount.json && copy AIServiceAccount.json dist/AIServiceAccount.json && copy .env dist/.env && forever dist/index.js"
+		"start": "tsc ./src/index && copy ./src/download_card_data.json ./dist/download_card_data.json && copy ./src/download_skill_data.json ./dist/download_skill_data.json && copy ./src/serviceAccount.json ./dist/serviceAccount.json && copy ./src/AIServiceAccount.json ./dist/AIServiceAccount.json && copy ./.env ./dist/.env && forever ./dist/index.js"
 	},
 	"engines": {
 		"node": "10"
