@@ -1,7 +1,8 @@
 /*-------------------------------------------------------*
  * LIBRARIES
  *-------------------------------------------------------*/
-require('dotenv').config({ path: '../.env' });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 import * as admin from 'firebase-admin';
 import { MonsterParser } from '../classes/monsterParser.class';
 import { MonsterData } from '../shared/monster.interfaces';
