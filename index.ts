@@ -14,11 +14,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-import { MonsterParser } from './classes/monsterParser.class';
-let monster = new MonsterParser(3358);
-console.log(monster.getRawData());
-process.exit();
-
 /*-------------------------------------------------------*
  * App
  *-------------------------------------------------------*/

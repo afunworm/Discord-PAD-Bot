@@ -6,6 +6,7 @@ import { MONSTER_TYPES } from '../shared/monster.types';
 import { MONSTER_COLLABS } from '../shared/monster.collabs';
 import { LeaderSkill } from './leaderSkill.class';
 import { ActiveSkill } from './activeSkill.class';
+import { Common } from './common.class';
 
 export class MonsterParser {
 	private id;
@@ -512,5 +513,15 @@ export class MonsterParser {
 		let inheritanceType = this.data[inheritanceTypeIndex];
 
 		return !!(inheritanceType & 32); //0b100000 is extra slottable
+	}
+
+	public getMonsterSeries(): string | null {
+		let seriesInfo = Common.getCardSeriesInfo(this.id);
+		return seriesInfo.id;
+	}
+
+	public getReadableMonsterSeries(): string | null {
+		let seriesInfo = Common.getCardSeriesInfo(this.id);
+		return seriesInfo.name;
 	}
 }

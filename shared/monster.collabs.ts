@@ -55,4 +55,5 @@ export const MONSTER_COLLABS = {
 	53: 'Superman vs Batman',
 	54: 'PAD X',
 	55: 'Ace Attorney',
+	89: 'Yugioh! Duel Monsters',
 };

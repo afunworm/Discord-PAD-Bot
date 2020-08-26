@@ -31,4 +31,8 @@ export const CUSTOM_NAMES = [
 		name: 'liu bei',
 		alias: ['lb'],
 	},
+	{
+		name: 'idunn & idunna',
+		alias: ['i&i'],
+	},
 ];

@@ -2,6 +2,7 @@ import { AWAKEN_EMOTES } from '../shared/monster.awakens';
 import { KILLER_EMOTES } from '../shared/monster.awakens';
 import { ATTRIBUTE_EMOTES } from '../shared/monster.attributes';
 import { RESPONSE_PHRASES } from './responsePhrases';
+import { MONSTER_SERIES } from '../shared/monster.series';
 
 export class Common {
 	static fillTemplate(templateString: string, templateVars: { [key: string]: string }): string {
@@ -65,6 +66,35 @@ export class Common {
 				result.push(temp);
 			}
 		}
+		return result;
+	}
+
+	static toSlug = (input: string) => input.replace(/[^a-zA-Z0-9]/gi, '_').toLowerCase();
+
+	static getCardSeriesInfo(
+		cardId: number
+	): {
+		id: string | null;
+		name: string | null;
+	} {
+		let result = {
+			id: null,
+			name: null,
+		};
+
+		MONSTER_SERIES.forEach((series) => {
+			let name = series.name;
+			let slug = series.aliases.length > 0 ? series.aliases[0] : this.toSlug(name);
+			let cards = series.cards;
+
+			if (cards.includes(cardId)) {
+				result = {
+					id: slug,
+					name: name,
+				};
+			}
+		});
+
 		return result;
 	}
 }

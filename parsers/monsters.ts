@@ -5,7 +5,7 @@ require('dotenv').config({ path: '../.env' });
 import * as admin from 'firebase-admin';
 import { MonsterParser } from '../classes/monsterParser.class';
 import { MonsterData } from '../shared/monster.interfaces';
-const fs = require('fs');
+import { Common } from '../classes/common.class';
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -39,6 +39,11 @@ let evoTreeData = [];
 	for (let id = startNumber; id < endNumber; id++) {
 		try {
 			let monster = new MonsterParser(id);
+			let series, seriesReadable;
+
+			let seriesInfo = Common.getCardSeriesInfo(id);
+			series = seriesInfo.id;
+			seriesReadable = seriesInfo.name;
 
 			let monsterData: MonsterData = {
 				_lastUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -58,6 +63,8 @@ let evoTreeData = [];
 				cost: monster.getCost(),
 				collab: monster.getCollabId(),
 				collabReadable: monster.getReadableCollab(),
+				series: series,
+				seriesReadable: seriesReadable,
 				maxLevel: monster.getMaxLevel(),
 				feedExp: monster.getFeedExp(),
 				sellPrice: monster.getSellPrice(),
