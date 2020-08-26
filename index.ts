@@ -5,7 +5,6 @@ require('dotenv').config();
 import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
 import { Helper } from './classes/helper.class';
-import { Common } from './classes/common.class';
 import { Cache } from './classes/cache.class';
 const Discord = require('discord.js');
 
@@ -14,6 +13,11 @@ const Discord = require('discord.js');
  *-------------------------------------------------------*/
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+
+import { MonsterParser } from './classes/monsterParser.class';
+let monster = new MonsterParser(3358);
+console.log(monster.getRawData());
+process.exit();
 
 /*-------------------------------------------------------*
  * App
@@ -87,7 +91,7 @@ client.on('message', async (message: any) => {
 			}
 		} else {
 			//Let the user know the bot is working on it
-			await helper.sendMessage(Common.dynamicResponse('WORKING'));
+			// await helper.sendMessage(Common.dynamicResponse('WORKING'));
 
 			//Because asking for evo list will have to go through all the monsters anyway
 			if (infoType === 'evoList') isExactIdQuery = true;

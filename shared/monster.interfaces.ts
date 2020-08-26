@@ -42,6 +42,8 @@ export interface MonsterData {
 	typesReadable: string[];
 	rarity: number;
 	cost: number;
+	collab: number;
+	collabReadable: string;
 	maxLevel: number;
 	feedExp: number;
 	sellPrice: number;

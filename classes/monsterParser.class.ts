@@ -3,6 +3,7 @@ const { skill: SKILL_DATA } = require('../download_skill_data.json');
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { AWAKENINGS } from '../shared/monster.awakens';
 import { MONSTER_TYPES } from '../shared/monster.types';
+import { MONSTER_COLLABS } from '../shared/monster.collabs';
 import { LeaderSkill } from './leaderSkill.class';
 import { ActiveSkill } from './activeSkill.class';
 
@@ -25,6 +26,10 @@ export class MonsterParser {
 
 	static getSkillDatabaseLength(): number {
 		return SKILL_DATA.length;
+	}
+
+	public getRawData() {
+		return this.data;
 	}
 
 	private getLatentKillers(types): number[] {
@@ -419,6 +424,25 @@ export class MonsterParser {
 		let monsterPointIndex = thirdTypeIndex + 1;
 
 		return this.data[monsterPointIndex];
+	}
+
+	public getCollabId(): number {
+		let skillCount = this.data[57];
+		let moveSets = skillCount * 3;
+		let numberOfAwakeningsIndex = 57 + moveSets + 1;
+		let numberOfAwakenings = this.data[numberOfAwakeningsIndex];
+		let superAwakeningsIndex = numberOfAwakeningsIndex + numberOfAwakenings + 1;
+		let baseMonsterIndex = superAwakeningsIndex + 1;
+		let thirdTypeIndex = baseMonsterIndex + 2;
+		let monsterPointIndex = thirdTypeIndex + 1;
+		let collabIndex = monsterPointIndex + 2;
+
+		return this.data[collabIndex];
+	}
+
+	public getReadableCollab(): string {
+		let collabId = this.getCollabId();
+		return MONSTER_COLLABS[collabId] || 'Unknown';
 	}
 
 	public getLimitBreakPercentage(): number {

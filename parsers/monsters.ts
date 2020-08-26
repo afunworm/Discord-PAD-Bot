@@ -56,6 +56,8 @@ let evoTreeData = [];
 				typesReadable: monster.getReadableTypes(),
 				rarity: monster.getRarity(),
 				cost: monster.getCost(),
+				collab: monster.getCollabId(),
+				collabReadable: monster.getReadableCollab(),
 				maxLevel: monster.getMaxLevel(),
 				feedExp: monster.getFeedExp(),
 				sellPrice: monster.getSellPrice(),

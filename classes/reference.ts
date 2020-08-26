@@ -63,7 +63,10 @@
     The next value is UNKNOWN but probably groupingKey
     The next value is the third type of the monster, -1 if none
     The next value is the monster points
-    There are 4 unknown values
+    There is 1 unknown values
+    The next value is collab value
+    The next value is inheritance index. InheritanceType & 1 === 1 if inheritable. InheritanceType & 32 === 32 if extraslottable.
+    There are 1 unknown values
     The next value is the percent gain for the stats of the monsters after limit breaking (for example, 25 means 25%)
     There are 2 unknown values
     The next one is the ID of the monster that the current monster transforms into
