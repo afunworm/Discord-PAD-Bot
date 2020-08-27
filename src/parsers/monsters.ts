@@ -7,6 +7,7 @@ import * as admin from 'firebase-admin';
 import { MonsterParser } from '../classes/monsterParser.class';
 import { MonsterData } from '../shared/monster.interfaces';
 import { Common } from '../classes/common.class';
+const fs = require('fs');
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -66,6 +67,7 @@ let evoTreeData = [];
 				collabReadable: monster.getReadableCollab(),
 				series: series,
 				seriesReadable: seriesReadable,
+				group: monster.getMonsterSeriesGroup(),
 				maxLevel: monster.getMaxLevel(),
 				feedExp: monster.getFeedExp(),
 				sellPrice: monster.getSellPrice(),
@@ -146,7 +148,6 @@ let evoTreeData = [];
 	/**
 	 * INSERT DATA TO FIRESTORE
 	 */
-
 	for (let i = 0; i < data.length; i++) {
 		let entry = data[i];
 
@@ -162,7 +163,7 @@ let evoTreeData = [];
 		}
 	}
 
-	// await fs.writeFileSync('./evoList.txt', JSON.stringify(data)); //For debugging
+	// await fs.writeFileSync('./database.json', JSON.stringify(data, null, 4));
 
 	console.log('Database parsing completed');
 	process.exit();

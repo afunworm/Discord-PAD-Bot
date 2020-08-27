@@ -443,7 +443,7 @@ export class MonsterParser {
 
 	public getReadableCollab(): string {
 		let collabId = this.getCollabId();
-		return MONSTER_COLLABS[collabId] || 'Unknown';
+		return MONSTER_COLLABS[collabId]?.name || 'Unknown';
 	}
 
 	public getLimitBreakPercentage(): number {
@@ -523,5 +523,9 @@ export class MonsterParser {
 	public getReadableMonsterSeries(): string | null {
 		let seriesInfo = Common.getCardSeriesInfo(this.id);
 		return seriesInfo.name;
+	}
+
+	public getMonsterSeriesGroup(): string | null {
+		return Common.getCardSeriesGroup(this.getId(), this.getCollabId());
 	}
 }

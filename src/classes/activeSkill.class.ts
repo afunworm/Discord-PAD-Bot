@@ -970,7 +970,7 @@ export class ActiveSkill {
 		let data = this.mergeDefaults([0]);
 		let damage = data[0];
 
-		return `Inflict ${this.numberWithCommas(damage)} damage to 1 enemy 5 times. Ignore enemy element and defense.`;
+		return `Inflict ${this.numberWithCommas(damage)} damage to 1 enemy. Ignore enemy element and defense.`;
 	}
 
 	public ASShowComboPath(): string {

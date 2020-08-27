@@ -1,0 +1,1729 @@
+[
+    {
+        "value": "dbdc",
+        "synonyms": [
+            "dragonbounds   dragon callers",
+            "dbdc",
+            "dcdb",
+            "dragonbounds",
+            "",
+            "dragon",
+            "callers",
+            "ddc"
+        ]
+    },
+    {
+        "value": "exgfe",
+        "synonyms": [
+            "ex godfest exclusive",
+            "exgfe",
+            "5  gfe",
+            "5 star gf",
+            "ex gfe",
+            "ex",
+            "godfest",
+            "exclusive",
+            "ege"
+        ]
+    },
+    {
+        "value": "gfe",
+        "synonyms": [
+            "godfest exclusives",
+            "gfe",
+            "exclusives",
+            "ge"
+        ]
+    },
+    {
+        "value": "mp",
+        "synonyms": [
+            "mp monsters",
+            "mp",
+            "monster points",
+            "monsters",
+            "mm"
+        ]
+    },
+    {
+        "value": "marionette",
+        "synonyms": [
+            "marionette",
+            "puppetteers",
+            "puppets",
+            "cheese machines",
+            "m"
+        ]
+    },
+    {
+        "value": "fourNobleOnes",
+        "synonyms": [
+            "four noble ones",
+            "four gentlemen",
+            "four seasons",
+            "four",
+            "noble",
+            "ones",
+            "fno"
+        ]
+    },
+    {
+        "value": "legendaryHeroes",
+        "synonyms": [
+            "legendary heroes",
+            "legendary",
+            "heroes",
+            "lh"
+        ]
+    },
+    {
+        "value": "promotionSeries",
+        "synonyms": [
+            "promotion series",
+            "promotion",
+            "series",
+            "ps"
+        ]
+    },
+    {
+        "value": "heroine",
+        "synonyms": [
+            "heroine",
+            "heroines",
+            "heroin",
+            "h"
+        ]
+    },
+    {
+        "value": "threeKindoms2",
+        "synonyms": [
+            "three kingdoms 2",
+            "three kindoms 2",
+            "3k2",
+            "three",
+            "kingdoms",
+            "2",
+            "tk2"
+        ]
+    },
+    {
+        "value": "brave2",
+        "synonyms": [
+            "brave 2",
+            "weapons 2",
+            "brave",
+            "b2"
+        ]
+    },
+    {
+        "value": "samuraiGod2",
+        "synonyms": [
+            "samurai gods 2",
+            "samurai god 2",
+            "samurai 2",
+            "samurai",
+            "gods",
+            "sg2"
+        ]
+    },
+    {
+        "value": "grecoRomanGods3",
+        "synonyms": [
+            "greco roman gods 3",
+            "roman 3",
+            "greek 3",
+            "gr3",
+            "greco",
+            "roman",
+            "3",
+            "grg3"
+        ]
+    },
+    {
+        "value": "celticGods",
+        "synonyms": [
+            "celtic gods",
+            "celtic",
+            "celts",
+            "cg"
+        ]
+    },
+    {
+        "value": "mesopotamianGods",
+        "synonyms": [
+            "mesopotamian gods",
+            "meso gods",
+            "mesop",
+            "mesopotamian",
+            "mg"
+        ]
+    },
+    {
+        "value": "grecoRomanGods1",
+        "synonyms": [
+            "greco roman gods 1",
+            "roman 1",
+            "greek 1",
+            "gr1",
+            "1",
+            "grg1"
+        ]
+    },
+    {
+        "value": "japaneseGods1",
+        "synonyms": [
+            "japanese gods 1",
+            "japanese 1",
+            "japan 1",
+            "jp1",
+            "japanese",
+            "jg1"
+        ]
+    },
+    {
+        "value": "indianGods1",
+        "synonyms": [
+            "indian gods 1",
+            "indian 1",
+            "indian",
+            "ig1"
+        ]
+    },
+    {
+        "value": "norseGods",
+        "synonyms": [
+            "norse gods",
+            "norse",
+            "nordic",
+            "ng"
+        ]
+    },
+    {
+        "value": "riders1",
+        "synonyms": [
+            "riders 1",
+            "beast riders 1",
+            "riders",
+            "r1"
+        ]
+    },
+    {
+        "value": "egyptianGods1",
+        "synonyms": [
+            "egyptian gods 1",
+            "egyptian",
+            "egypt",
+            "eg1"
+        ]
+    },
+    {
+        "value": "ninjas",
+        "synonyms": [
+            "ninjas",
+            "sengoku",
+            "ninja",
+            "n"
+        ]
+    },
+    {
+        "value": "grecoRomanGods2",
+        "synonyms": [
+            "greco roman gods 2",
+            "roman 2",
+            "greek 2",
+            "gr2",
+            "grg2"
+        ]
+    },
+    {
+        "value": "archangels",
+        "synonyms": [
+            "archangels",
+            "a"
+        ]
+    },
+    {
+        "value": "archdemons",
+        "synonyms": [
+            "archdemons",
+            "demons",
+            "devils"
+        ]
+    },
+    {
+        "value": "chineseGods",
+        "synonyms": [
+            "chinese gods",
+            "chinese",
+            "five elements",
+            "5 elements",
+            "5 ele",
+            "five ele"
+        ]
+    },
+    {
+        "value": "japaneseGods2",
+        "synonyms": [
+            "japanese gods 2",
+            "japanese 2",
+            "jp2",
+            "jg2"
+        ]
+    },
+    {
+        "value": "heroesGods",
+        "synonyms": [
+            "heroes gods",
+            "hg"
+        ]
+    },
+    {
+        "value": "threeKingdoms1",
+        "synonyms": [
+            "three kingdoms 1",
+            "3k 1",
+            "tk1"
+        ]
+    },
+    {
+        "value": "indianGods2",
+        "synonyms": [
+            "indian gods 2",
+            "ig2"
+        ]
+    },
+    {
+        "value": "wizards",
+        "synonyms": [
+            "wizards",
+            "witches",
+            "witch",
+            "sorcerer",
+            "w"
+        ]
+    },
+    {
+        "value": "armouredKnights",
+        "synonyms": [
+            "armoured knights",
+            "knights",
+            "armored knights",
+            "armor knights",
+            "amour knights",
+            "armoured",
+            "ak"
+        ]
+    },
+    {
+        "value": "egyptianGods2",
+        "synonyms": [
+            "egyptian gods 2",
+            "eg2"
+        ]
+    },
+    {
+        "value": "grimoires",
+        "synonyms": [
+            "grimoires",
+            "g"
+        ]
+    },
+    {
+        "value": "angels",
+        "synonyms": [
+            "angels"
+        ]
+    },
+    {
+        "value": "brave1",
+        "synonyms": [
+            "braves 1",
+            "brave 1",
+            "weapons 1",
+            "braves",
+            "b1"
+        ]
+    },
+    {
+        "value": "riders2",
+        "synonyms": [
+            "riders ",
+            "riders 2",
+            "beast riders 2",
+            "r"
+        ]
+    },
+    {
+        "value": "cyberdragons,CyberDragons",
+        "synonyms": [
+            "cyberdragons",
+            "cyberdragons  cyber dragons",
+            "c"
+        ]
+    },
+    {
+        "value": "cyberbeasts",
+        "synonyms": [
+            "cyberbeasts"
+        ]
+    },
+    {
+        "value": "samuraiGods1",
+        "synonyms": [
+            "samurai gods 1",
+            "sg1"
+        ]
+    },
+    {
+        "value": "mechanicalStarGods1",
+        "synonyms": [
+            "mechanical star gods 1",
+            "mechanical gods 1",
+            "star gods 1",
+            "mechanical",
+            "star",
+            "msg1"
+        ]
+    },
+    {
+        "value": "mechanicalStarGods2",
+        "synonyms": [
+            "mechanical star god 2",
+            "mechanical star gods 2",
+            "mechanical gods 2",
+            "star gods 2",
+            "god",
+            "msg2"
+        ]
+    },
+    {
+        "value": "gemstone",
+        "synonyms": [
+            "gemstone princesses",
+            "gemstone",
+            "gemstone princess",
+            "gem stones",
+            "gem stone princess",
+            "gem stone princesses",
+            "princesses",
+            "gp"
+        ]
+    },
+    {
+        "value": "wisdomKings",
+        "synonyms": [
+            "wisdom kings",
+            "wisdom",
+            "kings",
+            "wk"
+        ]
+    },
+    {
+        "value": "wisedragons",
+        "synonyms": [
+            "wisedragons",
+            "wise dragons"
+        ]
+    },
+    {
+        "value": "valkyries",
+        "synonyms": [
+            "valkyries",
+            "v"
+        ]
+    },
+    {
+        "value": "healerGirls",
+        "synonyms": [
+            "healer girls",
+            "healer",
+            "girls"
+        ]
+    },
+    {
+        "value": "chibi",
+        "synonyms": [
+            "chibi",
+            "mini"
+        ]
+    },
+    {
+        "value": "toyDragons",
+        "synonyms": [
+            "toy dragons",
+            "toy",
+            "dragons",
+            "td"
+        ]
+    },
+    {
+        "value": "elementalSpirits",
+        "synonyms": [
+            "elemental spirits",
+            "elemental",
+            "spirits",
+            "es"
+        ]
+    },
+    {
+        "value": "mythicalBeasts",
+        "synonyms": [
+            "mythical beasts",
+            "mythical",
+            "beasts",
+            "mb"
+        ]
+    },
+    {
+        "value": "legendaryDragons",
+        "synonyms": [
+            "legendary dragons",
+            "ld"
+        ]
+    },
+    {
+        "value": "stickerGirls",
+        "synonyms": [
+            "sticker girls",
+            "sticker",
+            "sg"
+        ]
+    },
+    {
+        "value": "ancientDragons",
+        "synonyms": [
+            "ancient dragons",
+            "ancient",
+            "ad"
+        ]
+    },
+    {
+        "value": "heartConverter",
+        "synonyms": [
+            "heart converter   attack stance",
+            "heart converter",
+            "attack stance",
+            "heart",
+            "converter",
+            "attack",
+            "stance",
+            "hcas"
+        ]
+    },
+    {
+        "value": "snowglobes",
+        "synonyms": [
+            "snowglobes",
+            "snow globes",
+            "s"
+        ]
+    },
+    {
+        "value": "warDragons",
+        "synonyms": [
+            "war dragons",
+            "war",
+            "wd"
+        ]
+    },
+    {
+        "value": "metalDragons",
+        "synonyms": [
+            "metal dragons",
+            "metal",
+            "md"
+        ]
+    },
+    {
+        "value": "mythicalStoneDragons",
+        "synonyms": [
+            "mythic stone dragons",
+            "mythical stone dragons",
+            "mythic",
+            "stone",
+            "msd"
+        ]
+    },
+    {
+        "value": "skyDragons",
+        "synonyms": [
+            "sky dragons",
+            "sky",
+            "sd"
+        ]
+    },
+    {
+        "value": "mythicalDragons",
+        "synonyms": [
+            "mystic dragons",
+            "mythical dragons",
+            "mystic"
+        ]
+    },
+    {
+        "value": "chasers",
+        "synonyms": [
+            "chasers"
+        ]
+    },
+    {
+        "value": "fruitDragons",
+        "synonyms": [
+            "fruit dragons",
+            "fruit",
+            "fd"
+        ]
+    },
+    {
+        "value": "flowerDragons",
+        "synonyms": [
+            "flower dragons",
+            "flower"
+        ]
+    },
+    {
+        "value": "fairies",
+        "synonyms": [
+            "fairies",
+            "f"
+        ]
+    },
+    {
+        "value": "numberDragons",
+        "synonyms": [
+            "number dragons",
+            "  dragons",
+            "numbered dragons",
+            "number",
+            "nd"
+        ]
+    },
+    {
+        "value": "dragonKnights",
+        "synonyms": [
+            "dragon knights",
+            "dk"
+        ]
+    },
+    {
+        "value": "fairytale",
+        "synonyms": [
+            "fairy tale",
+            "fairytale",
+            "fairy",
+            "tale",
+            "ft"
+        ]
+    },
+    {
+        "value": "dragonSwordmans",
+        "synonyms": [
+            "dragon swordsmans",
+            "dragon swordmans",
+            "swordsmans",
+            "ds"
+        ]
+    },
+    {
+        "value": "shieldras",
+        "synonyms": [
+            "shieldras",
+            "shield dra"
+        ]
+    },
+    {
+        "value": "pys",
+        "synonyms": [
+            "pys",
+            "p"
+        ]
+    },
+    {
+        "value": "insectDragons",
+        "synonyms": [
+            "insect dragons",
+            "insect",
+            "id"
+        ]
+    },
+    {
+        "value": "bowlDragons",
+        "synonyms": [
+            "bowl dragons",
+            "bowl",
+            "bd"
+        ]
+    },
+    {
+        "value": "mugDragons",
+        "synonyms": [
+            "mug dragons",
+            "mug"
+        ]
+    },
+    {
+        "value": "descendedLoots",
+        "synonyms": [
+            "descended loots",
+            "descended",
+            "loots",
+            "dl"
+        ]
+    },
+    {
+        "value": "catDragons",
+        "synonyms": [
+            "cat dragons",
+            "cat",
+            "cd"
+        ]
+    },
+    {
+        "value": "lits",
+        "synonyms": [
+            "lits",
+            "l"
+        ]
+    },
+    {
+        "value": "latentTamadras",
+        "synonyms": [
+            "latent tamadras",
+            "latent",
+            "tamadras",
+            "lt"
+        ]
+    },
+    {
+        "value": "puzzle&DragonsZ",
+        "synonyms": [
+            "puzzle   dragons z",
+            "puzzle dragon z",
+            "pad z",
+            "padz",
+            "puzzle",
+            "z",
+            "pdz"
+        ]
+    },
+    {
+        "value": "spiritJewels",
+        "synonyms": [
+            "spirit jewels",
+            "jewels",
+            "spirit",
+            "sj"
+        ]
+    },
+    {
+        "value": "xmas",
+        "synonyms": [
+            "christmas",
+            "xmas",
+            "x mas"
+        ]
+    },
+    {
+        "value": "academy",
+        "synonyms": [
+            "pad academy",
+            "academy",
+            "school",
+            "pad",
+            "pa"
+        ]
+    },
+    {
+        "value": "beach",
+        "synonyms": [
+            "pad island",
+            "beach",
+            "bikini",
+            "island",
+            "pi"
+        ]
+    },
+    {
+        "value": "armouredDragons",
+        "synonyms": [
+            "armored dragons",
+            "armoured dragons",
+            "armour dragons",
+            "armor dragons",
+            "armored"
+        ]
+    },
+    {
+        "value": "halloween",
+        "synonyms": [
+            "halloween"
+        ]
+    },
+    {
+        "value": "newYear",
+        "synonyms": [
+            "new year",
+            "newyear",
+            "ny",
+            "new",
+            "year"
+        ]
+    },
+    {
+        "value": "prehistoricDragons",
+        "synonyms": [
+            "prehistoric dragons",
+            "prehistoric",
+            "pd"
+        ]
+    },
+    {
+        "value": "metallicStarDragons",
+        "synonyms": [
+            "metallic star dragons",
+            "metallic dragons",
+            "metallic"
+        ]
+    },
+    {
+        "value": "radarDragons",
+        "synonyms": [
+            "radar dragons",
+            "radar",
+            "rd"
+        ]
+    },
+    {
+        "value": "contractDragons",
+        "synonyms": [
+            "contract dragons",
+            "contract"
+        ]
+    },
+    {
+        "value": "padx",
+        "synonyms": [
+            "pad x",
+            "padx",
+            "x",
+            "px"
+        ]
+    },
+    {
+        "value": "wedding",
+        "synonyms": [
+            "june bride",
+            "wedding",
+            "bride",
+            "june",
+            "jb"
+        ]
+    },
+    {
+        "value": "guardianDragons",
+        "synonyms": [
+            "guardian dragons",
+            "guardian",
+            "gd"
+        ]
+    },
+    {
+        "value": "lovecraftian",
+        "synonyms": [
+            "lovecraftian",
+            "lovecraft",
+            "love craft"
+        ]
+    },
+    {
+        "value": "orbDragons",
+        "synonyms": [
+            "orb dragons",
+            "orb",
+            "od"
+        ]
+    },
+    {
+        "value": "warchiefDragons",
+        "synonyms": [
+            "warchief dragons",
+            "war chief dragons",
+            "warchief"
+        ]
+    },
+    {
+        "value": "valentine",
+        "synonyms": [
+            "valentine"
+        ]
+    },
+    {
+        "value": "gems",
+        "synonyms": [
+            "gems",
+            "evo gems"
+        ]
+    },
+    {
+        "value": "miscellaneous",
+        "synonyms": [
+            "miscellaneous",
+            "misc"
+        ]
+    },
+    {
+        "value": "padRadar",
+        "synonyms": [
+            "pad radar series",
+            "pad radar",
+            "puzzle   dragons radar",
+            "puzzle dragons radar",
+            "prs"
+        ]
+    },
+    {
+        "value": "companionDragons",
+        "synonyms": [
+            "companion dragons",
+            "companion"
+        ]
+    },
+    {
+        "value": "samuraiGods3",
+        "synonyms": [
+            "samurai gods 3",
+            "samurai 3",
+            "sg3"
+        ]
+    },
+    {
+        "value": "orchestra",
+        "synonyms": [
+            "draconic orchestra",
+            "orchestra",
+            "draconic",
+            "do"
+        ]
+    },
+    {
+        "value": "designContestsDragons",
+        "synonyms": [
+            "design contest dragons",
+            "design contests dragons",
+            "design dragons",
+            "contest dragons",
+            "design",
+            "contest",
+            "dcd"
+        ]
+    },
+    {
+        "value": "relic",
+        "synonyms": [
+            "sacred relic dragon saga",
+            "relic",
+            "sacred relic",
+            "relic dragons",
+            "sacred",
+            "saga",
+            "srds"
+        ]
+    },
+    {
+        "value": "none",
+        "synonyms": [
+            "none"
+        ]
+    },
+    {
+        "value": "ro",
+        "synonyms": [
+            "ro"
+        ]
+    },
+    {
+        "value": "taikoNoTatsujin",
+        "synonyms": [
+            "taiko no tatsujin",
+            "taiko",
+            "don chan",
+            "donchan",
+            "no",
+            "tatsujin",
+            "tnt"
+        ]
+    },
+    {
+        "value": "eco",
+        "synonyms": [
+            "eco",
+            "e"
+        ]
+    },
+    {
+        "value": "planAndBrood",
+        "synonyms": [
+            "plan and brood",
+            "plan",
+            "and",
+            "brood",
+            "pab"
+        ]
+    },
+    {
+        "value": "gunma",
+        "synonyms": [
+            "gunma"
+        ]
+    },
+    {
+        "value": "crystalDefender",
+        "synonyms": [
+            "crystal defender",
+            "ffcd",
+            "defender",
+            "crystal"
+        ]
+    },
+    {
+        "value": "famitsu",
+        "synonyms": [
+            "famitsu"
+        ]
+    },
+    {
+        "value": "punt",
+        "synonyms": [
+            "punt",
+            "princess punt"
+        ]
+    },
+    {
+        "value": "puzzdroid",
+        "synonyms": [
+            "puzzdroid"
+        ]
+    },
+    {
+        "value": "shinrabansho",
+        "synonyms": [
+            "shinrabansho",
+            "shinra",
+            "shinrabansho choco",
+            "choco"
+        ]
+    },
+    {
+        "value": "kapibara-San",
+        "synonyms": [
+            "kapibara-san",
+            "kapybara",
+            "kapibara",
+            "kapibara san",
+            "k"
+        ]
+    },
+    {
+        "value": "cathy",
+        "synonyms": [
+            "cathy"
+        ]
+    },
+    {
+        "value": "evagelion",
+        "synonyms": [
+            "evagelion",
+            "eva"
+        ]
+    },
+    {
+        "value": "7-11",
+        "synonyms": [
+            "7-11",
+            "711",
+            "7"
+        ]
+    },
+    {
+        "value": "clashOfClans",
+        "synonyms": [
+            "clash of clans",
+            "coc",
+            "clash",
+            "of",
+            "clans"
+        ]
+    },
+    {
+        "value": "grooveCoaster",
+        "synonyms": [
+            "groove coaster",
+            "groove",
+            "coaster",
+            "gc"
+        ]
+    },
+    {
+        "value": "roAce",
+        "synonyms": [
+            "ro ace",
+            "ace",
+            "ra"
+        ]
+    },
+    {
+        "value": "dragonSDogmaQuest",
+        "synonyms": [
+            "dragon s dogma quest",
+            "dogma",
+            "quest",
+            "dsdq"
+        ]
+    },
+    {
+        "value": "takaokaCity",
+        "synonyms": [
+            "takaoka city",
+            "takaoka",
+            "city",
+            "tc"
+        ]
+    },
+    {
+        "value": "monsterHunter1",
+        "synonyms": [
+            "monster hunter 1",
+            "mh",
+            "monhun",
+            "mon hun",
+            "mh1",
+            "mh 1",
+            "monhun 1",
+            "mon hun 1",
+            "monster",
+            "hunter"
+        ]
+    },
+    {
+        "value": "batman",
+        "synonyms": [
+            "batman",
+            "bat man",
+            "b"
+        ]
+    },
+    {
+        "value": "baskinRobbins",
+        "synonyms": [
+            "baskin robbins",
+            "br",
+            "baskin",
+            "robbins"
+        ]
+    },
+    {
+        "value": "angryBirds",
+        "synonyms": [
+            "angry birds",
+            "angry",
+            "birds",
+            "ab"
+        ]
+    },
+    {
+        "value": "padZ",
+        "synonyms": [
+            "pz"
+        ]
+    },
+    {
+        "value": "hunterXHunter",
+        "synonyms": [
+            "hunter x hunter",
+            "hunterxhunter",
+            "hxh",
+            "hunter cross hunter"
+        ]
+    },
+    {
+        "value": "sanrio",
+        "synonyms": [
+            "sanrio",
+            "hk",
+            "kitty",
+            "hello kitty"
+        ]
+    },
+    {
+        "value": "padBattleTournament",
+        "synonyms": [
+            "pad battle tournament",
+            "pad bt",
+            "padbattle",
+            "battle tournament",
+            "pad battle",
+            "battle",
+            "tournament",
+            "pbt"
+        ]
+    },
+    {
+        "value": "beams",
+        "synonyms": [
+            "beams",
+            "pad bear",
+            "ilovepad",
+            "iluvpad",
+            "i love pad",
+            "i luv pad"
+        ]
+    },
+    {
+        "value": "dragonBall",
+        "synonyms": [
+            "dragon ball",
+            "dbz",
+            "db",
+            "ball"
+        ]
+    },
+    {
+        "value": "saintSeiya",
+        "synonyms": [
+            "saint seiya",
+            "seiya",
+            "saint saiya",
+            "saiya",
+            "st seiya",
+            "st saiya",
+            "saint",
+            "ss"
+        ]
+    },
+    {
+        "value": "gunghoCollabSpirit",
+        "synonyms": [
+            "gungho collab  spirit ",
+            "gungho",
+            "collab",
+            "gcs"
+        ]
+    },
+    {
+        "value": "gunghoCollabKingSGate",
+        "synonyms": [
+            "gungho collab  king s gate ",
+            "king",
+            "gate",
+            "gcksg"
+        ]
+    },
+    {
+        "value": "gunghoCollabUnknownGame",
+        "synonyms": [
+            "gungho collab  unknown game ",
+            "unknown",
+            "game",
+            "gcug"
+        ]
+    },
+    {
+        "value": "gunghoCollabUnknownGame",
+        "synonyms": []
+    },
+    {
+        "value": "bikkuriman",
+        "synonyms": [
+            "bikkuriman"
+        ]
+    },
+    {
+        "value": "angryBirds",
+        "synonyms": []
+    },
+    {
+        "value": "dc",
+        "synonyms": [
+            "dc",
+            "dc comics",
+            "d"
+        ]
+    },
+    {
+        "value": "sangokuTenkaTrigger",
+        "synonyms": [
+            "sangoku tenka trigger",
+            "chibi 3k",
+            "sangoku",
+            "tenka",
+            "trigger",
+            "stt"
+        ]
+    },
+    {
+        "value": "fistOfTheNorthStars",
+        "synonyms": [
+            "fist of the north stars",
+            "fotns",
+            "fist",
+            "north star",
+            "the",
+            "north",
+            "stars"
+        ]
+    },
+    {
+        "value": "chibi",
+        "synonyms": []
+    },
+    {
+        "value": "diagoldos",
+        "synonyms": [
+            "diagoldos"
+        ]
+    },
+    {
+        "value": "chibi2",
+        "synonyms": [
+            "chibi 2",
+            "mini 2",
+            "c2"
+        ]
+    },
+    {
+        "value": "finalFantasy",
+        "synonyms": [
+            "final fantasy",
+            "ff",
+            "final",
+            "fantasy"
+        ]
+    },
+    {
+        "value": "ghostInTheShell",
+        "synonyms": [
+            "ghost in the shell",
+            "gits",
+            "rojikoma",
+            "newport",
+            "ghost",
+            "in",
+            "shell"
+        ]
+    },
+    {
+        "value": "duelMasters",
+        "synonyms": [
+            "duel masters",
+            "dm",
+            "duel",
+            "masters"
+        ]
+    },
+    {
+        "value": "attackOnTitan",
+        "synonyms": [
+            "attack on titan",
+            "aot",
+            "titan",
+            "on"
+        ]
+    },
+    {
+        "value": "ninjaHattori-Kun",
+        "synonyms": [
+            "ninja hattori-kun",
+            "ninja hattori",
+            "fujio",
+            "hattori",
+            "hattori kun",
+            "hattori-kun",
+            "nh"
+        ]
+    },
+    {
+        "value": "shonenSunday",
+        "synonyms": [
+            "shonen sunday",
+            "sunday",
+            "shonen",
+            "jump"
+        ]
+    },
+    {
+        "value": "crowsXWorst",
+        "synonyms": [
+            "crows x worst",
+            "crows",
+            "crow",
+            "worst",
+            "cxw"
+        ]
+    },
+    {
+        "value": "bleach",
+        "synonyms": [
+            "bleach"
+        ]
+    },
+    {
+        "value": "supermanVsBatman",
+        "synonyms": [
+            "superman vs batman",
+            "batman vs superman",
+            "superman",
+            "vs",
+            "svb"
+        ]
+    },
+    {
+        "value": "padX",
+        "synonyms": []
+    },
+    {
+        "value": "aceAttorney",
+        "synonyms": [
+            "ace attorney",
+            "attorney",
+            "aa"
+        ]
+    },
+    {
+        "value": "rurouniKenshin",
+        "synonyms": [
+            "rurouni kenshin",
+            "kenshin",
+            "rurouni",
+            "rk"
+        ]
+    },
+    {
+        "value": "pepper",
+        "synonyms": [
+            "pepper",
+            "peper"
+        ]
+    },
+    {
+        "value": "kinnikuman",
+        "synonyms": [
+            "kinnikuman"
+        ]
+    },
+    {
+        "value": "morikawa",
+        "synonyms": [
+            "morikawa",
+            "kokone morikawa"
+        ]
+    },
+    {
+        "value": "magazineAllStars",
+        "synonyms": [
+            "magazine all stars",
+            "magazine",
+            "all stars",
+            "allstars",
+            "all",
+            "mas"
+        ]
+    },
+    {
+        "value": "monsterHunter2",
+        "synonyms": [
+            "monster hunter 2",
+            "mh 2",
+            "monhun 2",
+            "mon hun 2",
+            "mh2"
+        ]
+    },
+    {
+        "value": "voltron",
+        "synonyms": [
+            "voltron"
+        ]
+    },
+    {
+        "value": "fullmetalAlchemist",
+        "synonyms": [
+            "fullmetal alchemist",
+            "fma",
+            "full metal",
+            "fullmetal",
+            "full metal alchemist",
+            "alchemist",
+            "fa"
+        ]
+    },
+    {
+        "value": "kingOfFighters",
+        "synonyms": [
+            "king of fighters",
+            "kof",
+            "fighters"
+        ]
+    },
+    {
+        "value": "yuYuHakusho",
+        "synonyms": [
+            "yu yu hakusho",
+            "yyh",
+            "yusuke",
+            "yuyu",
+            "yu",
+            "hakusho"
+        ]
+    },
+    {
+        "value": "persona",
+        "synonyms": [
+            "persona"
+        ]
+    },
+    {
+        "value": "coca-Cola",
+        "synonyms": [
+            "coca-cola",
+            "cocacola",
+            "coke",
+            "coca cola",
+            "cola"
+        ]
+    },
+    {
+        "value": "magicTheGathering",
+        "synonyms": [
+            "magic the gathering",
+            "magic",
+            "magic cards",
+            "mtg",
+            "gathering"
+        ]
+    },
+    {
+        "value": "gunghoRem",
+        "synonyms": [
+            "gungho  rem ",
+            "gh",
+            "rem",
+            "gr"
+        ]
+    },
+    {
+        "value": "gungho4720",
+        "synonyms": [
+            "gungho  4720 ",
+            "4720",
+            "g4"
+        ]
+    },
+    {
+        "value": "gungho4721",
+        "synonyms": [
+            "gungho  4721 ",
+            "4721"
+        ]
+    },
+    {
+        "value": "powerPros",
+        "synonyms": [
+            "power pros",
+            "powerpro",
+            "powerpros",
+            "power pro",
+            "baseball",
+            "power",
+            "pros",
+            "pp"
+        ]
+    },
+    {
+        "value": "gintama",
+        "synonyms": [
+            "gintama"
+        ]
+    },
+    {
+        "value": "swordArtOnline",
+        "synonyms": [
+            "sword art online",
+            "sao",
+            "sword art",
+            "sword",
+            "art",
+            "online"
+        ]
+    },
+    {
+        "value": "kamenRider",
+        "synonyms": [
+            "kamen rider",
+            "rider",
+            "kamen",
+            "kr",
+            "kamen riders"
+        ]
+    },
+    {
+        "value": "powerRangers",
+        "synonyms": [
+            "power rangers",
+            "pr",
+            "mmpr",
+            "rangers"
+        ]
+    },
+    {
+        "value": "fate",
+        "synonyms": [
+            "fate",
+            "fate stay night",
+            "fate stay",
+            "hf",
+            "heaven feels",
+            "fsn",
+            "heaven s feel",
+            "heavens feel",
+            "fhf",
+            "stay night"
+        ]
+    },
+    {
+        "value": "streetFighterV",
+        "synonyms": [
+            "street fighter v",
+            "streetfighter",
+            "sf",
+            "sfv",
+            "street fighter",
+            "sf5",
+            "street fighter 5",
+            "street",
+            "fighter"
+        ]
+    },
+    {
+        "value": "mcdonaldS",
+        "synonyms": [
+            "mcdonald s",
+            "mdc",
+            "mccotton",
+            "mcdonalds",
+            "mc donald",
+            "mcdonald",
+            "ms"
+        ]
+    },
+    {
+        "value": "shamanKing",
+        "synonyms": [
+            "shaman king",
+            "sk",
+            "shaman"
+        ]
+    },
+    {
+        "value": "shonenChampion",
+        "synonyms": [
+            "shonen champion",
+            "champion",
+            "champions",
+            "sc"
+        ]
+    },
+    {
+        "value": "samuraiShodown",
+        "synonyms": [
+            "samurai shodown",
+            "samurai showdown",
+            "samsho",
+            "samurai spirits",
+            "shodown"
+        ]
+    },
+    {
+        "value": "powerRanger2",
+        "synonyms": [
+            "power ranger 2",
+            "pr 2",
+            "ranger",
+            "pr2"
+        ]
+    },
+    {
+        "value": "fujimiFantasia",
+        "synonyms": [
+            "fujimi fantasia",
+            "fantasia",
+            "fujimi"
+        ]
+    },
+    {
+        "value": "shinkalion",
+        "synonyms": [
+            "shinkalion",
+            "train",
+            "trains",
+            "shinkalion train",
+            "shinkalion trains"
+        ]
+    },
+    {
+        "value": "yugiohDuelMonsters",
+        "synonyms": [
+            "yugioh  duel monsters",
+            "yugioh",
+            "ygo",
+            "yugi",
+            "ydm"
+        ]
+    },
+    {
+        "value": "mickeyFriends",
+        "synonyms": [
+            "mickey   friends",
+            "mickey mouse",
+            "disney",
+            "mickeys and friends",
+            "mnf",
+            "mickey",
+            "mickey friends",
+            "m f",
+            "friends",
+            "mf"
+        ]
+    },
+    {
+        "value": "devilMayCryV",
+        "synonyms": [
+            "devil may cry v",
+            "dmv",
+            "wallet may cry",
+            "dmc",
+            "dmcv",
+            "devil may cry",
+            "devil may cry 5",
+            "devil",
+            "may",
+            "cry"
+        ]
+    },
+    {
+        "value": "myHeroAcademia",
+        "synonyms": [
+            "my hero academia",
+            "mha",
+            "my hero",
+            "mero academia",
+            "mero",
+            "boku no hero",
+            "boku no hero academia",
+            "bnh",
+            "bnha",
+            "my",
+            "hero",
+            "academia"
+        ]
+    }
+]

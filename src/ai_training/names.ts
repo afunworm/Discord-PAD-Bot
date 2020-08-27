@@ -11,9 +11,11 @@ const fs = require('fs');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.HIGHEST_VALID_MONSTER_ID);
+// startNumber = 4748;
+// endNumber = startNumber + 1;
 let data = [];
 let computedNameTracker = [];
-let skipExtensiveNameTraining = []; //If DialogFlow complains about maximum number of training phrases reached, add that monster to this list
+let limitedAttributeTraining = [2514];
 let numberOfNamesTrained = 0;
 
 function computeCustomNames(monsterName: string, monster: MonsterParser): string[] {
@@ -36,8 +38,7 @@ function computeCustomNames(monsterName: string, monster: MonsterParser): string
 	return synonyms;
 }
 
-function computePrefixes(processedName: string, prefixes: string[], trainAllNameParts: boolean = true): string[] {
-	let nameParts = processedName.split(' ');
+function computePrefixes(processedName: string, prefixes: string[]): string[] {
 	let synonyms = [];
 
 	let shouldTrain = (name: string) => {
@@ -53,26 +54,8 @@ function computePrefixes(processedName: string, prefixes: string[], trainAllName
 		return result;
 	};
 
-	//Let's train all variations of name. For example: Viper Orochi can be Viper or Orochi
-	//This actually put produced too much info for the AI for certain number, so we need to exclude those numbers
-	if (trainAllNameParts) {
-		nameParts.forEach((namePart) => {
-			prefixes.forEach((prefix) => {
-				if (!shouldTrain(namePart)) return;
-				synonyms.push(prefix + namePart);
-			});
-		});
-	}
-
-	//Also train fullname
 	prefixes.forEach((prefix) => {
 		if (!shouldTrain(processedName)) return;
-
-		// //Don't need to train duplicated data
-		// prefixes.forEach((p) => {
-		// 	if (processedName.includes(p)) shouldTrain = false;
-		// });
-		// if (!shouldTrain) return;
 
 		synonyms.push(prefix + processedName);
 	});
@@ -80,20 +63,25 @@ function computePrefixes(processedName: string, prefixes: string[], trainAllName
 	return synonyms;
 }
 
+function shouldLimitAttributeTraining(monster: MonsterParser) {
+	return limitedAttributeTraining.includes(monster.getId());
+}
+
 function trainAttributeReading(
 	nameList: string[],
 	mainAttribute: string,
-	subAttribute: string | null = null
+	subAttribute: string | null = null,
+	limitedTraining: boolean = false
 ): string[] {
 	let groups = {
-		fire: ['red', 'r'],
-		water: ['blue', 'b'],
-		wood: ['green', 'g'],
+		fire: ['fire', 'red', 'r'],
+		water: ['water', 'blue', 'b'],
+		wood: ['wood', 'green', 'g'],
 		light: ['light', 'l'],
 		dark: ['dark', 'd'],
 		none: ['x', ''],
 	};
-	let synonyms = [];
+	let synonyms = nameList; //Return the original entries back too!
 	if (!subAttribute) subAttribute = 'none';
 
 	//Find groups of main & sub attributes
@@ -106,6 +94,14 @@ function trainAttributeReading(
 		mainAttributeAlias.forEach((mainAttributeAlia) => {
 			subAttributeAlias.forEach((subAttributeAlia) => {
 				let trainedName;
+
+				if (
+					limitedTraining &&
+					(subAttributeAlia === 'fire' || subAttributeAlia === 'water' || subAttributeAlia === 'wood')
+				) {
+					//People probably won't query fire green liu bei - save data processing time for AI
+					return;
+				}
 
 				//For case like dark anubis
 				if (subAttributeAlia === '') {
@@ -155,7 +151,6 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 	//Automatic synonym extract for computed names
 	if (fullName.includes(',')) {
 		let name = guessName(fullName, false); //Without anything between (***)
-
 		synonyms.push(name);
 
 		name = guessName(fullName, true); //Without ( and ) only, keep content inside
@@ -164,7 +159,6 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		//Process info for names with '()' but without ',' like 'Superman (Comics)'
 		if (fullName.includes('(') && fullName.includes(')')) {
 			let name = fullName.replace(/(\(.*\))/gi, '').trim();
-
 			synonyms.push(name);
 		}
 	}
@@ -174,11 +168,9 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		let processedName = fullName.replace('super reincarnated', '').trim();
 		let prefixes = ['sr ', 'srevo '];
 
-		computePrefixes(processedName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-			(computedName) => {
-				synonyms.push(computedName);
-			}
-		);
+		computePrefixes(processedName, prefixes).forEach((computedName) => {
+			synonyms.push(computedName);
+		});
 	}
 
 	//Train for PAD Island
@@ -189,17 +181,13 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 			//Calculated by splitting ',' and determining real name with the content inside ()
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
 
-			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(name, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		} else {
-			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(fullName, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		}
 	}
 
@@ -210,17 +198,13 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		if (fullName.includes(',')) {
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
 
-			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(name, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		} else {
-			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(fullName, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		}
 	}
 
@@ -231,17 +215,13 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		if (fullName.includes(',')) {
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
 
-			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(name, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		} else {
-			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(fullName, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		}
 	}
 
@@ -252,17 +232,13 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		if (fullName.includes(',')) {
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
 
-			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(name, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		} else {
-			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(fullName, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		}
 	}
 
@@ -273,17 +249,13 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		if (fullName.includes(',')) {
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
 
-			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(name, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		} else {
-			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(fullName, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		}
 	}
 
@@ -294,17 +266,13 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		if (fullName.includes(',')) {
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
 
-			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(name, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		} else {
-			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(fullName, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		}
 	}
 
@@ -315,17 +283,13 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		if (fullName.includes(',')) {
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
 
-			computePrefixes(name, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(name, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		} else {
-			computePrefixes(fullName, prefixes, !skipExtensiveNameTraining.includes(monster.getId())).forEach(
-				(computedName) => {
-					synonyms.push(computedName);
-				}
-			);
+			computePrefixes(fullName, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
 		}
 	}
 
@@ -338,6 +302,29 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 	for (let id = startNumber; id < endNumber; id++) {
 		try {
 			let monster = new MonsterParser(id);
+			let synonyms = [];
+			let allowedOptional = [
+				'(dark color)',
+				'(ilmina)',
+				'(romia)',
+				'(film)',
+				'(comics)',
+				'(suzaku)',
+				'(seiryuu)',
+				'(genbu)',
+				'(kirin)',
+				'(byakko)',
+				'(megazord)',
+				'(bronze)',
+				'(silver)',
+				'(gold)',
+				'(rainbow)',
+			];
+			let noComputedName = [
+				823, //Torrential Fenrir Knight, Kamui -> Kamui will overlap
+				2740, //Reincarnated Fenrir Knight, Kamui
+			];
+
 			if (!monster.getName().includes('*****') && !monster.getName().includes('????')) {
 				//If the id is in the MANUAL_LIST, just replace and do nothing else
 				if (MANUAL_LIST[id]) {
@@ -345,69 +332,54 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 					MANUAL_LIST[id].forEach((replacedName) => {
 						synonyms.push(replacedName);
 					});
+
 					//Finally, train the whole synonym entry with readable attribtues
-					synonyms = trainAttributeReading(
-						synonyms,
-						monster.getReadableMainAttribute(),
-						monster.getReadableSubAttribute()
-					);
+					// synonyms = trainAttributeReading(
+					// 	synonyms,
+					// 	monster.getReadableMainAttribute(),
+					// 	monster.getReadableSubAttribute(),
+					// 	shouldLimitAttributeTraining(monster)
+					// );
 
-					// computedNameTracker.push(...synonyms);
-					data.push({
-						value: id.toString(),
-						synonyms: synonyms,
-					});
-					continue;
-				}
+					// // computedNameTracker.push(...synonyms);
+					// data.push({
+					// 	value: id.toString(),
+					// 	synonyms: synonyms,
+					// });
+					// continue;
+				} else {
+					let monsterName = monster.getName().replace('"', '\\"');
 
-				let synonyms = [];
-				let allowedOptional = [
-					'(dark color)',
-					'(ilmina)',
-					'(romia)',
-					'(film)',
-					'(comics)',
-					'(suzaku)',
-					'(seiryuu)',
-					'(genbu)',
-					'(kirin)',
-					'(byakko)',
-					'(megazord)',
-					'(bronze)',
-					'(silver)',
-					'(gold)',
-					'(rainbow)',
-				];
-				let noComputedName = [
-					823, //Torrential Fenrir Knight, Kamui -> Kamui will overlap
-					2740, //Reincarnated Fenrir Knight, Kamui
-				];
-
-				let monsterName = monster.getName().replace('"', '\\"');
-
-				let optional = monsterName.toLowerCase().match(/(\(.*\))/gi);
-				if (optional !== null && optional.length > 0) {
-					if (!allowedOptional.includes(optional[0])) {
-						monsterName = monsterName.replace(/(\(.*\))/gi, '');
+					let optional = monsterName.toLowerCase().match(/(\(.*\))/gi);
+					if (optional !== null && optional.length > 0) {
+						if (!allowedOptional.includes(optional[0])) {
+							monsterName = monsterName.replace(/(\(.*\))/gi, '');
+						}
 					}
-				}
 
-				monsterName = monsterName.trim().toLowerCase();
+					monsterName = monsterName.trim().toLowerCase();
 
-				let computedNames = noComputedName.includes(id) ? [] : computeNames(monsterName, monster);
-				synonyms.push(id.toString(), monsterName.replace('(', '').replace(')', ''), ...computedNames);
+					let computedNames = noComputedName.includes(id) ? [] : computeNames(monsterName, monster);
+					synonyms.push(id.toString(), monsterName.replace('(', '').replace(')', ''), ...computedNames);
 
-				//Run for custom names replacement too
-				synonyms.forEach((synonym) => {
-					synonyms.push(...computeCustomNames(synonym, monster));
-				});
+					//Run 2 word names
+					if (monsterName.split(' ').length === 2) {
+						let parts = monsterName.split(' ');
+						parts.forEach((part) => synonyms.push(part));
+					}
 
-				//Add in additional names
-				if (ADDITIONAL_NAMES[id.toString()]) {
-					let additonalNames = ADDITIONAL_NAMES[id.toString()];
-					additonalNames.forEach((additionalName) => {
-						synonyms.push(additionalName);
+					//Run for custom names replacement too
+					synonyms.forEach((synonym) => {
+						synonyms.push(...computeCustomNames(synonym, monster));
 					});
+
+					//Add in additional names
+					if (ADDITIONAL_NAMES[id.toString()]) {
+						let additonalNames = ADDITIONAL_NAMES[id.toString()];
+						additonalNames.forEach((additionalName) => {
+							synonyms.push(additionalName);
+						});
+					}
 				}
 
 				//Finally, train the whole synonym entry with readable attribtues
@@ -416,7 +388,8 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 					synonyms = trainAttributeReading(
 						synonyms,
 						monster.getReadableMainAttribute(),
-						monster.getReadableSubAttribute()
+						monster.getReadableSubAttribute(),
+						shouldLimitAttributeTraining(monster)
 					);
 				}
 

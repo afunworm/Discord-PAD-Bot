@@ -99,7 +99,7 @@ export const ADDITIONAL_NAMES = {
 	'2940': ['whaledor'],
 	'2943': ['sherias roots'],
 	'2948': ['dios'],
-	'2969': ['mirupa'],
+	'2969': ['mirupa', 'miru', 'rick', 'rick loli', 'rl', 'lmiru', 'lmyr'],
 	'2982': ['AU&Y', 'auy', 'a u&y'],
 	'2993': ['citrus'],
 	'2995': ['renive'],
@@ -236,4 +236,6 @@ export const ADDITIONAL_NAMES = {
 	'4385': ['teddy'],
 	'4430': ['mega blodin'],
 	'4431': ['mega rodin'],
+	'4763': ['swng', 'steven'],
+	'5740': ['afunworm', "afunworm's favorite", 'worm', "worm's favorite"],
 };

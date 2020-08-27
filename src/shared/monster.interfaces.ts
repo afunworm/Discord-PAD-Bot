@@ -46,6 +46,7 @@ export interface MonsterData {
 	collabReadable: string;
 	series: string | null;
 	seriesReadable: string | null;
+	group: string | null;
 	maxLevel: number;
 	feedExp: number;
 	sellPrice: number;

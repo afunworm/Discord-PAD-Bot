@@ -72,12 +72,10 @@ client.on('message', async (message: any) => {
 		//Is this the exact query?
 		let isExactIdQuery = rawInput.includes(baseMonsterId);
 
-		console.log(result.queryResult.parameters);
-
 		//If the ID is not provided, try to see if we can get the ID from guessing the name
 		//But the monster name has to exists
 		// console.log(result.queryResult.parameters);
-		if (!baseMonsterId) {
+		if (!baseMonsterId || !/^\d+$/.test(baseMonsterId)) {
 			let previousThreadData = cache.get(userId);
 
 			if (previousThreadData) {
@@ -86,49 +84,45 @@ client.on('message', async (message: any) => {
 				await helper.sendMessage(`I can't find the card you are looking for! Can you try a different name?`);
 				return;
 			}
-		} else {
-			//Let the user know the bot is working on it
-			// await helper.sendMessage(Common.dynamicResponse('WORKING'));
+			// } else {
+			// 	// Let the user know the bot is working on it
+			// 	// await helper.sendMessage(Common.dynamicResponse('WORKING'));
 
-			//Because asking for evo list will have to go through all the monsters anyway
-			if (infoType === 'evoList') isExactIdQuery = true;
+			// 	// Because asking for evo list will have to go through all the monsters anyway
+			// 	if (infoType === 'evoList') isExactIdQuery = true;
 
-			let specific2AttributeFilter =
-				(attribute1 !== null && attribute2 === 'none') || (attribute1 !== null && attribute2 !== null);
-
-			let cardIds = await Helper.detectMonsterIdFromName(
-				baseMonsterId,
-				attribute1 || 'none',
-				attribute2 || 'none',
-				specific2AttributeFilter,
-				isExactIdQuery
-			);
-
-			if (cardIds.length === 0) {
-				await helper.sendMessage(
-					'I am not able to find that monster. Please double check the attributes and name. You can also use ID for precision.'
-				);
-				return;
-			} else if (cardIds.length > 1) {
-				let cardList = [];
-				cardIds.forEach((card) => {
-					cardList.push(`${card.attributes} | ${card.name} (#${card.id})`);
-				});
-
-				await helper.sendMessage(
-					'There are more than one monsters that match your criteria. Please help me narrow it down!'
-				);
-
-				let embed = new Discord.MessageEmbed().addFields({
-					name: 'Monsters Related to Your Query',
-					value: cardList.join('\n'),
-				});
-
-				await helper.sendMessage(embed);
-				return;
-			} else if (cardIds.length === 1) {
-				baseMonsterId = cardIds[0].id;
-			}
+			// 	// let specific2AttributeFilter =
+			// 	//     (attribute1 !== null && attribute2 === 'none') || (attribute1 !== null && attribute2 !== null);
+			// 	let specific2AttributeFilter = true;
+			// 	let cardIds = await Helper.detectMonsterIdFromName(
+			// 		baseMonsterId,
+			// 		attribute1 || 'none',
+			// 		attribute2 || 'none',
+			// 		specific2AttributeFilter,
+			// 		isExactIdQuery
+			// 	);
+			// 	if (cardIds.length === 0) {
+			// 		await helper.sendMessage(
+			// 			'I am not able to find that monster. Please double check the attributes and name. You can also use ID for precision.'
+			// 		);
+			// 		return;
+			// 	} else if (cardIds.length > 1) {
+			// 		let cardList = [];
+			// 		cardIds.forEach((card) => {
+			// 			cardList.push(`${card.attributes} | ${card.name} (#${card.id})`);
+			// 		});
+			// 		await helper.sendMessage(
+			// 			'There are more than one monsters that match your criteria. Please help me narrow it down!'
+			// 		);
+			// 		let embed = new Discord.MessageEmbed().addFields({
+			// 			name: 'Monsters Related to Your Query',
+			// 			value: cardList.join('\n'),
+			// 		});
+			// 		await helper.sendMessage(embed);
+			// 		return;
+			// 	} else if (cardIds.length === 1) {
+			// 		baseMonsterId = cardIds[0].id;
+			// 	}
 		}
 
 		//Assign cardId

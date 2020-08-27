@@ -3,6 +3,7 @@ import { KILLER_EMOTES } from '../shared/monster.awakens';
 import { ATTRIBUTE_EMOTES } from '../shared/monster.attributes';
 import { RESPONSE_PHRASES } from './responsePhrases';
 import { MONSTER_SERIES } from '../shared/monster.series';
+import { MONSTER_COLLABS } from '../shared/monster.collabs';
 
 export class Common {
 	static fillTemplate(templateString: string, templateVars: { [key: string]: string }): string {
@@ -94,6 +95,24 @@ export class Common {
 				};
 			}
 		});
+
+		return result;
+	}
+	static getCardSeriesGroup(cardId: number, cardCollabId: number): string | null {
+		let result = null;
+
+		MONSTER_SERIES.forEach((series) => {
+			let group = series.group;
+			let cards = series.cards;
+
+			if (cards.includes(cardId) && group !== null) {
+				result = group;
+			}
+		});
+
+		if (MONSTER_COLLABS[cardCollabId]?.group) {
+			result = MONSTER_COLLABS[cardCollabId]?.group;
+		}
 
 		return result;
 	}
