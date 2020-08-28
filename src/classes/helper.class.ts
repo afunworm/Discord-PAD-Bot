@@ -1,11 +1,27 @@
-require('dotenv').config({ path: '../.env' });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 import { Monster } from './monster.class';
+import { MonsterData } from '../shared/monster.interfaces';
 import { Common } from './common.class';
+import * as admin from 'firebase-admin';
+import { ReactionManager, DMChannel, MessageReaction } from 'discord.js';
+import { Cache } from './cache.class';
 const _ = require('lodash');
 const Discord = require('discord.js');
+/*-------------------------------------------------------*
+ * FIREBASE ADMIN
+ *-------------------------------------------------------*/
+if (admin.apps.length === 0) {
+	admin.initializeApp({
+		credential: admin.credential.cert(require('../' + process.env.FIREBASE_SERVICE_ACCOUNT)),
+		databaseURL: process.env.FIREBASE_DATABASE_URL,
+	});
+}
+const firestore = admin.firestore();
+let cache = new Cache('authorship');
 
 export class Helper {
-	private _channel;
+	private _channel: DMChannel;
 	private _message;
 	private _threads = {};
 
@@ -271,8 +287,67 @@ export class Helper {
 
 	private numberWithCommas = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-	public sendMessage(message: string) {
-		this._channel.send(message);
+	private _collectors = {};
+	public async sendMessage(message: string, optionals = null) {
+		let filter = (reaction: MessageReaction, user) => {
+			let userId = user.id;
+			let cachedData = cache.get(userId);
+
+			if (!cachedData) return false;
+
+			return cachedData.includes(reaction.message.id);
+		};
+
+		try {
+			let sentEmbed =
+				optionals === null ? await this._channel.send(message) : await this._channel.send(message, optionals);
+			let sentEmbedId = sentEmbed.id;
+			let author = this._message.author.id;
+
+			if (!cache.get(author)) {
+				cache.set(author, [sentEmbedId]);
+			} else {
+				let cachedData = cache.get(author);
+				cachedData.push(sentEmbedId);
+				cache.set(author, cachedData);
+			}
+
+			await sentEmbed.react('❌');
+
+			let hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+			this._collectors[hash] = sentEmbed.createReactionCollector(filter, { time: 6000 });
+			this._collectors[hash].on('collect', (react: MessageReaction, user) => {
+				if (react.emoji.name === '❌') {
+					react.message.delete();
+				}
+			});
+		} catch (error) {
+			console.log(error.message);
+			await this._channel.send(
+				"Something went wrong. Discord doesn't let me send this message. <@190276489806086144>, please take a look."
+			);
+		}
+	}
+
+	public async sendMessageList(messageTitle: string, messageList: string[], maxEntries: number = 8) {
+		let paginations = [];
+
+		messageList.forEach((listItem, index) => {
+			if (index % maxEntries === 0) {
+				paginations.push([listItem]);
+			} else {
+				paginations[paginations.length - 1].push(listItem);
+			}
+		});
+		//Use for loop to do await
+		for (let i = 0; i < paginations.length; i++) {
+			let listItem = paginations[i];
+			let embed = new Discord.MessageEmbed().addFields({
+				name: messageTitle + ` (${i + 1}/${paginations.length})`,
+				value: listItem.join('\n'),
+			});
+			await this.sendMessage(embed);
+		}
 	}
 
 	public sendMonsterInfo(card: Monster) {
@@ -296,21 +371,17 @@ export class Helper {
 			embed.addFields({ name: card.getLeaderSkillHeader(), value: card.getLeaderSkillDescriptionDetails() });
 		}
 
-		return this._channel.send(embed);
+		return this.sendMessage(embed);
 	}
 
 	public sendMonsterImage(card: Monster) {
-		const imageUrl = card.getImageUrl();
-		this._channel.send(`**${card.getName()}** (#${card.getId()})`, {
-			files: [imageUrl],
-		});
+		let embed = new Discord.MessageEmbed().setTitle(`Image for ${card.getName()}`).setImage(card.getImageUrl());
+		this.sendMessage(embed);
 	}
 
 	public sendMonsterIcon(card: Monster) {
-		const imageUrl = card.getThumbnailUrl();
-		this._channel.send(`**${card.getName()}** (#${card.getId()})`, {
-			files: [imageUrl],
-		});
+		let embed = new Discord.MessageEmbed().setTitle(`Icon for ${card.getName()}`).setImage(card.getThumbnailUrl());
+		this.sendMessage(embed);
 	}
 
 	public sendMonsterName(card: Monster) {
@@ -318,7 +389,7 @@ export class Helper {
 			id: card.getId().toString(),
 			name: card.getName(),
 		});
-		this._channel.send(response);
+		this.sendMessage(response);
 	}
 
 	public sendAwakenings(card: Monster) {
@@ -329,7 +400,7 @@ export class Helper {
 			.setThumbnail(card.getThumbnailUrl())
 			.addFields({ name: card.getAwakenEmotes(), value: card.getSuperAwakenEmotes() });
 
-		return this._channel.send(embed);
+		return this.sendMessage(embed);
 	}
 
 	public sendTypes(card: Monster) {
@@ -359,7 +430,7 @@ export class Helper {
 			});
 		}
 
-		return this._channel.send(message);
+		return this.sendMessage(message);
 	}
 
 	public sendMonsterStats(card: Monster) {
@@ -370,7 +441,7 @@ export class Helper {
 			.setThumbnail(card.getThumbnailUrl())
 			.addFields({ name: 'Stats', value: card.getStats(), inline: true });
 
-		return this._channel.send(embed);
+		return this.sendMessage(embed);
 	}
 
 	public sendMonsterRarity(card: Monster) {
@@ -379,7 +450,7 @@ export class Helper {
 			name: card.getName(),
 			rarity: card.getRarity().toString(),
 		});
-		this._channel.send(response);
+		this.sendMessage(response);
 	}
 
 	public sendMonsterIsInheritable(card: Monster) {
@@ -388,7 +459,7 @@ export class Helper {
 			name: card.getName(),
 			isInheritable: card.isInheritable() ? 'is inheritable' : 'is not inhreitable',
 		});
-		this._channel.send(response);
+		this.sendMessage(response);
 	}
 
 	public sendMonsterActiveSkills(card: Monster) {
@@ -397,7 +468,7 @@ export class Helper {
 				id: card.getId().toString(),
 				name: card.getName(),
 			});
-			return this._channel.send(response);
+			return this.sendMessage(response);
 		}
 
 		let embed = new Discord.MessageEmbed()
@@ -410,7 +481,7 @@ export class Helper {
 				{ name: '**[DETAILS]** ' + card.getActiveSkillHeader(), value: card.getActiveSkillDescriptionDetails() }
 			);
 
-		this._channel.send(embed);
+		this.sendMessage(embed);
 	}
 
 	public sendMonsterLeaderSkills(card: Monster) {
@@ -419,7 +490,7 @@ export class Helper {
 				id: card.getId().toString(),
 				name: card.getName(),
 			});
-			return this._channel.send(response);
+			return this.sendMessage(response);
 		}
 
 		let embed = new Discord.MessageEmbed()
@@ -432,7 +503,7 @@ export class Helper {
 				{ name: '**[DETAILS]** ' + card.getLeaderSkillHeader(), value: card.getLeaderSkillDescriptionDetails() }
 			);
 
-		this._channel.send(embed);
+		this.sendMessage(embed);
 	}
 
 	public sendMonsterMonsterPoints(card: Monster) {
@@ -441,7 +512,7 @@ export class Helper {
 			name: card.getName(),
 			monsterPoints: this.numberWithCommas(card.getMonsterPoints()),
 		});
-		this._channel.send(response);
+		this.sendMessage(response);
 	}
 
 	public sendMonsterId(card: Monster) {
@@ -449,7 +520,7 @@ export class Helper {
 			id: card.getId().toString(),
 			name: card.getName(),
 		});
-		this._channel.send(response);
+		this.sendMessage(response);
 	}
 
 	public async sendMonsterEvoTree(card: Monster) {
@@ -463,7 +534,7 @@ export class Helper {
 				name: card.getName(),
 			});
 
-			return this._channel.send(message);
+			return this.sendMessage(message);
 		} else {
 			message = Common.dynamicResponse('ON_EVOLIST_REQUEST', {
 				id: card.getId().toString(),
@@ -471,7 +542,7 @@ export class Helper {
 				numberOfEvos: numberOfEvos.toString(),
 			});
 
-			this._channel.send(message);
+			this.sendMessage(message);
 		}
 
 		let result = [];
@@ -484,7 +555,7 @@ export class Helper {
 			let attributes =
 				Common.attributeEmotesMapping([mainAttribute])[0] + Common.attributeEmotesMapping([subAttribute])[0];
 
-			result.push(`${attributes}| ${monster.getName()} (#${monsterId})`);
+			result.push(`${attributes}| ${monsterId}. ${monster.getName()}`);
 		}
 
 		let embed = new Discord.MessageEmbed().addFields({
@@ -492,6 +563,68 @@ export class Helper {
 			value: result.join('\n'),
 		});
 
-		return this._channel.send(embed);
+		return this.sendMessage(embed);
+	}
+
+	public async sendCollabList(series: string) {
+		let monsters: MonsterData[] = [];
+
+		try {
+			//Get all monsters with that series
+			let seriesSnapshot = await firestore.collection('Monsters').where('series', '==', series).get();
+			let collabSnapshot = await firestore.collection('Monsters').where('collab', '==', Number(series)).get();
+
+			if (seriesSnapshot.empty && collabSnapshot.empty) {
+				await this.sendMessage(
+					"I don't have any information on the collab/series you were inquiring. Please let my devs know to update the database."
+				);
+				return;
+			}
+
+			seriesSnapshot.forEach((doc) => monsters.push(doc.data() as MonsterData));
+			collabSnapshot.forEach((doc) => monsters.push(doc.data() as MonsterData));
+
+			//Get the first monster and see if it is grouped with something else
+			let group = monsters[0].group;
+			let seriesName =
+				monsters[0].collab !== 0 && monsters[0].collabReadable.toLowerCase() !== 'unknown'
+					? monsters[0].collabReadable
+					: monsters[0].seriesReadable;
+
+			if (group === null) {
+				let result = [];
+				monsters.forEach((monster) => {
+					if (monster.name.includes('**')) return;
+					let mainAttribute = monster.mainAttribute;
+					let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
+					let attributes =
+						Common.attributeEmotesMapping([mainAttribute])[0] +
+						Common.attributeEmotesMapping([subAttribute])[0];
+					result.push(`${attributes}| ${monster.id}. ${monster.name}`);
+				});
+
+				let title = `Monsters from the **${seriesName}** series`;
+				await this.sendMessageList(title, result);
+			} else {
+				let extraMonsterSnapshop = await firestore.collection('Monsters').where('group', '==', group).get();
+				extraMonsterSnapshop.forEach((doc) => monsters.push(doc.data() as MonsterData));
+
+				let result = [];
+				monsters.forEach((monster) => {
+					if (monster.name.includes('**')) return;
+					let mainAttribute = monster.mainAttribute;
+					let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
+					let attributes =
+						Common.attributeEmotesMapping([mainAttribute])[0] +
+						Common.attributeEmotesMapping([subAttribute])[0];
+					result.push(`${attributes}| ${monster.id}. ${monster.name}`);
+				});
+
+				let title = `Monsters from the **${seriesName}** series`;
+				await this.sendMessageList(title, result);
+			}
+		} catch (error) {
+			await this.sendMessage('Something went wrong! Please try again later T_T.');
+		}
 	}
 }

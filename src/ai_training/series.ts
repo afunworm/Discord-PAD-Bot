@@ -4,6 +4,8 @@ const fs = require('fs');
 
 let camelize = (input: string) =>
 	input
+		.toLowerCase()
+		.replace(/[^a-zA-Z0-9]/gi, ' ')
 		.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase()))
 		.replace(/\s+/g, '');
 
@@ -22,7 +24,7 @@ let numberOfNamesTrained = 0;
 	MONSTER_SERIES.forEach((series) => {
 		let name = series.name.toLowerCase().replace(/[^a-zA-Z0-9]/gi, ' ');
 		let alias = series.aliases;
-		let id = alias[0] ? camelize(alias[0]) : camelize(name);
+		let id = camelize(name);
 		let synonyms = [];
 
 		//Train for full name
@@ -71,7 +73,7 @@ let numberOfNamesTrained = 0;
 		let collab = MONSTER_COLLABS[collabId];
 		let name = collab.name.toLowerCase().replace(/[^a-zA-Z0-9\-\/]/gi, ' ');
 		let alias = collab.aliases;
-		let id = camelize(name);
+		let id = collabId; //Collab uses Id
 		let synonyms = [];
 
 		//Train for full name

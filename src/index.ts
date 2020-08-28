@@ -6,7 +6,6 @@ import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
 import { Helper } from './classes/helper.class';
 import { Cache } from './classes/cache.class';
-import { result } from 'lodash';
 const Discord = require('discord.js');
 
 /*-------------------------------------------------------*
@@ -14,6 +13,7 @@ const Discord = require('discord.js');
  *-------------------------------------------------------*/
 const client = new Discord.Client();
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+const COMMAND_PREFIX = process.env.COMMAND_PREFIX;
 
 /*-------------------------------------------------------*
  * App
@@ -27,14 +27,20 @@ client.on('message', async (message: any) => {
 	if (message.author.bot) return;
 
 	//If message is NOT DM, and it is also not a message that mentioned the bot, then do nothing
-	if (message.channel.type !== 'dm' && !message.mentions.has(client.user)) {
+	if (
+		message.channel.type !== 'dm' &&
+		!message.mentions.has(client.user) &&
+		!message.content.trim().startsWith(COMMAND_PREFIX)
+	) {
 		return;
 	}
 
 	let userId = message.author.id;
 	let ai = new AI(userId);
 	let helper = new Helper(message);
-	let input = message.content;
+	let input = message.content.trim().startsWith(COMMAND_PREFIX)
+		? message.content.trim().substring(1)
+		: message.content.trim();
 	let cache = new Cache('conversation');
 	input = input.replace(client.user.id, ''); //Stripping ping from message
 	input = Helper.replaceCommonAbbreviation(input); //Replace common terms, such as dr, l/d, etc.
@@ -42,6 +48,7 @@ client.on('message', async (message: any) => {
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
 		let rawInput = result.queryResult.queryText;
+		let action = result.queryResult.action;
 
 		//What information is being requestd? For example: show me Anubis IMAGE
 		let infoType = result.queryResult.parameters.fields?.infoType?.stringValue || null;
@@ -69,119 +76,95 @@ client.on('message', async (message: any) => {
 		//Monster name, if any
 		let baseMonsterId = result.queryResult.parameters.fields?.monsterName?.stringValue || null;
 
-		//Is this the exact query?
-		let isExactIdQuery = rawInput.includes(baseMonsterId);
+		//Monster series/collab, if any
+		let monsterSeries = result.queryResult.parameters.fields?.monsterSeries?.stringValue || null;
 
-		//If the ID is not provided, try to see if we can get the ID from guessing the name
-		//But the monster name has to exists
-		// console.log(result.queryResult.parameters);
-		if (!baseMonsterId || !/^\d+$/.test(baseMonsterId)) {
-			let previousThreadData = cache.get(userId);
+		if (action === 'card.info') {
+			//Is this the exact query?
+			let isExactIdQuery = rawInput.includes(baseMonsterId);
 
-			if (previousThreadData) {
-				baseMonsterId = previousThreadData.monsterId;
-			} else {
-				await helper.sendMessage(`I can't find the card you are looking for! Can you try a different name?`);
-				return;
+			//If the ID is not provided, try to see if we can get the ID from guessing the name
+			//But the monster name has to exists
+			// console.log(result.queryResult.parameters);
+			if (!baseMonsterId || !/^\d+$/.test(baseMonsterId)) {
+				let previousThreadData = cache.get(userId);
+
+				if (previousThreadData) {
+					baseMonsterId = previousThreadData.monsterId;
+				} else {
+					await helper.sendMessage(
+						`I can't find the card you are looking for! Can you try a different name?`
+					);
+					return;
+				}
 			}
-			// } else {
-			// 	// Let the user know the bot is working on it
-			// 	// await helper.sendMessage(Common.dynamicResponse('WORKING'));
 
-			// 	// Because asking for evo list will have to go through all the monsters anyway
-			// 	if (infoType === 'evoList') isExactIdQuery = true;
+			//Assign cardId
+			let cardId = Number(baseMonsterId);
 
-			// 	// let specific2AttributeFilter =
-			// 	//     (attribute1 !== null && attribute2 === 'none') || (attribute1 !== null && attribute2 !== null);
-			// 	let specific2AttributeFilter = true;
-			// 	let cardIds = await Helper.detectMonsterIdFromName(
-			// 		baseMonsterId,
-			// 		attribute1 || 'none',
-			// 		attribute2 || 'none',
-			// 		specific2AttributeFilter,
-			// 		isExactIdQuery
-			// 	);
-			// 	if (cardIds.length === 0) {
-			// 		await helper.sendMessage(
-			// 			'I am not able to find that monster. Please double check the attributes and name. You can also use ID for precision.'
-			// 		);
-			// 		return;
-			// 	} else if (cardIds.length > 1) {
-			// 		let cardList = [];
-			// 		cardIds.forEach((card) => {
-			// 			cardList.push(`${card.attributes} | ${card.name} (#${card.id})`);
-			// 		});
-			// 		await helper.sendMessage(
-			// 			'There are more than one monsters that match your criteria. Please help me narrow it down!'
-			// 		);
-			// 		let embed = new Discord.MessageEmbed().addFields({
-			// 			name: 'Monsters Related to Your Query',
-			// 			value: cardList.join('\n'),
-			// 		});
-			// 		await helper.sendMessage(embed);
-			// 		return;
-			// 	} else if (cardIds.length === 1) {
-			// 		baseMonsterId = cardIds[0].id;
-			// 	}
-		}
+			//Register message thread for conversation continuation
+			cache.set(userId, {
+				monsterId: cardId,
+			});
 
-		//Assign cardId
-		let cardId = Number(baseMonsterId);
+			//Get info
+			let card = new Monster(cardId);
 
-		//Register message thread for conversation continuation
-		cache.set(userId, {
-			monsterId: cardId,
-		});
+			//Always initialize card before further processing
+			await card.init();
 
-		//Get info
-		let card = new Monster(cardId);
+			if (infoType === 'photo' || targetActionType === 'look') {
+				await helper.sendMonsterImage(card);
+			} else if (infoType === 'icon') {
+				await helper.sendMonsterIcon(card);
+			} else if (infoType === 'name' || actionType === 'call' || actionType === 'name') {
+				await helper.sendMonsterName(card);
+			} else if (infoType === 'awakenings' || infoType === 'superAwakenings') {
+				await helper.sendAwakenings(card);
+			} else if (infoType === 'types') {
+				await helper.sendTypes(card);
+			} else if (
+				infoType === 'stats' ||
+				infoType === 'hp' ||
+				infoType === 'attack' ||
+				infoType === 'recover' ||
+				(questionType === 'how' && infoType === 'stats')
+			) {
+				await helper.sendMonsterStats(card);
+			} else if (infoType === 'rarity') {
+				await helper.sendMonsterRarity(card);
+			} else if (infoType === 'assist') {
+				await helper.sendMonsterIsInheritable(card);
+			} else if (infoType === 'activeSkills') {
+				await helper.sendMonsterActiveSkills(card);
+			} else if (infoType === 'leaderSkills') {
+				await helper.sendMonsterLeaderSkills(card);
+			} else if (
+				((questionType === 'how' || questionType === 'what') && actionType === 'sell') ||
+				infoType === 'monsterPoints' ||
+				((questionType === 'how' || questionType === 'what') && targetActionType === 'sell')
+			) {
+				await helper.sendMonsterMonsterPoints(card);
+			} else if (infoType === 'materials') {
+				let isEvo = targetActionType === 'devo' ? false : true;
+			} else if (infoType === 'evoList') {
+				await helper.sendMonsterEvoTree(card);
+			} else if (infoType === 'id') {
+				await helper.sendMonsterId(card);
+			}
 
-		//Always initialize card before further processing
-		await card.init();
-
-		if (infoType === 'photo' || targetActionType === 'look') {
-			await helper.sendMonsterImage(card);
-		} else if (infoType === 'icon') {
-			await helper.sendMonsterIcon(card);
-		} else if (infoType === 'name' || actionType === 'call' || actionType === 'name') {
-			await helper.sendMonsterName(card);
-		} else if (infoType === 'awakenings' || infoType === 'superAwakenings') {
-			await helper.sendAwakenings(card);
-		} else if (infoType === 'types') {
-			await helper.sendTypes(card);
-		} else if (
-			infoType === 'stats' ||
-			infoType === 'hp' ||
-			infoType === 'attack' ||
-			infoType === 'recover' ||
-			(questionType === 'how' && infoType === 'stats')
-		) {
-			await helper.sendMonsterStats(card);
-		} else if (infoType === 'rarity') {
-			await helper.sendMonsterRarity(card);
-		} else if (infoType === 'assist') {
-			await helper.sendMonsterIsInheritable(card);
-		} else if (infoType === 'activeSkills') {
-			await helper.sendMonsterActiveSkills(card);
-		} else if (infoType === 'leaderSkills') {
-			await helper.sendMonsterLeaderSkills(card);
-		} else if (
-			((questionType === 'how' || questionType === 'what') && actionType === 'sell') ||
-			infoType === 'monsterPoints' ||
-			((questionType === 'how' || questionType === 'what') && targetActionType === 'sell')
-		) {
-			await helper.sendMonsterMonsterPoints(card);
-		} else if (infoType === 'materials') {
-			let isEvo = targetActionType === 'devo' ? false : true;
-		} else if (infoType === 'evoList') {
-			await helper.sendMonsterEvoTree(card);
-		} else if (infoType === 'id') {
-			await helper.sendMonsterId(card);
-		}
-
-		//Final, always
-		else if ((!infoType && !actionType) || (!infoType && actionType) || infoType === 'info') {
-			await helper.sendMonsterInfo(card);
+			//Final, always
+			else if ((!infoType && !actionType) || (!infoType && actionType) || infoType === 'info') {
+				await helper.sendMonsterInfo(card);
+			}
+		} else if (action === 'card.list') {
+			if (monsterSeries === null) {
+				await helper.sendMessage(
+					"I can't seem to find that collab/series. Would you like to try something else?"
+				);
+			} else {
+				await helper.sendCollabList(monsterSeries);
+			}
 		}
 	} catch (error) {
 		await helper.sendMessage(

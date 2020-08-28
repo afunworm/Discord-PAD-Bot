@@ -39,6 +39,10 @@ export interface QueryResultInterface {
 					stringValue: string;
 					kind: 'stringValue';
 				};
+				monsterSeries: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
 			};
 		};
 	};

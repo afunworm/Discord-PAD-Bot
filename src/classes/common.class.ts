@@ -71,6 +71,12 @@ export class Common {
 	}
 
 	static toSlug = (input: string) => input.replace(/[^a-zA-Z0-9]/gi, '_').toLowerCase();
+	static camelize = (input: string) =>
+		input
+			.toLowerCase()
+			.replace(/[^a-zA-Z0-9]/gi, ' ')
+			.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase()))
+			.replace(/\s+/g, '');
 
 	static getCardSeriesInfo(
 		cardId: number
@@ -85,7 +91,7 @@ export class Common {
 
 		MONSTER_SERIES.forEach((series) => {
 			let name = series.name;
-			let slug = series.aliases.length > 0 ? series.aliases[0] : this.toSlug(name);
+			let slug = this.camelize(name);
 			let cards = series.cards;
 
 			if (cards.includes(cardId)) {

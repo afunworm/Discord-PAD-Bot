@@ -11,8 +11,8 @@ const fs = require('fs');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.HIGHEST_VALID_MONSTER_ID);
-// startNumber = 4748;
-// endNumber = startNumber + 1;
+// startNumber = 613;
+// endNumber = startNumber + 2;
 let data = [];
 let computedNameTracker = [];
 let limitedAttributeTraining = [2514];
@@ -160,8 +160,21 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		if (fullName.includes('(') && fullName.includes(')')) {
 			let name = fullName.replace(/(\(.*\))/gi, '').trim();
 			synonyms.push(name);
+		} else {
+			synonyms.push(fullName);
 		}
 	}
+
+	//Training with -kun and -san
+	synonyms.forEach((name) => {
+		//Also train name with -kun & -san for this version
+		if (name.includes('-kun')) {
+			synonyms.push(name.replace('-kun', ''));
+		}
+		if (name.includes('-san')) {
+			synonyms.push(name.replace('-san', ''));
+		}
+	});
 
 	//Train for Super Reincarnated
 	if (fullName.includes('super reincarnated')) {
@@ -332,25 +345,10 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 					MANUAL_LIST[id].forEach((replacedName) => {
 						synonyms.push(replacedName);
 					});
-
-					//Finally, train the whole synonym entry with readable attribtues
-					// synonyms = trainAttributeReading(
-					// 	synonyms,
-					// 	monster.getReadableMainAttribute(),
-					// 	monster.getReadableSubAttribute(),
-					// 	shouldLimitAttributeTraining(monster)
-					// );
-
-					// // computedNameTracker.push(...synonyms);
-					// data.push({
-					// 	value: id.toString(),
-					// 	synonyms: synonyms,
-					// });
-					// continue;
 				} else {
 					let monsterName = monster.getName().replace('"', '\\"');
 
-					let optional = monsterName.toLowerCase().match(/(\(.*\))/gi);
+					let optional = monsterName.toLowerCase().match(/(\(.*\))/gi); //Extra things between ()
 					if (optional !== null && optional.length > 0) {
 						if (!allowedOptional.includes(optional[0])) {
 							monsterName = monsterName.replace(/(\(.*\))/gi, '');
