@@ -79,6 +79,9 @@ client.on('message', async (message: any) => {
 		//Monster series/collab, if any
 		let monsterSeries = result.queryResult.parameters.fields?.monsterSeries?.stringValue || null;
 
+		//If the target pronoun exists, it indicates the continuous conversation
+		let targetPronoun = result.queryResult.parameters.fields?.targetPronoun?.stringValue || null;
+
 		if (action === 'card.info') {
 			//Is this the exact query?
 			let isExactIdQuery = rawInput.includes(baseMonsterId);
@@ -89,7 +92,7 @@ client.on('message', async (message: any) => {
 			if (!baseMonsterId || !/^\d+$/.test(baseMonsterId)) {
 				let previousThreadData = cache.get(userId);
 
-				if (previousThreadData) {
+				if (targetPronoun && previousThreadData) {
 					baseMonsterId = previousThreadData.monsterId;
 				} else {
 					await helper.sendMessage(
@@ -147,10 +150,20 @@ client.on('message', async (message: any) => {
 				await helper.sendMonsterMonsterPoints(card);
 			} else if (infoType === 'materials') {
 				let isEvo = targetActionType === 'devo' ? false : true;
+
+				if (isEvo) {
+					await helper.sendMonsterMaterials(card, 'evo');
+				} else {
+					await helper.sendMonsterMaterials(card, 'devo');
+				}
+			} else if (infoType === 'devoMaterials') {
+				await helper.sendMonsterMaterials(card, 'devo');
 			} else if (infoType === 'evoList') {
 				await helper.sendMonsterEvoTree(card);
 			} else if (infoType === 'id') {
 				await helper.sendMonsterId(card);
+			} else if (infoType === 'series') {
+				await helper.sendMonsterSeries(card);
 			}
 
 			//Final, always

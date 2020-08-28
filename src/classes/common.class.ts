@@ -4,6 +4,7 @@ import { ATTRIBUTE_EMOTES } from '../shared/monster.attributes';
 import { RESPONSE_PHRASES } from './responsePhrases';
 import { MONSTER_SERIES } from '../shared/monster.series';
 import { MONSTER_COLLABS } from '../shared/monster.collabs';
+const jimp = require('jimp');
 
 export class Common {
 	static fillTemplate(templateString: string, templateVars: { [key: string]: string }): string {
@@ -121,5 +122,44 @@ export class Common {
 		}
 
 		return result;
+	}
+
+	static writeDisplayIcons(icons: string[], padding: number = 8): Promise<string> {
+		return new Promise(async (resolve, reject) => {
+			let jimps = [];
+
+			//Turns the images into readable variables for jimp, then pushes them into a new array
+			for (var i = 0; i < icons.length; i++) {
+				jimps.push(jimp.read(icons[i]));
+			}
+
+			//Creates a promise to handle the jimps
+			await Promise.all(jimps)
+				.then((data) => {
+					return Promise.all(jimps);
+				})
+				.then((data) => {
+					let maxWidth = data.reduce(
+						(accumulator, pic, index) => accumulator + pic.bitmap.width + padding,
+						0
+					);
+
+					new jimp(maxWidth, 100, async (err, image) => {
+						if (err) {
+							reject(err);
+						}
+
+						data.forEach((icon, index) => {
+							image.composite(icon, 100 * index + padding * index, 0);
+						});
+
+						let temp =
+							Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+						image.write(`../temp/${temp}.png`);
+						// let base64 = await image.getBase64Async('image/png');
+						resolve(`../temp/${temp}.png`);
+					});
+				});
+		});
 	}
 }

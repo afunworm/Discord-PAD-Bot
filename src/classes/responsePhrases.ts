@@ -61,9 +61,20 @@ export const RESPONSE_PHRASES = {
 		`These are what I found for **{{name}}** (#{{id}})!`,
 	],
 	ON_EVOLIST_REQUEST_SINGLE_EVO: [
-		`**{{name}}** (#{{id}}) only has 1 form:`,
+		`**{{name}}** (#{{id}}) only has 1 form!`,
 		`There are no other evolutions for **{{name}}** (#{{id}})!`,
 		,
 		`I cannot find any more evolutions for **{{name}}** (#{{id}})!`,
+	],
+	ON_SERIES_REQUEST_FOUND: [
+		`**{{name}}** (#{{id}}) is from the {{series}} series.`,
+		`You can find **{{name}}** (#{{id}}) from the series {{series}}.`,
+		`I am pretty sure **{{name}}** (#{{id}}) is from the {{series}} series.`,
+		`The {{series}} series is where you can find **{{name}}** (#{{id}}).`,
+	],
+	ON_SERIES_REQUEST_NOT_FOUND: [
+		`I can't find any series that **{{name}}** (#{{id}}) belongs to.`,
+		`**{{name}}** (#{{id}}) doesn't seem to be in any series.`,
+		`I can't find any series for **{{name}}** (#{{id}}).`,
 	],
 };

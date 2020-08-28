@@ -4,7 +4,7 @@
 		"lint": "tslint --project tsconfig.json",
 		"build": "tsc src/index --outdir dist",
 		"copy": "cp src/download_card_data.json dist/download_card_data.json && cp src/download_skill_data.json dist/download_skill_data.json && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp src/.env dist/.env",
-        "forever": "forever dist/index.js",
+		"forever": "forever dist/index.js",
 		"start": "npm run build && npm run copy && npm run forever",
 		"test": "npm run build && npm run copy && node dist/index.js",
 		"start-windows": "npm run build && npm run forever",
@@ -23,6 +23,7 @@
 		"firebase-admin": "^8.13.0",
 		"firebase-functions": "^3.6.1",
 		"forever": "^3.0.2",
+		"jimp": "^0.16.0",
 		"lodash": "^4.17.20",
 		"node-cache": "^5.1.2"
 	},

@@ -35,4 +35,8 @@ export const CUSTOM_NAMES = [
 		name: 'idunn & idunna',
 		alias: ['i&i'],
 	},
+	{
+		name: 'kushinadahime',
+		alias: ['kush', 'kushi'],
+	},
 ];

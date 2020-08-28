@@ -407,6 +407,13 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 					})
 					.filter((synonym) => synonym !== undefined);
 
+				//If the sample contains more than 200 entries, truncate it
+				if (synonyms.length > 200) {
+					//Start off by truncating all names > 3 words
+					synonyms = synonyms.filter((synonym) => synonym.split(' ').length <= 3);
+					//Something else, but only when needed LOL
+				}
+
 				data.push({
 					value: id.toString(),
 					synonyms: synonyms,

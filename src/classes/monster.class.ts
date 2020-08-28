@@ -339,4 +339,28 @@ export class Monster {
 			);
 		}
 	}
+
+	public getCollab(): number {
+		return this.monsterData.collab;
+	}
+
+	public getCollabReadable(): string {
+		return this.monsterData.collabReadable;
+	}
+
+	public getSeries(): string {
+		return this.monsterData.series;
+	}
+
+	public getSeriesReadable(): string {
+		return this.monsterData.seriesReadable;
+	}
+
+	public getEvoMaterials(): number[] {
+		return this.monsterData.evoMaterials;
+	}
+
+	public getDevoMaterials(): number[] {
+		return this.monsterData.devoMaterials;
+	}
 }

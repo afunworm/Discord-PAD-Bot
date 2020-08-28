@@ -61,8 +61,8 @@ export interface MonsterData {
 	leaderSkill: LeaderSkillData;
 	asEnemy: EnemyData;
 	previousEvoId: number;
-	evoMaterial: number[];
-	devoMaterial: number[];
+	evoMaterials: number[];
+	devoMaterials: number[];
 	awakenings: number[];
 	awakeningsReadable: string[];
 	superAwakenings: number[];

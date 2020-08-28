@@ -43,6 +43,10 @@ export interface QueryResultInterface {
 					stringValue: string;
 					kind: 'stringValue';
 				};
+				targetPronoun: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
 			};
 		};
 	};

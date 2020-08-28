@@ -4,10 +4,12 @@ import { Monster } from './monster.class';
 import { MonsterData } from '../shared/monster.interfaces';
 import { Common } from './common.class';
 import * as admin from 'firebase-admin';
-import { ReactionManager, DMChannel, MessageReaction } from 'discord.js';
+import { DMChannel, MessageReaction, MessageEmbed, Message, MessageAttachment } from 'discord.js';
 import { Cache } from './cache.class';
 const _ = require('lodash');
 const Discord = require('discord.js');
+const fs = require('fs');
+
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
  *-------------------------------------------------------*/
@@ -287,17 +289,21 @@ export class Helper {
 
 	private numberWithCommas = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-	private _collectors = {};
-	public async sendMessage(message: string, optionals = null) {
-		let filter = (reaction: MessageReaction, user) => {
-			let userId = user.id;
-			let cachedData = cache.get(userId);
+	private collectorFilter = (reaction: MessageReaction, user) => {
+		let userId = user.id;
+		let cachedData = cache.get(userId);
 
-			if (!cachedData) return false;
+		if (!cachedData) return false;
 
-			return cachedData.includes(reaction.message.id);
-		};
+		return cachedData.includes(reaction.message.id);
+	};
 
+	private createCollector(message: Message) {
+		return message.createReactionCollector(this.collectorFilter, { time: 60000 });
+	}
+
+	public async sendMessage(message: string | MessageEmbed, optionals = null) {
+		if (!message) return;
 		try {
 			let sentEmbed =
 				optionals === null ? await this._channel.send(message) : await this._channel.send(message, optionals);
@@ -312,15 +318,17 @@ export class Helper {
 				cache.set(author, cachedData);
 			}
 
+			if (typeof message === 'string') return;
+
 			await sentEmbed.react('❌');
 
-			let hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-			this._collectors[hash] = sentEmbed.createReactionCollector(filter, { time: 6000 });
-			this._collectors[hash].on('collect', (react: MessageReaction, user) => {
+			this.createCollector(sentEmbed).on('collect', (react: MessageReaction, user) => {
 				if (react.emoji.name === '❌') {
 					react.message.delete();
 				}
 			});
+
+			return sentEmbed;
 		} catch (error) {
 			console.log(error.message);
 			await this._channel.send(
@@ -350,7 +358,7 @@ export class Helper {
 		}
 	}
 
-	public sendMonsterInfo(card: Monster) {
+	private constructMonsterInfo(card: Monster) {
 		let embed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle(`${card.getId()}: ${card.getName()}`)
@@ -370,29 +378,62 @@ export class Helper {
 		if (card.hasLeaderSkill()) {
 			embed.addFields({ name: card.getLeaderSkillHeader(), value: card.getLeaderSkillDescriptionDetails() });
 		}
-
-		return this.sendMessage(embed);
+		return embed;
 	}
 
-	public sendMonsterImage(card: Monster) {
+	public async sendMonsterInfo(card: Monster) {
+		let embed = this.constructMonsterInfo(card);
+		let sentEmbed = await this.sendMessage(embed);
+		await sentEmbed.react('⬅️');
+		await sentEmbed.react('➡️');
+
+		let reactors = (message: Message) => {
+			this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
+				//Try to extrac number from the title
+				let monsterId = Number(react.message.embeds[0].title.match(/(\d)+/gi)[0]);
+
+				if (react.emoji.name === '⬅️') {
+					monsterId -= 1;
+					let monster = new Monster(monsterId);
+					await monster.init();
+
+					let embed = this.constructMonsterInfo(monster);
+					let reactEmbed = await react.message.edit(embed);
+					reactors(reactEmbed);
+				} else if (react.emoji.name === '➡️') {
+					monsterId += 1;
+					let monster = new Monster(monsterId);
+					await monster.init();
+
+					let embed = this.constructMonsterInfo(monster);
+					let reactEmbed = await react.message.edit(embed);
+					reactors(reactEmbed);
+				}
+			});
+		};
+
+		reactors(sentEmbed);
+	}
+
+	public async sendMonsterImage(card: Monster) {
 		let embed = new Discord.MessageEmbed().setTitle(`Image for ${card.getName()}`).setImage(card.getImageUrl());
-		this.sendMessage(embed);
+		await this.sendMessage(embed);
 	}
 
-	public sendMonsterIcon(card: Monster) {
+	public async sendMonsterIcon(card: Monster) {
 		let embed = new Discord.MessageEmbed().setTitle(`Icon for ${card.getName()}`).setImage(card.getThumbnailUrl());
-		this.sendMessage(embed);
+		await this.sendMessage(embed);
 	}
 
-	public sendMonsterName(card: Monster) {
+	public async sendMonsterName(card: Monster) {
 		let response = Common.dynamicResponse('ON_NAME_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 		});
-		this.sendMessage(response);
+		await this.sendMessage(response);
 	}
 
-	public sendAwakenings(card: Monster) {
+	public async sendAwakenings(card: Monster) {
 		let embed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle(`${card.getId()}: ${card.getName()}`)
@@ -400,10 +441,10 @@ export class Helper {
 			.setThumbnail(card.getThumbnailUrl())
 			.addFields({ name: card.getAwakenEmotes(), value: card.getSuperAwakenEmotes() });
 
-		return this.sendMessage(embed);
+		await this.sendMessage(embed);
 	}
 
-	public sendTypes(card: Monster) {
+	public async sendTypes(card: Monster) {
 		let types = card.getTypesReadable();
 		let message: string = '';
 
@@ -430,10 +471,10 @@ export class Helper {
 			});
 		}
 
-		return this.sendMessage(message);
+		await this.sendMessage(message);
 	}
 
-	public sendMonsterStats(card: Monster) {
+	public async sendMonsterStats(card: Monster) {
 		let embed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle(`${card.getId()}: ${card.getName()}`)
@@ -441,34 +482,34 @@ export class Helper {
 			.setThumbnail(card.getThumbnailUrl())
 			.addFields({ name: 'Stats', value: card.getStats(), inline: true });
 
-		return this.sendMessage(embed);
+		await this.sendMessage(embed);
 	}
 
-	public sendMonsterRarity(card: Monster) {
+	public async sendMonsterRarity(card: Monster) {
 		let response = Common.dynamicResponse('ON_RARITY_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 			rarity: card.getRarity().toString(),
 		});
-		this.sendMessage(response);
+		await this.sendMessage(response);
 	}
 
-	public sendMonsterIsInheritable(card: Monster) {
+	public async sendMonsterIsInheritable(card: Monster) {
 		let response = Common.dynamicResponse('ON_ISINHERITABLE_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 			isInheritable: card.isInheritable() ? 'is inheritable' : 'is not inhreitable',
 		});
-		this.sendMessage(response);
+		await this.sendMessage(response);
 	}
 
-	public sendMonsterActiveSkills(card: Monster) {
+	public async sendMonsterActiveSkills(card: Monster) {
 		if (!card.hasActiveSkill()) {
 			let response = Common.dynamicResponse('ON_NO_ACTIVESKILL_FOUND', {
 				id: card.getId().toString(),
 				name: card.getName(),
 			});
-			return this.sendMessage(response);
+			await this.sendMessage(response);
 		}
 
 		let embed = new Discord.MessageEmbed()
@@ -481,16 +522,16 @@ export class Helper {
 				{ name: '**[DETAILS]** ' + card.getActiveSkillHeader(), value: card.getActiveSkillDescriptionDetails() }
 			);
 
-		this.sendMessage(embed);
+		await this.sendMessage(embed);
 	}
 
-	public sendMonsterLeaderSkills(card: Monster) {
+	public async sendMonsterLeaderSkills(card: Monster) {
 		if (!card.hasLeaderSkill()) {
 			let response = Common.dynamicResponse('ON_NO_LEADERSKILL_FOUND', {
 				id: card.getId().toString(),
 				name: card.getName(),
 			});
-			return this.sendMessage(response);
+			await this.sendMessage(response);
 		}
 
 		let embed = new Discord.MessageEmbed()
@@ -503,24 +544,47 @@ export class Helper {
 				{ name: '**[DETAILS]** ' + card.getLeaderSkillHeader(), value: card.getLeaderSkillDescriptionDetails() }
 			);
 
-		this.sendMessage(embed);
+		await this.sendMessage(embed);
 	}
 
-	public sendMonsterMonsterPoints(card: Monster) {
+	public async sendMonsterMonsterPoints(card: Monster) {
 		let response = Common.dynamicResponse('ON_MONSTERPOINTS_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 			monsterPoints: this.numberWithCommas(card.getMonsterPoints()),
 		});
-		this.sendMessage(response);
+		await this.sendMessage(response);
 	}
 
-	public sendMonsterId(card: Monster) {
+	public async sendMonsterId(card: Monster) {
 		let response = Common.dynamicResponse('ON_ID_REQUEST', {
 			id: card.getId().toString(),
 			name: card.getName(),
 		});
-		this.sendMessage(response);
+		await this.sendMessage(response);
+	}
+
+	public async sendMonsterSeries(card: Monster) {
+		let seriesName = null;
+
+		if (card.getCollab() !== 0 && card.getCollabReadable().toLowerCase() !== 'unknown') {
+			seriesName = card.getCollabReadable();
+		}
+
+		if (card.getSeries() !== null) {
+			seriesName = card.getSeriesReadable();
+		}
+
+		let response = Common.dynamicResponse(
+			seriesName !== null ? 'ON_SERIES_REQUEST_FOUND' : 'ON_SERIES_REQUEST_NOT_FOUND',
+			{
+				id: card.getId().toString(),
+				name: card.getName(),
+				series: seriesName,
+			}
+		);
+
+		await this.sendMessage(response);
 	}
 
 	public async sendMonsterEvoTree(card: Monster) {
@@ -534,7 +598,7 @@ export class Helper {
 				name: card.getName(),
 			});
 
-			return this.sendMessage(message);
+			await this.sendMessage(message);
 		} else {
 			message = Common.dynamicResponse('ON_EVOLIST_REQUEST', {
 				id: card.getId().toString(),
@@ -542,7 +606,7 @@ export class Helper {
 				numberOfEvos: numberOfEvos.toString(),
 			});
 
-			this.sendMessage(message);
+			await this.sendMessage(message);
 		}
 
 		let result = [];
@@ -558,12 +622,7 @@ export class Helper {
 			result.push(`${attributes}| ${monsterId}. ${monster.getName()}`);
 		}
 
-		let embed = new Discord.MessageEmbed().addFields({
-			name: `All Evolutions of ${card.getName()}`,
-			value: result.join('\n'),
-		});
-
-		return this.sendMessage(embed);
+		await this.sendMessageList(`All Evolutions of ${card.getName()}`, result);
 	}
 
 	public async sendCollabList(series: string) {
@@ -626,5 +685,47 @@ export class Helper {
 		} catch (error) {
 			await this.sendMessage('Something went wrong! Please try again later T_T.');
 		}
+	}
+
+	public async sendMonsterMaterials(card: Monster, type: 'evo' | 'devo' = 'evo') {
+		let mats = type === 'evo' ? card.getEvoMaterials() : card.getDevoMaterials();
+		let names = [];
+		let iconUrls = [];
+
+		mats = mats.filter((mat) => mat !== 0);
+
+		if (type === 'evo' && mats.length === 0) {
+			await this.sendMessage(`**${card.getName()} (#${card.getId()})** cannot be evolved!`);
+			return;
+		}
+
+		for (let i = 0; i < mats.length; i++) {
+			let evoMatId = mats[i];
+
+			let monster = new Monster(evoMatId);
+			await monster.init();
+
+			names.push(monster.getId() + '. ' + monster.getName());
+			iconUrls.push(monster.getThumbnailUrl());
+		}
+
+		let imagePath = await Common.writeDisplayIcons(iconUrls);
+
+		let embed = new Discord.MessageEmbed()
+			.setThumbnail(card.getThumbnailUrl())
+			.addFields({
+				name: `${type === 'evo' ? 'Evo' : 'Devo'} Materials for **${card.getId()}. ${card.getName()}**`,
+				value: names.join('\n'),
+			})
+			.attachFiles([
+				{
+					attachment: imagePath,
+					name: 'evoMats.png',
+				},
+			])
+			.setImage('attachment://evoMats.png');
+
+		await this.sendMessage(embed);
+		await fs.unlinkSync(imagePath);
 	}
 }
