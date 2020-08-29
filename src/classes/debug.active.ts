@@ -1,4 +1,4 @@
-const { skill: SKILL_DATA } = require('../download_skill_data.json');
+const { skill: SKILL_DATA } = require('../raw/download_skill_data.json');
 import { MonsterParser } from '../classes/monsterParser.class';
 import { ActiveSkill } from './activeSkill.class';
 

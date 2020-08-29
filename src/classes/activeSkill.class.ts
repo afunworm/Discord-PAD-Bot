@@ -3,7 +3,7 @@ import { ACTIVESKILL_MAP } from './activeSkill.map';
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { MONSTER_TYPES } from '../shared/monster.types';
 import { AWAKENINGS as MONSTER_AWAKENS } from '../shared/monster.awakens';
-const { skill: SKILL_DATA } = require('../download_skill_data.json');
+const { skill: SKILL_DATA } = require('../raw/download_skill_data.json');
 
 export class ActiveSkill {
 	private type: number;

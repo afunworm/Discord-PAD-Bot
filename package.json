@@ -3,7 +3,7 @@
 	"scripts": {
 		"lint": "tslint --project tsconfig.json",
 		"build": "tsc src/index --outdir dist",
-		"copy": "cp src/download_card_data.json dist/download_card_data.json && cp src/download_skill_data.json dist/download_skill_data.json && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp src/.env dist/.env",
+		"copy": "cp src/raw/download_card_data.json dist/raw/download_card_data.json && cp src/raw/download_skill_data.json dist/raw/download_skill_data.json && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp src/.env dist/.env",
 		"forever": "forever dist/index.js",
 		"start": "npm run build && npm run copy && npm run forever",
 		"test": "npm run build && npm run copy && node dist/index.js",
