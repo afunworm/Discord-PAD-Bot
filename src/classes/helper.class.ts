@@ -27,10 +27,30 @@ export class Helper {
 	private _channel: DMChannel;
 	private _message;
 	private _threads = {};
+	private _queryText;
 
 	constructor(message) {
 		this._message = message;
 		this._channel = message.channel;
+	}
+
+	public async bugLog(message: string) {
+		if (this._queryText) {
+			let data = {
+				_createdAt: new Date(),
+				command: this._queryText,
+				requestedBy: this._message.author.username + ' (#' + this._message.author.id + ')',
+			};
+			let ref = await firestore.collection('TrainingRequests').add(data);
+			data['trainingRequestId'] = ref.id;
+			await this.sendMessage(`${message}\n\`\`\`json\n${JSON.stringify(data, null, 4)}\`\`\``);
+		} else {
+			await this.sendMessage(message);
+		}
+	}
+
+	public assignQueryText(queryText: string) {
+		this._queryText = queryText;
 	}
 
 	static async detectMonsterIdFromName(
@@ -877,8 +897,11 @@ export class Helper {
 		if (queryQuantity.length > 0 && queryQuantity.length > quantities.length) checkPassed = false;
 
 		if (!checkPassed) {
-			this.sendMessage(
+			await this.sendMessage(
 				`Your query seems a bit confusing to me. Help me clarify it.\n\nHere is example of good query:\n\`\`\`\nSearch for all cards with at least 3 skill boosts, exactly 1 tape resist from Monster Hunter Collab.\`\`\`\nAnd here is example of bad/vague query: \n\`\`\`Show me monsters with 5 skill boosts and cloud resist.\n\`\`\`\nIf you believe your query is good, it just means I haven't been trained to deal with your specific query phrases. Please let my devs know.`
+			);
+			await this.bugLog(
+				`I have also sent a copy of your message to the dev to further help with this command. In the future, this command might work :).`
 			);
 			return;
 		}

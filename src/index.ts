@@ -49,6 +49,7 @@ client.on('message', async (message: any) => {
 		let result: QueryResultInterface = await ai.detectIntent(input);
 		let rawInput = result.queryResult.queryText;
 		let action = result.queryResult.action;
+		helper.assignQueryText(result.queryResult.queryText);
 
 		//What information is being requestd? For example: show me Anubis IMAGE
 		let infoType = result.queryResult.parameters.fields?.infoType?.stringValue || null;
@@ -158,6 +159,8 @@ client.on('message', async (message: any) => {
 			else if ((!infoType && !actionType) || (!infoType && actionType) || infoType === 'info') {
 				await helper.sendMonsterInfo(card);
 			}
+
+			return;
 		} else if (action === 'card.list') {
 			let parameters = result.queryResult.parameters.fields;
 			let attribute1 = parameters.monsterAttribute1.stringValue || null;
@@ -170,6 +173,8 @@ client.on('message', async (message: any) => {
 			} else {
 				await helper.sendCollabList(monsterSeries, attribute1, attribute2);
 			}
+
+			return;
 		} else if (action === 'card.query') {
 			let parameters = result.queryResult.parameters.fields;
 			let data = {
@@ -184,7 +189,13 @@ client.on('message', async (message: any) => {
 			};
 			await helper.sendMessage('Please wait while I am looking into that...');
 			await helper.sendQueryResult(data);
+
+			return;
 		}
+
+		await helper.bugLog(
+			`Sorry. I haven't been trained with that command yet, but I have requested the dev to train me with this command. Check back in a few days and I will be able to handle your request!`
+		);
 	} catch (error) {
 		await helper.sendMessage(
 			`It looks like something went wrong. I can't seem to understand your request. Can you try it again?`
