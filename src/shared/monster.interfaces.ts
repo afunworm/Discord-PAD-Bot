@@ -46,6 +46,8 @@ export interface MonsterData {
 	collabReadable: string;
 	series: string | null;
 	seriesReadable: string | null;
+	evolutionType: string;
+	evolutionTypeReadable: string;
 	group: string | null;
 	maxLevel: number;
 	feedExp: number;
@@ -71,4 +73,16 @@ export interface MonsterData {
 	limitBreakPercentage: number;
 	transformIntoId: number;
 	evoTree?: number[];
+	totalAwakeningsWithSA: {
+		[name: number]: number;
+	};
+	totalAwakeningsWithoutSA: {
+		[name: number]: number;
+	};
+	computedAwakeningsWithSA: {
+		[name: number]: number;
+	};
+	computedAwakeningsWithoutSA: {
+		[name: number]: number;
+	};
 }

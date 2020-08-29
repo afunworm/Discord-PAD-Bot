@@ -67,6 +67,8 @@ let evoTreeData = [];
 				collabReadable: monster.getReadableCollab(),
 				series: series,
 				seriesReadable: seriesReadable,
+				evolutionType: monster.getEvolutionType(),
+				evolutionTypeReadable: monster.getReadableEvolutionType(),
 				group: monster.getMonsterSeriesGroup(),
 				maxLevel: monster.getMaxLevel(),
 				feedExp: monster.getFeedExp(),
@@ -101,6 +103,10 @@ let evoTreeData = [];
 				monsterPoints: monster.getMonsterPoints(),
 				limitBreakPercentage: monster.getLimitBreakPercentage(),
 				transformIntoId: monster.getTransformIntoId(),
+				totalAwakeningsWithSA: monster.getTotalAwakenings(true),
+				totalAwakeningsWithoutSA: monster.getTotalAwakenings(false),
+				computedAwakeningsWithSA: monster.getComputedAwakenings(true),
+				computedAwakeningsWithoutSA: monster.getComputedAwakenings(false),
 			};
 			data[id] = monsterData;
 			console.log(`Parsed data for monster id ${id}`);

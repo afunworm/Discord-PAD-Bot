@@ -15,6 +15,7 @@
 	},
 	"main": "lib/index.js",
 	"dependencies": {
+		"@firebase/firestore-types": "^1.12.1",
 		"@types/dotenv": "^8.2.0",
 		"@types/node": "^14.0.27",
 		"dialogflow": "^1.2.0",

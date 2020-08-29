@@ -528,4 +528,126 @@ export class MonsterParser {
 	public getMonsterSeriesGroup(): string | null {
 		return Common.getCardSeriesGroup(this.getId(), this.getCollabId());
 	}
+
+	public getEvolutionType(): string {
+		/*
+            If the monster has Equip awakening -> Equip.
+            Else If the card can take 8 latents (SR, SU & R):
+                [1] If it uses 'Event Medal', or has 'Super Reincarnated' in its name -> SR.
+                [2] If it can be reversed evo, it is SU.
+                [3] Else -> R.
+
+            Else
+                [1] If the monster has the word 'Pixel' in its name or uses 'Pixelits' -> Pixel.
+                [3] If the card has the word 'Awoken' in its name -> Awoken.
+                [4] If both of the above are false, then:
+                    - If it is reversible -> Ultimate.
+                    - Else -> Normal if not base, base if base.
+        */
+		if (this.getAwakenings().includes(49)) {
+			return 'equip';
+		} else if (this.isExtraSlottable()) {
+			if (this.getEvoMaterials().includes(5077) || this.getName().toLowerCase().includes('super reincarnated')) {
+				return 'superReincarnated';
+			} else {
+				if (this.isEvoReversible()) {
+					return 'superUltimate';
+				} else {
+					return 'reincarnated';
+				}
+			}
+		} else {
+			if (this.getEvoMaterials().includes(3826) || this.getName().toLowerCase().includes('pixel')) {
+				return 'pixel';
+			} else if (this.getName().toLowerCase().includes('awoken')) {
+				return 'awoken';
+			} else {
+				if (this.isEvoReversible()) {
+					return 'ultimate';
+				} else {
+					if (this.getEvoMaterials().filter((mat) => mat !== 0).length === 0) {
+						return 'base';
+					} else {
+						return 'normal';
+					}
+				}
+			}
+		}
+	}
+
+	public getReadableEvolutionType(): string {
+		let map = {
+			equip: 'Equip',
+			normal: 'Normal',
+			base: 'Base',
+			ultimate: 'Ultimate',
+			awoken: 'Awoken',
+			pixel: 'Pixel',
+			reincarnated: 'Reincarnated',
+			superUltimate: 'Super Ultimate',
+			superReincarnated: 'Super Reincarnated',
+		};
+
+		let evolutionType = this.getEvolutionType();
+		return map[evolutionType] || 'Unknown';
+	}
+
+	public getComputedAwakenings(withSA: boolean = true) {
+		let result = {};
+		let awakenings = this.getAwakenings();
+		let superAwakenings = this.getSuperAwakenings();
+
+		awakenings = withSA ? [...awakenings, ...superAwakenings] : awakenings;
+
+		for (let id in AWAKENINGS) {
+			result[id] = 0;
+		}
+
+		awakenings.forEach((awakening) => {
+			let computedAwakening = awakening;
+			let increment = 1;
+
+			if (awakening === 52) {
+				computedAwakening = 10;
+				increment = 2;
+			} else if (awakening === 68) {
+				computedAwakening = 11;
+				increment = 5;
+			} else if (awakening === 69) {
+				computedAwakening = 12;
+				increment = 5;
+			} else if (awakening === 70) {
+				computedAwakening = 13;
+				increment = 5;
+			} else if (awakening === 53) {
+				computedAwakening = 19;
+				increment = 2;
+			} else if (awakening === 56) {
+				computedAwakening = 21;
+				increment = 2;
+			}
+
+			result[computedAwakening] += increment;
+		});
+
+		return result;
+	}
+
+	public getTotalAwakenings(withSA: boolean = true) {
+		let result = {};
+		let awakenings = this.getAwakenings();
+		let superAwakenings = this.getSuperAwakenings();
+
+		awakenings = withSA ? [...awakenings, ...superAwakenings] : awakenings;
+
+		for (let id in AWAKENINGS) {
+			result[id] = 0;
+		}
+
+		awakenings.forEach((awakening) => {
+			result[awakening] += 1;
+		});
+
+		return result;
+	}
 }

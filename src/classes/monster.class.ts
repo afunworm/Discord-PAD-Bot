@@ -363,4 +363,61 @@ export class Monster {
 	public getDevoMaterials(): number[] {
 		return this.monsterData.devoMaterials;
 	}
+
+	public static getAllCardsFromSeries(series: string): Promise<MonsterData[]> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let snapshot = await firestore.collection('Monsters').where('series', '==', series).get();
+
+				if (snapshot.empty) resolve([]);
+
+				let result = [];
+				snapshot.forEach((doc) => {
+					result.push(doc.data() as MonsterData);
+				});
+
+				resolve(result);
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
+
+	public static getAllCardsFromCollab(collabId: number): Promise<MonsterData[]> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let snapshot = await firestore.collection('Monsters').where('collab', '==', collabId).get();
+
+				if (snapshot.empty) resolve([]);
+
+				let result = [];
+				snapshot.forEach((doc) => {
+					result.push(doc.data() as MonsterData);
+				});
+
+				resolve(result);
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
+
+	public static getAllCardsFromCustomGroup(groupName: string): Promise<MonsterData[]> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let snapshot = await firestore.collection('Monsters').where('group', '==', groupName).get();
+
+				if (snapshot.empty) resolve([]);
+
+				let result = [];
+				snapshot.forEach((doc) => {
+					result.push(doc.data() as MonsterData);
+				});
+
+				resolve(result);
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
 }

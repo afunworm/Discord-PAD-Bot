@@ -1,3 +1,4 @@
+--- Training phrases for card.ino (always train extra x/x monster, and her/him/them, etc.)
 who is cotton
 what is its stats
 what is anubis image
@@ -34,3 +35,19 @@ where can i find nergigante
 group/series/collab nergigante
 which group is venus from
 evo mats for horus
+what are the evos of haku
+what can i use to evolve haku
+how do i evo haku
+
+--- Training phrases for monster query (Always train x/x cards, train extra ... + from x collab)
+show me all cards with at least 5 skill boosts including sa
+list all cards with exactly 4 team hp and more than 5 sbs without super awokens
+i want a list of all cards with exactly 3 skill boosts, more than 3 dark oe and more than 1 team hp without sa
+what are the cards that have > 1 jammer blessing, > 2 unbindable, at least 3 skill boosts or 3 jammer resist including super awakenings
+find me cards with 5 or more poison blessing including sa
+list all monsters with 3 or less skill boosts excluding awokens
+find all cards with 3 team hp or more including sa
+show me a list of cards with at least 3 skill boosts, exactly 1 team hp and more than 3 dark resist without sa
+search for cards with 3 skill boosts or 5 7cs from yugioh series
+help me find  all dark light cards with 4 or more sb, at least 1 sbr and exactly 1 teamhp from gungho  including SA
+Search for all dark water cards with 4 or less jammer resist

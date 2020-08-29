@@ -126,13 +126,7 @@ client.on('message', async (message: any) => {
 				await helper.sendAwakenings(card);
 			} else if (infoType === 'types') {
 				await helper.sendTypes(card);
-			} else if (
-				infoType === 'stats' ||
-				infoType === 'hp' ||
-				infoType === 'attack' ||
-				infoType === 'recover' ||
-				(questionType === 'how' && infoType === 'stats')
-			) {
+			} else if (infoType === 'stats' || infoType === 'hp' || infoType === 'attack' || infoType === 'recover') {
 				await helper.sendMonsterStats(card);
 			} else if (infoType === 'rarity') {
 				await helper.sendMonsterRarity(card);
@@ -148,14 +142,8 @@ client.on('message', async (message: any) => {
 				((questionType === 'how' || questionType === 'what') && targetActionType === 'sell')
 			) {
 				await helper.sendMonsterMonsterPoints(card);
-			} else if (infoType === 'materials') {
-				let isEvo = targetActionType === 'devo' ? false : true;
-
-				if (isEvo) {
-					await helper.sendMonsterMaterials(card, 'evo');
-				} else {
-					await helper.sendMonsterMaterials(card, 'devo');
-				}
+			} else if (infoType === 'evoMaterials') {
+				await helper.sendMonsterMaterials(card, 'evo');
 			} else if (infoType === 'devoMaterials') {
 				await helper.sendMonsterMaterials(card, 'devo');
 			} else if (infoType === 'evoList') {
@@ -171,13 +159,31 @@ client.on('message', async (message: any) => {
 				await helper.sendMonsterInfo(card);
 			}
 		} else if (action === 'card.list') {
+			let parameters = result.queryResult.parameters.fields;
+			let attribute1 = parameters.monsterAttribute1.stringValue || null;
+			let attribute2 = parameters.monsterAttribute2.stringValue || null;
+
 			if (monsterSeries === null) {
 				await helper.sendMessage(
 					"I can't seem to find that collab/series. Would you like to try something else?"
 				);
 			} else {
-				await helper.sendCollabList(monsterSeries);
+				await helper.sendCollabList(monsterSeries, attribute1, attribute2);
 			}
+		} else if (action === 'card.query') {
+			let parameters = result.queryResult.parameters.fields;
+			let data = {
+				queryFilterType: parameters.queryFilterType.stringValue,
+				monsterSeries: parameters.monsterSeries.stringValue,
+				queryQuantity: parameters.queryQuantity.listValue.values,
+				queryIncludeSA: parameters.queryIncludeSA.stringValue,
+				monsterAwakenings: parameters.monsterAwakenings.listValue.values,
+				quantities: parameters.number.listValue.values,
+				attribute1: parameters.monsterAttribute1.stringValue || null,
+				attribute2: parameters.monsterAttribute2.stringValue || null,
+			};
+			await helper.sendMessage('Please wait while I am looking into that...');
+			await helper.sendQueryResult(data);
 		}
 	} catch (error) {
 		await helper.sendMessage(

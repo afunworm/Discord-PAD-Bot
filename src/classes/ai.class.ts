@@ -7,32 +7,60 @@ export interface QueryResultInterface {
 		queryText: string;
 		parameters: {
 			fields: {
-				number: {
-					numberValue: number;
-					kind: 'numberValue';
-				};
 				infoType: {
-					stringValue: string;
+					stringValue:
+						| 'photo'
+						| 'icon'
+						| 'name'
+						| 'awakenings'
+						| 'superAwakenings'
+						| 'types'
+						| 'attack'
+						| 'hp'
+						| 'recover'
+						| 'stats'
+						| 'rarity'
+						| 'assist'
+						| 'activeSkills'
+						| 'leaderSkills'
+						| 'monsterPoints'
+						| 'evoMaterials'
+						| 'evoList'
+						| 'id'
+						| 'info'
+						| 'series'
+						| 'devoMaterials';
 					kind: 'stringValue';
 				};
 				questionType: {
-					stringValue: string;
+					stringValue:
+						| 'what'
+						| 'how'
+						| 'when'
+						| 'who'
+						| 'can'
+						| 'do'
+						| 'does'
+						| 'is'
+						| 'are'
+						| 'should'
+						| 'must';
 					kind: 'stringValue';
 				};
 				actionType: {
-					stringValue: string;
+					stringValue: 'call' | 'name' | 'sell' | 'list';
 					kind: 'stringValue';
 				};
 				targetActionType: {
-					stringValue: string;
+					stringValue: 'look' | 'take' | 'sell';
 					kind: 'stringValue';
 				};
 				monsterAttribute1: {
-					stringValue: string;
+					stringValue: 'fire' | 'water' | 'wood' | 'light' | 'dark' | 'none';
 					kind: 'stringValue';
 				};
 				monsterAttribute2: {
-					stringValue: string;
+					stringValue: 'fire' | 'water' | 'wood' | 'light' | 'dark' | 'none';
 					kind: 'stringValue';
 				};
 				monsterName: {
@@ -44,7 +72,46 @@ export interface QueryResultInterface {
 					kind: 'stringValue';
 				};
 				targetPronoun: {
-					stringValue: string;
+					stringValue: 'self';
+					kind: 'stringValue';
+				};
+				queryQuantity: {
+					listValue: {
+						values: {
+							stringValue: 'min' | 'max' | 'exact' | 'less' | 'more';
+							kind: 'stringValue';
+						}[];
+					};
+					kind: 'listValue';
+				};
+				queryFilterType: {
+					stringValue: 'and' | 'or';
+					kind: 'stringValue';
+				};
+				number: {
+					listValue: {
+						values: {
+							numberValue: number;
+							kind: 'numberValue';
+						}[];
+					};
+					kind: 'listValue';
+				};
+				monsterAwakenings: {
+					listValue: {
+						values: {
+							numberValue: number;
+							kind: 'numberValue';
+						}[];
+					};
+					kind: 'listValue';
+				};
+				targetObject: {
+					stringValue: 'card';
+					kind: 'stringValue';
+				};
+				queryIncludeSA: {
+					stringValue: 'includeSA' | 'excludeSA';
 					kind: 'stringValue';
 				};
 			};
