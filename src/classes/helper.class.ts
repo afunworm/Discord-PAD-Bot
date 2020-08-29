@@ -300,8 +300,12 @@ export class Helper {
 	};
 
 	private createCollector(message: Message) {
-		return message.createReactionCollector(this.collectorFilter, { time: 60000 }).on('end', (collected) => {
-			message.reactions.removeAll();
+		return message.createReactionCollector(this.collectorFilter, { time: 6000000 }).on('end', async (collected) => {
+			try {
+				await message.reactions.removeAll();
+			} catch (error) {
+				console.log(error);
+			}
 		});
 	}
 
@@ -853,6 +857,13 @@ export class Helper {
 			attribute2,
 		} = data;
 		let checkPassed = true;
+		quantities = quantities.map((o, i) =>
+			Number(o.numberValue || o.NumberValue === 0 ? o.numberValue : o.stringValue)
+		);
+		monsterAwakenings = monsterAwakenings.map((o, i) =>
+			Number(o.numberValue || o.NumberValue === 0 ? o.numberValue : o.stringValue)
+		);
+		queryQuantity = queryQuantity.map((o, i) => o.stringValue);
 
 		//Do some prerequisite checks
 		//If number is with a different length with awakenings, we cannot process it
@@ -893,11 +904,10 @@ export class Helper {
 			{ name: 'Super Awakenings', value: `The results ${includingSA}.` }
 		);
 
-		quantities.forEach((quantityValues, index) => {
-			let quantityType = queryQuantity[index].stringValue;
-			let awakening = monsterAwakenings[index].stringValue;
+		quantities.forEach((quantity, index) => {
+			let quantityType = queryQuantity[index];
+			let awakening = monsterAwakenings[index];
 			let awakeningEmote = Common.awakenEmotesMapping([awakening]);
-			let quantity = quantityValues.numberValue;
 
 			let compare = '>=';
 			if (quantityType === 'max') compare = '<=';
@@ -914,8 +924,8 @@ export class Helper {
 		let tempMonsterAwakenings = [],
 			tempQuantities = [];
 		monsterAwakenings.forEach((awakening, index) => {
-			let computedAwakening = Number(awakening.stringValue);
-			let originalQuantity = quantities[index].numberValue;
+			let computedAwakening = awakening;
+			let originalQuantity = quantities[index];
 			let quantity = 1;
 
 			if (computedAwakening === 52) {
@@ -938,8 +948,8 @@ export class Helper {
 				quantity = 2;
 			}
 
-			tempMonsterAwakenings.push({ stringValue: computedAwakening });
-			tempQuantities.push({ numberValue: originalQuantity * quantity });
+			tempMonsterAwakenings.push(computedAwakening);
+			tempQuantities.push(originalQuantity * quantity);
 		});
 		monsterAwakenings = tempMonsterAwakenings;
 		quantities = tempQuantities;
@@ -948,11 +958,10 @@ export class Helper {
 		if (queryFilterType === 'and') {
 			let filters = [];
 
-			quantities.forEach((quantityValues, index) => {
+			quantities.forEach((quantity, index) => {
 				let compare: WhereFilterOp = '==';
-				let quantityType = queryQuantity[index].stringValue;
-				let awakening = monsterAwakenings[index].stringValue;
-				let quantity = quantityValues.numberValue;
+				let quantityType = queryQuantity[index];
+				let awakening = monsterAwakenings[index];
 
 				if (quantityType === 'max') compare = '<=';
 				else if (quantityType === 'exact') compare = '==';
