@@ -5,7 +5,7 @@ import { MonsterData } from '../shared/monster.interfaces';
 import { Common } from './common.class';
 import * as admin from 'firebase-admin';
 import { WhereFilterOp } from '@firebase/firestore-types';
-import { DMChannel, MessageReaction, MessageEmbed, Message, MessageAttachment } from 'discord.js';
+import { DMChannel, MessageReaction, MessageEmbed, Message } from 'discord.js';
 import { Cache } from './cache.class';
 const _ = require('lodash');
 const Discord = require('discord.js');
@@ -300,7 +300,9 @@ export class Helper {
 	};
 
 	private createCollector(message: Message) {
-		return message.createReactionCollector(this.collectorFilter, { time: 60000 });
+		return message.createReactionCollector(this.collectorFilter, { time: 60000 }).on('end', (collected) => {
+			message.reactions.removeAll();
+		});
 	}
 
 	public async sendMessage(message: string | MessageEmbed, optionals = null) {
