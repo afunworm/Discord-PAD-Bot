@@ -165,7 +165,7 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		}
 	}
 
-	//Training with -kun and -san
+	//Extra training
 	synonyms.forEach((name) => {
 		//Also train name with -kun & -san for this version
 		if (name.includes('-kun')) {
@@ -173,6 +173,11 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		}
 		if (name.includes('-san')) {
 			synonyms.push(name.replace('-san', ''));
+		}
+
+		//Split names that contains & to train them separately
+		if (name.includes('&')) {
+			synonyms.push(...name.split('&').map((n) => n.replace(' ', '')));
 		}
 	});
 
