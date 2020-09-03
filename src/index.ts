@@ -12,7 +12,7 @@ const Discord = require('discord.js');
  * CONST
  *-------------------------------------------------------*/
 const client = new Discord.Client();
-const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+const DISCORD_TOKEN = process.env.MODE === 'PRODUCTION' ? process.env.DISCORD_TOKEN : process.env.DISCORD_TOKEN_DEV;
 const COMMAND_PREFIX = process.env.COMMAND_PREFIX;
 
 /*-------------------------------------------------------*
