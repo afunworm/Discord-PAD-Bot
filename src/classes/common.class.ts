@@ -162,7 +162,7 @@ export class Common {
 
 					let canvas = createCanvas(maxWidth, 200 + vPadding);
 					let context = canvas.getContext('2d');
-					context.font = '16px Sans-serif';
+					context.font = '16px Arial';
 					context.strokeStyle = 'black';
 					context.lineWidth = 5;
 					context.textAlign = 'right';

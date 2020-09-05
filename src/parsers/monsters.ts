@@ -38,6 +38,8 @@ let evoTreeData = [];
 	/**
 	 * PARSE MONSTER DATA
 	 */
+	let computedInfoWithSA = {};
+	let computedInfoWithoutSA = {};
 	for (let id = startNumber; id < endNumber; id++) {
 		try {
 			let monster = new MonsterParser(id);
