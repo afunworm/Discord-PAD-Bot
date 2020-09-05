@@ -3,6 +3,9 @@ export {};
 const fs = require('fs');
 
 const CARD_QUERY_TRAINING_PHRASES = [
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} {{queryIncludeSA}} from the {{monsterSeries}} collab`,
+	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} {{queryIncludeSA}} from the {{monsterSeries}} series`,
+	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} {{queryIncludeSA}} from {{monsterSeries}}`,
 	`what {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} have {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} collab`,
 	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} {{queryIncludeSA}} from the {{monsterSeries}} series`,
 	`show me {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} {{queryIncludeSA}} from the {{monsterSeries}} collab`,
@@ -30,6 +33,7 @@ const CARD_QUERY_TRAINING_PHRASES = [
 let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 let placers = {
 	queryMinMax: () => ['the most', 'the least'][r(0, 1)],
+	queryAdditionalTypes: () => ['random'],
 	queryEvoType: () =>
 		[
 			'equip',
