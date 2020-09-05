@@ -246,7 +246,7 @@ export const ADDITIONAL_NAMES = {
 		"steven's favorite monster",
 		"swng's favorite card",
 	],
-	'2118': [
+	'5740': [
 		'afunworm',
 		"afunworm's favorite",
 		"afunworm's favorite monster",
@@ -256,7 +256,7 @@ export const ADDITIONAL_NAMES = {
 		"worm's favorite monster",
 		"worm's favorite card",
 	],
-	'5740': [
+	'2118': [
 		'xolse',
 		"xolse's favorite",
 		"xolse's favorite card",

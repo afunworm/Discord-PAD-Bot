@@ -1,4 +1,4 @@
-import { AWAKENINGS_ALIAS } from '../shared/monster.awakens';
+import { AWAKENINGS_ALIAS } from '../../shared/monster.awakens';
 const fs = require('fs');
 
 let camelize = (input: string) =>

@@ -3,8 +3,8 @@
  *-------------------------------------------------------*/
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-import { MonsterParser } from '../classes/monsterParser.class';
-import { CUSTOM_NAMES } from './customNames';
+import { MonsterParser } from '../../classes/monsterParser.class';
+import { CUSTOM_NAMES } from '../customNames';
 import { ADDITIONAL_NAMES } from './additionalNames';
 import { MANUAL_LIST } from './manualList';
 const fs = require('fs');

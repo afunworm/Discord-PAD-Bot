@@ -1,5 +1,5 @@
-import { MONSTER_SERIES } from '../shared/monster.series';
-import { MONSTER_COLLABS } from '../shared/monster.collabs';
+import { MONSTER_SERIES } from '../../shared/monster.series';
+import { MONSTER_COLLABS } from '../../shared/monster.collabs';
 const fs = require('fs');
 
 let camelize = (input: string) =>
