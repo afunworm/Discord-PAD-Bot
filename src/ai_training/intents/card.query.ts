@@ -171,6 +171,7 @@ let guid = () => {
 			// id: guid(), //Do not supply the id
 			data: [],
 		};
+		let str = '';
 
 		let terms = phrase.split(' ');
 
@@ -185,6 +186,7 @@ let guid = () => {
 							text: term,
 							userDefined: false,
 						});
+						str += term;
 					} else {
 						entry.data.push({
 							text: placers[name].call().toString(),
@@ -192,12 +194,14 @@ let guid = () => {
 							alias: name,
 							meta: `@${name}`,
 						});
+						str += placers[name].call().toString();
 					}
 					if (index !== multipleTerms.length - 1) {
 						entry.data.push({
 							text: '/',
 							userDefined: false,
 						});
+						str += '/';
 					}
 				});
 			} else {
@@ -208,6 +212,7 @@ let guid = () => {
 						text: term,
 						userDefined: false,
 					});
+					str += term;
 				} else {
 					entry.data.push({
 						text: placers[name].call().toString(),
@@ -215,6 +220,7 @@ let guid = () => {
 						alias: name,
 						meta: `@${name}`,
 					});
+					str += placers[name].call().toString();
 				}
 			}
 
@@ -223,18 +229,20 @@ let guid = () => {
 					text: ', ',
 					userDefined: false,
 				});
+				str += ', ';
 			} else {
 				entry.data.push({
 					text: ' ',
 					userDefined: false,
 				});
+				str += ' ';
 			}
 		});
 
 		entry.data.splice(-1, 1);
 		data.push(entry);
 
-		console.log('Completed Training Phrase: ' + phrase);
+		console.log('Completed Training Phrase: ' + str);
 	});
 
 	await fs.writeFileSync('./intent.card.query.json', JSON.stringify(data, null, 4));
