@@ -1227,6 +1227,8 @@ export class Helper {
 		let {
 			queryMinMax,
 			monsterAwakenings1,
+			monsterAwakenings2,
+			monsterAwakenings3,
 			monsterAttribute1,
 			monsterAttribute2,
 			monsterSeries,
@@ -1247,6 +1249,14 @@ export class Helper {
 		} else if (monsterAttribute1 === null && monsterAttribute2 !== null) {
 			monsterAttribute1 = Number(monsterAttribute2);
 			monsterAttribute2 = null;
+		}
+
+		//Sometimes AI detects it in the wrong order
+		if (monsterAwakenings1 === null && monsterAwakenings2 !== null) {
+			monsterAwakenings1 = Number(monsterAwakenings2);
+		}
+		if (monsterAwakenings1 === null && monsterAwakenings3 !== null) {
+			monsterAwakenings1 = Number(monsterAwakenings3);
 		}
 
 		if (monsterAwakenings1 === null) {

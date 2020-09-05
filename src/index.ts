@@ -185,6 +185,8 @@ client.on('message', async (message: any) => {
 				await helper.sendMessage('Please wait while I am looking into that...');
 				await helper.sendMonstersMinMax({
 					monsterAwakenings1: parameters.monsterAwakenings1?.stringValue || null,
+					monsterAwakenings2: parameters.monsterAwakenings2?.stringValue || null, //Sometimes AI detects it in the wrong order
+					monsterAwakenings3: parameters.monsterAwakenings3?.stringValue || null, //Sometimes AI detects it in the wrong order
 					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
 					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
 					queryMinMax: parameters.queryMinMax?.stringValue,
