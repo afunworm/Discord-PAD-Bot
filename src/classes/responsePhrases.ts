@@ -78,18 +78,24 @@ export const RESPONSE_PHRASES = {
 		`I can't find any series for **{{name}}** (#{{id}}).`,
 	],
 	ON_ATTACK_REQUEST_LB: [
-		`The attack of **{{name}}** (#{{id}}) is {{maxAttack}} at max level. When limit broken, its attack becomes {{LBAttack}}.`,
-		`The attack of **{{name}}** (#{{id}}) is {{maxAttack}} at level 99. When 110'd, its attack becomes {{LBAttack}}.`,
+		`The attack of **{{name}}** (#{{id}}) is {{maxAttack}} ({{maxAttackWithPluses}} with pluses) at max level. When limit broken, its attack becomes {{LBAttack}} ({{LBAttackWithPluses}} with pluses).`,
+		`The attack of **{{name}}** (#{{id}}) is {{maxAttack}} ({{maxAttackWithPluses}} with pluses) at level 99. When 110'd, its attack becomes {{LBAttack}} ({{LBAttackWithPluses}} with pluses).`,
 	],
-	ON_ATTACK_REQUEST_NO_LB: [`The attack of **{{name}}** (#{{id}}) is {{maxAttack}} at max level.`],
+	ON_ATTACK_REQUEST_NO_LB: [
+		`The attack of **{{name}}** (#{{id}}) is {{maxAttack}} ({{maxAttackWithPluses}} with pluses) at max level.`,
+	],
 	ON_HP_REQUEST_LB: [
-		`The HP of **{{name}}** (#{{id}}) is {{maxHP}} at max level. When limit broken, its attack becomes {{LBHP}}.`,
-		`The HP of **{{name}}** (#{{id}}) is {{maxHP}} at level 99. When 110'd, its attack becomes {{LBHP}}.`,
+		`The HP of **{{name}}** (#{{id}}) is {{maxHP}} ({{maxHPWithPluses}} with pluses) at max level. When limit broken, its attack becomes {{LBHP}} ({{LBHPWithPluses}} with pluses).`,
+		`The HP of **{{name}}** (#{{id}}) is {{maxHP}} ({{maxHPWithPluses}} with pluses) at level 99. When 110'd, its attack becomes {{LBHP}} ({{LBHPWithPluses}} with pluses).`,
 	],
-	ON_HP_REQUEST_NO_LB: [`The HP of **{{name}}** (#{{id}}) is {{maxHP}} at max level.`],
+	ON_HP_REQUEST_NO_LB: [
+		`The HP of **{{name}}** (#{{id}}) is {{maxHP}} ({{maxHPWithPluses}} with pluses) at max level.`,
+	],
 	ON_RECOVER_REQUEST_LB: [
-		`The RCV of **{{name}}** (#{{id}}) is {{maxRCV}} at max level. When limit broken, its recover becomes {{LBRCV}}.`,
-		`The RCV of **{{name}}** (#{{id}}) is {{maxRCV}} at level 99. When 110'd, its recover becomes {{LBRCV}}.`,
+		`The RCV of **{{name}}** (#{{id}}) is {{maxRCV}} ({{maxRCVWithPluses}} with pluses) at max level. When limit broken, its recover becomes {{LBRCV}} ({{LBRCVWithPluses}} with pluses).`,
+		`The RCV of **{{name}}** (#{{id}}) is {{maxRCV}} ({{maxRCVWithPluses}} with pluses) at level 99. When 110'd, its recover becomes {{LBRCV}} ({{LBRCVWithPluses}} with pluses).`,
 	],
-	ON_RECOVER_REQUEST_NO_LB: [`The RCV of **{{name}}** (#{{id}}) is {{maxRCV}} at max level.`],
+	ON_RECOVER_REQUEST_NO_LB: [
+		`The RCV of **{{name}}** (#{{id}}) is {{maxRCV}} ({{maxRCVWithPluses}} with pluses) at max level.`,
+	],
 };

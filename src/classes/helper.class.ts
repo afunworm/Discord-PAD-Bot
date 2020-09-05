@@ -602,60 +602,81 @@ export class Helper {
 	}
 
 	public async sendMonsterAttack(card: Monster) {
+		let maxAttack = card.getMaxAttack();
+		let maxAttackWithPluses = maxAttack + 99 * 5;
+		let LBAttack = Math.round(maxAttack * (1 + card.getlimitBreakPercentage() / 100));
+		let LBAttackWithPluses = LBAttack + 99 * 5;
+
 		if (card.isLimitBreakable()) {
 			let response = Common.dynamicResponse('ON_ATTACK_REQUEST_LB', {
 				id: card.getId().toString(),
 				name: card.getName(),
-				maxAttack: card.getMaxAttack().toString(),
-				LBAttack: Math.round(card.getMaxAttack() * (1 + card.getlimitBreakPercentage() / 100)).toString(),
-				//attackAfterPlus: (card.getMaxAttack() + 495).toString(),
+				maxAttack: maxAttack.toString(),
+				maxAttackWithPluses: maxAttackWithPluses.toString(),
+				LBAttack: LBAttack.toString(),
+				LBAttackWithPluses: LBAttackWithPluses.toString(),
 			});
 			await this.sendMessage(response);
 		} else {
 			let response = Common.dynamicResponse('ON_ATTACK_REQUEST_NO_LB', {
 				id: card.getId().toString(),
 				name: card.getName(),
-				maxAttack: card.getMaxAttack().toString(),
+				maxAttack: maxAttack.toString(),
+				maxAttackWithPluses: maxAttackWithPluses.toString(),
 			});
 			await this.sendMessage(response);
 		}
 	}
 
 	public async sendMonsterHP(card: Monster) {
+		let maxHP = card.getMaxHP();
+		let maxHPWithPluses = maxHP + 99 * 10;
+		let LBHP = Math.round(maxHP * (1 + card.getlimitBreakPercentage() / 100));
+		let LBHPWithPluses = LBHP + 99 * 10;
+
 		if (card.isLimitBreakable()) {
 			let response = Common.dynamicResponse('ON_HP_REQUEST_LB', {
 				id: card.getId().toString(),
 				name: card.getName(),
-				maxHP: card.getMaxHP().toString(),
-				LBHP: Math.round(card.getMaxHP() * (1 + card.getlimitBreakPercentage() / 100)).toString(),
-				//HPAfterPlus: (card.getMaxHP() + 990).toString(),
+				maxHP: maxHP.toString(),
+				maxHPWithPluses: maxHPWithPluses.toString(),
+				LBHP: LBHP.toString(),
+				LBHPWithPluses: LBHPWithPluses.toString(),
 			});
 			await this.sendMessage(response);
 		} else {
 			let response = Common.dynamicResponse('ON_HP_REQUEST_NO_LB', {
 				id: card.getId().toString(),
 				name: card.getName(),
-				maxHP: card.getMaxHP().toString(),
+				maxHP: maxHP.toString(),
+				maxHPWithPluses: maxHPWithPluses.toString(),
 			});
 			await this.sendMessage(response);
 		}
 	}
 
 	public async sendMonsterRecover(card: Monster) {
+		let maxRCV = card.getMaxRecover();
+		let maxRCVWithPluses = maxRCV + 99 * 3;
+		let LBRCV = Math.round(maxRCV * (1 + card.getlimitBreakPercentage() / 100));
+		let LBRCVWithPluses = LBRCV + 99 * 3;
+
 		if (card.isLimitBreakable()) {
 			let response = Common.dynamicResponse('ON_RECOVER_REQUEST_LB', {
 				id: card.getId().toString(),
 				name: card.getName(),
-				maxRCV: card.getMaxRecover().toString(),
-				LBRCV: Math.round(card.getMaxRecover() * (1 + card.getlimitBreakPercentage() / 100)).toString(),
-				//attackAfterPlus: (card.getMaxRecover() + 495).toString(),
+				maxRCV: maxRCV.toString(),
+				maxRCVWithPluses: maxRCVWithPluses.toString(),
+				LBRCV: LBRCV.toString(),
+				LBRCVWithPluses: LBRCVWithPluses.toString(),
 			});
 			await this.sendMessage(response);
 		} else {
 			let response = Common.dynamicResponse('ON_RECOVER_REQUEST_NO_LB', {
 				id: card.getId().toString(),
 				name: card.getName(),
-				maxRCV: card.getMaxRecover().toString(),
+				maxRCV: maxRCV.toString(),
+				maxRCVWithPluses: maxRCVWithPluses.toString(),
 			});
 			await this.sendMessage(response);
 		}
