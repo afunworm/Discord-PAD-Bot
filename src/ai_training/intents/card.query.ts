@@ -175,21 +175,47 @@ let guid = () => {
 		let terms = phrase.split(' ');
 
 		terms.forEach((term) => {
-			// let regex = new RegExp('{{ *' + term + ' *}}', 'g');
-			let name = term.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '');
+			if (term.includes('/')) {
+				let multipleTerms = term.split('/');
+				multipleTerms.forEach((singleTerm, index) => {
+					let name = singleTerm.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '');
 
-			if (typeof placers[name] !== 'function') {
-				entry.data.push({
-					text: term,
-					userDefined: false,
+					if (typeof placers[name] !== 'function') {
+						entry.data.push({
+							text: term,
+							userDefined: false,
+						});
+					} else {
+						entry.data.push({
+							text: placers[name].call().toString(),
+							userDefined: true,
+							alias: name,
+							meta: `@${name}`,
+						});
+					}
+					if (index !== multipleTerms.length - 1) {
+						entry.data.push({
+							text: '/',
+							userDefined: false,
+						});
+					}
 				});
 			} else {
-				entry.data.push({
-					text: placers[name].call().toString(),
-					userDefined: true,
-					alias: name,
-					meta: `@${name}`,
-				});
+				let name = term.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '');
+
+				if (typeof placers[name] !== 'function') {
+					entry.data.push({
+						text: term,
+						userDefined: false,
+					});
+				} else {
+					entry.data.push({
+						text: placers[name].call().toString(),
+						userDefined: true,
+						alias: name,
+						meta: `@${name}`,
+					});
+				}
 			}
 
 			if (term.endsWith(',')) {
