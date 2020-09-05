@@ -40,9 +40,13 @@ export class Helper {
 				_createdAt: new Date(),
 				command: this._queryText,
 				requestedBy: this._message.author.username + ' (#' + this._message.author.id + ')',
+				status: 'RECEIVED',
+				developerResponse: '',
 			};
 			let ref = await firestore.collection('TrainingRequests').add(data);
 			data['trainingRequestId'] = ref.id;
+			delete data['status'];
+			delete data['developerResponse'];
 			await this.sendMessage(`${message}\n\`\`\`json\n${JSON.stringify(data, null, 4)}\`\`\``);
 		} else {
 			await this.sendMessage(message);
@@ -1279,6 +1283,240 @@ export class Helper {
 		if (dataToSend.length === 0) {
 			await this.sendMessage('I cannot find monsters matched the criteria you are asking for.');
 		} else {
+			await this.sendMessageList('Search Result for Your Query', dataToSend);
+		}
+	}
+
+	public async sendMonstersMinMax(data) {
+		let {
+			queryMinMax,
+			monsterAwakenings1,
+			monsterAwakenings2,
+			monsterAwakenings3,
+			monsterAttribute1,
+			monsterAttribute2,
+			monsterSeries,
+			queryIncludeSA,
+			queryEvoType,
+		} = data;
+
+		//If monsterSeries is a number string, convert it to Number
+		if (/^\d+$/.test(monsterSeries)) monsterSeries = Number(monsterSeries);
+
+		//Pre-process some data
+		monsterAwakenings1 = monsterAwakenings1 === null ? monsterAwakenings1 : Number(monsterAwakenings1);
+		if (monsterAttribute1 !== null && monsterAttribute2 !== null) {
+			monsterAttribute1 = Number(monsterAttribute1);
+			monsterAttribute2 = Number(monsterAttribute2);
+		} else if (monsterAttribute1 !== null && monsterAttribute2 === null) {
+			monsterAttribute1 = Number(monsterAttribute1);
+		} else if (monsterAttribute1 === null && monsterAttribute2 !== null) {
+			monsterAttribute1 = Number(monsterAttribute2);
+			monsterAttribute2 = null;
+		}
+
+		//Sometimes AI detects it in the wrong order
+		if (monsterAwakenings1 === null && monsterAwakenings2 !== null) {
+			monsterAwakenings1 = Number(monsterAwakenings2);
+		}
+		if (monsterAwakenings1 === null && monsterAwakenings3 !== null) {
+			monsterAwakenings1 = Number(monsterAwakenings3);
+		}
+
+		if (monsterAwakenings1 === null) {
+			await this.sendMessage(`I can't seem to find the awakening you are looking for. Can you please try again?`);
+			return;
+		}
+
+		if (queryMinMax === 'min') {
+			await this.sendMessage(
+				"I can only process info about cards with the most number of awakenings. The min number should be 0, shouldn't it?"
+			);
+			return;
+		}
+
+		//Convert awakenings to other relevant awakenings
+		if (monsterAwakenings1 === 52) {
+			monsterAwakenings1 = 10;
+		} else if (monsterAwakenings1 === 68) {
+			monsterAwakenings1 = 11;
+		} else if (monsterAwakenings1 === 69) {
+			monsterAwakenings1 = 12;
+		} else if (monsterAwakenings1 === 70) {
+			monsterAwakenings1 = 13;
+		} else if (monsterAwakenings1 === 53) {
+			monsterAwakenings1 = 19;
+		} else if (monsterAwakenings1 === 56) {
+			monsterAwakenings1 = 21;
+		}
+
+		//Display query criteria
+		let includingSA =
+			queryIncludeSA === 'includeSA' ? 'will also count Super Awakenings' : 'will not count Super Awakenings';
+		let attributesSpecified;
+		if (monsterAttribute1 === null && monsterAttribute2 === null) attributesSpecified = 'None';
+		if (monsterAttribute1 !== null && monsterAttribute2 === null)
+			attributesSpecified = Common.attributeEmotesMapping([monsterAttribute1]);
+		if (monsterAttribute1 === null && monsterAttribute2 !== null)
+			attributesSpecified = Common.attributeEmotesMapping([monsterAttribute1]);
+		if (monsterAttribute1 !== null && monsterAttribute2 !== null)
+			attributesSpecified = Common.attributeEmotesMapping([monsterAttribute1, monsterAttribute2]).join(' ');
+
+		let embed = new Discord.MessageEmbed().setTitle('Search Criteria');
+
+		embed.addFields(
+			{ name: 'Series Specified', value: monsterSeries ? monsterSeries : 'None' },
+			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
+			{ name: 'Attributes Requested', value: attributesSpecified },
+			{ name: 'Super Awakenings', value: `The results ${includingSA}.` },
+			{ name: 'Seeking Awakening', value: Common.awakenEmotesMapping([monsterAwakenings1])[0] }
+		);
+		await this.sendMessage(embed);
+
+		let monsters = [];
+		let max = 0;
+		let fieldName = queryIncludeSA === 'includeSA' ? 'computedAwakeningsWithSA' : 'computedAwakeningsWithoutSA';
+		if (monsterSeries !== null || monsterAttribute1 !== null || queryEvoType !== null) {
+			//Fetch the monster list from those 3 criteria
+			let conditions: {
+				type: 'series' | 'evoType' | 'attribute';
+				monsterSeries?: string;
+				queryEvoType?: string;
+				queryCompare?: string;
+				monsterAwakening?: number;
+				queryQuantity?: number;
+				attribute1?: number;
+				attribute2?: number;
+			}[] = [];
+			if (monsterSeries !== null) {
+				conditions.push({
+					type: 'series',
+					monsterSeries: monsterSeries,
+				});
+			}
+			if (queryEvoType !== null) {
+				conditions.push({
+					type: 'evoType',
+					queryEvoType: queryEvoType,
+				});
+			}
+			if (monsterAttribute1 !== null) {
+				conditions.push({
+					type: 'attribute',
+					attribute1: monsterAttribute1,
+					attribute2: monsterAttribute2,
+				});
+			}
+
+			//Using for-loop for async
+			for (const condition of conditions) {
+				if (condition.type === 'series') {
+					let series = condition.monsterSeries;
+					if (monsters.length === 0) {
+						//Get new data
+						let monsterList;
+						if (/^\d+$/.test(series)) {
+							monsterList = await Monster.getAllCardsFromCollab(Number(series));
+						} else {
+							monsterList = await Monster.getAllCardsFromSeries(series);
+						}
+
+						monsters.push(...monsterList);
+					} else {
+						//Filter from monsters
+						monsters = monsters.filter(
+							(monster: MonsterData) => monster.series === series || monster.collab === Number(series)
+						);
+					}
+				} else if (condition.type === 'evoType') {
+					let evoType = condition.queryEvoType;
+					if (monsters.length === 0) {
+						//Get new data
+						let monsterList = await Monster.getAllCardsWithEvoType(evoType);
+
+						monsters.push(...monsterList);
+					} else {
+						//Filter from monsters
+						monsters = monsters.filter((monster: MonsterData) => monster.evolutionType === evoType);
+					}
+				} else if (condition.type === 'attribute') {
+					let attribute1 = condition.attribute1;
+					let attribute2 = condition.attribute2;
+
+					if (monsters.length === 0) {
+						//Get new data
+						let monsterList = await Monster.getAllCardsWithAttributes(attribute1, attribute2);
+
+						monsters.push(...monsterList);
+					} else {
+						//Filter from monsters
+						if (attribute1 !== null) {
+							monsters = monsters.filter((monster) => monster.mainAttribute === Number(attribute1));
+						}
+						if (attribute2 !== null) {
+							monsters = monsters.filter((monster) => monster.subAttribute === Number(attribute2));
+						}
+					}
+				}
+			}
+
+			//Run through the list of monsters to choose the one with the highest amount of awakenings
+			//Sort them from high to low
+			monsters = monsters.sort(
+				(a: MonsterData, b: MonsterData) => b[fieldName][monsterAwakenings1] - a[fieldName][monsterAwakenings1]
+			);
+
+			max = monsters[0][fieldName][monsterAwakenings1];
+
+			if (max === 0) monsters = [];
+			else monsters = monsters.filter((monster) => monster[fieldName][monsterAwakenings1] === max);
+		} else {
+			//Calculate max stats
+			let maxStats = await Monster.getCalculatedMaxStats();
+
+			if (!maxStats) {
+				await this.sendMessage(
+					'I cannot process that query at the moment. Please let my dev know to update the database.'
+				);
+				return;
+			}
+			max =
+				maxStats[queryIncludeSA === 'includeSA' ? 'maxComputedInfoWithSA' : 'maxComputedInfoWithoutSA'][
+					monsterAwakenings1
+				];
+			//Get new data
+			let snapshot = await firestore
+				.collection('Monsters')
+				.where(`${fieldName}.${monsterAwakenings1}`, '==', max)
+				.get();
+
+			if (snapshot.empty) {
+				await this.sendMessage(
+					'I cannot process that query at the moment. Please let my dev know to update the database.'
+				);
+				return;
+			}
+
+			snapshot.forEach((monster) => monsters.push(monster.data()));
+		}
+
+		let dataToSend = [];
+		monsters.forEach((monster) => {
+			let mainAttribute = monster.mainAttribute;
+			let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
+			let attributes =
+				Common.attributeEmotesMapping([mainAttribute])[0] + Common.attributeEmotesMapping([subAttribute])[0];
+			dataToSend.push(`${attributes}| ${monster.id}. ${monster.name}`);
+		});
+
+		let awakeningEmote = Common.awakenEmotesMapping([monsterAwakenings1])[0];
+
+		if (monsters.length === 0) {
+			await this.sendMessage(`There are no monsters with more than 0 ${awakeningEmote} from your criteria.`);
+		} else {
+			//Display result
+			let message = `Here is the list of monsters with the most ${awakeningEmote}! (${max} is the maximum number of ${awakeningEmote} based on your criteria)`;
+			await this.sendMessage(message);
 			await this.sendMessageList('Search Result for Your Query', dataToSend);
 		}
 	}
