@@ -94,6 +94,22 @@ export class Monster {
 		return this.monsterData.name;
 	}
 
+	public getMaxAttack(): number {
+		return this.monsterData.maxATK;
+	}
+
+	public getMaxHP(): number {
+		return this.monsterData.maxHP;
+	}
+
+	public getMaxRecover(): number {
+		return this.monsterData.maxRCV;
+	}
+
+	public getlimitBreakPercentage(): number {
+		return this.monsterData.limitBreakPercentage;
+	}
+
 	private getAwakenings(): number[] {
 		return this.monsterData.awakenings;
 	}

@@ -597,6 +597,66 @@ export class Helper {
 		await this.sendMessage(embed);
 	}
 
+	public async sendMonsterAttack(card: Monster) {
+		if (card.isLimitBreakable()) {
+			let response = Common.dynamicResponse('ON_ATTACK_REQUEST_LB', {
+				id: card.getId().toString(),
+				name: card.getName(),
+				maxAttack: card.getMaxAttack().toString(),
+				LBAttack: Math.round(card.getMaxAttack() * (1 + card.getlimitBreakPercentage() / 100)).toString(),
+				//attackAfterPlus: (card.getMaxAttack() + 495).toString(),
+			});
+			await this.sendMessage(response);
+		} else {
+			let response = Common.dynamicResponse('ON_ATTACK_REQUEST_NO_LB', {
+				id: card.getId().toString(),
+				name: card.getName(),
+				maxAttack: card.getMaxAttack().toString(),
+			});
+			await this.sendMessage(response);
+		}
+	}
+
+	public async sendMonsterHP(card: Monster) {
+		if (card.isLimitBreakable()) {
+			let response = Common.dynamicResponse('ON_HP_REQUEST_LB', {
+				id: card.getId().toString(),
+				name: card.getName(),
+				maxHP: card.getMaxHP().toString(),
+				LBHP: Math.round(card.getMaxHP() * (1 + card.getlimitBreakPercentage() / 100)).toString(),
+				//HPAfterPlus: (card.getMaxHP() + 990).toString(),
+			});
+			await this.sendMessage(response);
+		} else {
+			let response = Common.dynamicResponse('ON_HP_REQUEST_NO_LB', {
+				id: card.getId().toString(),
+				name: card.getName(),
+				maxHP: card.getMaxHP().toString(),
+			});
+			await this.sendMessage(response);
+		}
+	}
+
+	public async sendMonsterRecover(card: Monster) {
+		if (card.isLimitBreakable()) {
+			let response = Common.dynamicResponse('ON_RECOVER_REQUEST_LB', {
+				id: card.getId().toString(),
+				name: card.getName(),
+				maxRCV: card.getMaxRecover().toString(),
+				LBRCV: Math.round(card.getMaxRecover() * (1 + card.getlimitBreakPercentage() / 100)).toString(),
+				//attackAfterPlus: (card.getMaxRecover() + 495).toString(),
+			});
+			await this.sendMessage(response);
+		} else {
+			let response = Common.dynamicResponse('ON_RECOVER_REQUEST_NO_LB', {
+				id: card.getId().toString(),
+				name: card.getName(),
+				maxRCV: card.getMaxRecover().toString(),
+			});
+			await this.sendMessage(response);
+		}
+	}
+
 	public async sendMonsterRarity(card: Monster) {
 		let response = Common.dynamicResponse('ON_RARITY_REQUEST', {
 			id: card.getId().toString(),

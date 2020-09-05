@@ -127,8 +127,14 @@ client.on('message', async (message: any) => {
 				await helper.sendAwakenings(card);
 			} else if (infoType === 'types') {
 				await helper.sendTypes(card);
-			} else if (infoType === 'stats' || infoType === 'hp' || infoType === 'attack' || infoType === 'recover') {
+			} else if (infoType === 'stats') {
 				await helper.sendMonsterStats(card);
+			} else if (infoType === 'attack') {
+				await helper.sendMonsterAttack(card);
+			} else if (infoType === 'hp') {
+				await helper.sendMonsterHP(card);
+			} else if (infoType === 'recover') {
+				await helper.sendMonsterRecover(card);
 			} else if (infoType === 'rarity') {
 				await helper.sendMonsterRarity(card);
 			} else if (infoType === 'assist') {
