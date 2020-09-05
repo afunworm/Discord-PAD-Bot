@@ -100,7 +100,7 @@ export class Monster {
 
 	public getAwakenEmotes(): string {
 		let awakenings = this.getAwakenings();
-		return awakenings.length ? Common.awakenEmotesMapping(awakenings) : 'No Awakenings';
+		return awakenings.length ? Common.awakenEmotesMapping(awakenings).join(' ') : 'No Awakenings';
 	}
 
 	public getSuperAwakenings(): number[] {
@@ -109,7 +109,7 @@ export class Monster {
 
 	public getSuperAwakenEmotes(): string {
 		let superAwakenings = this.getSuperAwakenings();
-		return superAwakenings.length ? Common.awakenEmotesMapping(superAwakenings) : 'No Super Awakenings';
+		return superAwakenings.length ? Common.awakenEmotesMapping(superAwakenings).join(' ') : 'No Super Awakenings';
 	}
 
 	public getTypesReadable(): string[] {

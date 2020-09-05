@@ -46,19 +46,19 @@ export class Common {
 		return result;
 	}
 
-	static awakenEmotesMapping(awakenList: any[]): string {
-		let result = '';
+	static awakenEmotesMapping(awakenList: any[]): string[] {
+		let result = [];
 		for (let i = 0; i < awakenList.length; i++) {
 			if (awakenList[i] === '') {
-				return '';
+				return [];
 			}
 			let temp = AWAKEN_EMOTES[awakenList[i]];
 			if (temp != 'None') {
-				result += ' ' + temp;
+				result.push(temp);
 			}
 		}
 
-		return result ? result : '';
+		return result;
 	}
 
 	static attributeEmotesMapping(attributes: any[]): string[] {

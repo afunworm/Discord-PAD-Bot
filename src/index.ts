@@ -161,25 +161,8 @@ client.on('message', async (message: any) => {
 			}
 
 			return;
-		}
-		// else if (action === 'card.list') {
-		// 	let parameters = result.queryResult.parameters.fields;
-		// 	let attribute1 = parameters.monsterAttribute1.stringValue || null;
-		// 	let attribute2 = parameters.monsterAttribute2.stringValue || null;
-
-		// 	if (monsterSeries === null) {
-		// 		await helper.sendMessage(
-		// 			"I can't seem to find that collab/series. Would you like to try something else?"
-		// 		);
-		// 	} else {
-		// 		await helper.sendCollabList(monsterSeries, attribute1, attribute2);
-		// 	}
-
-		// 	return;
-		// }
-		else if (action === 'card.query') {
+		} else if (action === 'card.query') {
 			let parameters = result.queryResult.parameters.fields;
-			// console.log(parameters);
 			let data = {
 				queryFilterType: parameters.queryFilterType?.stringValue || 'and',
 				queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
@@ -195,12 +178,28 @@ client.on('message', async (message: any) => {
 				monsterAwakenings3: parameters.monsterAwakenings3?.stringValue || null,
 				monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
 				monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
-				monsterSeries: parameters.monsterSeries.stringValue || null,
+				monsterSeries: parameters.monsterSeries?.stringValue || null,
 			};
-			await helper.sendMessage('Please wait while I am looking into that...');
-			await helper.sendQueryResult(data);
 
-			return;
+			if (['min', 'max'].includes(parameters.queryMinMax?.stringValue)) {
+				await helper.sendMessage('Please wait while I am looking into that...');
+				await helper.sendMonstersMinMax({
+					monsterAwakenings1: parameters.monsterAwakenings1?.stringValue || null,
+					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
+					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+					queryMinMax: parameters.queryMinMax?.stringValue,
+					monsterSeries: parameters.monsterSeries?.stringValue || null,
+					queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
+					queryEvoType: parameters.queryEvoType?.stringValue || null,
+				});
+
+				return;
+			} else {
+				await helper.sendMessage('Please wait while I am looking into that...');
+				await helper.sendQueryResult(data);
+
+				return;
+			}
 		}
 
 		await helper.bugLog(
