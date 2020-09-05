@@ -4,11 +4,11 @@ const fs = require('fs');
 
 const CARD_QUERY_TRAINING_PHRASES = [
 	`what {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} have {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} collab`,
-	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} series`,
-	`show me {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} collab`,
-	`list {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} series`,
+	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} {{queryIncludeSA}} from the {{monsterSeries}} series`,
+	`show me {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} {{queryIncludeSA}} from the {{monsterSeries}} collab`,
+	`list {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} {{queryIncludeSA}} from the {{monsterSeries}} series`,
 	`search for {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} collab`,
-	`help me find {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}}`,
+	`help me find {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryIncludeSA}} {{monsterAwakenings1}}`,
 	`{{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
 	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}}`,
 	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}} series`,
@@ -143,17 +143,19 @@ let guid = () => {
 			return;
 		}
 
-		second.push(phrase.replace(regex, '{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}}'));
+		second.push(
+			phrase.replace(regex, '{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}} {{queryIncludeSA}}')
+		);
 		second.push(
 			phrase.replace(
 				regex,
-				'{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}} and {{queryCompare2}} {{queryQuantity2}} {{monsterAwakenings2}}'
+				'{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}} and {{queryCompare2}} {{queryQuantity2}} {{monsterAwakenings2}} {{queryIncludeSA}}'
 			)
 		);
 		second.push(
 			phrase.replace(
 				regex,
-				'{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}}, {{queryCompare2}} {{queryQuantity2}} {{monsterAwakenings2}} and {{queryCompare3}} {{queryQuantity3}} {{monsterAwakenings3}}'
+				'{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}}, {{queryCompare2}} {{queryQuantity2}} {{monsterAwakenings2}} and {{queryCompare3}} {{queryQuantity3}} {{monsterAwakenings3}} {{queryIncludeSA}}'
 			)
 		);
 	});
