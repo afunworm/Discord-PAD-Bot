@@ -146,6 +146,10 @@ export interface QueryResultInterface {
 					stringValue: 'includeSA' | 'excludeSA';
 					kind: 'stringValue';
 				};
+				queryMinMax: {
+					stringValue: 'min' | 'max';
+					kind: 'stringValue';
+				};
 			};
 		};
 	};

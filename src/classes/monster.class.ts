@@ -458,4 +458,18 @@ export class Monster {
 			}
 		});
 	}
+
+	public static getCalculatedMaxStats(): Promise<any> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let doc = await firestore.collection('Monsters').doc('@info').get();
+
+				if (!doc.exists) resolve(null);
+
+				resolve(doc.data());
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
 }

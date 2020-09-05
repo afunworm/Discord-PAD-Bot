@@ -49,6 +49,22 @@ let evoTreeData = [];
 			series = seriesInfo.id;
 			seriesReadable = seriesInfo.name;
 
+			if (Object.keys(computedInfoWithSA).length === 0) {
+				computedInfoWithSA = monster.getComputedAwakenings(true);
+				computedInfoWithoutSA = monster.getComputedAwakenings(false);
+			} else {
+				let currentMonsterComputedAwakeningsWithSA = monster.getComputedAwakenings(true);
+				let currentMonsterComputedAwakeningsWithoutSA = monster.getComputedAwakenings(false);
+				for (let awakening in computedInfoWithSA) {
+					if (currentMonsterComputedAwakeningsWithSA[awakening] > computedInfoWithSA[awakening]) {
+						computedInfoWithSA[awakening] = currentMonsterComputedAwakeningsWithSA[awakening];
+					}
+					if (currentMonsterComputedAwakeningsWithoutSA[awakening] > computedInfoWithoutSA[awakening]) {
+						computedInfoWithoutSA[awakening] = currentMonsterComputedAwakeningsWithoutSA[awakening];
+					}
+				}
+			}
+
 			let monsterData: MonsterData = {
 				_lastUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
 				id: monster.getId(),
@@ -170,6 +186,12 @@ let evoTreeData = [];
 			process.exit();
 		}
 	}
+
+	await firestore.collection('Monsters').doc('@info').set({
+		maxComputedInfoWithSA: computedInfoWithSA,
+		maxComputedInfoWithoutSA: computedInfoWithoutSA,
+	});
+	console.log('Data written for precalculated stats.');
 
 	// await fs.writeFileSync('./database.json', JSON.stringify(data, null, 4));
 

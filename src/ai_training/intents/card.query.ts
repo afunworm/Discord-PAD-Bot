@@ -3,6 +3,12 @@ export {};
 const fs = require('fs');
 
 const CARD_QUERY_TRAINING_PHRASES = [
+	`what {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} have {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} collab`,
+	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} series`,
+	`show me {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} collab`,
+	`list {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} series`,
+	`search for {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} collab`,
+	`help me find {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}}`,
 	`{{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
 	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}}`,
 	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}} series`,
@@ -23,6 +29,7 @@ const CARD_QUERY_TRAINING_PHRASES = [
 
 let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 let placers = {
+	queryMinMax: () => ['the most', 'the least'][r(0, 1)],
 	queryEvoType: () =>
 		[
 			'equip',
@@ -82,7 +89,10 @@ let placers = {
 	monsterAwakenings3: () => placers.monsterAwakenings1(),
 	queryIncludeSA: () =>
 		['including super awakenings', 'excluding super awakenings', 'including sa', 'excluding sa'][r(0, 3)],
-	monsterAttribute1: () => ['fire', 'water', 'wood', 'light', 'dark'][r(0, 4)],
+	monsterAttribute1: () =>
+		['fire', 'water', 'wood', 'light', 'dark', 'red', 'green', 'blue', 'r', 'g', 'b', 'l', 'd', 'x', 'none'][
+			r(0, 14)
+		],
 	monsterAttribute2: () => placers.monsterAttribute1(),
 	queryCompare1: () =>
 		['at least', 'at most', 'exactly', 'no more than', 'no less than', 'more than', 'less than'][r(0, 6)],
@@ -117,6 +127,7 @@ let guid = () => {
 
 		//With both attribtues
 		first.push(phrase.replace(regex, '{{monsterAttribute1}} {{monsterAttribute2}}'));
+		first.push(phrase.replace(regex, '{{monsterAttribute1}}/{{monsterAttribute2}}'));
 
 		//With no attributes
 		first.push(phrase.replace(regex, ''));
@@ -196,6 +207,8 @@ let guid = () => {
 
 		entry.data.splice(-1, 1);
 		data.push(entry);
+
+		console.log('Completed Training Phrase: ' + phrase);
 	});
 
 	await fs.writeFileSync('./intent.card.query.json', JSON.stringify(data, null, 4));
