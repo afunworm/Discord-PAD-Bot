@@ -40,9 +40,13 @@ export class Helper {
 				_createdAt: new Date(),
 				command: this._queryText,
 				requestedBy: this._message.author.username + ' (#' + this._message.author.id + ')',
+				status: 'RECEIVED',
+				developerResponse: '',
 			};
 			let ref = await firestore.collection('TrainingRequests').add(data);
 			data['trainingRequestId'] = ref.id;
+			delete data['status'];
+			delete data['developerResponse'];
 			await this.sendMessage(`${message}\n\`\`\`json\n${JSON.stringify(data, null, 4)}\`\`\``);
 		} else {
 			await this.sendMessage(message);
