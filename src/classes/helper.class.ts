@@ -861,7 +861,7 @@ export class Helper {
 				}
 
 				monsters.forEach((monster) => {
-					if (monster.name.includes('**')) return;
+					if (monster.name.includes('*')) return;
 					let mainAttribute = monster.mainAttribute;
 					let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
 					let attributes =
@@ -886,7 +886,7 @@ export class Helper {
 
 				let result = [];
 				monsters.forEach((monster) => {
-					if (monster.name.includes('**')) return;
+					if (monster.name.includes('*')) return;
 					let mainAttribute = monster.mainAttribute;
 					let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
 					let attributes =
@@ -1291,7 +1291,7 @@ export class Helper {
 		}
 
 		//Filter Japanese
-		monsters = monsters.filter((monster) => !monster.name.includes('**') && !monster.name.includes('??'));
+		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
 
 		let dataToSend = [];
 		monsters.forEach((monster) => {
