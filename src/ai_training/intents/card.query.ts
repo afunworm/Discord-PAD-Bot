@@ -3,9 +3,14 @@ export {};
 const fs = require('fs');
 
 const CARD_QUERY_TRAINING_PHRASES = [
-	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} {{queryIncludeSA}} from the {{monsterSeries}} collab`,
-	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} {{queryIncludeSA}} from the {{monsterSeries}} series`,
-	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} {{queryIncludeSA}} from {{monsterSeries}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} collab`,
+	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
+	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`gimme {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
+	`gimme {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}}`,
+	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
 	`what {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} have {{queryMinMax}} {{monsterAwakenings1}} from the {{monsterSeries}} collab`,
 	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} {{queryIncludeSA}} from the {{monsterSeries}} series`,
 	`show me {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{monsterAwakenings1}} {{queryIncludeSA}} from the {{monsterSeries}} collab`,

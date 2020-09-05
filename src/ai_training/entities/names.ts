@@ -311,7 +311,32 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		}
 	}
 
-	//@TODO: Train on pixel, awoken, ultimate evo, super ultimate evo, reincarnated, equips
+	//Train for collab in general
+	if (monster.getCollabId() !== 0) {
+		let prefixes = [monster.getReadableCollab().toLowerCase() + ' '];
+
+		if (fullName.includes(',')) {
+			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
+
+			computePrefixes(name, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
+		} else {
+			computePrefixes(fullName, prefixes).forEach((computedName) => {
+				synonyms.push(computedName);
+			});
+		}
+
+		if (fullName.split(' ').length === 2) {
+			//Just train a litte bit extra
+			let names = fullName.split(' ');
+			names.forEach((name) => {
+				computePrefixes(name, prefixes).forEach((computedName) => {
+					synonyms.push(computedName);
+				});
+			});
+		}
+	}
 
 	return synonyms;
 }

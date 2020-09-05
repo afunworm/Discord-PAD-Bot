@@ -270,6 +270,8 @@ export class Helper {
 			dd: 'dark dark',
 			darkx: 'dark none',
 			dx: 'dark none',
+			'7c': 'enhanced combo',
+			'7cs': 'enhanced combos',
 		};
 
 		//Trim it
@@ -1540,5 +1542,9 @@ export class Helper {
 			await this.sendMessage(message);
 			await this.sendMessageList('Search Result for Your Query', dataToSend);
 		}
+	}
+
+	public async sendRandomCard(data) {
+		let { queryQuantity1, monsterAttribute1, monsterAttribute2, queryEvoType, monsterSeries } = data;
 	}
 }

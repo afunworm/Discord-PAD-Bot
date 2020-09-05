@@ -150,6 +150,10 @@ export interface QueryResultInterface {
 					stringValue: 'min' | 'max';
 					kind: 'stringValue';
 				};
+				queryAdditionalTypes: {
+					stringValue: 'random';
+					kind: 'stringValue';
+				};
 			};
 		};
 	};

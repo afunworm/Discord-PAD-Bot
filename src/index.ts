@@ -202,6 +202,14 @@ client.on('message', async (message: any) => {
 				});
 
 				return;
+			} else if (parameters.queryAdditionalTypes?.stringValue === 'random') {
+				await helper.sendRandomCard({
+					queryQuantity1: parameters.queryQuantity1?.stringValue,
+					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
+					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+					queryEvoType: parameters.queryEvoType?.stringValue || null,
+					monsterSeries: parameters.monsterSeries?.stringValue || null,
+				});
 			} else {
 				await helper.sendMessage('Please wait while I am looking into that...');
 				await helper.sendQueryResult(data);
