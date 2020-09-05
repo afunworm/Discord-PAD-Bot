@@ -270,4 +270,6 @@ export const ADDITIONAL_NAMES = {
 		"megumin's favorite card",
 		"megumin's favorite monster",
 	],
+	'133': ['kiro', 'kiro shaki', 'kiroshaki'],
+	'4761': ['datdude', 'dat dude', 'dat dumb dude', 'dd', 'datdumbdude', 'ddao'],
 };
