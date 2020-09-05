@@ -3,7 +3,7 @@
 	"scripts": {
 		"lint": "tslint --project tsconfig.json",
 		"build": "tsc src/index --outdir dist",
-		"copy": "rm -rf dist/raw && mkdir dist/raw && cp src/raw/download_card_data.json dist/raw/download_card_data.json && cp src/raw/download_skill_data.json dist/raw/download_skill_data.json && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp -n src/.env dist/.env || true",
+		"copy": "rm -rf dist/temp && mkdir dist/temp && rm -rf dist/raw && mkdir dist/raw && cp src/raw/download_card_data.json dist/raw/download_card_data.json && cp src/raw/download_skill_data.json dist/raw/download_skill_data.json && cp src/raw/arrow.png dist/raw/arrow.png && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp -n src/.env dist/.env || true",
 		"forever": "forever start dist/index.js",
 		"start": "npm run build && npm run copy && forever stopall && forever start dist/index.js",
 		"test": "npm run build && npm run copy && node dist/index.js",
@@ -18,13 +18,13 @@
 		"@firebase/firestore-types": "^1.12.1",
 		"@types/dotenv": "^8.2.0",
 		"@types/node": "^14.0.27",
+		"canvas": "^2.6.1",
 		"dialogflow": "^1.2.0",
 		"discord.js": "^12.3.1",
 		"dotenv": "^8.2.0",
 		"firebase-admin": "^8.13.0",
 		"firebase-functions": "^3.6.1",
 		"forever": "^3.0.2",
-		"jimp": "^0.16.0",
 		"lodash": "^4.17.20",
 		"node-cache": "^5.1.2"
 	},
