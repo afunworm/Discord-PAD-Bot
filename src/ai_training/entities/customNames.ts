@@ -39,4 +39,12 @@ export const CUSTOM_NAMES = [
 		name: 'kushinadahime',
 		alias: ['kush', 'kushi'],
 	},
+	{
+		name: 'vajrayaksa',
+		alias: ['lvaj', 'vaj'],
+	},
+	{
+		name: 'vajrabhairava',
+		alias: ['dvaj', 'vaj'],
+	},
 ];
