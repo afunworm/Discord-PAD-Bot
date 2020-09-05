@@ -136,6 +136,10 @@ export class Monster {
 		return this.monsterData.isLimitBreakable;
 	}
 
+	public getPreviousEvoId(): number {
+		return this.monsterData.previousEvoId;
+	}
+
 	public getLatentKillers(): number[] {
 		let map: { [key: string]: number[] } = {
 			'1': [1, 2, 3, 4, 5, 6, 7, 8], //Balanced (1) can take all
@@ -291,22 +295,12 @@ export class Monster {
 		return result.length <= 0 ? 'None' : result.join('\n');
 	}
 
-	private fixCardNoLength(no: number | string): string {
-		return no.toString().padStart(5, '0');
-	}
-
 	public getThumbnailUrl(): string {
-		let cardId = this.id.toString();
-		cardId = this.fixCardNoLength(cardId);
-
-		return `https://static.pad.byh.uy/icons/${cardId}.png`;
+		return Common.getThumbnailUrl(this.id);
 	}
 
 	public getImageUrl(): string {
-		let cardId = this.id.toString();
-		cardId = this.fixCardNoLength(cardId);
-
-		return `https://static.pad.byh.uy/images/${cardId}.png`;
+		return Common.getImageUrl(this.id);
 	}
 
 	public getUrl(): string {
@@ -406,6 +400,50 @@ export class Monster {
 		return new Promise(async (resolve, reject) => {
 			try {
 				let snapshot = await firestore.collection('Monsters').where('group', '==', groupName).get();
+
+				if (snapshot.empty) resolve([]);
+
+				let result = [];
+				snapshot.forEach((doc) => {
+					result.push(doc.data() as MonsterData);
+				});
+
+				resolve(result);
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
+
+	public static getAllCardsWithEvoType(evoType: string): Promise<MonsterData[]> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let snapshot = await firestore.collection('Monsters').where('evolutionType', '==', evoType).get();
+
+				if (snapshot.empty) resolve([]);
+
+				let result = [];
+				snapshot.forEach((doc) => {
+					result.push(doc.data() as MonsterData);
+				});
+
+				resolve(result);
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
+
+	public static getAllCardsWithAttributes(
+		attribute1: number,
+		attribute2: number | null = null
+	): Promise<MonsterData[]> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let ref = firestore.collection('Monsters').where('mainAttribute', '==', attribute1);
+				if (attribute2 !== null) ref = ref.where('subAttribute', '==', attribute2);
+
+				let snapshot = await ref.get();
 
 				if (snapshot.empty) resolve([]);
 

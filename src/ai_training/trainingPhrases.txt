@@ -40,7 +40,50 @@ what can i use to evolve haku
 how do i evo haku
 
 --- Training phrases for monster query (Always train x/x cards, train extra ... + from x collab)
-show me all cards with at least 5 skill boosts including sa
+//Generic 0 awakening (formally card.list)
+light dark super reincarnated monsters from relic
+light dark super reincarnated monsters from pad academy series
+new year series
+power ranger collab
+monsters from gungho collab
+
+
+//1 awakening condition
+show me all fire water super reincarnated cards with at least 1 super skill boosts including super awakenings from monster hunter collab
+list all water wood pixel monsters with at least 1 super skill boosts excluding super awakenings from pad academy series
+I want a list of all wood light awoken monsters with at least 1 super skill boosts including super awakenings from monster hunter collab
+What are the light dark super ultimate evolution cards that have at least 1 super skill boosts excluding super awakenings from bleach series
+Find me all dark fire super ultimate evolution monsters with at least 1 super skill boosts including super awakenings from power ranger collab
+Show me a list of fire wood super reincarnated cards that have at least 1 super skill boosts excluding super awakenings from valentine series
+Search for all water light super reincarnated monsters with at least 1 super skill boosts including super awakenings from dragon bound dragon caller collab
+Help me find all wood dark super ultimate evolution cards with at least 1 super skill boosts excluding super awakenings from monster hunter collab
+Search new year series for all light water reincarnated monsters that have at least 1 super skill boosts including super awakenings
+
+//2 awakening condition
+show me all fire water super reincarnated cards with at least 1 poison blessing, exactly 2 super blind resist including super awakenings from monster hunter collab
+list all water wood pixel monsters with at least 1 poison blessing, exactly 2 super blind resist excluding super awakenings from pad academy series
+I want a list of all wood light awoken monsters with at least 1 poison blessing, exactly 2 super blind resist including super awakenings from monster hunter collab
+What are the light dark ultimate evolution cards that have at least 1 poison blessing, exactly 2 super blind resist excluding super awakenings from bleach series
+Find me all dark fire super ultimate evolution monsters with at least 1 poison blessing, exactly 2 super blind resist including super awakenings from power ranger collab
+Show me a list of fire wood super reincarnated cards that have at least 1 poison blessing, exactly 2 super blind resist excluding super awakenings from valentine series
+Search for all water light super reincarnated monsters with at least 1 poison blessing, exactly 2 super blind resist including super awakenings from dragon bound dragon caller collab
+Help me find all wood dark super ultimate evolution cards with at least 1 poison blessing, exactly 2 super blind resist excluding super awakenings from monster hunter collab
+Search new year series for all light water reincarnated monsters that have at least 1 poison blessing, exactly 2 super blind resist including super awakenings
+
+//3 awakening condition
+show me all fire water super reincarnated cards with more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist including super awakenings from monster hunter collab
+list all water wood pixel monsters with more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist excluding super awakenings from pad academy series
+I want a list of all wood light awoken monsters with more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist including super awakenings from monster hunter collab
+What are the light dark ultimate evolution cards that have more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist excluding super awakenings from bleach series
+Find me all dark fire super ultimate evolution monsters with more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist including super awakenings from power ranger collab
+Show me a list of fire wood super reincarnated cards that have more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist excluding super awakenings from valentine series
+Search for all water light super reincarnated monsters with more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist including super awakenings from dragon bound dragon caller collab
+Help me find all wood dark super ultimate evolution cards with more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist excluding super awakenings from monster hunter collab
+Search new year series for all light water reincarnated monsters that have more than 1 super poison resist, exactly 5 poison blessings and less than 5 skill bind resist including super awakenings
+
+
+
+<LEGACY>
 list all cards with exactly 4 team hp and more than 5 sbs without super awokens
 i want a list of all cards with exactly 3 skill boosts, more than 3 dark oe and more than 1 team hp without sa
 what are the cards that have > 1 jammer blessing, > 2 unbindable, at least 3 skill boosts or 3 jammer resist including super awakenings

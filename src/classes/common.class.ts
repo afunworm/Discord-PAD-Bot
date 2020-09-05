@@ -4,7 +4,8 @@ import { ATTRIBUTE_EMOTES } from '../shared/monster.attributes';
 import { RESPONSE_PHRASES } from './responsePhrases';
 import { MONSTER_SERIES } from '../shared/monster.series';
 import { MONSTER_COLLABS } from '../shared/monster.collabs';
-const jimp = require('jimp');
+const { createCanvas, loadImage } = require('canvas');
+const fs = require('fs');
 
 export class Common {
 	static fillTemplate(templateString: string, templateVars: { [key: string]: string }): string {
@@ -124,41 +125,91 @@ export class Common {
 		return result;
 	}
 
-	static writeDisplayIcons(icons: string[], padding: number = 8): Promise<string> {
+	static getThumbnailUrl(id: number): string {
+		let cardId = id.toString().padStart(5, '0');
+
+		return `https://static.pad.byh.uy/icons/${cardId}.png`;
+	}
+
+	static getImageUrl(id: number): string {
+		let cardId = id.toString().padStart(5, '0');
+
+		return `https://static.pad.byh.uy/images/${cardId}.png`;
+	}
+
+	static displayEvoIcons(
+		from: { id: number; url: string },
+		to: { id: number; url: string },
+		evoMats: { id: number; url: string }[]
+	): Promise<string> {
+		let hPadding = 8;
+		let vPadding = 3;
 		return new Promise(async (resolve, reject) => {
-			let jimps = [];
+			let resources = [loadImage(from.url), loadImage(__dirname + '/../raw/arrow.png'), loadImage(to.url)];
 
 			//Turns the images into readable variables for jimp, then pushes them into a new array
-			for (var i = 0; i < icons.length; i++) {
-				jimps.push(jimp.read(icons[i]));
+			for (var i = 0; i < evoMats.length; i++) {
+				resources.push(loadImage(evoMats[i].url));
 			}
 
 			//Creates a promise to handle the jimps
-			await Promise.all(jimps)
+			await Promise.all(resources)
 				.then((data) => {
-					return Promise.all(jimps);
+					return Promise.all(resources);
 				})
-				.then((data) => {
-					let maxWidth = data.reduce(
-						(accumulator, pic, index) => accumulator + pic.bitmap.width + padding,
-						0
+				.then(async (data) => {
+					let maxWidth = 100 * (data.length - 3) + hPadding * (data.length - 4);
+
+					let canvas = createCanvas(maxWidth, 200 + vPadding);
+					let context = canvas.getContext('2d');
+					context.font = '16px Sans-serif';
+					context.strokeStyle = 'black';
+					context.lineWidth = 5;
+					context.textAlign = 'right';
+					context.lineJoin = 'miter'; //Experiment with "bevel" & "round"
+					context.miterLimit = 2;
+					context.fillStyle = 'white';
+
+					let fromImage = data[0];
+					let arrowImage = data[1];
+					let toImage = data[2];
+
+					//Draw from > to
+					context.drawImage(fromImage, 0, 0);
+					context.drawImage(toImage, 100 + hPadding, 0);
+					context.drawImage(
+						arrowImage,
+						(200 + hPadding - arrowImage.width) / 2,
+						(100 - arrowImage.height) / 2
 					);
 
-					new jimp(maxWidth, 100, async (err, image) => {
-						if (err) {
-							reject(err);
-						}
+					//Draw ID
+					context.strokeText(from.id, 100 - 5, 100 - 7);
+					context.fillText(from.id, 100 - 5, 100 - 7);
+					context.strokeText(to.id, 200, 100 - 7);
+					context.fillText(to.id, 200, 100 - 7);
 
-						data.forEach((icon, index) => {
-							image.composite(icon, 100 * index + padding * index, 0);
-						});
+					//Data should only contain materials
+					data.splice(0, 3);
 
-						let temp =
-							Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-						image.write(`../temp/${temp}.png`);
-						// let base64 = await image.getBase64Async('image/png');
-						resolve(`../temp/${temp}.png`);
+					data.forEach((icon, index) => {
+						let startX = 100 * index + hPadding * index;
+						let endX = startX + 100;
+
+						//Draw icon
+						context.drawImage(icon, startX, 100 + vPadding);
+
+						//Draw ID
+						context.strokeText(evoMats[index].id, endX - 5, 200 - 7 + vPadding);
+						context.fillText(evoMats[index].id, endX - 5, 200 - 7 + vPadding);
 					});
+
+					let temp =
+						Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+					const buffer = canvas.toBuffer('image/png');
+					await fs.writeFileSync(`../temp/${temp}.png`, buffer);
+					resolve(`../temp/${temp}.png`);
 				});
 		});
 	}

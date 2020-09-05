@@ -161,31 +161,41 @@ client.on('message', async (message: any) => {
 			}
 
 			return;
-		} else if (action === 'card.list') {
-			let parameters = result.queryResult.parameters.fields;
-			let attribute1 = parameters.monsterAttribute1.stringValue || null;
-			let attribute2 = parameters.monsterAttribute2.stringValue || null;
+		}
+		// else if (action === 'card.list') {
+		// 	let parameters = result.queryResult.parameters.fields;
+		// 	let attribute1 = parameters.monsterAttribute1.stringValue || null;
+		// 	let attribute2 = parameters.monsterAttribute2.stringValue || null;
 
-			if (monsterSeries === null) {
-				await helper.sendMessage(
-					"I can't seem to find that collab/series. Would you like to try something else?"
-				);
-			} else {
-				await helper.sendCollabList(monsterSeries, attribute1, attribute2);
-			}
+		// 	if (monsterSeries === null) {
+		// 		await helper.sendMessage(
+		// 			"I can't seem to find that collab/series. Would you like to try something else?"
+		// 		);
+		// 	} else {
+		// 		await helper.sendCollabList(monsterSeries, attribute1, attribute2);
+		// 	}
 
-			return;
-		} else if (action === 'card.query') {
+		// 	return;
+		// }
+		else if (action === 'card.query') {
 			let parameters = result.queryResult.parameters.fields;
+			// console.log(parameters);
 			let data = {
-				queryFilterType: parameters.queryFilterType.stringValue,
-				monsterSeries: parameters.monsterSeries.stringValue,
-				queryQuantity: parameters.queryQuantity.listValue.values,
-				queryIncludeSA: parameters.queryIncludeSA.stringValue,
-				monsterAwakenings: parameters.monsterAwakenings.listValue.values,
-				quantities: parameters.number.listValue.values,
-				attribute1: parameters.monsterAttribute1.stringValue || null,
-				attribute2: parameters.monsterAttribute2.stringValue || null,
+				queryFilterType: parameters.queryFilterType?.stringValue || 'and',
+				queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
+				queryQuantity1: parameters.queryQuantity1?.stringValue,
+				queryQuantity2: parameters.queryQuantity2?.stringValue,
+				queryQuantity3: parameters.queryQuantity3?.stringValue,
+				queryCompare1: parameters.queryCompare1?.stringValue || null,
+				queryCompare2: parameters.queryCompare2?.stringValue || null,
+				queryCompare3: parameters.queryCompare3?.stringValue || null,
+				queryEvoType: parameters.queryEvoType?.stringValue || null,
+				monsterAwakenings1: parameters.monsterAwakenings1?.stringValue || null,
+				monsterAwakenings2: parameters.monsterAwakenings2?.stringValue || null,
+				monsterAwakenings3: parameters.monsterAwakenings3?.stringValue || null,
+				monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
+				monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+				monsterSeries: parameters.monsterSeries.stringValue || null,
 			};
 			await helper.sendMessage('Please wait while I am looking into that...');
 			await helper.sendQueryResult(data);

@@ -3,7 +3,7 @@ const AIEnv = require('../' + process.env.AI_SERVICE_ACCOUNT);
 
 export interface QueryResultInterface {
 	queryResult: {
-		action: string;
+		action: 'card.info' | 'card.query';
 		queryText: string;
 		parameters: {
 			fields: {
@@ -56,11 +56,11 @@ export interface QueryResultInterface {
 					kind: 'stringValue';
 				};
 				monsterAttribute1: {
-					stringValue: 'fire' | 'water' | 'wood' | 'light' | 'dark' | 'none';
+					stringValue: string;
 					kind: 'stringValue';
 				};
 				monsterAttribute2: {
-					stringValue: 'fire' | 'water' | 'wood' | 'light' | 'dark' | 'none';
+					stringValue: string;
 					kind: 'stringValue';
 				};
 				monsterName: {
@@ -71,18 +71,10 @@ export interface QueryResultInterface {
 					stringValue: string;
 					kind: 'stringValue';
 				};
+
 				targetPronoun: {
 					stringValue: 'self';
 					kind: 'stringValue';
-				};
-				queryQuantity: {
-					listValue: {
-						values: {
-							stringValue: 'min' | 'max' | 'exact' | 'less' | 'more';
-							kind: 'stringValue';
-						}[];
-					};
-					kind: 'listValue';
 				};
 				queryFilterType: {
 					stringValue: 'and' | 'or';
@@ -97,14 +89,54 @@ export interface QueryResultInterface {
 					};
 					kind: 'listValue';
 				};
-				monsterAwakenings: {
-					listValue: {
-						values: {
-							numberValue: number;
-							kind: 'numberValue';
-						}[];
-					};
-					kind: 'listValue';
+				queryCompare1: {
+					stringValue: 'min' | 'max' | 'exact' | 'less' | 'more';
+					kind: 'stringValue';
+				};
+				queryCompare2: {
+					stringValue: 'min' | 'max' | 'exact' | 'less' | 'more';
+					kind: 'stringValue';
+				};
+				queryCompare3: {
+					stringValue: 'min' | 'max' | 'exact' | 'less' | 'more';
+					kind: 'stringValue';
+				};
+				monsterAwakenings1: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				monsterAwakenings2: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				monsterAwakenings3: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				queryQuantity1: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				queryQuantity2: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				queryQuantity3: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
+				queryEvoType: {
+					stringValue:
+						| 'equip'
+						| 'superReincarnated'
+						| 'superUltimate'
+						| 'reincarnated'
+						| 'pixel'
+						| 'awoken'
+						| 'ultimate'
+						| 'base'
+						| 'normal';
+					kind: 'stringValue';
 				};
 				targetObject: {
 					stringValue: 'card';
