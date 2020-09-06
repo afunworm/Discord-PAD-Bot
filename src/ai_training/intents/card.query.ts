@@ -3,7 +3,9 @@ export {};
 const fs = require('fs');
 
 const CARD_QUERY_TRAINING_PHRASES = [
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
 	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}} from {{monsterSeries}}`,
 	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} collab`,
 	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
 	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
@@ -137,6 +139,9 @@ let guid = () => {
 		//With both attribtues
 		first.push(phrase.replace(regex, '{{monsterAttribute1}} {{monsterAttribute2}}'));
 		first.push(phrase.replace(regex, '{{monsterAttribute1}}/{{monsterAttribute2}}'));
+
+		//With 1 attribute
+		first.push(phrase.replace(regex, '{{monsterAttribute1}}'));
 
 		//With no attributes
 		first.push(phrase.replace(regex, ''));
