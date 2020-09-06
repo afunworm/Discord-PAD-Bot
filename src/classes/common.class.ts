@@ -72,6 +72,8 @@ export class Common {
 		return result;
 	}
 
+	static randomBetween = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+
 	static toSlug = (input: string) => input.replace(/[^a-zA-Z0-9]/gi, '_').toLowerCase();
 	static camelize = (input: string) =>
 		input
@@ -208,8 +210,77 @@ export class Common {
 						Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
 					const buffer = canvas.toBuffer('image/png');
-					await fs.writeFileSync(__dirname + `../temp/${temp}.png`, buffer);
-					resolve(__dirname + `../temp/${temp}.png`);
+					await fs.writeFileSync(__dirname + `/../temp/${temp}.png`, buffer);
+					resolve(__dirname + `/../temp/${temp}.png`);
+				});
+		});
+	}
+
+	static displayCardIcons(monsters: { id: number; url: string }[]): Promise<string> {
+		let hPadding = 5;
+		let vPadding = 3;
+		let maxPerRow = 4;
+		monsters = monsters.slice(0, 8);
+
+		return new Promise(async (resolve, reject) => {
+			let resources = [];
+
+			//Turns the images into readable variables for jimp, then pushes them into a new array
+			for (var i = 0; i < monsters.length; i++) {
+				resources.push(loadImage(monsters[i].url));
+			}
+
+			//Creates a promise to handle the jimps
+			await Promise.all(resources)
+				.then((data) => {
+					return Promise.all(resources);
+				})
+				.then(async (data) => {
+					let maxWidth;
+
+					if (data.length > maxPerRow) maxWidth = 100 * maxPerRow + hPadding * (maxPerRow - 1);
+					else maxWidth = 100 * data.length + hPadding * (data.length - 1);
+
+					let maxHeight = data.length <= maxPerRow ? 100 : 200 + vPadding;
+
+					let canvas = createCanvas(maxWidth, maxHeight);
+					let context = canvas.getContext('2d');
+					context.font = '16px Arial';
+					context.strokeStyle = 'black';
+					context.lineWidth = 5;
+					context.textAlign = 'right';
+					context.lineJoin = 'miter'; //Experiment with "bevel" & "round"
+					context.miterLimit = 2;
+					context.fillStyle = 'white';
+
+					data.forEach((icon, index) => {
+						let startX, endX, startY, endY;
+
+						if (index < maxPerRow) {
+							startY = 0;
+							endY = 100;
+						} else {
+							startY = 100 + vPadding;
+							endY = 200 + vPadding;
+						}
+
+						startX = 100 * (index % maxPerRow) + hPadding * (index % maxPerRow);
+						endX = startX + 100;
+
+						//Draw icon
+						context.drawImage(icon, startX, startY);
+
+						//Draw ID
+						context.strokeText(monsters[index].id, endX - 5, endY - 7);
+						context.fillText(monsters[index].id, endX - 5, endY - 7);
+					});
+
+					let temp =
+						Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+					const buffer = canvas.toBuffer('image/png');
+					await fs.writeFileSync(__dirname + `/../temp/${temp}.png`, buffer);
+					resolve(__dirname + `/../temp/${temp}.png`);
 				});
 		});
 	}

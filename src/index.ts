@@ -200,8 +200,6 @@ client.on('message', async (message: any) => {
 					queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
 					queryEvoType: parameters.queryEvoType?.stringValue || null,
 				});
-
-				return;
 			} else if (parameters.queryAdditionalTypes?.stringValue === 'random') {
 				await helper.sendRandomCard({
 					queryQuantity1: parameters.queryQuantity1?.stringValue,
@@ -213,9 +211,9 @@ client.on('message', async (message: any) => {
 			} else {
 				await helper.sendMessage('Please wait while I am looking into that...');
 				await helper.sendQueryResult(data);
-
-				return;
 			}
+
+			return;
 		}
 
 		await helper.bugLog(
