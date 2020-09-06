@@ -147,72 +147,76 @@ export class Common {
 		let hPadding = 8;
 		let vPadding = 3;
 		return new Promise(async (resolve, reject) => {
-			let resources = [loadImage(from.url), loadImage(__dirname + '/../raw/arrow.png'), loadImage(to.url)];
+			try {
+				let resources = [loadImage(from.url), loadImage(__dirname + '/../raw/arrow.png'), loadImage(to.url)];
 
-			//Turns the images into readable variables for jimp, then pushes them into a new array
-			for (var i = 0; i < evoMats.length; i++) {
-				resources.push(loadImage(evoMats[i].url));
-			}
+				//Turns the images into readable variables for jimp, then pushes them into a new array
+				for (var i = 0; i < evoMats.length; i++) {
+					resources.push(loadImage(evoMats[i].url));
+				}
 
-			//Creates a promise to handle the jimps
-			await Promise.all(resources)
-				.then((data) => {
-					return Promise.all(resources);
-				})
-				.then(async (data) => {
-					let maxWidth = 100 * (data.length - 3) + hPadding * (data.length - 4);
+				//Creates a promise to handle the jimps
+				await Promise.all(resources)
+					.then((data) => {
+						return Promise.all(resources);
+					})
+					.then(async (data) => {
+						let maxWidth = 100 * (data.length - 3) + hPadding * (data.length - 4);
 
-					let canvas = createCanvas(maxWidth, 200 + vPadding);
-					let context = canvas.getContext('2d');
-					context.font = '16px Arial';
-					context.strokeStyle = 'black';
-					context.lineWidth = 5;
-					context.textAlign = 'right';
-					context.lineJoin = 'miter'; //Experiment with "bevel" & "round"
-					context.miterLimit = 2;
-					context.fillStyle = 'white';
+						let canvas = createCanvas(maxWidth, 200 + vPadding);
+						let context = canvas.getContext('2d');
+						context.font = '16px Arial';
+						context.strokeStyle = 'black';
+						context.lineWidth = 5;
+						context.textAlign = 'right';
+						context.lineJoin = 'miter'; //Experiment with "bevel" & "round"
+						context.miterLimit = 2;
+						context.fillStyle = 'white';
 
-					let fromImage = data[0];
-					let arrowImage = data[1];
-					let toImage = data[2];
+						let fromImage = data[0];
+						let arrowImage = data[1];
+						let toImage = data[2];
 
-					//Draw from > to
-					context.drawImage(fromImage, 0, 0);
-					context.drawImage(toImage, 100 + hPadding, 0);
-					context.drawImage(
-						arrowImage,
-						(200 + hPadding - arrowImage.width) / 2,
-						(100 - arrowImage.height) / 2
-					);
-
-					//Draw ID
-					context.strokeText(from.id, 100 - 5, 100 - 7);
-					context.fillText(from.id, 100 - 5, 100 - 7);
-					context.strokeText(to.id, 200, 100 - 7);
-					context.fillText(to.id, 200, 100 - 7);
-
-					//Data should only contain materials
-					data.splice(0, 3);
-
-					data.forEach((icon, index) => {
-						let startX = 100 * index + hPadding * index;
-						let endX = startX + 100;
-
-						//Draw icon
-						context.drawImage(icon, startX, 100 + vPadding);
+						//Draw from > to
+						context.drawImage(fromImage, 0, 0);
+						context.drawImage(toImage, 100 + hPadding, 0);
+						context.drawImage(
+							arrowImage,
+							(200 + hPadding - arrowImage.width) / 2,
+							(100 - arrowImage.height) / 2
+						);
 
 						//Draw ID
-						context.strokeText(evoMats[index].id, endX - 5, 200 - 7 + vPadding);
-						context.fillText(evoMats[index].id, endX - 5, 200 - 7 + vPadding);
+						context.strokeText(from.id, 100 - 5, 100 - 7);
+						context.fillText(from.id, 100 - 5, 100 - 7);
+						context.strokeText(to.id, 200, 100 - 7);
+						context.fillText(to.id, 200, 100 - 7);
+
+						//Data should only contain materials
+						data.splice(0, 3);
+
+						data.forEach((icon, index) => {
+							let startX = 100 * index + hPadding * index;
+							let endX = startX + 100;
+
+							//Draw icon
+							context.drawImage(icon, startX, 100 + vPadding);
+
+							//Draw ID
+							context.strokeText(evoMats[index].id, endX - 5, 200 - 7 + vPadding);
+							context.fillText(evoMats[index].id, endX - 5, 200 - 7 + vPadding);
+						});
+
+						let temp =
+							Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+						const buffer = canvas.toBuffer('image/png');
+						await fs.writeFileSync(__dirname + `/../temp/${temp}.png`, buffer);
+						resolve(__dirname + `/../temp/${temp}.png`);
 					});
-
-					let temp =
-						Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-					const buffer = canvas.toBuffer('image/png');
-					await fs.writeFileSync(__dirname + `/../temp/${temp}.png`, buffer);
-					resolve(__dirname + `/../temp/${temp}.png`);
-				});
+			} catch (error) {
+				reject(error);
+			}
 		});
 	}
 
@@ -223,65 +227,69 @@ export class Common {
 		monsters = monsters.slice(0, 8);
 
 		return new Promise(async (resolve, reject) => {
-			let resources = [];
+			try {
+				let resources = [];
 
-			//Turns the images into readable variables for jimp, then pushes them into a new array
-			for (var i = 0; i < monsters.length; i++) {
-				resources.push(loadImage(monsters[i].url));
-			}
+				//Turns the images into readable variables for jimp, then pushes them into a new array
+				for (var i = 0; i < monsters.length; i++) {
+					resources.push(loadImage(monsters[i].url));
+				}
 
-			//Creates a promise to handle the jimps
-			await Promise.all(resources)
-				.then((data) => {
-					return Promise.all(resources);
-				})
-				.then(async (data) => {
-					let maxWidth;
+				//Creates a promise to handle the jimps
+				await Promise.all(resources)
+					.then((data) => {
+						return Promise.all(resources);
+					})
+					.then(async (data) => {
+						let maxWidth;
 
-					if (data.length > maxPerRow) maxWidth = 100 * maxPerRow + hPadding * (maxPerRow - 1);
-					else maxWidth = 100 * data.length + hPadding * (data.length - 1);
+						if (data.length > maxPerRow) maxWidth = 100 * maxPerRow + hPadding * (maxPerRow - 1);
+						else maxWidth = 100 * data.length + hPadding * (data.length - 1);
 
-					let maxHeight = data.length <= maxPerRow ? 100 : 200 + vPadding;
+						let maxHeight = data.length <= maxPerRow ? 100 : 200 + vPadding;
 
-					let canvas = createCanvas(maxWidth, maxHeight);
-					let context = canvas.getContext('2d');
-					context.font = '16px Arial';
-					context.strokeStyle = 'black';
-					context.lineWidth = 5;
-					context.textAlign = 'right';
-					context.lineJoin = 'miter'; //Experiment with "bevel" & "round"
-					context.miterLimit = 2;
-					context.fillStyle = 'white';
+						let canvas = createCanvas(maxWidth, maxHeight);
+						let context = canvas.getContext('2d');
+						context.font = '16px Arial';
+						context.strokeStyle = 'black';
+						context.lineWidth = 5;
+						context.textAlign = 'right';
+						context.lineJoin = 'miter'; //Experiment with "bevel" & "round"
+						context.miterLimit = 2;
+						context.fillStyle = 'white';
 
-					data.forEach((icon, index) => {
-						let startX, endX, startY, endY;
+						data.forEach((icon, index) => {
+							let startX, endX, startY, endY;
 
-						if (index < maxPerRow) {
-							startY = 0;
-							endY = 100;
-						} else {
-							startY = 100 + vPadding;
-							endY = 200 + vPadding;
-						}
+							if (index < maxPerRow) {
+								startY = 0;
+								endY = 100;
+							} else {
+								startY = 100 + vPadding;
+								endY = 200 + vPadding;
+							}
 
-						startX = 100 * (index % maxPerRow) + hPadding * (index % maxPerRow);
-						endX = startX + 100;
+							startX = 100 * (index % maxPerRow) + hPadding * (index % maxPerRow);
+							endX = startX + 100;
 
-						//Draw icon
-						context.drawImage(icon, startX, startY);
+							//Draw icon
+							context.drawImage(icon, startX, startY);
 
-						//Draw ID
-						context.strokeText(monsters[index].id, endX - 5, endY - 7);
-						context.fillText(monsters[index].id, endX - 5, endY - 7);
+							//Draw ID
+							context.strokeText(monsters[index].id, endX - 5, endY - 7);
+							context.fillText(monsters[index].id, endX - 5, endY - 7);
+						});
+
+						let temp =
+							Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+						const buffer = canvas.toBuffer('image/png');
+						await fs.writeFileSync(__dirname + `/../temp/${temp}.png`, buffer);
+						resolve(__dirname + `/../temp/${temp}.png`);
 					});
-
-					let temp =
-						Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-					const buffer = canvas.toBuffer('image/png');
-					await fs.writeFileSync(__dirname + `/../temp/${temp}.png`, buffer);
-					resolve(__dirname + `/../temp/${temp}.png`);
-				});
+			} catch (error) {
+				reject(error);
+			}
 		});
 	}
 }

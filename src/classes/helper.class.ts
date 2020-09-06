@@ -933,28 +933,35 @@ export class Helper {
 		}
 
 		let imagePath;
-		if (type === 'evo') {
-			let from = {
-				id: card.getPreviousEvoId(),
-				url: Common.getThumbnailUrl(card.getPreviousEvoId()),
-			};
-			let to = {
-				id: card.getId(),
-				url: card.getThumbnailUrl(),
-			};
+		try {
+			if (type === 'evo') {
+				let from = {
+					id: card.getPreviousEvoId(),
+					url: Common.getThumbnailUrl(card.getPreviousEvoId()),
+				};
+				let to = {
+					id: card.getId(),
+					url: card.getThumbnailUrl(),
+				};
 
-			imagePath = await Common.displayEvoIcons(from, to, iconUrls);
-		} else {
-			let from = {
-				id: card.getId(),
-				url: card.getThumbnailUrl(),
-			};
-			let to = {
-				id: card.getPreviousEvoId(),
-				url: Common.getThumbnailUrl(card.getPreviousEvoId()),
-			};
-			imagePath = await Common.displayEvoIcons(from, to, iconUrls);
+				imagePath = await Common.displayEvoIcons(from, to, iconUrls);
+			} else {
+				let from = {
+					id: card.getId(),
+					url: card.getThumbnailUrl(),
+				};
+				let to = {
+					id: card.getPreviousEvoId(),
+					url: Common.getThumbnailUrl(card.getPreviousEvoId()),
+				};
+				imagePath = await Common.displayEvoIcons(from, to, iconUrls);
+			}
+		} catch (error) {
+			console.log(error);
+			this.sendMonsterMaterials(card, type);
+			return;
 		}
+
 		let embed = new Discord.MessageEmbed()
 			.setThumbnail(card.getThumbnailUrl())
 			.addFields({
@@ -1259,7 +1266,16 @@ export class Helper {
 		});
 		let monsterNameData = monsters.map((monster) => monster.id + '. ' + monster.name);
 
-		let imagePath = await Common.displayCardIcons(monsterIconData);
+		let imagePath;
+		try {
+			//We wrap it in here so we can re-run the whole function if something went wrong
+			imagePath = await Common.displayCardIcons(monsterIconData);
+		} catch (error) {
+			console.log(error);
+			this.sendRandomCard(data);
+			return;
+		}
+
 		let embed = new Discord.MessageEmbed()
 			.addFields({
 				name: `Random Monsters`,
@@ -1273,7 +1289,7 @@ export class Helper {
 			])
 			.setImage('attachment://randomMonsters.png');
 		await this.sendMessage(
-			`Here are ${queryQuantity1} random ${queryQuantity1 > 1 ? 'monsters' : 'monster'} for you!`
+			`Here are ${monsters.length} random ${queryQuantity1 > 1 ? 'monsters' : 'monster'} for you!`
 		);
 		await this.sendMessage(embed);
 		await fs.unlinkSync(imagePath);
