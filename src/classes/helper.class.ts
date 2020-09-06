@@ -1289,7 +1289,9 @@ export class Helper {
 			])
 			.setImage('attachment://randomMonsters.png');
 		await this.sendMessage(
-			`Here are ${monsters.length} random ${queryQuantity1 > 1 ? 'monsters' : 'monster'} for you!`
+			`Here ${monsters.length > 1 ? 'are' : 'is'} ${monsters.length} random ${
+				monsters.length > 1 ? 'monsters' : 'monster'
+			} for you!`
 		);
 		await this.sendMessage(embed);
 		await fs.unlinkSync(imagePath);
