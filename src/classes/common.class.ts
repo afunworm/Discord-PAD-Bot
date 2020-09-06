@@ -208,8 +208,8 @@ export class Common {
 						Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
 					const buffer = canvas.toBuffer('image/png');
-					await fs.writeFileSync(`../temp/${temp}.png`, buffer);
-					resolve(`../temp/${temp}.png`);
+					await fs.writeFileSync(__dirname + `../temp/${temp}.png`, buffer);
+					resolve(__dirname + `../temp/${temp}.png`);
 				});
 		});
 	}
