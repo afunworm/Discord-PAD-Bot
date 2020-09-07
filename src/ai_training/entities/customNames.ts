@@ -47,4 +47,12 @@ export const CUSTOM_NAMES = [
 		name: 'vajrabhairava',
 		alias: ['dvaj', 'vaj'],
 	},
+	{
+		name: 'supergirl',
+		alias: ['super girl'],
+	},
+	{
+		name: 'superman',
+		alias: ['super man'],
+	},
 ];
