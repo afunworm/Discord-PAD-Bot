@@ -11,7 +11,7 @@ const fs = require('fs');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.HIGHEST_VALID_MONSTER_ID);
-// startNumber = 3203;
+// startNumber = 3113;
 // endNumber = startNumber + 1;
 let data = [];
 let computedNameTracker = [];
@@ -191,27 +191,18 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		});
 	}
 
-	//Train for PAD Island
-	if (monster.getMonsterSeries() === 'beach') {
-		let prefixes = ['beach '];
+	//Train for series in general
+	if (monster.getMonsterSeries() !== null) {
+		let series = monster.getMonsterSeries();
+		let prefixes = [monster.getReadableMonsterSeries().toLowerCase() + ' '];
 
-		if (fullName.includes(',')) {
-			//Calculated by splitting ',' and determining real name with the content inside ()
-			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
-
-			computePrefixes(name, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		} else {
-			computePrefixes(fullName, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		}
-	}
-
-	//Train for June Bride
-	if (monster.getMonsterSeries() === 'wedding') {
-		let prefixes = ['bride ', 'wedding '];
+		if (series === 'academy') prefixes = ['academy ', 'school '];
+		if (series === 'valentine') prefixes = ['valentine ', 'valentines ', 'v'];
+		if (series === 'xmas') prefixes = ['xmas ', 'christmas '];
+		if (series === 'ny') prefixes = ['ny ', 'new year ', 'newyear '];
+		if (series === 'juneBride') prefixes = ['bride ', 'wedding '];
+		if (series === 'padIsland') prefixes = ['beach ', 'bikini '];
+		if (series === 'heroine') prefixes = ['heroine ', 'heroin '];
 
 		if (fullName.includes(',')) {
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
@@ -224,89 +215,14 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 				synonyms.push(computedName);
 			});
 		}
-	}
 
-	//Train for Halloween
-	if (monster.getMonsterSeries() === 'halloween') {
-		let prefixes = ['halloween '];
-
-		if (fullName.includes(',')) {
-			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
-
-			computePrefixes(name, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		} else {
-			computePrefixes(fullName, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		}
-	}
-
-	//Train for New Year
-	if (monster.getMonsterSeries() === 'ny') {
-		let prefixes = ['ny ', 'new year ', 'newyear '];
-
-		if (fullName.includes(',')) {
-			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
-
-			computePrefixes(name, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		} else {
-			computePrefixes(fullName, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		}
-	}
-
-	//Train for Christmas
-	if (monster.getMonsterSeries() === 'xmas') {
-		let prefixes = ['xmas ', 'christmas '];
-
-		if (fullName.includes(',')) {
-			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
-
-			computePrefixes(name, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		} else {
-			computePrefixes(fullName, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		}
-	}
-
-	//Train for Valentines
-	if (monster.getMonsterSeries() === 'valentine') {
-		let prefixes = ['valentine ', 'valentines ', 'v'];
-
-		if (fullName.includes(',')) {
-			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
-
-			computePrefixes(name, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		} else {
-			computePrefixes(fullName, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		}
-	}
-
-	//Train for PAD Acedamy
-	if (monster.getMonsterSeries() === 'academy') {
-		let prefixes = ['academy ', 'school '];
-
-		if (fullName.includes(',')) {
-			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
-
-			computePrefixes(name, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		} else {
-			computePrefixes(fullName, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
+		if (fullName.split(' ').length === 2) {
+			//Just train a litte bit extra
+			let names = fullName.split(' ');
+			names.forEach((name) => {
+				computePrefixes(name, prefixes).forEach((computedName) => {
+					synonyms.push(computedName);
+				});
 			});
 		}
 	}
