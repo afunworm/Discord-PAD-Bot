@@ -43,9 +43,7 @@ client.on('message', async (message: any) => {
 		: message.content.trim();
 	let cache = new Cache('conversation');
 	input = input.replace(client.user.id, ''); //Stripping ping from message
-	console.log('Input before replacement: ' + input);
-	input = Helper.replaceCommonAbbreviation(input); //Replace common terms, such as dr, l/d, etc.
-	console.log('Input after replacement: ' + input);
+	input = Helper.replaceCommonAbbreviation(input); //Replace commonly confusing terms
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);
@@ -120,47 +118,65 @@ client.on('message', async (message: any) => {
 			await card.init();
 
 			if (infoType === 'photo' || targetActionType === 'look') {
-				await helper.sendMonsterImage(card);
+                await helper.sendMonsterImage(card);
+                return;
 			} else if (infoType === 'icon') {
-				await helper.sendMonsterIcon(card);
+                await helper.sendMonsterIcon(card);
+                return;
 			} else if (infoType === 'name' || actionType === 'call' || actionType === 'name') {
-				await helper.sendMonsterName(card);
+                await helper.sendMonsterName(card);
+                return;
 			} else if (infoType === 'awakenings' || infoType === 'superAwakenings') {
-				await helper.sendAwakenings(card);
+                await helper.sendAwakenings(card);
+                return;
 			} else if (infoType === 'types') {
-				await helper.sendTypes(card);
+                await helper.sendTypes(card);
+                return;
 			} else if (infoType === 'stats') {
-				await helper.sendMonsterStats(card);
+                await helper.sendMonsterStats(card);
+                return;
 			} else if (infoType === 'attack') {
-				await helper.sendMonsterAttack(card);
+                await helper.sendMonsterAttack(card);
+                return;
 			} else if (infoType === 'hp') {
-				await helper.sendMonsterHP(card);
+                await helper.sendMonsterHP(card);
+                return;
 			} else if (infoType === 'recover') {
-				await helper.sendMonsterRecover(card);
+                await helper.sendMonsterRecover(card);
+                return;
 			} else if (infoType === 'rarity') {
-				await helper.sendMonsterRarity(card);
+                await helper.sendMonsterRarity(card);
+                return;
 			} else if (infoType === 'assist') {
-				await helper.sendMonsterIsInheritable(card);
+                await helper.sendMonsterIsInheritable(card);
+                return;
 			} else if (infoType === 'activeSkills') {
 				await helper.sendMonsterActiveSkills(card);
 			} else if (infoType === 'leaderSkills') {
-				await helper.sendMonsterLeaderSkills(card);
+                await helper.sendMonsterLeaderSkills(card);
+                return;
 			} else if (
 				((questionType === 'how' || questionType === 'what') && actionType === 'sell') ||
 				infoType === 'monsterPoints' ||
-				((questionType === 'how' || questionType === 'what') && targetActionType === 'sell')
+                ((questionType === 'how' || questionType === 'what') && targetActionType === 'sell') ||
+                actionType === 'sell'
 			) {
-				await helper.sendMonsterMonsterPoints(card);
-			} else if (infoType === 'evoMaterials') {
-				await helper.sendMonsterMaterials(card, 'evo');
-			} else if (infoType === 'devoMaterials') {
-				await helper.sendMonsterMaterials(card, 'devo');
+                await helper.sendMonsterMonsterPoints(card);
+                return;
+			} else if (infoType === 'evoMaterials' || actionType === 'evolve') {
+                await helper.sendMonsterMaterials(card, 'evo');
+                return;
+			} else if (infoType === 'devoMaterials' || actionType === 'devolve') {
+                await helper.sendMonsterMaterials(card, 'devo');
+                return;
 			} else if (infoType === 'evoList') {
-				await helper.sendMonsterEvoTree(card);
+                await helper.sendMonsterEvoTree(card);
+                return;
 			} else if (infoType === 'id') {
 				await helper.sendMonsterId(card);
 			} else if (infoType === 'series') {
-				await helper.sendMonsterSeries(card);
+                await helper.sendMonsterSeries(card);
+                return;
 			}
 
 			//Final, always

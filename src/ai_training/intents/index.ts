@@ -4,12 +4,94 @@ const fs = require('fs');
 import { CARD_QUERY_TRAINING_PHRASES } from './card.query';
 import { CARD_INFO_TRAINING_PHRASES } from './card.info';
 
-let currentlyTraining = CARD_QUERY_TRAINING_PHRASES;
+let currentlyTraining = CARD_INFO_TRAINING_PHRASES;
 
 let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 let placers = {
+	actionType: () => ['call', 'name', 'sell', 'inherit', 'list', 'evolve', 'devolve'][r(0, 6)],
 	queryMinMax: () => ['the most', 'the least'][r(0, 1)],
 	queryAdditionalTypes: () => ['random'][0],
+	questionType: () => ['what', 'how'][r(0, 1)],
+	targetActionType: () => ['look', 'take', 'sell'][r(0, 2)],
+	targetPronoun: () => ['it', 'him', 'her', 'them', 'they', 'he', 'she'][r(0, 6)],
+    monsterName: () => {
+        let prefixes = ['sr ', 'srevo ', 'super ultimate ', 'awoken ', 'reincarnated ', 'equip '];
+        let prefix = Math.random() > 0.5 ? prefixes[r(0, prefixes.length - 1)] : '';
+        let names = [
+            'anubis',
+            'myr',
+            'eschamali',
+            'venus',
+            'tsubaki',
+            'kaede',
+            'hades',
+            'perseus',
+            'kali',
+            'supergirl',
+            'yusuke',
+            'aamir',
+            'australis',
+            'saline',
+            'madoo',
+            'zela',
+            'uriel',
+            'yugi',
+            'galford',
+            'dark magician',
+            'ilmina',
+            'ilm',
+            'bakura',
+            'marik',
+            'noctis',
+            'hino',
+            'izanagi',
+            'izanami',
+            'scheat',
+            'sun wukong',
+            'cotton',
+            'aljea',
+            'rex',
+            'ideal',
+            'dyer',
+            'haku',
+            'karin',
+            'valeria',
+            'fat chocobo',
+            'undine',
+            'roche',
+            'rehven',
+            'orochi',
+            'senri',
+            'suou',
+            'gremory',
+            'grigory',
+            'marthis',
+        ];
+        return prefix + names[r(0, names.length - 1)];
+    },
+	infoType: () =>
+		[
+			'photo',
+			'icon',
+			'awakenings',
+			'name',
+			'super awakenings',
+			'types',
+			'attack',
+			'hp',
+			'recover',
+			'rarity',
+			'stats',
+			'active skills',
+			'leader skills',
+			'monster points',
+			'evo materials',
+			'evo list',
+			'id',
+			'info',
+			'series',
+			'devo materials',
+		][r(0, 19)],
 	queryEvoType: () =>
 		[
 			'equip',
@@ -100,20 +182,31 @@ let guid = () => {
 	//Run through attributes
 	currentlyTraining.forEach((phrase) => {
 		let regex = new RegExp('{{ *ATTRIBUTES *}}', 'g');
-		if (!phrase.match(regex)) {
-			first.push(phrase);
+		if (phrase.match(regex)) {
+			//With both attribtues
+			first.push(phrase.replace(regex, '{{monsterAttribute1}} {{monsterAttribute2}}'));
+			first.push(phrase.replace(regex, '{{monsterAttribute1}}/{{monsterAttribute2}}'));
+
+			//With 1 attribute
+			first.push(phrase.replace(regex, '{{monsterAttribute1}}'));
+
+			//With no attributes
+			first.push(phrase.replace(regex, ''));
 			return;
 		}
 
-		//With both attribtues
-		first.push(phrase.replace(regex, '{{monsterAttribute1}} {{monsterAttribute2}}'));
-		first.push(phrase.replace(regex, '{{monsterAttribute1}}/{{monsterAttribute2}}'));
+		regex = new RegExp('{{ *MONSTER *}}', 'g');
+		if (phrase.match(regex)) {
+            //With a monster name, randomly with prefixes
+			first.push(phrase.replace(regex, '{{monsterName}}'));
 
-		//With 1 attribute
-		first.push(phrase.replace(regex, '{{monsterAttribute1}}'));
+			//With a pronoun
+			first.push(phrase.replace(regex, '{{targetPronoun}}'));
 
-		//With no attributes
-		first.push(phrase.replace(regex, ''));
+			return;
+		}
+
+		first.push(phrase);
 	});
 
 	let second = [];
@@ -164,7 +257,7 @@ let guid = () => {
 			if (term.includes('/')) {
 				let multipleTerms = term.split('/');
 				multipleTerms.forEach((singleTerm, index) => {
-					let name = singleTerm.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '');
+					let name = singleTerm.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '').replace(`'s`, '');
 
 					if (typeof placers[name] !== 'function') {
 						entry.data.push({
@@ -190,7 +283,7 @@ let guid = () => {
 					}
 				});
 			} else {
-				let name = term.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '');
+				let name = term.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '').replace(`'s`, '');
 
 				if (typeof placers[name] !== 'function') {
 					entry.data.push({
@@ -215,6 +308,12 @@ let guid = () => {
 					userDefined: false,
 				});
 				str += ', ';
+			} else if (term.endsWith(`'s`)) {
+				entry.data.push({
+					text: `'s`,
+					userDefined: false,
+				});
+				str += `'s `;
 			} else {
 				entry.data.push({
 					text: ' ',
@@ -230,6 +329,8 @@ let guid = () => {
 		console.log('Completed Training Phrase: ' + str);
 	});
 
-	await fs.writeFileSync('./intent.card.query.json', JSON.stringify(data, null, 4));
-	console.log('Intent data populated.');
+	await fs.writeFileSync('./intent.json', JSON.stringify(data, null, 4));
+    console.log(`Intent data populated. ${second.length} phrase(s) trained.`);
+    console.log(`Please also train this phrase manually (card.info) after importing the intent (until it is fixed):`);
+    console.log(`what can i use to devolve sr anubis?`);
 })();

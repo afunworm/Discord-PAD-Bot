@@ -48,7 +48,7 @@ export interface QueryResultInterface {
 					kind: 'stringValue';
 				};
 				actionType: {
-					stringValue: 'call' | 'name' | 'sell' | 'list';
+					stringValue: 'call' | 'name' | 'sell' | 'list' | 'evolve' | 'devolve';
 					kind: 'stringValue';
 				};
 				targetActionType: {
