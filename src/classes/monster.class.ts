@@ -9,6 +9,7 @@ import { MONSTER_TYPES } from '../shared/monster.types';
 import { MonsterParser } from './monsterParser.class';
 import { Common } from './common.class';
 import { Cache } from './cache.class';
+import { WhereFilterOp } from '@firebase/firestore-types';
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -22,6 +23,17 @@ if (admin.apps.length === 0) {
 const firestore = admin.firestore();
 const cache = new Cache('monsters');
 
+export interface FilterCondition {
+	type: 'series' | 'evoType' | 'awakening' | 'attribute';
+	monsterSeries?: string;
+	queryEvoType?: string;
+	queryCompare?: string;
+	monsterAwakening?: number;
+	queryQuantity?: number;
+	attribute1?: number;
+	attribute2?: number;
+}
+
 export class Monster {
 	private id: number;
 	private monsterData: MonsterData;
@@ -31,7 +43,7 @@ export class Monster {
 			throw new Error('Invalid ID number for monster.');
 		}
 
-		if (id > this.getHighestValidMonsterId() || id < 1) {
+		if (id > Monster.getHighestValidMonsterId() || id < 1) {
 			throw new Error('Invalid ID number for monster.');
 		}
 
@@ -42,7 +54,7 @@ export class Monster {
 		return MonsterParser.getMonsterDatabaseLength();
 	}
 
-	public getHighestValidMonsterId(): number {
+	public static getHighestValidMonsterId(): number {
 		return Number(process.env.HIGHEST_VALID_MONSTER_ID);
 	}
 
@@ -498,6 +510,302 @@ export class Monster {
 				if (!doc.exists) resolve(null);
 
 				resolve(doc.data());
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
+
+	public static fixAttributeDetection(data) {
+		let { monsterAttribute1, monsterAttribute2 } = data;
+		if (monsterAttribute1 !== null && monsterAttribute2 !== null) {
+			monsterAttribute1 = Number(monsterAttribute1);
+			monsterAttribute2 = Number(monsterAttribute2);
+		} else if (monsterAttribute1 !== null && monsterAttribute2 === null) {
+			monsterAttribute1 = Number(monsterAttribute1);
+		} else if (monsterAttribute1 === null && monsterAttribute2 !== null) {
+			monsterAttribute1 = Number(monsterAttribute2);
+			monsterAttribute2 = null;
+		}
+		return {
+			monsterAttribute1,
+			monsterAttribute2,
+		};
+	}
+
+	public static constructFilterConditions(data): FilterCondition[] {
+		let conditions: FilterCondition[] = [];
+		let {
+			monsterSeries,
+			queryEvoType,
+			monsterAwakenings1,
+			monsterAwakenings2,
+			monsterAwakenings3,
+			queryCompare1,
+			queryCompare2,
+			queryCompare3,
+			queryQuantity1,
+			queryQuantity2,
+			queryQuantity3,
+		} = data;
+
+		//Fix attribute detection
+		let { monsterAttribute1, monsterAttribute2 } = this.fixAttributeDetection(data);
+
+		//If monsterSeries is a number string, convert it to Number
+		if (/^\d+$/.test(monsterSeries)) monsterSeries = Number(monsterSeries);
+
+		//Convert quantity, awakenings and attributes to number
+		queryQuantity1 = Number(queryQuantity1); //We do not care about the value of this unless the awakening is present
+		queryQuantity2 = Number(queryQuantity2); //We do not care about the value of this unless the awakening is present
+		queryQuantity3 = Number(queryQuantity3); //We do not care about the value of this unless the awakening is present
+		monsterAwakenings1 = monsterAwakenings1 === null ? monsterAwakenings1 : Number(monsterAwakenings1);
+		monsterAwakenings2 = monsterAwakenings2 === null ? monsterAwakenings2 : Number(monsterAwakenings2);
+		monsterAwakenings3 = monsterAwakenings3 === null ? monsterAwakenings3 : Number(monsterAwakenings3);
+
+		//Do some prerequisite manipulation
+		//If there is awakening but no compare or quantity (monster with skill boosts) => compare = min, quantity = 1
+		if (monsterAwakenings1 !== null && queryCompare1 === null && queryQuantity1 === null) {
+			queryCompare1 = 'min';
+			queryQuantity1 = 1;
+		}
+		if (monsterAwakenings2 !== null && queryCompare2 === null && queryQuantity2 === null) {
+			queryCompare2 = 'min';
+			queryQuantity2 = 1;
+		}
+		if (monsterAwakenings3 !== null && queryCompare3 === null && queryQuantity3 === null) {
+			queryCompare3 = 'min';
+			queryQuantity3 = 1;
+		}
+
+		//If there is awakening and quantity but no compare (monster with 5 skill boost) => compare = exact
+		if (monsterAwakenings1 !== null && queryQuantity1 !== null && queryCompare1 === null) {
+			queryCompare1 = 'exact';
+		}
+		if (monsterAwakenings2 !== null && queryQuantity2 !== null && queryCompare2 === null) {
+			queryCompare2 = 'exact';
+		}
+		if (monsterAwakenings3 !== null && queryQuantity3 !== null && queryCompare3 === null) {
+			queryCompare3 = 'exact';
+		}
+
+		//Push them inside conditions for ease of processing
+		//Also to be in control of what to filter first
+		if (monsterSeries !== null) {
+			conditions.push({
+				type: 'series',
+				monsterSeries: monsterSeries,
+			});
+		}
+		if (queryEvoType !== null) {
+			conditions.push({
+				type: 'evoType',
+				queryEvoType: queryEvoType,
+			});
+		}
+		if (monsterAwakenings1 !== null) {
+			conditions.push({
+				type: 'awakening',
+				monsterAwakening: monsterAwakenings1,
+				queryCompare: queryCompare1,
+				queryQuantity: queryQuantity1,
+			});
+		}
+		if (monsterAwakenings2 !== null) {
+			conditions.push({
+				type: 'awakening',
+				monsterAwakening: monsterAwakenings2,
+				queryCompare: queryCompare2,
+				queryQuantity: queryQuantity2,
+			});
+		}
+		if (monsterAwakenings3 !== null) {
+			conditions.push({
+				type: 'awakening',
+				monsterAwakening: monsterAwakenings3,
+				queryCompare: queryCompare3,
+				queryQuantity: queryQuantity3,
+			});
+		}
+		if (monsterAttribute1 !== null) {
+			conditions.push({
+				type: 'attribute',
+				attribute1: monsterAttribute1,
+				attribute2: monsterAttribute2,
+			});
+		}
+
+		return conditions;
+	}
+
+	public static convertFilterConditions(conditions: FilterCondition[]): FilterCondition[] {
+		//Convert SB+, resist+, etc. to their smaller counterparts
+		conditions = conditions.map((condition, index) => {
+			if (condition.type !== 'awakening') return condition;
+
+			let computedAwakening = condition.monsterAwakening;
+			let originalQuantity = condition.queryQuantity;
+			let quantity = 1;
+
+			if (computedAwakening === 52) {
+				computedAwakening = 10;
+				quantity = 2;
+			} else if (computedAwakening === 68) {
+				computedAwakening = 11;
+				quantity = 5;
+			} else if (computedAwakening === 69) {
+				computedAwakening = 12;
+				quantity = 5;
+			} else if (computedAwakening === 70) {
+				computedAwakening = 13;
+				quantity = 5;
+			} else if (computedAwakening === 53) {
+				computedAwakening = 19;
+				quantity = 2;
+			} else if (computedAwakening === 56) {
+				computedAwakening = 21;
+				quantity = 2;
+			}
+
+			return {
+				...condition,
+				monsterAwakening: computedAwakening,
+				queryQuantity: originalQuantity * quantity,
+			};
+		});
+
+		return conditions;
+	}
+
+	public static getAllCardsWithMultipleConditions(
+		conditions: FilterCondition[],
+		queryIncludeSA: boolean = true,
+		conditionsToRun: string[] = ['series', 'evoType', 'awakening', 'attribute']
+	): Promise<MonsterData[]> {
+		//Replace common condition type
+		conditionsToRun = conditionsToRun.map((condition) => {
+			if (condition === 'monsterSeries') return 'series';
+			if (condition === 'queryEvoType') return 'evoType';
+			if (condition === 'awakenings' || condition === 'monsterAwakenings' || condition === 'monsterAwakening')
+				return 'awakening';
+			if (condition === 'attributes ' || condition === 'monsterAttributes' || condition === 'monsterAttribute')
+				return 'attribute';
+			return condition;
+		});
+
+		return new Promise(async (resolve, reject) => {
+			let monsters: MonsterData[] = [];
+			let fieldName = queryIncludeSA ? 'computedAwakeningsWithSA' : 'computedAwakeningsWithoutSA';
+
+			try {
+				//Using for-loop for async
+				for (const condition of conditions) {
+					if (condition.type === 'series' && conditionsToRun.includes('series')) {
+						console.log('Running series filter...');
+						let series = condition.monsterSeries;
+						if (monsters.length === 0) {
+							//Get new data
+							let monsterList;
+							if (/^\d+$/.test(series)) {
+								monsterList = await Monster.getAllCardsFromCollab(Number(series));
+							} else {
+								monsterList = await Monster.getAllCardsFromSeries(series);
+							}
+
+							monsters.push(...monsterList);
+						} else {
+							//Filter from monsters
+							monsters = monsters.filter(
+								(monster: MonsterData) => monster.series === series || monster.collab === Number(series)
+							);
+						}
+					} else if (condition.type === 'evoType' && conditionsToRun.includes('evoType')) {
+						console.log('Running evoType filter...');
+						let evoType = condition.queryEvoType;
+						if (monsters.length === 0) {
+							//Get new data
+							let monsterList = await Monster.getAllCardsWithEvoType(evoType);
+
+							monsters.push(...monsterList);
+						} else {
+							//Filter from monsters
+							monsters = monsters.filter((monster: MonsterData) => monster.evolutionType === evoType);
+						}
+					} else if (condition.type === 'awakening' && conditionsToRun.includes('awakening')) {
+						console.log('Running awakening filter...');
+						let awakening = condition.monsterAwakening;
+						let quantity = condition.queryQuantity;
+						let compare = condition.queryCompare;
+						let compareString: WhereFilterOp = '>=';
+
+						if (compare === 'max') compareString = '<=';
+						else if (compare === 'exact') compareString = '==';
+						else if (compare === 'less') compareString = '<';
+						else if (compare === 'more') compareString = '>';
+
+						if (monsters.length === 0) {
+							//Get new data
+							let snapshot = await firestore
+								.collection('Monsters')
+								.where(`${fieldName}.${awakening}`, compareString, quantity)
+								.get();
+
+							if (snapshot.empty) return;
+
+							let monsterList = [];
+							snapshot.forEach((monster) => monsterList.push(monster.data()));
+
+							monsters.push(...monsterList);
+						} else {
+							//Filter from monsters
+							monsters = monsters.filter((monster: MonsterData) => {
+								switch (compare) {
+									case 'max':
+										return monster[fieldName][awakening] <= quantity;
+										break;
+									case 'exact':
+										return monster[fieldName][awakening] === quantity;
+										break;
+									case 'less':
+										return monster[fieldName][awakening] < quantity;
+										break;
+									case 'more':
+										return monster[fieldName][awakening] > quantity;
+										break;
+									default:
+										//Min
+										return monster[fieldName][awakening] >= quantity;
+										break;
+								}
+							});
+						}
+					} else if (condition.type === 'attribute' && conditionsToRun.includes('attribute')) {
+						console.log('Running attribute filter...');
+						let attribute1 = condition.attribute1;
+						let attribute2 = condition.attribute2;
+
+						if (monsters.length === 0) {
+							//Get new data
+							let monsterList = await Monster.getAllCardsWithAttributes(attribute1, attribute2);
+
+							monsters.push(...monsterList);
+						} else {
+							//Filter from monsters
+							if (attribute1 !== null) {
+								monsters = monsters.filter((monster) => monster.mainAttribute === Number(attribute1));
+							}
+							if (attribute2 !== null) {
+								monsters = monsters.filter((monster) => monster.subAttribute === Number(attribute2));
+							}
+						}
+					}
+				}
+
+				//Filter up to the valid id only
+				let maxId = Monster.getHighestValidMonsterId();
+				monsters = monsters.filter((monster) => monster.id <= maxId);
+
+				resolve(monsters);
 			} catch (error) {
 				reject(error);
 			}

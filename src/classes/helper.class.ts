@@ -7,6 +7,8 @@ import * as admin from 'firebase-admin';
 import { WhereFilterOp } from '@firebase/firestore-types';
 import { DMChannel, MessageReaction, MessageEmbed, Message } from 'discord.js';
 import { Cache } from './cache.class';
+import { max } from 'lodash';
+import { Console } from 'console';
 const _ = require('lodash');
 const Discord = require('discord.js');
 const fs = require('fs');
@@ -931,28 +933,35 @@ export class Helper {
 		}
 
 		let imagePath;
-		if (type === 'evo') {
-			let from = {
-				id: card.getPreviousEvoId(),
-				url: Common.getThumbnailUrl(card.getPreviousEvoId()),
-			};
-			let to = {
-				id: card.getId(),
-				url: card.getThumbnailUrl(),
-			};
+		try {
+			if (type === 'evo') {
+				let from = {
+					id: card.getPreviousEvoId(),
+					url: Common.getThumbnailUrl(card.getPreviousEvoId()),
+				};
+				let to = {
+					id: card.getId(),
+					url: card.getThumbnailUrl(),
+				};
 
-			imagePath = await Common.displayEvoIcons(from, to, iconUrls);
-		} else {
-			let from = {
-				id: card.getId(),
-				url: card.getThumbnailUrl(),
-			};
-			let to = {
-				id: card.getPreviousEvoId(),
-				url: Common.getThumbnailUrl(card.getPreviousEvoId()),
-			};
-			imagePath = await Common.displayEvoIcons(from, to, iconUrls);
+				imagePath = await Common.displayEvoIcons(from, to, iconUrls);
+			} else {
+				let from = {
+					id: card.getId(),
+					url: card.getThumbnailUrl(),
+				};
+				let to = {
+					id: card.getPreviousEvoId(),
+					url: Common.getThumbnailUrl(card.getPreviousEvoId()),
+				};
+				imagePath = await Common.displayEvoIcons(from, to, iconUrls);
+			}
+		} catch (error) {
+			console.log(error);
+			this.sendMonsterMaterials(card, type);
+			return;
 		}
+
 		let embed = new Discord.MessageEmbed()
 			.setThumbnail(card.getThumbnailUrl())
 			.addFields({
@@ -980,116 +989,16 @@ export class Helper {
 			queryCompare1,
 			queryCompare2,
 			queryCompare3,
-			queryEvoType, //Done
+			queryEvoType,
 			monsterAwakenings1,
 			monsterAwakenings2,
 			monsterAwakenings3,
 			monsterAttribute1,
 			monsterAttribute2,
-			monsterSeries, //Done
+			monsterSeries,
 		} = data;
 
-		//If monsterSeries is a number string, convert it to Number
-		if (/^\d+$/.test(monsterSeries)) monsterSeries = Number(monsterSeries);
-
-		//Convert quantity, awakenings and attributes to number
-		queryQuantity1 = Number(queryQuantity1);
-		queryQuantity2 = Number(queryQuantity2);
-		queryQuantity3 = Number(queryQuantity3);
-		monsterAwakenings1 = monsterAwakenings1 === null ? monsterAwakenings1 : Number(monsterAwakenings1);
-		monsterAwakenings2 = monsterAwakenings2 === null ? monsterAwakenings2 : Number(monsterAwakenings2);
-		monsterAwakenings3 = monsterAwakenings3 === null ? monsterAwakenings3 : Number(monsterAwakenings3);
-		if (monsterAttribute1 !== null && monsterAttribute2 !== null) {
-			monsterAttribute1 = Number(monsterAttribute1);
-			monsterAttribute2 = Number(monsterAttribute2);
-		} else if (monsterAttribute1 !== null && monsterAttribute2 === null) {
-			monsterAttribute1 = Number(monsterAttribute1);
-		} else if (monsterAttribute1 === null && monsterAttribute2 !== null) {
-			monsterAttribute1 = Number(monsterAttribute2);
-			monsterAttribute2 = null;
-		}
-
-		//Do some prerequisite manipulation
-		//If there is awakening but no compare or quantity (monster with skill boosts) => compare = min, quantity = 1
-		if (monsterAwakenings1 !== null && queryCompare1 === null && queryQuantity1 === null) {
-			queryCompare1 = 'min';
-			queryQuantity1 = 1;
-		}
-		if (monsterAwakenings2 !== null && queryCompare2 === null && queryQuantity2 === null) {
-			queryCompare2 = 'min';
-			queryQuantity2 = 1;
-		}
-		if (monsterAwakenings3 !== null && queryCompare3 === null && queryQuantity3 === null) {
-			queryCompare3 = 'min';
-			queryQuantity3 = 1;
-		}
-
-		//If there is awakening and quantity but no compare (monster with 5 skill boost) => compare = exact
-		if (monsterAwakenings1 !== null && queryQuantity1 !== null && queryCompare1 === null) {
-			queryCompare1 = 'exact';
-		}
-		if (monsterAwakenings2 !== null && queryQuantity2 !== null && queryCompare2 === null) {
-			queryCompare2 = 'exact';
-		}
-		if (monsterAwakenings3 !== null && queryQuantity3 !== null && queryCompare3 === null) {
-			queryCompare3 = 'exact';
-		}
-
-		//Push them inside conditions for ease of processing
-		//Also to be in control of what to filter first
-		let conditions: {
-			type: 'series' | 'evoType' | 'awakening' | 'attribute';
-			monsterSeries?: string;
-			queryEvoType?: string;
-			queryCompare?: string;
-			monsterAwakening?: number;
-			queryQuantity?: number;
-			attribute1?: number;
-			attribute2?: number;
-		}[] = [];
-		if (monsterSeries !== null) {
-			conditions.push({
-				type: 'series',
-				monsterSeries: monsterSeries,
-			});
-		}
-		if (queryEvoType !== null) {
-			conditions.push({
-				type: 'evoType',
-				queryEvoType: queryEvoType,
-			});
-		}
-		if (monsterAwakenings1 !== null) {
-			conditions.push({
-				type: 'awakening',
-				monsterAwakening: monsterAwakenings1,
-				queryCompare: queryCompare1,
-				queryQuantity: queryQuantity1,
-			});
-		}
-		if (monsterAwakenings2 !== null) {
-			conditions.push({
-				type: 'awakening',
-				monsterAwakening: monsterAwakenings2,
-				queryCompare: queryCompare2,
-				queryQuantity: queryQuantity2,
-			});
-		}
-		if (monsterAwakenings3 !== null) {
-			conditions.push({
-				type: 'awakening',
-				monsterAwakening: monsterAwakenings3,
-				queryCompare: queryCompare3,
-				queryQuantity: queryQuantity3,
-			});
-		}
-		if (monsterAttribute1 !== null) {
-			conditions.push({
-				type: 'attribute',
-				attribute1: monsterAttribute1,
-				attribute2: monsterAttribute2,
-			});
-		}
+		let conditions = Monster.constructFilterConditions(data);
 
 		//Display query criteria
 		let includingSA =
@@ -1132,163 +1041,12 @@ export class Helper {
 		await this.sendMessage(embed);
 
 		//Convert SB+, resist+, etc. to their smaller counterparts
-		conditions = conditions.map((condition, index) => {
-			if (condition.type !== 'awakening') return condition;
+		conditions = Monster.convertFilterConditions(conditions);
 
-			let computedAwakening = condition.monsterAwakening;
-			let originalQuantity = condition.queryQuantity;
-			let quantity = 1;
-
-			if (computedAwakening === 52) {
-				computedAwakening = 10;
-				quantity = 2;
-			} else if (computedAwakening === 68) {
-				computedAwakening = 11;
-				quantity = 5;
-			} else if (computedAwakening === 69) {
-				computedAwakening = 12;
-				quantity = 5;
-			} else if (computedAwakening === 70) {
-				computedAwakening = 13;
-				quantity = 5;
-			} else if (computedAwakening === 53) {
-				computedAwakening = 19;
-				quantity = 2;
-			} else if (computedAwakening === 56) {
-				computedAwakening = 21;
-				quantity = 2;
-			}
-
-			return {
-				...condition,
-				monsterAwakening: computedAwakening,
-				queryCompare: queryCompare3,
-				queryQuantity: originalQuantity * quantity,
-			};
-		});
-
-		let fieldName = queryIncludeSA === 'includeSA' ? 'computedAwakeningsWithSA' : 'computedAwakeningsWithoutSA';
-		let monsters: MonsterData[] = [];
-
-		//Using for-loop for async
-		for (const condition of conditions) {
-			if (condition.type === 'series') {
-				let series = condition.monsterSeries;
-				if (monsters.length === 0) {
-					//Get new data
-					let monsterList;
-					if (/^\d+$/.test(series)) {
-						monsterList = await Monster.getAllCardsFromCollab(Number(series));
-					} else {
-						monsterList = await Monster.getAllCardsFromSeries(series);
-					}
-
-					monsters.push(...monsterList);
-				} else {
-					//Filter from monsters
-					monsters = monsters.filter(
-						(monster: MonsterData) => monster.series === series || monster.collab === Number(series)
-					);
-				}
-			} else if (condition.type === 'evoType') {
-				let evoType = condition.queryEvoType;
-				if (monsters.length === 0) {
-					//Get new data
-					let monsterList = await Monster.getAllCardsWithEvoType(evoType);
-
-					monsters.push(...monsterList);
-				} else {
-					//Filter from monsters
-					monsters = monsters.filter((monster: MonsterData) => monster.evolutionType === evoType);
-				}
-			} else if (condition.type === 'awakening') {
-				let awakening = condition.monsterAwakening;
-				let quantity = condition.queryQuantity;
-				let compare = condition.queryCompare;
-				let compareString: WhereFilterOp = '>=';
-
-				if (compare === 'max') compareString = '<=';
-				else if (compare === 'exact') compareString = '==';
-				else if (compare === 'less') compareString = '<';
-				else if (compare === 'more') compareString = '>';
-
-				if (monsters.length === 0) {
-					//Get new data
-					let snapshot = await firestore
-						.collection('Monsters')
-						.where(`${fieldName}.${awakening}`, compareString, quantity)
-						.get();
-
-					if (snapshot.empty) return;
-
-					let monsterList = [];
-					snapshot.forEach((monster) => monsterList.push(monster.data()));
-
-					monsters.push(...monsterList);
-				} else {
-					//Filter from monsters
-					monsters = monsters.filter((monster: MonsterData) => {
-						if (queryIncludeSA === 'includeSA') {
-							switch (compare) {
-								case 'max':
-									return monster.computedAwakeningsWithSA[awakening] <= quantity;
-									break;
-								case 'exact':
-									return monster.computedAwakeningsWithSA[awakening] === quantity;
-									break;
-								case 'less':
-									return monster.computedAwakeningsWithSA[awakening] < quantity;
-									break;
-								case 'more':
-									return monster.computedAwakeningsWithSA[awakening] > quantity;
-									break;
-								default:
-									//Min
-									return monster.computedAwakeningsWithSA[awakening] >= quantity;
-									break;
-							}
-						} else {
-							switch (compare) {
-								case 'max':
-									return monster.computedAwakeningsWithoutSA[awakening] <= quantity;
-									break;
-								case 'exact':
-									return monster.computedAwakeningsWithoutSA[awakening] === quantity;
-									break;
-								case 'less':
-									return monster.computedAwakeningsWithoutSA[awakening] < quantity;
-									break;
-								case 'more':
-									return monster.computedAwakeningsWithoutSA[awakening] > quantity;
-									break;
-								default:
-									//Min
-									return monster.computedAwakeningsWithoutSA[awakening] >= quantity;
-									break;
-							}
-						}
-					});
-				}
-			} else if (condition.type === 'attribute') {
-				let attribute1 = condition.attribute1;
-				let attribute2 = condition.attribute2;
-
-				if (monsters.length === 0) {
-					//Get new data
-					let monsterList = await Monster.getAllCardsWithAttributes(attribute1, attribute2);
-
-					monsters.push(...monsterList);
-				} else {
-					//Filter from monsters
-					if (attribute1 !== null) {
-						monsters = monsters.filter((monster) => monster.mainAttribute === Number(attribute1));
-					}
-					if (attribute2 !== null) {
-						monsters = monsters.filter((monster) => monster.subAttribute === Number(attribute2));
-					}
-				}
-			}
-		}
+		let monsters: MonsterData[] = await Monster.getAllCardsWithMultipleConditions(
+			conditions,
+			queryIncludeSA === 'includeSA'
+		);
 
 		//Filter Japanese
 		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
@@ -1316,35 +1074,10 @@ export class Helper {
 			monsterAwakenings1,
 			monsterAwakenings2,
 			monsterAwakenings3,
-			monsterAttribute1,
-			monsterAttribute2,
 			monsterSeries,
 			queryIncludeSA,
 			queryEvoType,
 		} = data;
-
-		//If monsterSeries is a number string, convert it to Number
-		if (/^\d+$/.test(monsterSeries)) monsterSeries = Number(monsterSeries);
-
-		//Pre-process some data
-		monsterAwakenings1 = monsterAwakenings1 === null ? monsterAwakenings1 : Number(monsterAwakenings1);
-		if (monsterAttribute1 !== null && monsterAttribute2 !== null) {
-			monsterAttribute1 = Number(monsterAttribute1);
-			monsterAttribute2 = Number(monsterAttribute2);
-		} else if (monsterAttribute1 !== null && monsterAttribute2 === null) {
-			monsterAttribute1 = Number(monsterAttribute1);
-		} else if (monsterAttribute1 === null && monsterAttribute2 !== null) {
-			monsterAttribute1 = Number(monsterAttribute2);
-			monsterAttribute2 = null;
-		}
-
-		//Sometimes AI detects it in the wrong order
-		if (monsterAwakenings1 === null && monsterAwakenings2 !== null) {
-			monsterAwakenings1 = Number(monsterAwakenings2);
-		}
-		if (monsterAwakenings1 === null && monsterAwakenings3 !== null) {
-			monsterAwakenings1 = Number(monsterAwakenings3);
-		}
 
 		if (monsterAwakenings1 === null) {
 			await this.sendMessage(`I can't seem to find the awakening you are looking for. Can you please try again?`);
@@ -1358,32 +1091,16 @@ export class Helper {
 			return;
 		}
 
-		//Convert awakenings to other relevant awakenings
-		if (monsterAwakenings1 === 52) {
-			monsterAwakenings1 = 10;
-		} else if (monsterAwakenings1 === 68) {
-			monsterAwakenings1 = 11;
-		} else if (monsterAwakenings1 === 69) {
-			monsterAwakenings1 = 12;
-		} else if (monsterAwakenings1 === 70) {
-			monsterAwakenings1 = 13;
-		} else if (monsterAwakenings1 === 53) {
-			monsterAwakenings1 = 19;
-		} else if (monsterAwakenings1 === 56) {
-			monsterAwakenings1 = 21;
-		}
+		//Fix attribute detection
+		let { monsterAttribute1, monsterAttribute2 } = Monster.fixAttributeDetection(data);
 
 		//Display query criteria
 		let includingSA =
 			queryIncludeSA === 'includeSA' ? 'will also count Super Awakenings' : 'will not count Super Awakenings';
-		let attributesSpecified;
-		if (monsterAttribute1 === null && monsterAttribute2 === null) attributesSpecified = 'None';
-		if (monsterAttribute1 !== null && monsterAttribute2 === null)
-			attributesSpecified = Common.attributeEmotesMapping([monsterAttribute1]);
-		if (monsterAttribute1 === null && monsterAttribute2 !== null)
-			attributesSpecified = Common.attributeEmotesMapping([monsterAttribute1]);
-		if (monsterAttribute1 !== null && monsterAttribute2 !== null)
-			attributesSpecified = Common.attributeEmotesMapping([monsterAttribute1, monsterAttribute2]).join(' ');
+		let attributesSpecified = '';
+		if (monsterAttribute1 !== null) attributesSpecified += Common.attributeEmotesMapping([monsterAttribute1])[0];
+		if (monsterAttribute2 !== null)
+			attributesSpecified += ' ' + Common.attributeEmotesMapping([monsterAttribute1])[0];
 
 		let embed = new Discord.MessageEmbed().setTitle('Search Criteria');
 
@@ -1392,96 +1109,26 @@ export class Helper {
 			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
 			{ name: 'Attributes Requested', value: attributesSpecified },
 			{ name: 'Super Awakenings', value: `The results ${includingSA}.` },
-			{ name: 'Seeking Awakening', value: Common.awakenEmotesMapping([monsterAwakenings1])[0] }
+			{ name: 'Searching for Monsters with The Most', value: Common.awakenEmotesMapping([monsterAwakenings1])[0] }
 		);
 		await this.sendMessage(embed);
 
-		let monsters = [];
 		let max = 0;
+		let monsters: MonsterData[] = [];
 		let fieldName = queryIncludeSA === 'includeSA' ? 'computedAwakeningsWithSA' : 'computedAwakeningsWithoutSA';
 		if (monsterSeries !== null || monsterAttribute1 !== null || queryEvoType !== null) {
-			//Fetch the monster list from those 3 criteria
-			let conditions: {
-				type: 'series' | 'evoType' | 'attribute';
-				monsterSeries?: string;
-				queryEvoType?: string;
-				queryCompare?: string;
-				monsterAwakening?: number;
-				queryQuantity?: number;
-				attribute1?: number;
-				attribute2?: number;
-			}[] = [];
-			if (monsterSeries !== null) {
-				conditions.push({
-					type: 'series',
-					monsterSeries: monsterSeries,
-				});
-			}
-			if (queryEvoType !== null) {
-				conditions.push({
-					type: 'evoType',
-					queryEvoType: queryEvoType,
-				});
-			}
-			if (monsterAttribute1 !== null) {
-				conditions.push({
-					type: 'attribute',
-					attribute1: monsterAttribute1,
-					attribute2: monsterAttribute2,
-				});
-			}
+			//Construct conditions
+			let conditions = Monster.constructFilterConditions(data);
 
-			//Using for-loop for async
-			for (const condition of conditions) {
-				if (condition.type === 'series') {
-					let series = condition.monsterSeries;
-					if (monsters.length === 0) {
-						//Get new data
-						let monsterList;
-						if (/^\d+$/.test(series)) {
-							monsterList = await Monster.getAllCardsFromCollab(Number(series));
-						} else {
-							monsterList = await Monster.getAllCardsFromSeries(series);
-						}
+			//Convert SB+, resist+, etc. to their smaller counterparts
+			conditions = Monster.convertFilterConditions(conditions);
 
-						monsters.push(...monsterList);
-					} else {
-						//Filter from monsters
-						monsters = monsters.filter(
-							(monster: MonsterData) => monster.series === series || monster.collab === Number(series)
-						);
-					}
-				} else if (condition.type === 'evoType') {
-					let evoType = condition.queryEvoType;
-					if (monsters.length === 0) {
-						//Get new data
-						let monsterList = await Monster.getAllCardsWithEvoType(evoType);
-
-						monsters.push(...monsterList);
-					} else {
-						//Filter from monsters
-						monsters = monsters.filter((monster: MonsterData) => monster.evolutionType === evoType);
-					}
-				} else if (condition.type === 'attribute') {
-					let attribute1 = condition.attribute1;
-					let attribute2 = condition.attribute2;
-
-					if (monsters.length === 0) {
-						//Get new data
-						let monsterList = await Monster.getAllCardsWithAttributes(attribute1, attribute2);
-
-						monsters.push(...monsterList);
-					} else {
-						//Filter from monsters
-						if (attribute1 !== null) {
-							monsters = monsters.filter((monster) => monster.mainAttribute === Number(attribute1));
-						}
-						if (attribute2 !== null) {
-							monsters = monsters.filter((monster) => monster.subAttribute === Number(attribute2));
-						}
-					}
-				}
-			}
+			//Get monsters
+			monsters = await Monster.getAllCardsWithMultipleConditions(conditions, queryIncludeSA === 'includeSA', [
+				'series',
+				'attribute',
+				'evoType',
+			]);
 
 			//Run through the list of monsters to choose the one with the highest amount of awakenings
 			//Sort them from high to low
@@ -1520,8 +1167,11 @@ export class Helper {
 				return;
 			}
 
-			snapshot.forEach((monster) => monsters.push(monster.data()));
+			snapshot.forEach((monster: FirebaseFirestore.DocumentData) => monsters.push(monster.data()));
 		}
+
+		//Filter Japanese
+		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
 
 		let dataToSend = [];
 		monsters.forEach((monster) => {
@@ -1545,6 +1195,105 @@ export class Helper {
 	}
 
 	public async sendRandomCard(data) {
-		let { queryQuantity1, monsterAttribute1, monsterAttribute2, queryEvoType, monsterSeries } = data;
+		let { queryQuantity1, queryEvoType, monsterSeries } = data;
+		queryQuantity1 = Number(queryQuantity1) || 1;
+
+		if (queryQuantity1 > 8) {
+			await this.sendMessage(
+				"Due to Discord's limitation on embed messages, I can only give you at most 8 monsters. Wanna try again?"
+			);
+			return;
+		}
+
+		//Fix attribute detection
+		let { monsterAttribute1, monsterAttribute2 } = Monster.fixAttributeDetection(data);
+
+		let monsters: MonsterData[] = [];
+		if (monsterSeries !== null || monsterAttribute1 !== null || queryEvoType !== null) {
+			//Construct conditions
+			let conditions = Monster.constructFilterConditions(data);
+
+			//Convert SB+, resist+, etc. to their smaller counterparts
+			conditions = Monster.convertFilterConditions(conditions);
+
+			//Get monsters
+			monsters = await Monster.getAllCardsWithMultipleConditions(conditions, false, [
+				'series',
+				'attribute',
+				'evoType',
+			]);
+
+			//Filter Japanese
+			monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
+
+			//If the number of monsters retrieved is > the quantity, just pick random
+			if (monsters.length > queryQuantity1) {
+				let temp = [];
+
+				do {
+					let index = Common.randomBetween(0, monsters.length - 1);
+					temp.push(monsters[index]);
+					monsters.splice(index, 1);
+				} while (temp.length < queryQuantity1 && monsters.length > 0);
+
+				monsters = temp;
+			}
+		} else {
+			do {
+				let maxIndex = Monster.getHighestValidMonsterId();
+				let index = Common.randomBetween(0, maxIndex);
+				try {
+					let monster = new Monster(index);
+					await monster.init();
+
+					//Filter out Japanese names
+					if (monster.getName().includes('*') || monster.getName().includes('??')) continue;
+
+					monsters.push(monster.getFullData());
+				} catch (error) {
+					console.log(error);
+					continue;
+				}
+			} while (monsters.length < queryQuantity1);
+		}
+
+		//Map to id & url only
+		let monsterIconData = monsters.map((monster) => {
+			return {
+				id: monster.id,
+				url: Common.getThumbnailUrl(monster.id),
+			};
+		});
+		let monsterNameData = monsters.map((monster) => monster.id + '. ' + monster.name);
+
+		let imagePath;
+		try {
+			//We wrap it in here so we can re-run the whole function if something went wrong
+			imagePath = await Common.displayCardIcons(monsterIconData);
+		} catch (error) {
+			console.log(error);
+			this.sendRandomCard(data);
+			return;
+		}
+
+		let embed = new Discord.MessageEmbed()
+			.addFields({
+				name: `Random Monsters`,
+				value: monsterNameData.join('\n'),
+			})
+			.attachFiles([
+				{
+					attachment: imagePath,
+					name: 'randomMonsters.png',
+				},
+			])
+			.setImage('attachment://randomMonsters.png');
+		await this.sendMessage(
+			`Here ${monsters.length > 1 ? 'are' : 'is'} ${monsters.length} random ${
+				monsters.length > 1 ? 'monsters' : 'monster'
+			} for you!`
+		);
+		await this.sendMessage(embed);
+		await fs.unlinkSync(imagePath);
 	}
 }
