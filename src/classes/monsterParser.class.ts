@@ -237,6 +237,62 @@ export class MonsterParser {
 		};
 	}
 
+	public getMaxMultiplier(leaderSkillId: number): number[] {
+		if (SKILL_DATA[leaderSkillId][2] === 138) {
+			//Multipart
+			let skills = SKILL_DATA[leaderSkillId];
+			let skillIds = [];
+
+			for (let i = 6; i < skills.length; i++) {
+				skillIds.push(skills[i]);
+			}
+
+			let result = [1, 1, 1, 1];
+
+			let isSevenBySix = false;
+
+			skillIds.forEach((skillId) => {
+				let skillData = SKILL_DATA[skillId];
+				let leaderSkill = new LeaderSkill(skillData);
+
+				if (leaderSkill.getLSType() === 'LSSevenBySix') {
+					console.log('7x6 something something');
+					isSevenBySix = true;
+				}
+				if (leaderSkill.getLSType() === 'LSAttrCross' && isSevenBySix) {
+					console.log('handle this somehow');
+				}
+
+				// special cases we want to account for:
+				// 7x6 crosses (e.g. Bride Rushana, Allatu, Karin Kanzuki). In this case we can override the standard cross multiplier function.
+				// Crosses in separate parts LS components (e.g. Toragon).
+				// maybe a LS that has a separate LS component for lowHP and a separate LS component for highHP. I don't know if any exist.
+
+				// start with [1,1,1,1];
+				// * [1,2,3,4]
+				// * [5,6,7,8]
+				result = result.map((v, i) => v * leaderSkill.getMaxMultiplier()[i]);
+			});
+
+			result[3] = 1 - result[3]; // handling shield
+
+			//Round the result
+			result = result.map((stat) => +stat.toFixed(2));
+
+			return result;
+		} else {
+			let skillData = SKILL_DATA[leaderSkillId];
+			let leaderSkill = new LeaderSkill(skillData);
+			let result = leaderSkill.getMaxMultiplier();
+			result[3] = 1 - result[3];
+
+			//Round the result
+			result = result.map((stat) => +stat.toFixed(2));
+
+			return result;
+		}
+	}
+
 	public getLeaderSkillDescriptionDetails(leaderSkillId: number): string[] {
 		let result = [];
 
@@ -293,6 +349,7 @@ export class MonsterParser {
 			name: skillData[0],
 			description: skillData[1],
 			descriptionDetails: this.getLeaderSkillDescriptionDetails(skillId),
+			maxMultipliers: this.getMaxMultiplier(skillId),
 			types: this.getLeaderSkillTypes(skillId),
 		};
 	}
@@ -532,6 +589,7 @@ export class MonsterParser {
 	public getEvolutionType(): string {
 		/*
             If the monster has Equip awakening -> Equip.
+            If the monster has the transform into ID -> Transform.
             Else If the card can take 8 latents (SR, SU & R):
                 [1] If it uses 'Event Medal', or has 'Super Reincarnated' in its name -> SR.
                 [2] If it can be reversed evo, it is SU.
@@ -546,6 +604,8 @@ export class MonsterParser {
         */
 		if (this.getAwakenings().includes(49)) {
 			return 'equip';
+		} else if (this.getTransformIntoId() !== null) {
+			return 'transform';
 		} else if (this.isExtraSlottable()) {
 			if (this.getEvoMaterials().includes(5077) || this.getName().toLowerCase().includes('super reincarnated')) {
 				return 'superReincarnated';
@@ -586,6 +646,7 @@ export class MonsterParser {
 			reincarnated: 'Reincarnated',
 			superUltimate: 'Super Ultimate',
 			superReincarnated: 'Super Reincarnated',
+			transform: 'Transform',
 		};
 
 		let evolutionType = this.getEvolutionType();

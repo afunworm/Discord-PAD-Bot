@@ -4,7 +4,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 import * as admin from 'firebase-admin';
-import { MonsterData } from '../shared/monster.interfaces';
+import { MonsterData, LeaderSkillData } from '../shared/monster.interfaces';
 import { MONSTER_TYPES } from '../shared/monster.types';
 import { MonsterParser } from './monsterParser.class';
 import { Common } from './common.class';
@@ -233,6 +233,10 @@ export class Monster {
 		return stats;
 	}
 
+	public getLeaderSkill(): LeaderSkillData {
+		return this.monsterData.leaderSkill;
+	}
+
 	public getActiveSkillHeader(): string {
 		let activeSkill = this.monsterData.activeSkill;
 
@@ -274,8 +278,19 @@ export class Monster {
 
 	public getLeaderSkillHeader(): string {
 		let leaderSkill = this.monsterData.leaderSkill;
+		let maxMultipliers = leaderSkill.maxMultipliers;
+		let hp = Math.pow(maxMultipliers[0], 2);
+		let attack = Math.pow(maxMultipliers[1], 2);
+		let recover = Math.pow(maxMultipliers[2], 2);
+		let shield = 1 - Math.pow(1 - maxMultipliers[3], 2);
 
-		return leaderSkill.id === 0 ? '' : `Leader Skill: ${leaderSkill.name}`;
+		shield *= 100;
+
+		return leaderSkill.id === 0
+			? ''
+			: `Leader Skill: ${leaderSkill.name}\n[ ${hp}/${attack}/${recover} ${
+					shield === 0 ? '' : 'with ' + shield + '% shield '
+			  }]`;
 	}
 
 	public hasLeaderSkill(): boolean {

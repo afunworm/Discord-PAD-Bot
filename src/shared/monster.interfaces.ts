@@ -13,6 +13,7 @@ export interface LeaderSkillData {
 	name: string;
 	description: string;
 	descriptionDetails: string[];
+	maxMultipliers: number[];
 	types: number[];
 }
 export interface EnemyData {

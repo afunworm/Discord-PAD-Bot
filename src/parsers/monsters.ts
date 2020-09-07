@@ -23,6 +23,9 @@ const firestore = admin.firestore();
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
+startNumber = 4041;
+// endNumber = 3490;
+// highestValidMonsterId = endNumber;
 let data = [];
 let evoTreeData = [];
 

@@ -1,4 +1,5 @@
 export const LEADERSKILL_MAP = {
+	0: 'NoLS',
 	11: 'LSAttrAtkBoost',
 	12: 'LSBonusAttack',
 	13: 'LSAutoheal',
