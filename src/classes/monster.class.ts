@@ -292,11 +292,12 @@ export class Monster {
 		let leaderSkill = this.monsterData.leaderSkill;
 		let maxMultipliers = leaderSkill.maxMultipliers;
 		let hp = Math.pow(maxMultipliers[0], 2);
-		let attack = Math.pow(maxMultipliers[1], 2);
+		let attack: number | string = Math.pow(maxMultipliers[1], 2);
 		let recover = Math.pow(maxMultipliers[2], 2);
 		let shield = 1 - Math.pow(1 - maxMultipliers[3], 2);
 
 		shield *= 100;
+		if (attack === 0) attack = ' ∞ ';
 
 		return leaderSkill.id === 0
 			? ''
