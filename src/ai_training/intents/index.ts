@@ -4,7 +4,7 @@ const fs = require('fs');
 import { CARD_QUERY_TRAINING_PHRASES } from './card.query';
 import { CARD_INFO_TRAINING_PHRASES } from './card.info';
 
-let currentlyTraining = CARD_INFO_TRAINING_PHRASES;
+let currentlyTraining = CARD_QUERY_TRAINING_PHRASES;
 
 let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 let placers = {
@@ -14,61 +14,78 @@ let placers = {
 	questionType: () => ['what', 'how'][r(0, 1)],
 	targetActionType: () => ['look', 'take', 'sell'][r(0, 2)],
 	targetPronoun: () => ['it', 'him', 'her', 'them', 'they', 'he', 'she'][r(0, 6)],
-    monsterName: () => {
-        let prefixes = ['sr ', 'srevo ', 'super ultimate ', 'awoken ', 'reincarnated ', 'equip '];
-        let prefix = Math.random() > 0.5 ? prefixes[r(0, prefixes.length - 1)] : '';
-        let names = [
-            'anubis',
-            'myr',
-            'eschamali',
-            'venus',
-            'tsubaki',
-            'kaede',
-            'hades',
-            'perseus',
-            'kali',
-            'supergirl',
-            'yusuke',
-            'aamir',
-            'australis',
-            'saline',
-            'madoo',
-            'zela',
-            'uriel',
-            'yugi',
-            'galford',
-            'dark magician',
-            'ilmina',
-            'ilm',
-            'bakura',
-            'marik',
-            'noctis',
-            'hino',
-            'izanagi',
-            'izanami',
-            'scheat',
-            'sun wukong',
-            'cotton',
-            'aljea',
-            'rex',
-            'ideal',
-            'dyer',
-            'haku',
-            'karin',
-            'valeria',
-            'fat chocobo',
-            'undine',
-            'roche',
-            'rehven',
-            'orochi',
-            'senri',
-            'suou',
-            'gremory',
-            'grigory',
-            'marthis',
-        ];
-        return prefix + names[r(0, names.length - 1)];
-    },
+	monsterName: () => {
+		let prefixes = [
+			'sr ',
+			'srevo ',
+			'super ultimate ',
+			'awoken ',
+			'reincarnated ',
+			'equip ',
+			'assist',
+			'weapon',
+			'equip ',
+			'assist',
+			'weapon',
+			'equip ',
+			'assist',
+			'weapon',
+		];
+		let prefix = Math.random() > 0.5 ? prefixes[r(0, prefixes.length - 1)] : '';
+		let names = [
+			'anubis',
+			'myr',
+			'eschamali',
+			'venus',
+			'tsubaki',
+			'kaede',
+			'hades',
+			'perseus',
+			'kali',
+			'supergirl',
+			'yusuke',
+			'aamir',
+			'australis',
+			'saline',
+			'madoo',
+			'zela',
+			'uriel',
+			'yugi',
+			'galford',
+			'dark magician',
+			'ilmina',
+			'ilm',
+			'bakura',
+			'marik',
+			'noctis',
+			'hino',
+			'izanagi',
+			'izanami',
+			'scheat',
+			'sun wukong',
+			'cotton',
+			'aljea',
+			'rex',
+			'ideal',
+			'dyer',
+			'haku',
+			'karin',
+			'valeria',
+			'fat chocobo',
+			'undine',
+			'roche',
+			'rehven',
+			'orochi',
+			'senri',
+			'suou',
+			'gremory',
+			'grigory',
+			'marthis',
+			'shelling ford',
+			'idunn & idunna',
+		];
+		return prefix + names[r(0, names.length - 1)];
+	},
 	infoType: () =>
 		[
 			'photo',
@@ -192,43 +209,47 @@ let guid = () => {
 
 			//With no attributes
 			first.push(phrase.replace(regex, ''));
-			return;
+		} else {
+			first.push(phrase);
 		}
-
-		regex = new RegExp('{{ *MONSTER *}}', 'g');
-		if (phrase.match(regex)) {
-            //With a monster name, randomly with prefixes
-			first.push(phrase.replace(regex, '{{monsterName}}'));
-
-			//With a pronoun
-			first.push(phrase.replace(regex, '{{targetPronoun}}'));
-
-			return;
-		}
-
-		first.push(phrase);
 	});
 
 	let second = [];
 
-	//Run through FILTERS
+	//Run through with monster names
 	first.forEach((phrase) => {
+		let regex = new RegExp('{{ *MONSTER *}}', 'g');
+		if (phrase.match(regex)) {
+			//With a monster name, randomly with prefixes
+			second.push(phrase.replace(regex, '{{monsterName}}'));
+
+			//With a pronoun
+			second.push(phrase.replace(regex, '{{targetPronoun}}'));
+		} else {
+			second.push(phrase);
+		}
+	});
+
+	let third = [];
+
+	//Run through FILTERS
+	second.forEach((phrase) => {
 		let regex = new RegExp('{{ *FILTERS *}}', 'g');
 		if (!phrase.match(regex)) {
-			second.push(phrase);
+			third.push(phrase);
 			return;
 		}
 
-		second.push(
+		third.push(
 			phrase.replace(regex, '{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}} {{queryIncludeSA}}')
 		);
-		second.push(
+		third.push(
 			phrase.replace(
 				regex,
 				'{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}} and {{queryCompare2}} {{queryQuantity2}} {{monsterAwakenings2}} {{queryIncludeSA}}'
 			)
 		);
-		second.push(
+		third.push(
 			phrase.replace(
 				regex,
 				'{{queryCompare1}} {{queryQuantity1}} {{monsterAwakenings1}}, {{queryCompare2}} {{queryQuantity2}} {{monsterAwakenings2}} and {{queryCompare3}} {{queryQuantity3}} {{monsterAwakenings3}} {{queryIncludeSA}}'
@@ -237,11 +258,11 @@ let guid = () => {
 	});
 
 	//Trim all phrases
-	second = second.map((phrase) => phrase.trim().replace(/\s\s+/g, ' '));
+	third = third.map((phrase) => phrase.trim().replace(/\s\s+/g, ' '));
 
 	//Finally, run through pre-defined replacers
 	let data = [];
-	second.forEach((phrase) => {
+	third.forEach((phrase) => {
 		let entry = {
 			isTemplate: false,
 			count: 0,
@@ -330,7 +351,11 @@ let guid = () => {
 	});
 
 	await fs.writeFileSync('./intent.json', JSON.stringify(data, null, 4));
-    console.log(`Intent data populated. ${second.length} phrase(s) trained.`);
-    console.log(`Please also train this phrase manually (card.info) after importing the intent (until it is fixed):`);
-    console.log(`what can i use to devolve sr anubis?`);
+	console.log(`Intent data populated. ${second.length} phrase(s) trained.`);
+	console.log(`Please also train these phrases manually after importing the intent (until it is fixed):`);
+	console.log(`card.info: what can i use to devolve sr anubis?`);
+	console.log(`card.query: shelling ford equip`);
+	console.log(`card.query: red shelling ford equip`);
+	console.log(`card.query: green shelling ford equip`);
+	console.log(`card.query: light shelling ford equip`);
 })();

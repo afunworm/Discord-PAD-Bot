@@ -343,4 +343,5 @@ export const ADDITIONAL_NAMES = {
 		"justin's favorite card",
 		"justin's favorite monster",
 	],
+	'5780': ['yugi', 'yugioh'],
 };

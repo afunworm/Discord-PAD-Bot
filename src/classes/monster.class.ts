@@ -678,6 +678,25 @@ export class Monster {
 		return conditions;
 	}
 
+	public static filterByAttributes(
+		monsterList: MonsterData[],
+		attribute1: number,
+		attribute2: number | null = null
+	): MonsterData[] {
+		if (attribute1 !== null) {
+			monsterList = monsterList.filter((monster) => monster.mainAttribute === Number(attribute1));
+		}
+		if (attribute2 !== null) {
+			monsterList = monsterList.filter((monster) => monster.subAttribute === Number(attribute2));
+		}
+
+		return monsterList;
+	}
+
+	public static filterByEvoType(monsterList: MonsterData[], evoType): MonsterData[] {
+		return monsterList.filter((monster: MonsterData) => monster.evolutionType === evoType);
+	}
+
 	public static getAllCardsWithMultipleConditions(
 		conditions: FilterCondition[],
 		queryIncludeSA: boolean = true,
@@ -730,7 +749,7 @@ export class Monster {
 							monsters.push(...monsterList);
 						} else {
 							//Filter from monsters
-							monsters = monsters.filter((monster: MonsterData) => monster.evolutionType === evoType);
+							monsters = this.filterByEvoType(monsters, evoType);
 						}
 					} else if (condition.type === 'awakening' && conditionsToRun.includes('awakening')) {
 						console.log('Running awakening filter...');
@@ -792,12 +811,7 @@ export class Monster {
 							monsters.push(...monsterList);
 						} else {
 							//Filter from monsters
-							if (attribute1 !== null) {
-								monsters = monsters.filter((monster) => monster.mainAttribute === Number(attribute1));
-							}
-							if (attribute2 !== null) {
-								monsters = monsters.filter((monster) => monster.subAttribute === Number(attribute2));
-							}
+							monsters = this.filterByAttributes(monsters, attribute1, attribute2);
 						}
 					}
 				}

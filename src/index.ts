@@ -217,7 +217,8 @@ client.on('message', async (message: any) => {
 					monsterSeries: parameters.monsterSeries?.stringValue || null,
 					queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
 					queryEvoType: parameters.queryEvoType?.stringValue || null,
-				});
+                });
+                return;
 			} else if (parameters.queryAdditionalTypes?.stringValue === 'random') {
 				await helper.sendRandomCard({
 					queryQuantity1: parameters.queryQuantity1?.stringValue,
@@ -226,12 +227,19 @@ client.on('message', async (message: any) => {
 					queryEvoType: parameters.queryEvoType?.stringValue || null,
 					monsterSeries: parameters.monsterSeries?.stringValue || null,
 				});
-			} else {
+            } else if (parameters.queryEvoType?.stringValue && baseMonsterId !== null) {
+                await helper.sendCardByEvoType({
+                    monsterId: baseMonsterId,
+                    queryEvoType: parameters.queryEvoType?.stringValue,
+					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
+					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+                });
+                return;
+            } else {
 				await helper.sendMessage('Please wait while I am looking into that...');
-				await helper.sendQueryResult(data);
+                await helper.sendQueryResult(data);
+                return;
 			}
-
-			return;
 		}
 
 		await helper.bugLog(

@@ -1170,4 +1170,61 @@ export class Helper {
 		await this.sendMessage(embed);
 		await fs.unlinkSync(imagePath);
 	}
+
+	public async sendCardByEvoType(data) {
+		let { monsterId, queryEvoType } = data;
+
+		monsterId = Number(monsterId);
+
+		//Fix attribute detection
+		let { monsterAttribute1, monsterAttribute2 } = Monster.fixAttributeDetection(data);
+
+		let monster = new Monster(monsterId);
+		await monster.init();
+
+		let forms = monster.getEvoTree();
+		let monsters: MonsterData[] = [];
+
+		//Use for-loop for async
+		for (let id of forms) {
+			let m = new Monster(id);
+			await m.init();
+
+			monsters.push(m.getFullData());
+		}
+
+		monsters = Monster.filterByAttributes(monsters, monsterAttribute1, monsterAttribute2);
+		monsters = Monster.filterByEvoType(monsters, queryEvoType);
+
+		if (monsters.length === 0) {
+			await this.sendMessage(
+				`I was able to find the monster you were asking for, but it looks like that evolution type or attribute doesn't exist on this monster!`
+			);
+		} else if (monsters.length === 1) {
+			let monster = new Monster(monsters[0].id);
+			await monster.init();
+
+			await this.sendMonsterInfo(monster);
+		} else {
+			let result = [];
+			for (let i = 0; i < monsters.length; i++) {
+				let monsterId = monsters[i].id;
+				let monster = new Monster(monsterId);
+				await monster.init();
+
+				let mainAttribute = monster.getMainAttribute();
+				let subAttribute = monster.getSubAttribute() === null ? -1 : monster.getSubAttribute();
+				let attributes =
+					Common.attributeEmotesMapping([mainAttribute])[0] +
+					Common.attributeEmotesMapping([subAttribute])[0];
+
+				result.push(`${attributes}| ${monsterId}. ${monster.getName()}`);
+			}
+
+			await this.sendMessage(
+				`There are more than 1 card that fit your criteria. Here are the list of what I found:`
+			);
+			await this.sendMessageList(`Monsters that match your criteria`, result);
+		}
+	}
 }
