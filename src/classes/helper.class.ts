@@ -160,118 +160,7 @@ export class Helper {
 	}
 
 	static replaceCommonAbbreviation(message: string) {
-		let reg = /(fire|water|wood|light|dark|r|g|b|l|d|none|x)\/(fire|water|wood|light|dark|r|g|b|l|d|none|x)/gi;
 		let dict = {
-			redred: 'red red',
-			redr: 'red red',
-			rred: 'red red',
-			rr: 'red red',
-			redblue: 'red blue',
-			redb: 'red blue',
-			rblue: 'red blue',
-			rb: 'red blue',
-			redgreen: 'red green',
-			redg: 'red green',
-			rgreen: 'red green',
-			rg: 'red green',
-			redlight: 'red light',
-			redl: 'red light',
-			rlight: 'red light',
-			rl: 'red light',
-			reddark: 'red dark',
-			redd: 'red dark',
-			rdark: 'red dark',
-			rd: 'red dark',
-			redx: 'red none',
-			rx: 'red none',
-			bluered: 'blue red',
-			bluer: 'blue red',
-			bred: 'blue red',
-			br: 'blue red',
-			blueblue: 'blue blue',
-			blueb: 'blue blue',
-			bblue: 'blue blue',
-			bb: 'blue blue',
-			bluegreen: 'blue green',
-			blueg: 'blue green',
-			bgreen: 'blue green',
-			bg: 'blue green',
-			bluelight: 'blue light',
-			bluel: 'blue light',
-			blight: 'blue light',
-			bl: 'blue light',
-			bluedark: 'blue dark',
-			blued: 'blue dark',
-			bdark: 'blue dark',
-			bd: 'blue dark',
-			bluex: 'blue none',
-			bx: 'blue none',
-			greenred: 'green red',
-			greenr: 'green red',
-			gred: 'green red',
-			gr: 'green red',
-			greenblue: 'green blue',
-			greenb: 'green blue',
-			gblue: 'green blue',
-			gb: 'green blue',
-			greengreen: 'green green',
-			greeng: 'green green',
-			ggreen: 'green green',
-			gg: 'green green',
-			greenlight: 'green light',
-			greenl: 'green light',
-			glight: 'green light',
-			gl: 'green light',
-			greendark: 'green dark',
-			greend: 'green dark',
-			gdark: 'green dark',
-			gd: 'green dark',
-			greenx: 'green none',
-			gx: 'green none',
-			lightred: 'light red',
-			lightr: 'light red',
-			lred: 'light red',
-			lr: 'light red',
-			lightblue: 'light blue',
-			lightb: 'light blue',
-			lblue: 'light blue',
-			lb: 'light blue',
-			lightgreen: 'light green',
-			lightg: 'light green',
-			lgreen: 'light green',
-			lg: 'light green',
-			lightlight: 'light light',
-			lightl: 'light light',
-			llight: 'light light',
-			ll: 'light light',
-			lightdark: 'light dark',
-			lightd: 'light dark',
-			ldark: 'light dark',
-			ld: 'light dark',
-			lightx: 'light none',
-			lx: 'light none',
-			darkred: 'dark red',
-			darkr: 'dark red',
-			dred: 'dark red',
-			dr: 'dark red',
-			darkblue: 'dark blue',
-			darkb: 'dark blue',
-			dblue: 'dark blue',
-			db: 'dark blue',
-			darkgreen: 'dark green',
-			darkg: 'dark green',
-			dgreen: 'dark green',
-			dg: 'dark green',
-			darklight: 'dark light',
-			darkl: 'dark light',
-			dlight: 'dark light',
-			dl: 'dark light',
-			darkdark: 'dark dark',
-			darkd: 'dark dark',
-			ddark: 'dark dark',
-			dd: 'dark dark',
-			darkx: 'dark none',
-			dx: 'dark none',
 			'7c': 'enhanced combo',
 			'7cs': 'enhanced combos',
 		};
@@ -279,26 +168,11 @@ export class Helper {
 		//Trim it
 		message = message.trim();
 
-		//Check for / first
-		if (message.includes('/')) {
-			//'Show me d/r Anubis' -> 'd/r' -> 'd r'
-			let attributes = message.match(reg)[0].split('/').join(' ');
-			message = message.replace(reg, attributes);
-		}
-
-		//Replace conjuncted terms
+		//Replace terms
 		for (let replaceWhat in dict) {
 			let byWhat = dict[replaceWhat];
 
-			//Added spaces to distingush from regular words, but ignore the beginning space if the sentence starts with it
-			//Eg: (lx) cotton
-			if (message.toLowerCase().startsWith(replaceWhat.toLowerCase())) {
-				let reg = new RegExp(replaceWhat + ' ', 'ig');
-				message = message.replace(reg, byWhat + ' ');
-			} else {
-				let reg = new RegExp(' ' + replaceWhat + ' ', 'ig');
-				message = message.replace(reg, ' ' + byWhat + ' ');
-			}
+			message = message.replace(replaceWhat, byWhat);
 		}
 
 		return message;

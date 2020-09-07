@@ -43,7 +43,9 @@ client.on('message', async (message: any) => {
 		: message.content.trim();
 	let cache = new Cache('conversation');
 	input = input.replace(client.user.id, ''); //Stripping ping from message
+	console.log('Input before replacement: ' + input);
 	input = Helper.replaceCommonAbbreviation(input); //Replace common terms, such as dr, l/d, etc.
+	console.log('Input after replacement: ' + input);
 
 	try {
 		let result: QueryResultInterface = await ai.detectIntent(input);

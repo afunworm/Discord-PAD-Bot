@@ -1,4 +1,5 @@
 export const CARD_QUERY_TRAINING_PHRASES = [
+	`from {{monsterSeries}}, give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}}`,
 	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
 	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
 	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}} from {{monsterSeries}}`,
