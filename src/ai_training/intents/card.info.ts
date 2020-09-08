@@ -1,4 +1,5 @@
 export const CARD_INFO_TRAINING_PHRASES = [
+	`all {{infoType}} of {{MONSTER}}`,
 	`{{MONSTER}}`,
 	`{{questionType}} can i {{actionType}} {{MONSTER}}`,
 	`{{questionType}} can i use to {{actionType}} {{MONSTER}}`,

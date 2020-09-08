@@ -1,3 +1,5 @@
+import * as admin from 'firebase-admin';
+
 export interface ActiveSkillData {
 	id: number;
 	name: string;
@@ -28,7 +30,7 @@ export interface EnemyData {
 	expDropped: number;
 }
 export interface MonsterData {
-	_lastUpdatedAt: FirebaseFirestore.Timestamp | Date | FirebaseFirestore.FieldValue;
+	_lastUpdatedAt: admin.firestore.Timestamp | Date | admin.firestore.FieldValue;
 	id: number;
 	name: string;
 	mainAttribute: number;

@@ -3,7 +3,7 @@
 	"scripts": {
 		"lint": "tslint --project tsconfig.json",
 		"build": "tsc src/index --outdir dist",
-		"copy": "rm -rf dist/temp && mkdir dist/temp && rm -rf dist/raw && mkdir dist/raw && cp src/raw/download_card_data.json dist/raw/download_card_data.json && cp src/raw/download_skill_data.json dist/raw/download_skill_data.json && cp src/raw/arrow.png dist/raw/arrow.png && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp -n src/.env dist/.env || true",
+		"copy": "rm -rf dist/temp && mkdir dist/temp && rm -rf dist/raw && mkdir dist/raw && cp src/raw/download_card_data.json dist/raw/download_card_data.json && cp src/raw/download_card_data.jp.json dist/raw/download_card_data.jp.json && cp src/raw/download_skill_data.json dist/raw/download_skill_data.json && cp src/raw/arrow.png dist/raw/arrow.png && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp -n src/.env dist/.env || true",
 		"start": "npm run build && npm run copy && forever stopall && forever start dist/index.js",
 		"update": "git pull && npm run start",
 		"test-windows": "npm run build && node dist/index.js"
@@ -24,9 +24,11 @@
 		"firebase-functions": "^3.6.1",
 		"forever": "^3.0.2",
 		"lodash": "^4.17.20",
-		"node-cache": "^5.1.2"
+		"node-cache": "^5.1.2",
+		"puppeteer": "^5.2.1"
 	},
 	"devDependencies": {
+		"@types/puppeteer": "^3.0.1",
 		"firebase-functions-test": "^0.2.0",
 		"ts-loader": "^8.0.3",
 		"tslint": "^5.12.0",

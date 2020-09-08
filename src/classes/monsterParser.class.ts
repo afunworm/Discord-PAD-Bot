@@ -1,4 +1,5 @@
 const { card: MONSTER_DATA } = require('../raw/download_card_data.json');
+const { card: JP_MONSTER_DATA } = require('../raw/download_card_data.jp.json');
 const { skill: SKILL_DATA } = require('../raw/download_skill_data.json');
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { AWAKENINGS } from '../shared/monster.awakens';
@@ -7,18 +8,30 @@ import { MONSTER_COLLABS } from '../shared/monster.collabs';
 import { LeaderSkill } from './leaderSkill.class';
 import { ActiveSkill } from './activeSkill.class';
 import { Common } from './common.class';
+import { JAPANESE_NAMES } from '../shared/monster.japanese';
 
 export class MonsterParser {
 	private id;
 	private data;
+	private useJP: boolean = false;
 
-	constructor(id: number) {
-		if (!Number.isInteger(id) || id > MONSTER_DATA.length || id < 1) {
-			throw new Error('Invalid id');
-		}
-
+	constructor(id: number, useJP: boolean = false) {
 		this.id = id;
-		this.data = MONSTER_DATA[id];
+
+		if (useJP) {
+			if (!Number.isInteger(id) || id > JP_MONSTER_DATA.length || id < 1) {
+				throw new Error('Invalid id');
+			}
+
+			this.useJP = true;
+			this.data = JP_MONSTER_DATA[id];
+		} else {
+			if (!Number.isInteger(id) || id > MONSTER_DATA.length || id < 1) {
+				throw new Error('Invalid id');
+			}
+
+			this.data = MONSTER_DATA[id];
+		}
 	}
 
 	static getMonsterDatabaseLength(): number {
@@ -69,7 +82,13 @@ export class MonsterParser {
 	}
 
 	public getName(): string {
-		return this.data[1];
+		let monsterName = this.data[1];
+		if (monsterName.includes['*'] || monsterName.includes('??') || this.useJP) {
+			if (typeof JAPANESE_NAMES[this.id.toString()] === 'string') {
+				monsterName = JAPANESE_NAMES[this.id.toString()];
+			}
+		}
+		return monsterName;
 	}
 
 	public getMainAttribute(): number {

@@ -6,6 +6,7 @@ import { Monster } from './classes/monster.class';
 import { AI, QueryResultInterface } from './classes/ai.class';
 import { Helper } from './classes/helper.class';
 import { Cache } from './classes/cache.class';
+import { ClientUser } from 'discord.js';
 const Discord = require('discord.js');
 
 /*-------------------------------------------------------*
@@ -19,6 +20,8 @@ const COMMAND_PREFIX = process.env.COMMAND_PREFIX;
  * App
  *-------------------------------------------------------*/
 client.once('ready', () => {
+	let clientUser: ClientUser = client.user;
+	clientUser.setPresence({ activity: { name: 'hard to train' }, status: 'online' });
 	console.log('Server started');
 });
 
