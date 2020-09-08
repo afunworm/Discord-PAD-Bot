@@ -452,10 +452,12 @@ export class Helper {
 		let sentEmbed = await this.sendMessage(embed);
 		await sentEmbed.react('⬅️');
 		await sentEmbed.react('➡️');
+		await sentEmbed.react('⏫');
 
 		let reactors = (message: Message) => {
 			this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
 				//Try to extract number from the title
+				console.log(react.message.embeds);
 				let monsterId = Number(react.message.embeds[0].title.match(/(\d)+/gi)[0]);
 
 				if (react.emoji.name === '⬅️') {
@@ -472,6 +474,11 @@ export class Helper {
 					await monster.init();
 
 					let embed = this.constructMonsterInfo(monster);
+					let reactEmbed = await react.message.edit(embed);
+					reactors(reactEmbed);
+				} else if (react.emoji.name === '⏫') {
+					let embed = await this.constructMonsterMaterials(card, 'evo');
+					console.log(embed);
 					let reactEmbed = await react.message.edit(embed);
 					reactors(reactEmbed);
 				}
@@ -877,78 +884,88 @@ export class Helper {
 		}
 	}
 
-	public async sendMonsterMaterials(card: Monster, type: 'evo' | 'devo' = 'evo') {
+	public async constructMonsterMaterials(card: Monster, type: 'evo' | 'devo' = 'evo') {
 		let mats = type === 'evo' ? card.getEvoMaterials() : card.getDevoMaterials();
 		let names = [];
 		let iconUrls = [];
 		mats = mats.filter((mat) => mat !== 0);
-		if (
-			(type === 'devo' && card.getEvoMaterials().filter((mat) => mat !== 0).length === 0) ||
-			card.getPreviousEvoId() === 0
-		) {
-			await this.sendMessage(`**${card.getName()} (#${card.getId()})** cannot be devolved!`);
-			return;
-		}
-		if (type === 'evo' && mats.length === 0) {
-			await this.sendMessage(`**${card.getName()} (#${card.getId()})** is in its base form!`);
-			return;
-		}
-		for (let i = 0; i < mats.length; i++) {
-			let evoMatId = mats[i];
-			let monster = new Monster(evoMatId);
-			await monster.init();
-			names.push(monster.getId() + '. ' + monster.getName());
-			iconUrls.push({
-				id: monster.getId(),
-				url: monster.getThumbnailUrl(),
-			});
-		}
-
-		let imagePath;
-		try {
-			if (type === 'evo') {
-				let from = {
-					id: card.getPreviousEvoId(),
-					url: Common.getThumbnailUrl(card.getPreviousEvoId()),
-				};
-				let to = {
-					id: card.getId(),
-					url: card.getThumbnailUrl(),
-				};
-
-				imagePath = await Common.displayEvoIcons(from, to, iconUrls);
-			} else {
-				let from = {
-					id: card.getId(),
-					url: card.getThumbnailUrl(),
-				};
-				let to = {
-					id: card.getPreviousEvoId(),
-					url: Common.getThumbnailUrl(card.getPreviousEvoId()),
-				};
-				imagePath = await Common.displayEvoIcons(from, to, iconUrls);
-			}
-		} catch (error) {
-			console.log(error);
-			this.sendMonsterMaterials(card, type);
-			return;
-		}
 
 		let embed = new Discord.MessageEmbed()
-			.setThumbnail(card.getThumbnailUrl())
-			.addFields({
-				name: `${type === 'evo' ? 'Evo' : 'Devo'} Materials for **${card.getId()}. ${card.getName()}**`,
-				value: names.join('\n'),
-			})
-			.attachFiles([
-				{
-					attachment: imagePath,
-					name: 'evoMats.png',
-				},
-			])
-			.setImage('attachment://evoMats.png');
+			.setTitle(`**${card.getId()}. ${card.getName()}**`)
+			.setThumbnail(card.getThumbnailUrl());
+
+		if ((type === 'devo' && mats.length === 0) || card.getPreviousEvoId() === 0) {
+			embed.addFields({
+				name: `Evo Materials`,
+				value: `**${card.getName()} (#${card.getId()})** cannot be devolved!`,
+			});
+		} else if (type === 'evo' && mats.length === 0) {
+			embed.addFields({
+				name: `Devo Materials`,
+				value: `**${card.getName()} (#${card.getId()})** is in its base form!`,
+			});
+		} else {
+			for (let i = 0; i < mats.length; i++) {
+				let evoMatId = mats[i];
+				let monster = new Monster(evoMatId);
+				await monster.init();
+				names.push(monster.getId() + '. ' + monster.getName());
+				iconUrls.push({
+					id: monster.getId(),
+					url: monster.getThumbnailUrl(),
+				});
+			}
+
+			let imagePath;
+			try {
+				if (type === 'evo') {
+					let from = {
+						id: card.getPreviousEvoId(),
+						url: Common.getThumbnailUrl(card.getPreviousEvoId()),
+					};
+					let to = {
+						id: card.getId(),
+						url: card.getThumbnailUrl(),
+					};
+
+					imagePath = await Common.displayEvoIcons(from, to, iconUrls);
+				} else {
+					let from = {
+						id: card.getId(),
+						url: card.getThumbnailUrl(),
+					};
+					let to = {
+						id: card.getPreviousEvoId(),
+						url: Common.getThumbnailUrl(card.getPreviousEvoId()),
+					};
+					imagePath = await Common.displayEvoIcons(from, to, iconUrls);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+
+			embed
+				.addFields({
+					name: `${type === 'evo' ? 'Evo' : 'Devo'} Materials for **${card.getId()}. ${card.getName()}**`,
+					value: names.join('\n'),
+				})
+				.attachFiles([
+					{
+						attachment: imagePath,
+						name: 'evoMats.png',
+					},
+				])
+				.setImage('attachment://evoMats.png');
+
+			await fs.unlinkSync(imagePath);
+		}
+
+		return embed;
+	}
+
+	public async sendMonsterMaterials(card: Monster, type: 'evo' | 'devo' = 'evo') {
+		let embed = await this.constructMonsterMaterials(card, type);
 		await this.sendMessage(embed);
-		await fs.unlinkSync(imagePath);
 	}
 
 	public async sendQueryResult(data) {
