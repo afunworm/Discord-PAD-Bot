@@ -7,6 +7,7 @@ import { MonsterParser } from '../../classes/monsterParser.class';
 import { CUSTOM_NAMES } from './customNames';
 import { ADDITIONAL_NAMES } from './additionalNames';
 import { MANUAL_LIST } from './manualList';
+import { JAPANESE_NAMES } from '../../shared/monster.japanese';
 const fs = require('fs');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
@@ -284,7 +285,15 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 				2740, //Reincarnated Fenrir Knight, Kamui
 			];
 
-			if (!monster.getName().includes('*****') && !monster.getName().includes('????')) {
+			let rawMonsterName = monster.getName();
+			if (rawMonsterName.includes('*') && !rawMonsterName.includes('??')) {
+				//Atttempt to use Japanese names
+				if (typeof JAPANESE_NAMES[monster.getId().toString()] === 'string') {
+					rawMonsterName = JAPANESE_NAMES[monster.getId().toString()];
+				}
+			}
+
+			if (!rawMonsterName.includes('*') && !rawMonsterName.includes('??')) {
 				//If the id is in the MANUAL_LIST, just replace and do nothing else
 				if (MANUAL_LIST[id]) {
 					let synonyms = [id.toString()];
@@ -292,7 +301,7 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 						synonyms.push(replacedName);
 					});
 				} else {
-					let monsterName = monster.getName().replace('"', '\\"');
+					let monsterName = rawMonsterName.replace('"', '\\"');
 
 					let optional = monsterName.toLowerCase().match(/(\(.*\))/gi); //Extra things between ()
 					if (optional !== null && optional.length > 0) {
@@ -368,7 +377,7 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 				numberOfNamesTrained += synonyms.length;
 
 				console.log(
-					`Training data populated for ${id}. ${monster.getName()} - ${synonyms.length} entries created.`
+					`Training data populated for ${id}. ${rawMonsterName} - ${synonyms.length} entries created.`
 				);
 			}
 		} catch (error) {
