@@ -55,10 +55,10 @@ export const RESPONSE_PHRASES = {
 		`I believe **{{name}}**'s ID is #{{id}}`,
 	],
 	ON_EVOLIST_REQUEST: [
-		`I found {{numberOfEvos}} forms for **{{name}}** (#{{id}})!`,
-		`Here are all {{numberOfEvos}} forms of **{{name}}** (#{{id}})!`,
+		`I found {{numberOfEvos}} forms for **{{name}}** (#{{id}})! Click on 📃 to view full details.`,
+		`Here are all {{numberOfEvos}} forms of **{{name}}** (#{{id}})! Click on 📃 to view full details.`,
 		,
-		`These are what I found for **{{name}}** (#{{id}})!`,
+		`These are what I found for **{{name}}** (#{{id}})! Click on 📃 to view full details.`,
 	],
 	ON_EVOLIST_REQUEST_SINGLE_EVO: [
 		`**{{name}}** (#{{id}}) only has 1 form!`,

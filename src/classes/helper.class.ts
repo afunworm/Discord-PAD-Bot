@@ -5,7 +5,7 @@ import { MonsterData } from '../shared/monster.interfaces';
 import { Common } from './common.class';
 import * as admin from 'firebase-admin';
 import { WhereFilterOp } from '@firebase/firestore-types';
-import { DMChannel, MessageReaction, MessageEmbed, Message } from 'discord.js';
+import { DMChannel, MessageReaction, MessageEmbed, Message, DiscordAPIError } from 'discord.js';
 import { Cache } from './cache.class';
 import { max } from 'lodash';
 import { Console } from 'console';
@@ -286,8 +286,8 @@ export class Helper {
 
 		if (paginations.length <= 1) {
 			//Send out embed
-			await this.sendMessage(embed);
-			return;
+			let sentEmbed = await this.sendMessage(embed);
+			return sentEmbed;
 		}
 
 		//Send out embed
@@ -350,6 +350,78 @@ export class Helper {
 		};
 
 		reactors(sentEmbed);
+
+		return sentEmbed;
+	}
+
+	public async sendEmbedWithMultiplePages(embeds: MessageEmbed[]) {
+		let maxPage = 10;
+
+		if (embeds.length > maxPage) {
+			embeds = embeds.slice(0, maxPage);
+			await this.sendMessage(
+				`There are more than ${maxPage} pages in this message. Only the ${maxPage} pages will be displayed.`
+			);
+		}
+
+		//Send out first embed
+		let embed = embeds[0];
+		let sentEmbed = await this.sendMessage(embed);
+
+		//Count the number of react
+		let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+		let reacts = [];
+		for (let i = 0; i < embeds.length; i++) {
+			reacts.push(sentEmbed.react(emojis[i]));
+		}
+
+		await Promise.all(reacts);
+
+		let reactors = (message: Message) => {
+			this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
+				let index = 0;
+
+				switch (react.emoji.name) {
+					case '2️⃣':
+						index = 1;
+						break;
+					case '3️⃣':
+						index = 2;
+						break;
+					case '4️⃣':
+						index = 3;
+						break;
+					case '5️⃣':
+						index = 4;
+						break;
+					case '6️⃣':
+						index = 5;
+						break;
+					case '7️⃣':
+						index = 6;
+						break;
+					case '8️⃣':
+						index = 7;
+						break;
+					case '9️⃣':
+						index = 8;
+						break;
+					case '🔟':
+						index = 9;
+						break;
+					default:
+						break;
+				}
+
+				let embed = embeds[index];
+				let reactEmbed = await react.message.edit(embed);
+
+				reactors(reactEmbed);
+			});
+		};
+
+		reactors(sentEmbed);
+		return sentEmbed;
 	}
 
 	private constructMonsterInfo(card: Monster) {
@@ -662,6 +734,16 @@ export class Helper {
 		await this.sendMessage(response);
 	}
 
+	public async sendFullMonsterEvoTree(monsterCardList: Monster[]) {
+		let embeds = [];
+
+		monsterCardList.forEach((monsterCard) => {
+			embeds.push(this.constructMonsterInfo(monsterCard));
+		});
+
+		await this.sendEmbedWithMultiplePages(embeds);
+	}
+
 	public async sendMonsterEvoTree(card: Monster) {
 		let evoList = card.getEvoTree();
 		let numberOfEvos = evoList.length;
@@ -685,10 +767,15 @@ export class Helper {
 		}
 
 		let result = [];
+		let cards = [];
 		for (let i = 0; i < numberOfEvos; i++) {
 			let monsterId = evoList[i];
 			let monster = new Monster(monsterId);
 			await monster.init();
+
+			//For later embed, needs cleaning up...
+			cards.push(monster);
+
 			let mainAttribute = monster.getMainAttribute();
 			let subAttribute = monster.getSubAttribute() === null ? -1 : monster.getSubAttribute();
 			let attributes =
@@ -697,7 +784,18 @@ export class Helper {
 			result.push(`${attributes}| ${monsterId}. ${monster.getName()}`);
 		}
 
-		await this.sendMessageList(`All Evolutions of ${card.getName()}`, result);
+		let sentEmbed = await this.sendMessageList(`All Evolutions of ${card.getName()}`, result);
+		await sentEmbed.react('📃');
+
+		let reactors = (message: Message) => {
+			this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
+				if (react.emoji.name === '📃') {
+					await this.sendFullMonsterEvoTree(cards);
+				}
+			});
+		};
+
+		reactors(sentEmbed);
 	}
 
 	public async sendCollabList(series: string, attribute1 = null, attribute2 = null) {
