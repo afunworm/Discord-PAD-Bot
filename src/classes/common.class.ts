@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 import { AWAKEN_EMOTES } from '../shared/monster.awakens';
 import { KILLER_EMOTES } from '../shared/monster.awakens';
 import { ATTRIBUTE_EMOTES } from '../shared/monster.attributes';
@@ -6,6 +8,8 @@ import { MONSTER_SERIES } from '../shared/monster.series';
 import { MONSTER_COLLABS } from '../shared/monster.collabs';
 const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs');
+
+const MEDIA_URL = process.env.MEDIA_URL;
 
 export class Common {
 	static fillTemplate(templateString: string, templateVars: { [key: string]: string }): string {
@@ -130,13 +134,25 @@ export class Common {
 	static getThumbnailUrl(id: number): string {
 		let cardId = id.toString().padStart(5, '0');
 
-		return `https://static.pad.byh.uy/icons/${cardId}.png`;
+		return `${MEDIA_URL}/icons/${cardId}.png`;
 	}
 
 	static getImageUrl(id: number): string {
 		let cardId = id.toString().padStart(5, '0');
 
-		return `https://static.pad.byh.uy/images/${cardId}.png`;
+		return `${MEDIA_URL}/portraits/${cardId}.png`;
+	}
+
+	static getEvoImageUrl(id: number): string {
+		let cardId = id.toString().padStart(5, '0');
+
+		return `${MEDIA_URL}/evos/${cardId}.png`;
+	}
+
+	static getDevoImageUrl(id: number): string {
+		let cardId = id.toString().padStart(5, '0');
+
+		return `${MEDIA_URL}/devos/${cardId}.png`;
 	}
 
 	static displayEvoIcons(
@@ -162,6 +178,7 @@ export class Common {
 					})
 					.then(async (data) => {
 						let maxWidth = 100 * (data.length - 3) + hPadding * (data.length - 4);
+						if (maxWidth < 200 + hPadding) maxWidth = 200 + hPadding;
 
 						let canvas = createCanvas(maxWidth, 200 + vPadding);
 						let context = canvas.getContext('2d');
