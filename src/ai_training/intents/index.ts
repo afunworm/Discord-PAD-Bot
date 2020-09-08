@@ -4,7 +4,7 @@ const fs = require('fs');
 import { CARD_QUERY_TRAINING_PHRASES } from './card.query';
 import { CARD_INFO_TRAINING_PHRASES } from './card.info';
 
-let currentlyTraining = CARD_QUERY_TRAINING_PHRASES;
+let currentlyTraining = CARD_INFO_TRAINING_PHRASES;
 
 let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 let placers = {
