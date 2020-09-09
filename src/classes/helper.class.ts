@@ -994,7 +994,7 @@ export class Helper {
 		}
 	}
 
-	public async sendMonstersMinMax(data) {
+	public async sendMonstersMinMaxAwakenings(data) {
 		let {
 			queryMinMax,
 			monsterAwakenings1,
@@ -1027,6 +1027,7 @@ export class Helper {
 		if (monsterAttribute1 !== null) attributesSpecified += Common.attributeEmotesMapping([monsterAttribute1])[0];
 		if (monsterAttribute2 !== null)
 			attributesSpecified += ' ' + Common.attributeEmotesMapping([monsterAttribute1])[0];
+		if (attributesSpecified.trim().length === 0) attributesSpecified = 'None';
 
 		let embed = new Discord.MessageEmbed().setTitle('Search Criteria');
 
@@ -1115,6 +1116,155 @@ export class Helper {
 		} else {
 			//Display result
 			let message = `Here is the list of monsters with the most ${awakeningEmote}! (${max} is the maximum number of ${awakeningEmote} based on your criteria)`;
+			await this.sendMessage(message);
+			await this.sendMessageList('Search Result for Your Query', dataToSend);
+		}
+	}
+
+	public async sendMonstersMinMaxStats(data) {
+		let { queryMinMax, stat, monsterSeries, queryIncludeLB, queryEvoType } = data;
+
+		if (!['hp', 'attack', 'recover'].includes(stat)) {
+			await this.sendMessage(`I can't seem to find the stat you are looking for. Can you please try again?`);
+			return;
+		}
+
+		if (queryMinMax === 'min') {
+			await this.sendMessage(
+				'I can only process info about cards with the most stats. Will learn to process min stats later!'
+			);
+			return;
+		}
+
+		//Fix attribute detection
+		let { monsterAttribute1, monsterAttribute2 } = Monster.fixAttributeDetection(data);
+
+		//Display query criteria
+		let includingLB =
+			queryIncludeLB === 'includeLB'
+				? 'will count stats after limit break (if any)'
+				: 'will only count stats before limit break';
+		let attributesSpecified = '';
+		if (monsterAttribute1 !== null) attributesSpecified += Common.attributeEmotesMapping([monsterAttribute1])[0];
+		if (monsterAttribute2 !== null)
+			attributesSpecified += ' ' + Common.attributeEmotesMapping([monsterAttribute1])[0];
+		if (attributesSpecified.trim().length === 0) attributesSpecified = 'None';
+
+		let embed = new Discord.MessageEmbed().setTitle('Search Criteria');
+
+		embed.addFields(
+			{ name: 'Series Specified', value: monsterSeries ? monsterSeries : 'None' },
+			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
+			{ name: 'Attributes Requested', value: attributesSpecified },
+			{ name: 'Super Awakenings', value: `The results ${includingLB}.` },
+			{ name: 'Searching for Monsters with The Highest', value: stat.toUpperCase() }
+		);
+		await this.sendMessage(embed);
+
+		let max = 0;
+		let monsters: MonsterData[] = [];
+		if (monsterSeries !== null || monsterAttribute1 !== null || queryEvoType !== null) {
+			//Construct conditions
+			let conditions = Monster.constructFilterConditions(data);
+
+			//Convert SB+, resist+, etc. to their smaller counterparts
+			conditions = Monster.convertFilterConditions(conditions);
+
+			//Get monsters
+			monsters = await Monster.getAllCardsWithMultipleConditions(conditions, false, [
+				'series',
+				'attribute',
+				'evoType',
+			]);
+
+			//Run through the list of monsters to choose the one with the highest amount of awakenings
+			//Sort them from high to low
+			let fieldName;
+			if (stat === 'hp') fieldName = 'HP';
+			if (stat === 'attack') fieldName = 'ATK';
+			if (stat === 'recover') fieldName = 'RCV';
+			let withLB = monsters.sort(
+				(a: MonsterData, b: MonsterData) => b['limitBreak' + fieldName] - a['limitBreak' + fieldName]
+			);
+			let withoutLB = monsters.sort(
+				(a: MonsterData, b: MonsterData) => b['max' + fieldName] - a['max' + fieldName]
+			);
+
+			max = Math.max(withLB[0]['limitBreak' + fieldName], withoutLB[0]['max' + fieldName]);
+
+			monsters = monsters.filter(
+				(monster) => monster['limitBreak' + fieldName] === max || monster['max' + fieldName] === max
+			);
+		} else {
+			//Calculate max stats
+			let maxStats = await Monster.getCalculatedMaxStats();
+
+			if (!maxStats) {
+				await this.sendMessage(
+					'I cannot process that query at the moment. Please let my dev know to update the database.'
+				);
+				return;
+			}
+
+			if (stat === 'hp') {
+				max =
+					queryIncludeLB === 'includeLB'
+						? Math.max(maxStats['maxComputedStatsWithoutLB'].hp, maxStats['maxComputedStatsWithLB'].hp)
+						: maxStats['maxComputedStatsWithoutLB'].hp;
+			}
+			if (stat === 'attack') {
+				max =
+					queryIncludeLB === 'includeLB'
+						? Math.max(
+								maxStats['maxComputedStatsWithoutLB'].attack,
+								maxStats['maxComputedStatsWithLB'].attack
+						  )
+						: maxStats['maxComputedStatsWithoutLB'].attack;
+			}
+			if (stat === 'recover') {
+				max =
+					queryIncludeLB === 'includeLB'
+						? Math.max(
+								maxStats['maxComputedStatsWithoutLB'].recover,
+								maxStats['maxComputedStatsWithLB'].recover
+						  )
+						: maxStats['maxComputedStatsWithoutLB'].recover;
+			}
+
+			//Get new data
+			let fieldName;
+			if (stat === 'hp') fieldName = 'HP';
+			if (stat === 'attack') fieldName = 'ATK';
+			if (stat === 'recover') fieldName = 'RCV';
+			let snapshotWithLB = await firestore
+				.collection('Monsters')
+				.where(`limitBreak${fieldName}`, '==', max)
+				.get();
+			let snapshotWithoutLB = await firestore.collection('Monsters').where(`max${fieldName}`, '==', max).get();
+
+			snapshotWithLB.forEach((monster: FirebaseFirestore.DocumentData) => monsters.push(monster.data()));
+			snapshotWithoutLB.forEach((monster: FirebaseFirestore.DocumentData) => monsters.push(monster.data()));
+		}
+
+		//Filter Japanese
+		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
+
+		let dataToSend = [];
+		monsters.forEach((monster) => {
+			let mainAttribute = monster.mainAttribute;
+			let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
+			let attributes =
+				Common.attributeEmotesMapping([mainAttribute])[0] + Common.attributeEmotesMapping([subAttribute])[0];
+			dataToSend.push(`${attributes}| ${monster.id}. ${monster.name}`);
+		});
+
+		if (monsters.length === 0) {
+			await this.sendMessage(
+				`I cannot process that query at the moment. Please let my dev know to update the database.`
+			);
+		} else {
+			//Display result
+			let message = `Here is the list of monsters with the most ${stat.toUpperCase()}! (${max} is the highest based on your criteria)`;
 			await this.sendMessage(message);
 			await this.sendMessageList('Search Result for Your Query', dataToSend);
 		}

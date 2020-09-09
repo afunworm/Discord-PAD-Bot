@@ -14,6 +14,7 @@ export const CARD_QUERY_MINMAX_TRAINING_PHRASES = [
 	`show me {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryMonsterStats}} {{queryIncludeLB}} from the {{monsterSeries}} collab`,
 	`list {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryMonsterStats}} {{queryIncludeLB}} from the {{monsterSeries}} series`,
 	`search for {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryMonsterStats}} {{queryIncludeLB}} from the {{monsterSeries}} collab`,
-	`help me find {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryIncludeLB}} {{queryMonsterStats}}`,
-	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryIncludeLB}} {{queryMonsterStats}}`,
+	`help me find {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryMonsterStats}} {{queryIncludeLB}}`,
+	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryMonsterStats}} {{queryIncludeLB}} from {{monsterSeries}}`,
+	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} with {{queryMinMax}} {{queryMonsterStats}} {{queryIncludeLB}} from {{monsterSeries}}`,
 ];

@@ -5,7 +5,7 @@ import { CARD_QUERY_TRAINING_PHRASES } from './card.query';
 import { CARD_QUERY_MINMAX_TRAINING_PHRASES } from './card.query.minMax';
 import { CARD_INFO_TRAINING_PHRASES } from './card.info';
 
-let currentlyTraining = CARD_QUERY_TRAINING_PHRASES;
+let currentlyTraining = CARD_QUERY_MINMAX_TRAINING_PHRASES;
 
 let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 let placers = {
@@ -396,10 +396,4 @@ let guid = () => {
 
 	await fs.writeFileSync('./intent.json', JSON.stringify(data, null, 4));
 	console.log(`Intent data populated. ${second.length} phrase(s) trained.`);
-	console.log(`Please also train these phrases manually after importing the intent (until it is fixed):`);
-	console.log(`card.info: what can i use to devolve sr anubis?`);
-	console.log(`card.query: shelling ford equip`);
-	console.log(`card.query: red shelling ford equip`);
-	console.log(`card.query: green shelling ford equip`);
-	console.log(`card.query: light shelling ford equip`);
 })();

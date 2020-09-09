@@ -233,12 +233,9 @@ client.on('message', async (message: any) => {
 		} else if (action === 'card.query.minMax') {
 			let parameters = result.queryResult.parameters.fields;
 
-			if (parameters.queryMonsterStats?.stringValue) {
+			if (parameters.monsterAwakenings1?.stringValue) {
 				await helper.sendMessage('Please wait while I am looking into that...');
-				return;
-			} else if (parameters.monsterAwakenings1?.stringValue) {
-				await helper.sendMessage('Please wait while I am looking into that...');
-				await helper.sendMonstersMinMax({
+				await helper.sendMonstersMinMaxAwakenings({
 					monsterAwakenings1: parameters.monsterAwakenings1?.stringValue || null,
 					monsterAwakenings2: parameters.monsterAwakenings2?.stringValue || null, //Sometimes AI detects it in the wrong order
 					monsterAwakenings3: parameters.monsterAwakenings3?.stringValue || null, //Sometimes AI detects it in the wrong order
@@ -247,6 +244,18 @@ client.on('message', async (message: any) => {
 					queryMinMax: parameters.queryMinMax?.stringValue,
 					monsterSeries: parameters.monsterSeries?.stringValue || null,
 					queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
+					queryEvoType: parameters.queryEvoType?.stringValue || null,
+				});
+				return;
+			} else if (parameters.queryMonsterStats?.stringValue) {
+				await helper.sendMessage('Please wait while I am looking into that...');
+				await helper.sendMonstersMinMaxStats({
+					stat: parameters.queryMonsterStats?.stringValue, //Sometimes AI detects it in the wrong order
+					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
+					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+					queryMinMax: parameters.queryMinMax?.stringValue,
+					monsterSeries: parameters.monsterSeries?.stringValue || null,
+					queryIncludeLB: parameters.queryIncludeLB?.stringValue || 'includeLB',
 					queryEvoType: parameters.queryEvoType?.stringValue || null,
 				});
 				return;

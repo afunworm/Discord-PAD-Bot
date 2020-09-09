@@ -43,13 +43,13 @@ let evoTreeData = [];
 	let computedInfoWithoutSA = {};
 	let computedStatsWithLB = {
 		hp: 0,
-		atk: 0,
-		rcv: 0,
+		attack: 0,
+		recover: 0,
 	};
 	let computedStatsWithoutLB = {
 		hp: 0,
-		atk: 0,
-		rcv: 0,
+		attack: 0,
+		recover: 0,
 	};
 	for (let id = startNumber; id < endNumber; id++) {
 		try {
@@ -91,14 +91,23 @@ let evoTreeData = [];
 
 			//Calculated max stats
 			computedStatsWithLB = {
-				hp: Math.max(monster.getLimitBreakHP(), computedStatsWithLB.hp),
-				atk: Math.max(monster.getLimitBreakATK(), computedStatsWithLB.atk),
-				rcv: Math.max(monster.getLimitBreakRCV(), computedStatsWithLB.rcv),
+				hp:
+					monster.getLimitBreakHP() === null
+						? computedStatsWithLB.hp
+						: Math.max(monster.getLimitBreakHP(), computedStatsWithLB.hp),
+				attack:
+					monster.getLimitBreakATK() === null
+						? computedStatsWithLB.attack
+						: Math.max(monster.getLimitBreakATK(), computedStatsWithLB.attack),
+				recover:
+					monster.getLimitBreakRCV() === null
+						? computedStatsWithLB.recover
+						: Math.max(monster.getLimitBreakRCV(), computedStatsWithLB.recover),
 			};
 			computedStatsWithoutLB = {
 				hp: Math.max(monster.getMaxHP(), computedStatsWithoutLB.hp),
-				atk: Math.max(monster.getMaxATK(), computedStatsWithoutLB.atk),
-				rcv: Math.max(monster.getMaxRCV(), computedStatsWithoutLB.rcv),
+				attack: Math.max(monster.getMaxATK(), computedStatsWithoutLB.attack),
+				recover: Math.max(monster.getMaxRCV(), computedStatsWithoutLB.recover),
 			};
 
 			let monsterData: MonsterData = {
@@ -217,7 +226,7 @@ let evoTreeData = [];
 		if (!entry) continue;
 
 		try {
-			await firestore.collection('Monsters').doc(i.toString()).set(entry);
+			// await firestore.collection('Monsters').doc(i.toString()).set(entry);
 			console.log('Data written for monster id ' + i);
 		} catch (error) {
 			console.log(error.message);
