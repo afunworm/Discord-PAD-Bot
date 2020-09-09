@@ -199,11 +199,23 @@ export class Helper {
 	};
 
 	private createCollector(message: Message) {
+		let author = this._message.author.id;
+
+		if (author) {
+			if (!cache.get(author)) {
+				cache.set(author, [message.id]);
+			} else {
+				let cachedData = cache.get(author);
+				cachedData.push(message.id);
+				cache.set(author, cachedData);
+			}
+		}
+
 		return message.createReactionCollector(this.collectorFilter, { time: 6000000 }).on('end', async (collected) => {
 			try {
 				await message.reactions.removeAll();
 			} catch (error) {
-				console.log(error);
+				console.log('Unable to remove all reactions when collector dies.');
 			}
 		});
 	}
@@ -213,16 +225,6 @@ export class Helper {
 		try {
 			let sentEmbed =
 				optionals === null ? await this._channel.send(message) : await this._channel.send(message, optionals);
-			let sentEmbedId = sentEmbed.id;
-			let author = this._message.author.id;
-
-			if (!cache.get(author)) {
-				cache.set(author, [sentEmbedId]);
-			} else {
-				let cachedData = cache.get(author);
-				cachedData.push(sentEmbedId);
-				cache.set(author, cachedData);
-			}
 
 			if (typeof message === 'string') return;
 
@@ -278,83 +280,37 @@ export class Helper {
 			}
 		});
 
-		//Construct first page
-		let embed = this.constructMessageListPage(messageTitle, paginations, 0);
-
 		if (paginations.length <= 1) {
 			//Send out embed
+			let embed = this.constructMessageListPage(messageTitle, paginations, 0);
 			let sentEmbed = await this.sendMessage(embed);
 			return sentEmbed;
 		}
+
+		//Construct all other pages
+		let embeds = [];
+		paginations.forEach((page, index) =>
+			embeds.push(this.constructMessageListPage(messageTitle, paginations, index))
+		);
 
 		//Send out embed
 		await this.sendMessage(
 			'There are multiple pages in this list. Use the reaction number to navigate between the lists!'
 		);
 
-		let sentEmbed = await this.sendMessage(embed);
-
-		//Count the number of react
-		let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
-		let reacts = [];
-		for (let i = 0; i < paginations.length; i++) {
-			reacts.push(sentEmbed.react(emojis[i]));
-		}
-
-		await Promise.all(reacts);
-
-		let reactors = (message: Message) => {
-			this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
-				let index = 0;
-
-				switch (react.emoji.name) {
-					case '2️⃣':
-						index = 1;
-						break;
-					case '3️⃣':
-						index = 2;
-						break;
-					case '4️⃣':
-						index = 3;
-						break;
-					case '5️⃣':
-						index = 4;
-						break;
-					case '6️⃣':
-						index = 5;
-						break;
-					case '7️⃣':
-						index = 6;
-						break;
-					case '8️⃣':
-						index = 7;
-						break;
-					case '9️⃣':
-						index = 8;
-						break;
-					case '🔟':
-						index = 9;
-						break;
-					default:
-						break;
-				}
-
-				let embed = this.constructMessageListPage(messageTitle, paginations, index);
-				let reactEmbed = await react.message.edit(embed);
-
-				reactors(reactEmbed);
-			});
-		};
-
-		reactors(sentEmbed);
-
-		return sentEmbed;
+		return await this.sendEmbedWithMultiplePages(embeds);
 	}
 
-	public async sendEmbedWithMultiplePages(embeds: MessageEmbed[]) {
+	public async sendEmbedWithMultiplePages(embeds: MessageEmbed[], customEmojis: string[] = []) {
 		let maxPage = 10;
 
-		if (embeds.length > maxPage) {
+		//Check and make sure customEmojis is valid
+		if (new Set(customEmojis).size !== customEmojis.length) {
+			throw new Error('Invalid custom emojis');
+		}
+
+		//If custom emojis can cover the reactions then, no problem
+		if (embeds.length > maxPage && customEmojis.length < maxPage) {
 			embeds = embeds.slice(0, maxPage);
 			await this.sendMessage(
 				`There are more than ${maxPage} pages in this message. Only the ${maxPage} pages will be displayed.`
@@ -363,57 +319,32 @@ export class Helper {
 
 		//Send out first embed
 		let embed = embeds[0];
-		let sentEmbed = await this.sendMessage(embed);
+		let sentEmbed = await this._channel.send(embed); //Do not use this.sendMessage because we want to handle emojis manually
 
 		//Count the number of react
 		let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+		customEmojis.forEach((emoji, index) => (emojis[index] = emoji));
+
 		let reacts = [];
+		reacts.push(sentEmbed.react('❌'));
+
 		for (let i = 0; i < embeds.length; i++) {
 			reacts.push(sentEmbed.react(emojis[i]));
 		}
 
-		await Promise.all(reacts);
+		Promise.all(reacts);
 
 		let reactors = (message: Message) => {
 			this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
-				let index = 0;
-
-				switch (react.emoji.name) {
-					case '2️⃣':
-						index = 1;
-						break;
-					case '3️⃣':
-						index = 2;
-						break;
-					case '4️⃣':
-						index = 3;
-						break;
-					case '5️⃣':
-						index = 4;
-						break;
-					case '6️⃣':
-						index = 5;
-						break;
-					case '7️⃣':
-						index = 6;
-						break;
-					case '8️⃣':
-						index = 7;
-						break;
-					case '9️⃣':
-						index = 8;
-						break;
-					case '🔟':
-						index = 9;
-						break;
-					default:
-						break;
+				if (react.emoji.name === '❌') {
+					await react.message.delete();
+					return;
 				}
 
+				let index = emojis.indexOf(react.emoji.name);
 				let embed = embeds[index];
-				let reactEmbed = await react.message.edit(embed);
 
-				reactors(reactEmbed);
+				await react.message.edit(embed);
 			});
 		};
 
@@ -421,7 +352,7 @@ export class Helper {
 		return sentEmbed;
 	}
 
-	private constructMonsterInfo(card: Monster) {
+	private async constructMonsterInfo(card: Monster) {
 		let embed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle(`${card.getId()}: ${card.getName()}`)
@@ -445,48 +376,95 @@ export class Helper {
 	}
 
 	public async sendMonsterInfo(card: Monster) {
-		let embed = this.constructMonsterInfo(card);
-		let sentEmbed = await this.sendMessage(embed);
+		let embeds = [];
+
+		//First page is the monster
+		embeds.push(await this.constructMonsterInfo(card));
+
+		//Second page is the evos
+		embeds.push(await this.constructMonsterMaterials(card, 'evo'));
+
+		//Third page is image
+		embeds.push(await this.constructMonsterImage(card));
+
+		//The next pages are for evolutions
+		let reacts = ['ℹ️', '⏫', '🖼️'];
+		let sentEmbed = await this.sendEmbedWithMultiplePages(embeds, reacts);
+
+		//Then add dynamic pages
 		await sentEmbed.react('⬅️');
 		await sentEmbed.react('➡️');
-		await sentEmbed.react('⏫');
 
-		let reactors = (message: Message) => {
+		let currentMonsterId = card.getId();
+		let currentMonster = card;
+
+		let embedReactor = (message: Message) => {
 			this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
 				//Try to extract number from the title
-				console.log(react.message.embeds);
-				let monsterId = Number(react.message.embeds[0].title.match(/(\d)+/gi)[0]);
+				currentMonsterId = Number(react.message.embeds[0].title.match(/(\d)+/gi)[0]);
 
 				if (react.emoji.name === '⬅️') {
-					monsterId -= 1;
-					let monster = new Monster(monsterId);
-					await monster.init();
+					currentMonsterId -= 1;
+					currentMonster = new Monster(currentMonsterId);
+					await currentMonster.init();
 
-					let embed = this.constructMonsterInfo(monster);
-					let reactEmbed = await react.message.edit(embed);
-					reactors(reactEmbed);
+					let embed = await this.constructMonsterInfo(currentMonster);
+					await react.message.edit(embed);
 				} else if (react.emoji.name === '➡️') {
-					monsterId += 1;
-					let monster = new Monster(monsterId);
-					await monster.init();
+					currentMonsterId += 1;
+					currentMonster = new Monster(currentMonsterId);
+					await currentMonster.init();
 
-					let embed = this.constructMonsterInfo(monster);
-					let reactEmbed = await react.message.edit(embed);
-					reactors(reactEmbed);
-				} else if (react.emoji.name === '⏫') {
-					let embed = await this.constructMonsterMaterials(card, 'evo');
-					console.log(embed);
-					let reactEmbed = await react.message.edit(embed);
-					reactors(reactEmbed);
+					let embed = await this.constructMonsterInfo(currentMonster);
+					await react.message.edit(embed);
 				}
 			});
 		};
+		embedReactor(sentEmbed);
 
-		reactors(sentEmbed);
+		//Added a separate line to navigate between the monster's evos
+		let evoList = card.getEvoTree();
+		if (evoList.length <= 1) return;
+
+		let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+
+		let message = await this._channel.send(
+			`To navigate between all forms of **${card.getId()}. ${card.getName()}**, react to the numbers below.`
+		);
+		let evoEmbeds = [];
+		await message.react('❌');
+
+		for (let i = 0; i < evoList.length; i++) {
+			let monsterId = evoList[i];
+			let monster = new Monster(monsterId);
+			await monster.init();
+
+			message.react(emojis[i]);
+			evoEmbeds.push(await this.constructMonsterInfo(monster));
+		}
+
+		Promise.all(reacts);
+		let messageReactor = (message: Message) => {
+			this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
+				if (react.emoji.name === '❌') {
+					await react.message.delete();
+					return;
+				}
+				let index = emojis.indexOf(react.emoji.name);
+				let embed = evoEmbeds[index];
+
+				sentEmbed.edit(embed);
+			});
+		};
+		messageReactor(message);
+	}
+
+	private async constructMonsterImage(card: Monster) {
+		return new Discord.MessageEmbed().setTitle(`Image for ${card.getName()}`).setImage(card.getImageUrl());
 	}
 
 	public async sendMonsterImage(card: Monster) {
-		let embed = new Discord.MessageEmbed().setTitle(`Image for ${card.getName()}`).setImage(card.getImageUrl());
+		let embed = await this.constructMonsterImage(card);
 		await this.sendMessage(embed);
 	}
 
@@ -741,9 +719,9 @@ export class Helper {
 	public async sendFullMonsterEvoTree(monsterCardList: Monster[]) {
 		let embeds = [];
 
-		monsterCardList.forEach((monsterCard) => {
-			embeds.push(this.constructMonsterInfo(monsterCard));
-		});
+		for (let monsterCard of monsterCardList) {
+			embeds.push(await this.constructMonsterInfo(monsterCard));
+		}
 
 		await this.sendEmbedWithMultiplePages(embeds);
 	}
@@ -884,77 +862,39 @@ export class Helper {
 	public async constructMonsterMaterials(card: Monster, type: 'evo' | 'devo' = 'evo') {
 		let mats = type === 'evo' ? card.getEvoMaterials() : card.getDevoMaterials();
 		let names = [];
-		let iconUrls = [];
 		mats = mats.filter((mat) => mat !== 0);
 
 		let embed = new Discord.MessageEmbed()
 			.setTitle(`**${card.getId()}. ${card.getName()}**`)
 			.setThumbnail(card.getThumbnailUrl());
 
-		if ((type === 'devo' && mats.length === 0) || card.getPreviousEvoId() === 0) {
+		if (type === 'devo' && (mats.length === 0 || card.getPreviousEvoId() === 0)) {
 			embed.addFields({
-				name: `Evo Materials`,
-				value: `**${card.getName()} (#${card.getId()})** cannot be devolved!`,
+				name: `Devo Materials`,
+				value: `**${card.getName()} (#${card.getId()})** cannot be devolved.`,
 			});
 		} else if (type === 'evo' && mats.length === 0) {
 			embed.addFields({
-				name: `Devo Materials`,
-				value: `**${card.getName()} (#${card.getId()})** is in its base form!`,
+				name: `Evo Materials`,
+				value: `**${card.getName()} (#${card.getId()})** is in its base form and cannot be evolved to from any other evo.`,
 			});
 		} else {
 			for (let i = 0; i < mats.length; i++) {
 				let evoMatId = mats[i];
 				let monster = new Monster(evoMatId);
 				await monster.init();
+
 				names.push(monster.getId() + '. ' + monster.getName());
-				iconUrls.push({
-					id: monster.getId(),
-					url: monster.getThumbnailUrl(),
-				});
 			}
 
-			let imagePath;
-			try {
-				if (type === 'evo') {
-					let from = {
-						id: card.getPreviousEvoId(),
-						url: Common.getThumbnailUrl(card.getPreviousEvoId()),
-					};
-					let to = {
-						id: card.getId(),
-						url: card.getThumbnailUrl(),
-					};
-
-					imagePath = await Common.displayEvoIcons(from, to, iconUrls);
-				} else {
-					let from = {
-						id: card.getId(),
-						url: card.getThumbnailUrl(),
-					};
-					let to = {
-						id: card.getPreviousEvoId(),
-						url: Common.getThumbnailUrl(card.getPreviousEvoId()),
-					};
-					imagePath = await Common.displayEvoIcons(from, to, iconUrls);
-				}
-			} catch (error) {
-				console.log(error);
-			}
+			let imagePath = type === 'evo' ? Common.getEvoImageUrl(card.getId()) : Common.getDevoImageUrl(card.getId());
 
 			embed
 				.addFields({
-					name: `${type === 'evo' ? 'Evo' : 'Devo'} Materials for **${card.getId()}. ${card.getName()}**`,
+					name: `${type === 'evo' ? 'Evo' : 'Devo'} Materials`,
 					value: names.join('\n'),
 				})
-				.attachFiles([
-					{
-						attachment: imagePath,
-						name: 'evoMats.png',
-					},
-				])
-				.setImage('attachment://evoMats.png');
-
-			await fs.unlinkSync(imagePath);
+				.setImage(imagePath);
 		}
 
 		return embed;

@@ -353,7 +353,7 @@ export class Monster {
 
 	public getAvailableKillers(): string {
 		let killerLatents = this.getLatentKillers();
-		return Common.killerEmotesMapping(killerLatents).join(' ');
+		return Common.killerEmotesMapping(killerLatents).join(' ') || 'No Killers Available';
 	}
 
 	public getEvoTree(): number[] {
