@@ -309,7 +309,7 @@ let guid = () => {
 						} else if (name === 'sysNumber') {
 							let number = r(1, 500);
 							entry.data.push({
-								text: number,
+								text: number.toString(),
 								userDefined: false,
 								alias: 'number',
 								meta: '@sys.number',
@@ -363,7 +363,7 @@ let guid = () => {
 					} else if (name === 'sysNumber') {
 						let number = r(1, 500);
 						entry.data.push({
-							text: number,
+							text: number.toString(),
 							userDefined: false,
 							alias: 'number',
 							meta: '@sys.number',
