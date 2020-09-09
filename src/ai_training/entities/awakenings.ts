@@ -20,41 +20,41 @@ let computedNameTracker = [];
 let numberOfNamesTrained = 0;
 
 (async () => {
-    for (let awakeningId in AWAKENINGS_ALIAS) {
-        let awakenings = AWAKENINGS_ALIAS[awakeningId];
-        let synonyms = [];
-        let id = awakeningId;
-        
-        awakenings.forEach(awakening => {
-            //Train real name
-            synonyms.push(awakening);
+	for (let awakeningId in AWAKENINGS_ALIAS) {
+		let awakenings = AWAKENINGS_ALIAS[awakeningId];
+		let synonyms = [];
+		let id = awakeningId;
 
-            //Train name without special character
-            let name = awakening.toLowerCase().replace(/[^a-zAZ0-9%\+\>\<]/gi, ' ');
-            synonyms.push(name);
+		awakenings.forEach((awakening) => {
+			//Train real name
+			synonyms.push(awakening);
 
-            //Train for parts of names
-            let nameParts = name.split(' ');
-            nameParts.forEach((namePart) => {
-                synonyms.push(namePart);
-            });
+			//Train name without special character
+			let name = awakening.toLowerCase().replace(/[^a-zAZ0-9%\+\>\<]/gi, ' ');
+			synonyms.push(name);
 
-            //Train for initials
-            let initials = getInitials(name);
-            synonyms.push(initials);
+			//Train for parts of names
+			let nameParts = name.split(' ');
+			nameParts.forEach((namePart) => {
+				synonyms.push(namePart);
+			});
 
-            synonyms.forEach(synonym => {
-                synonyms.push(synonym.replace('hp', 'hit points'));
-                synonyms.push(synonym.replace('hp', 'hitpoints'));
-                synonyms.push(synonym.replace('hp', 'hit point'));
-                synonyms.push(synonym.replace('hp', 'hitpoint'));
-                synonyms.push(synonym.replace('attack', 'atk'));
-                synonyms.push(synonym.replace('recovery', 'rcv'));
-                synonyms.push(synonym.replace('recovery', 'recover'));
-                synonyms.push(synonym.replace('+', ' plus'));
-                synonyms.push(synonym.replace(' resist', ' resistance'));
-            });
-        });
+			//Train for initials
+			let initials = getInitials(name);
+			synonyms.push(initials);
+
+			synonyms.forEach((synonym) => {
+				synonyms.push(synonym.replace('hp', 'hit points'));
+				synonyms.push(synonym.replace('hp', 'hitpoints'));
+				synonyms.push(synonym.replace('hp', 'hit point'));
+				synonyms.push(synonym.replace('hp', 'hitpoint'));
+				synonyms.push(synonym.replace('attack', 'atk'));
+				synonyms.push(synonym.replace('recovery', 'rcv'));
+				synonyms.push(synonym.replace('recovery', 'recover'));
+				synonyms.push(synonym.replace('+', ' plus'));
+				synonyms.push(synonym.replace(' resist', ' resistance'));
+			});
+		});
 
 		//Process the synonyms and put it to tracker
 		//Remove all duplication in the synonyms itself
@@ -79,8 +79,10 @@ let numberOfNamesTrained = 0;
 
 		numberOfNamesTrained += synonyms.length;
 
-		console.log(`Training data populated for series ${awakeningId}. ${awakenings[0]} - ${synonyms.length} entries created.`);
-	});
+		console.log(
+			`Training data populated for series ${awakeningId}. ${awakenings[0]} - ${synonyms.length} entries created.`
+		);
+	}
 
 	await fs.writeFileSync('./monsterAwakenings.json', JSON.stringify(data, null, 4));
 

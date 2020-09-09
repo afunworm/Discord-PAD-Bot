@@ -14,7 +14,7 @@ const fs = require('fs');
  *-------------------------------------------------------*/
 if (admin.apps.length === 0) {
 	admin.initializeApp({
-		credential: admin.credential.cert(require('../' + process.env.FIREBASE_SERVICE_ACCOUNT)),
+		credential: admin.credential.cert(require(__dirname + '/../../' + process.env.FIREBASE_SERVICE_ACCOUNT)),
 		databaseURL: process.env.FIREBASE_DATABASE_URL,
 	});
 }
@@ -23,8 +23,6 @@ const firestore = admin.firestore();
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
-startNumber = 6402;
-endNumber = 6403;
 highestValidMonsterId = endNumber;
 let data = [];
 let evoTreeData = [];
@@ -43,7 +41,16 @@ let evoTreeData = [];
 	 */
 	let computedInfoWithSA = {};
 	let computedInfoWithoutSA = {};
-	let computedStats = {};
+	let computedStatsWithLB = {
+		hp: 0,
+		atk: 0,
+		rcv: 0,
+	};
+	let computedStatsWithoutLB = {
+		hp: 0,
+		atk: 0,
+		rcv: 0,
+	};
 	for (let id = startNumber; id < endNumber; id++) {
 		try {
 			let monster = new MonsterParser(id);
@@ -51,10 +58,9 @@ let evoTreeData = [];
 			//Check to see if the monster is present in the NA database, if not, switch to JP database
 			//We can get around this by checking cooldown of an active skill
 			//It should never be 0
-			if (monster.getActiveSkill().cooldown === 0) {
+			if (monster.getActiveSkill().cooldown === 0 && monster.isRegularMonster()) {
 				try {
 					monster = new MonsterParser(id, true);
-					console.log(monster.getRawData());
 				} catch (error) {
 					console.log('Unable to use Japanese database for monster id ' + id);
 				}
@@ -84,12 +90,16 @@ let evoTreeData = [];
 			}
 
 			//Calculated max stats
-			// if (Object.keys(computedStats).length === 0) {
-			//     computedStats = {
-			//         hp: monster.getMaxHP(),
-
-			//     }
-			// }
+			computedStatsWithLB = {
+				hp: Math.max(monster.getLimitBreakHP(), computedStatsWithLB.hp),
+				atk: Math.max(monster.getLimitBreakATK(), computedStatsWithLB.atk),
+				rcv: Math.max(monster.getLimitBreakRCV(), computedStatsWithLB.rcv),
+			};
+			computedStatsWithoutLB = {
+				hp: Math.max(monster.getMaxHP(), computedStatsWithoutLB.hp),
+				atk: Math.max(monster.getMaxATK(), computedStatsWithoutLB.atk),
+				rcv: Math.max(monster.getMaxRCV(), computedStatsWithoutLB.rcv),
+			};
 
 			let monsterData: MonsterData = {
 				_lastUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -123,6 +133,9 @@ let evoTreeData = [];
 				maxATK: monster.getMaxATK(),
 				minRCV: monster.getMinRCV(),
 				maxRCV: monster.getMaxRCV(),
+				limitBreakHP: monster.getLimitBreakHP(),
+				limitBreakATK: monster.getLimitBreakATK(),
+				limitBreakRCV: monster.getLimitBreakRCV(),
 				expCurve: monster.getExpCurve(),
 				activeSkill: monster.getActiveSkill(),
 				leaderSkill: monster.getLeaderSkill(),
@@ -204,7 +217,7 @@ let evoTreeData = [];
 		if (!entry) continue;
 
 		try {
-			// await firestore.collection('Monsters').doc(i.toString()).set(entry);
+			await firestore.collection('Monsters').doc(i.toString()).set(entry);
 			console.log('Data written for monster id ' + i);
 		} catch (error) {
 			console.log(error.message);
@@ -216,10 +229,12 @@ let evoTreeData = [];
 	await firestore.collection('Monsters').doc('@info').set({
 		maxComputedInfoWithSA: computedInfoWithSA,
 		maxComputedInfoWithoutSA: computedInfoWithoutSA,
+		maxComputedStatsWithLB: computedStatsWithLB,
+		maxComputedStatsWithoutLB: computedStatsWithoutLB,
 	});
 	console.log('Data written for precalculated stats.');
 
-	await fs.writeFileSync('./database.json', JSON.stringify(data, null, 4));
+	// await fs.writeFileSync('./database.json', JSON.stringify(data, null, 4));
 
 	console.log('Database parsing completed');
 	process.exit();

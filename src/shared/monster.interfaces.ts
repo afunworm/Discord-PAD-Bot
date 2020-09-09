@@ -61,6 +61,9 @@ export interface MonsterData {
 	maxATK: number;
 	minRCV: number;
 	maxRCV: number;
+	limitBreakHP: number | null;
+	limitBreakATK: number | null;
+	limitBreakRCV: number | null;
 	expCurve: number;
 	activeSkill: ActiveSkillData;
 	leaderSkill: LeaderSkillData;

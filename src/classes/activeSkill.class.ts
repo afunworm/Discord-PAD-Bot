@@ -3,6 +3,7 @@ import { ACTIVESKILL_MAP } from './activeSkill.map';
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { MONSTER_TYPES } from '../shared/monster.types';
 import { AWAKENINGS as MONSTER_AWAKENS } from '../shared/monster.awakens';
+import { MonsterParser } from '../classes/monsterParser.class';
 const { skill: SKILL_DATA } = require('../raw/download_skill_data.json');
 
 export class ActiveSkill {
@@ -1001,8 +1002,9 @@ export class ActiveSkill {
 	public ASChangeMonster(): string {
 		let data = this.mergeDefaults([0]);
 		let changeToId = data[0];
+		let monster = new MonsterParser(changeToId);
 
-		return `Transform into {{${changeToId}}}.`;
+		return `Transform into ${monster.getName()} (#${monster.getId()}).`;
 	}
 
 	public ASSkyfallLock(): string {

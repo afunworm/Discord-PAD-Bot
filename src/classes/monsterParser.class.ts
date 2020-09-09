@@ -1,6 +1,7 @@
 const { card: MONSTER_DATA } = require('../raw/download_card_data.json');
 const { card: JP_MONSTER_DATA } = require('../raw/download_card_data.jp.json');
 const { skill: SKILL_DATA } = require('../raw/download_skill_data.json');
+const { skill: JP_SKILL_DATA } = require('../raw/download_skill_data.jp.json');
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { AWAKENINGS } from '../shared/monster.awakens';
 import { MONSTER_TYPES } from '../shared/monster.types';
@@ -14,6 +15,7 @@ export class MonsterParser {
 	private id;
 	private data;
 	private useJP: boolean = false;
+	private rawSkillData;
 
 	constructor(id: number, useJP: boolean = false) {
 		this.id = id;
@@ -25,12 +27,14 @@ export class MonsterParser {
 
 			this.useJP = true;
 			this.data = JP_MONSTER_DATA[id];
+			this.rawSkillData = JP_SKILL_DATA;
 		} else {
 			if (!Number.isInteger(id) || id > MONSTER_DATA.length || id < 1) {
 				throw new Error('Invalid id');
 			}
 
 			this.data = MONSTER_DATA[id];
+			this.rawSkillData = SKILL_DATA;
 		}
 	}
 
@@ -40,6 +44,14 @@ export class MonsterParser {
 
 	static getSkillDatabaseLength(): number {
 		return SKILL_DATA.length;
+	}
+
+	static getMonsterDatabaseLengthJP(): number {
+		return JP_MONSTER_DATA.length;
+	}
+
+	static getSkillDatabaseLengthJP(): number {
+		return JP_SKILL_DATA.length;
 	}
 
 	public getRawData() {
@@ -173,12 +185,24 @@ export class MonsterParser {
 		return this.data[15];
 	}
 
+	public getLimitBreakHP(): number | null {
+		if (!this.isLimitBreakable()) return null;
+
+		return Math.round(this.getMaxHP() * (1 + this.getLimitBreakPercentage() / 100));
+	}
+
 	public getMinATK(): number {
 		return this.data[17];
 	}
 
 	public getMaxATK(): number {
 		return this.data[18];
+	}
+
+	public getLimitBreakATK(): number | null {
+		if (!this.isLimitBreakable()) return null;
+
+		return Math.round(this.getMaxATK() * (1 + this.getLimitBreakPercentage() / 100));
 	}
 
 	public getMinRCV(): number {
@@ -189,6 +213,12 @@ export class MonsterParser {
 		return this.data[21];
 	}
 
+	public getLimitBreakRCV(): number | null {
+		if (!this.isLimitBreakable()) return null;
+
+		return Math.round(this.getMaxRCV() * (1 + this.getLimitBreakPercentage() / 100));
+	}
+
 	public getExpCurve(): number {
 		return this.data[23];
 	}
@@ -196,9 +226,9 @@ export class MonsterParser {
 	public getActiveSkillDescriptionDetails(activeSkillId: number): string[] {
 		let result = [];
 
-		if (SKILL_DATA[activeSkillId][2] === 116) {
+		if (this.rawSkillData[activeSkillId][2] === 116) {
 			//Multipart
-			let skills = SKILL_DATA[activeSkillId];
+			let skills = this.rawSkillData[activeSkillId];
 			let skillIds = [];
 
 			for (let i = 6; i < skills.length; i++) {
@@ -206,12 +236,12 @@ export class MonsterParser {
 			}
 
 			skillIds.forEach((skillId) => {
-				let skillData = SKILL_DATA[skillId];
+				let skillData = this.rawSkillData[skillId];
 				let activeSkill = new ActiveSkill(skillData);
 				result.push(activeSkill.getDetailDescription() === null ? 'None' : activeSkill.getDetailDescription());
 			});
 		} else {
-			let skillData = SKILL_DATA[activeSkillId];
+			let skillData = this.rawSkillData[activeSkillId];
 			let activeSkill = new ActiveSkill(skillData);
 			result.push(activeSkill.getDetailDescription() === null ? 'None' : activeSkill.getDetailDescription());
 		}
@@ -222,9 +252,9 @@ export class MonsterParser {
 	public getActiveSkillTypes(activeSkillId: number): number[] {
 		let result = [];
 
-		if (SKILL_DATA[activeSkillId][2] === 116) {
+		if (this.rawSkillData[activeSkillId][2] === 116) {
 			//Multipart
-			let skills = SKILL_DATA[activeSkillId];
+			let skills = this.rawSkillData[activeSkillId];
 			let skillIds = [];
 
 			for (let i = 6; i < skills.length; i++) {
@@ -232,10 +262,10 @@ export class MonsterParser {
 			}
 
 			skillIds.forEach((skillId) => {
-				result.push(SKILL_DATA[skillId][2]);
+				result.push(this.rawSkillData[skillId][2]);
 			});
 		} else {
-			result.push(SKILL_DATA[activeSkillId][2]);
+			result.push(this.rawSkillData[activeSkillId][2]);
 		}
 
 		return result;
@@ -243,12 +273,16 @@ export class MonsterParser {
 
 	public getActiveSkill() {
 		let skillId = this.data[25];
-		let skillData = SKILL_DATA[skillId];
+		let skillData = this.rawSkillData[skillId];
+		let descriptionDetails = this.isRegularMonster()
+			? this.getActiveSkillDescriptionDetails(skillId)
+			: [skillData[1]];
+
 		return {
 			id: skillId,
 			name: skillData[0],
 			description: skillData[1],
-			descriptionDetails: this.getActiveSkillDescriptionDetails(skillId),
+			descriptionDetails: descriptionDetails,
 			cooldown: skillData[4],
 			maxSkillLevel: skillData[3],
 			cooldownAtMaxLevel: Number(skillData[4]) - Number(skillData[3]) + 1,
@@ -257,9 +291,9 @@ export class MonsterParser {
 	}
 
 	public getMaxMultiplier(leaderSkillId: number): number[] {
-		if (SKILL_DATA[leaderSkillId][2] === 138) {
+		if (this.rawSkillData[leaderSkillId][2] === 138) {
 			//Multipart
-			let skills = SKILL_DATA[leaderSkillId];
+			let skills = this.rawSkillData[leaderSkillId];
 			let skillIds = [];
 
 			for (let i = 6; i < skills.length; i++) {
@@ -271,25 +305,8 @@ export class MonsterParser {
 			let isSevenBySix = false;
 
 			skillIds.forEach((skillId) => {
-				let skillData = SKILL_DATA[skillId];
+				let skillData = this.rawSkillData[skillId];
 				let leaderSkill = new LeaderSkill(skillData);
-
-				if (leaderSkill.getLSType() === 'LSSevenBySix') {
-					console.log('7x6 something something');
-					isSevenBySix = true;
-				}
-				if (leaderSkill.getLSType() === 'LSAttrCross' && isSevenBySix) {
-					console.log('handle this somehow');
-				}
-
-				// special cases we want to account for:
-				// 7x6 crosses (e.g. Bride Rushana, Allatu, Karin Kanzuki). In this case we can override the standard cross multiplier function.
-				// Crosses in separate parts LS components (e.g. Toragon).
-				// maybe a LS that has a separate LS component for lowHP and a separate LS component for highHP. I don't know if any exist.
-
-				// start with [1,1,1,1];
-				// * [1,2,3,4]
-				// * [5,6,7,8]
 				result = result.map((v, i) => v * leaderSkill.getMaxMultiplier()[i]);
 			});
 
@@ -300,7 +317,7 @@ export class MonsterParser {
 
 			return result;
 		} else {
-			let skillData = SKILL_DATA[leaderSkillId];
+			let skillData = this.rawSkillData[leaderSkillId];
 			let leaderSkill = new LeaderSkill(skillData);
 			let result = leaderSkill.getMaxMultiplier();
 			result[3] = 1 - result[3];
@@ -315,9 +332,9 @@ export class MonsterParser {
 	public getLeaderSkillDescriptionDetails(leaderSkillId: number): string[] {
 		let result = [];
 
-		if (SKILL_DATA[leaderSkillId][2] === 138) {
+		if (this.rawSkillData[leaderSkillId][2] === 138) {
 			//Multipart
-			let skills = SKILL_DATA[leaderSkillId];
+			let skills = this.rawSkillData[leaderSkillId];
 			let skillIds = [];
 
 			for (let i = 6; i < skills.length; i++) {
@@ -325,12 +342,12 @@ export class MonsterParser {
 			}
 
 			skillIds.forEach((skillId) => {
-				let skillData = SKILL_DATA[skillId];
+				let skillData = this.rawSkillData[skillId];
 				let leaderSkill = new LeaderSkill(skillData);
 				result.push(leaderSkill.getDetailDescription() === null ? 'None' : leaderSkill.getDetailDescription());
 			});
 		} else {
-			let skillData = SKILL_DATA[leaderSkillId];
+			let skillData = this.rawSkillData[leaderSkillId];
 			let leaderSkill = new LeaderSkill(skillData);
 			result.push(leaderSkill.getDetailDescription() === null ? 'None' : leaderSkill.getDetailDescription());
 		}
@@ -341,9 +358,9 @@ export class MonsterParser {
 	public getLeaderSkillTypes(leaderSkillId: number): number[] {
 		let result = [];
 
-		if (SKILL_DATA[leaderSkillId][2] === 138) {
+		if (this.rawSkillData[leaderSkillId][2] === 138) {
 			//Multipart
-			let skills = SKILL_DATA[leaderSkillId];
+			let skills = this.rawSkillData[leaderSkillId];
 			let skillIds = [];
 
 			for (let i = 6; i < skills.length; i++) {
@@ -351,23 +368,38 @@ export class MonsterParser {
 			}
 
 			skillIds.forEach((skillId) => {
-				result.push(SKILL_DATA[skillId][2]);
+				result.push(this.rawSkillData[skillId][2]);
 			});
 		} else {
-			result.push(SKILL_DATA[leaderSkillId][2]);
+			result.push(this.rawSkillData[leaderSkillId][2]);
 		}
 
 		return result;
 	}
 
+	public isRegularMonster() {
+		let isRegularMonster = false;
+		this.getTypes().forEach((type) => {
+			//Balanced Physical Healer Dragon God Attacker Devil Machine are accepted
+			if ([1, 2, 3, 4, 5, 6, 7, 8].includes(type)) {
+				isRegularMonster = true;
+			}
+		});
+		return isRegularMonster;
+	}
+
 	public getLeaderSkill() {
 		let skillId = this.data[26];
-		let skillData = SKILL_DATA[skillId];
+		let skillData = this.rawSkillData[skillId];
+		let descriptionDetails = this.isRegularMonster()
+			? this.getLeaderSkillDescriptionDetails(skillId)
+			: [skillData[1]];
+
 		return {
 			id: skillId,
 			name: skillData[0],
 			description: skillData[1],
-			descriptionDetails: this.getLeaderSkillDescriptionDetails(skillId),
+			descriptionDetails: descriptionDetails,
 			maxMultipliers: this.getMaxMultiplier(skillId),
 			types: this.getLeaderSkillTypes(skillId),
 		};

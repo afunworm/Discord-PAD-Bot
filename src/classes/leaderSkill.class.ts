@@ -2,9 +2,6 @@
 import { LEADERSKILL_MAP } from './leaderSkill.map';
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { MONSTER_TYPES } from '../shared/monster.types';
-import { min } from 'lodash';
-
-//@TODO - Check on evo, enhanced, etc. because they have some interesting and overlapping skill types
 
 export class LeaderSkill {
 	private type: number;
