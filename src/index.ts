@@ -38,7 +38,8 @@ client.on('message', async (message: any) => {
 		return;
 	}
 
-	message.channel.send(`I am being maintained and will be able to work again in 15 mins!`);
+	// message.channel.send(`I am being maintained and will be able to work again in 15 mins!`);
+	// return;
 
 	let userId = message.author.id;
 	let ai = new AI(userId);
@@ -261,13 +262,13 @@ client.on('message', async (message: any) => {
 			if (eggMachines) {
 				await helper.sendRandomRolls({
 					machine: eggMachines,
-					queryQuantity1: parameters.queryQuantity1?.stringValue,
+					quantity: parameters.number.numberValue,
 				});
 				return;
 			} else {
 				await helper.sendRandomCard({
 					type: queryAddtionalTypes,
-					queryQuantity1: parameters.queryQuantity1?.stringValue,
+					quantity: parameters.number.numberValue,
 					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
 					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
 					queryEvoType: parameters.queryEvoType?.stringValue || null,

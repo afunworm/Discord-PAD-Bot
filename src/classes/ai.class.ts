@@ -81,13 +81,8 @@ export interface QueryResultInterface {
 					kind: 'stringValue';
 				};
 				number: {
-					listValue: {
-						values: {
-							numberValue: number;
-							kind: 'numberValue';
-						}[];
-					};
-					kind: 'listValue';
+					numberValue: number;
+					kind: 'numberValue';
 				};
 				queryCompare1: {
 					stringValue: 'min' | 'max' | 'exact' | 'less' | 'more';

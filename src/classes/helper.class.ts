@@ -1273,10 +1273,10 @@ export class Helper {
 	}
 
 	public async sendRandomCard(data) {
-		let { queryQuantity1, queryEvoType, monsterSeries, type } = data;
-		queryQuantity1 = Number(queryQuantity1) || 1;
+		let { quantity, queryEvoType, monsterSeries, type } = data;
+		quantity = Number(quantity) || 1;
 
-		if (queryQuantity1 > 20) {
+		if (quantity > 20) {
 			if (type === 'random') {
 				await this.sendMessage(
 					"Due to Discord's limitation on embed messages, I can only give you at most 20 monsters. Wanna try again?"
@@ -1312,7 +1312,7 @@ export class Helper {
 			monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
 
 			//If the number of monsters retrieved is > the quantity, just pick random
-			if (monsters.length > queryQuantity1) {
+			if (monsters.length > quantity) {
 				let temp = [];
 
 				do {
@@ -1326,7 +1326,7 @@ export class Helper {
 						}
 					}
 					monsters.splice(index, 1);
-				} while (temp.length < queryQuantity1 && monsters.length > 0);
+				} while (temp.length < quantity && monsters.length > 0);
 
 				monsters = temp;
 			}
@@ -1352,7 +1352,7 @@ export class Helper {
 					console.log(error);
 					continue;
 				}
-			} while (monsters.length < queryQuantity1);
+			} while (monsters.length < quantity);
 		}
 
 		//Map to id & url only
@@ -1467,8 +1467,8 @@ export class Helper {
 	}
 
 	public async sendRandomRolls(data) {
-		let { machine, queryQuantity1 } = data;
-		queryQuantity1 = Number(queryQuantity1) || 1;
+		let { machine, quantity } = data;
+		quantity = Number(quantity) || 1;
 
 		if (!['event', 'collab', 'rare'].includes(machine)) {
 			await this.sendMessage(
@@ -1477,7 +1477,7 @@ export class Helper {
 			return;
 		}
 
-		if (queryQuantity1 > 20) {
+		if (quantity > 20) {
 			await this.sendMessage(
 				"Due to Discord's limitation on embed messages, you can only roll 20 monsters at a time. Wanna try again?"
 			);
@@ -1534,7 +1534,7 @@ export class Helper {
 				// console.log(error);
 				continue;
 			}
-		} while (monsters.length < queryQuantity1);
+		} while (monsters.length < quantity);
 
 		//Map to id & url only
 		let monsterIconData = monsters.map((monster) => {
