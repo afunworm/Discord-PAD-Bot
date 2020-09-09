@@ -1,18 +1,18 @@
 export const CARD_QUERY_RANDOM_TRAINING_PHRASES = [
-	//Asking for random card
-	`from {{monsterSeries}}, give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}}`,
-	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
-	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
-	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}} from {{monsterSeries}}`,
-	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} collab`,
-	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
-	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
-	`gimme {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
-	`gimme {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
-	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}}`,
-	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	//Rolling egg machine
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times in the current {{eggMachines}}`,
+	`{{queryAdditionalTypes:roll}} the current {{eggMachines}} {{queryQuantity1}} times`,
+	`{{queryAdditionalTypes:roll}} {{eggMachines}} {{queryQuantity1}} times`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times {{eggMachines}}`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times the current {{eggMachines}}`,
 
-	//Rolling
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times in the current {{eggMachines:rem:cem:eem}}`,
+	`{{queryAdditionalTypes:roll}} the current {{eggMachines:rem:cem:eem}} {{queryQuantity1}} times`,
+	`{{queryAdditionalTypes:roll}} {{eggMachines}} {{queryQuantity1}} times`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times {{eggMachines:rem:cem:eem}}`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times the current {{eggMachines:rem:cem:eem}}`,
+
+	//Rolling randomly
 	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from {{monsterSeries}}`,
 	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from {{monsterSeries}} collab`,
 	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from {{monsterSeries}} machine`,
@@ -29,4 +29,17 @@ export const CARD_QUERY_RANDOM_TRAINING_PHRASES = [
 	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} series {{queryQuantity1}} times `,
 	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} collab {{queryQuantity1}} times`,
 	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} machine {{queryQuantity1}} times `,
+
+	//Asking for random card
+	`from {{monsterSeries}}, give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}} from {{monsterSeries}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} collab`,
+	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
+	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`gimme {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
+	`gimme {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}}`,
+	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
 ];

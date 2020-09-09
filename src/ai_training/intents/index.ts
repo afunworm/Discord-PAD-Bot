@@ -21,6 +21,7 @@ let placers = {
 		['after 110', 'after limit break', 'when lb', 'without limit break', 'without lb', 'without limitbreak'][
 			r(0, 5)
 		],
+	eggMachines: () => ['rare egg machine', 'event egg machine', 'collab egg machine'][r(0, 2)],
 	monsterName: () => {
 		let prefixes = [
 			'sr ',

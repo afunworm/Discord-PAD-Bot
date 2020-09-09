@@ -5,585 +5,10 @@
         "updated": null,
         "data": [
             {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "power ranger",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": ", ",
-                "userDefined": false
-            },
-            {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "5",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
+                "text": "roll",
                 "userDefined": true,
                 "alias": "queryAdditionalTypes",
                 "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "light",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "blue",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "cards",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "yugioh",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": ", ",
-                "userDefined": false
-            },
-            {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "12",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "none",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": "/",
-                "userDefined": false
-            },
-            {
-                "text": "wood",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "card",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "pad academy",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": ", ",
-                "userDefined": false
-            },
-            {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "12",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "blue",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monsters",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "beach",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": ", ",
-                "userDefined": false
-            },
-            {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "2",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "cards",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "10",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "none",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "r",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "card",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster hunter",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "1",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "wood",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": "/",
-                "userDefined": false
-            },
-            {
-                "text": "water",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monsters",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "beach",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "5",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "x",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "card",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "power ranger",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
             },
             {
                 "text": " ",
@@ -600,27 +25,7 @@
                 "userDefined": false
             },
             {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "card",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
+                "text": "times",
                 "userDefined": false
             },
             {
@@ -628,212 +33,7 @@
                 "userDefined": false
             },
             {
-                "text": "god fest exclusive",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "15",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "cards",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "6",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monsters",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "bleach",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "8",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "dark",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "g",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "assist",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "card",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
+                "text": "in",
                 "userDefined": false
             },
             {
@@ -849,18 +49,18 @@
                 "userDefined": false
             },
             {
-                "text": "god fest exclusive",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
+                "text": "current",
+                "userDefined": false
             },
             {
                 "text": " ",
                 "userDefined": false
             },
             {
-                "text": "collab",
-                "userDefined": false
+                "text": "rare egg machine",
+                "userDefined": true,
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
             }
         ]
     },
@@ -870,84 +70,10 @@
         "updated": null,
         "data": [
             {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "8",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
+                "text": "roll",
                 "userDefined": true,
                 "alias": "queryAdditionalTypes",
                 "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "x",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": "/",
-                "userDefined": false
-            },
-            {
-                "text": "light",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "awoken",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monsters",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
             },
             {
                 "text": " ",
@@ -962,140 +88,18 @@
                 "userDefined": false
             },
             {
-                "text": "valentine",
+                "text": "current",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "rare egg machine",
                 "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "collab",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "13",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "blue",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "uevo",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster hunter",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "collab",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "show",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
             },
             {
                 "text": " ",
@@ -1112,63 +116,7 @@
                 "userDefined": false
             },
             {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "split evo",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "dragon bound dragon callers",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "collab",
+                "text": "times",
                 "userDefined": false
             }
         ]
@@ -1179,33 +127,7 @@
         "updated": null,
         "data": [
             {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "8",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
+                "text": "roll",
                 "userDefined": true,
                 "alias": "queryAdditionalTypes",
                 "meta": "@queryAdditionalTypes"
@@ -1215,548 +137,10 @@
                 "userDefined": false
             },
             {
-                "text": "fire",
+                "text": "rare egg machine",
                 "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "x",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "uevo",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monsters",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "god fest exclusive",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "6",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "dark",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": "/",
-                "userDefined": false
-            },
-            {
-                "text": "fire",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "uevo",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "yugioh",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "5",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "g",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "super ultimate",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monsters",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "pad academy",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "8",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "assist evo",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "cards",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "power ranger",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "give",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "me",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "10",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monsters",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "gimme",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "10",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "l",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "wood",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "ultimate evo",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "card",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "god fest exclusive",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "gimme",
-                "userDefined": false
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
             },
             {
                 "text": " ",
@@ -1773,83 +157,7 @@
                 "userDefined": false
             },
             {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "dark",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": "/",
-                "userDefined": false
-            },
-            {
-                "text": "none",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "ultimate evolution",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "beach",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
+                "text": "times",
                 "userDefined": false
             }
         ]
@@ -1860,15 +168,17 @@
         "updated": null,
         "data": [
             {
-                "text": "gimme",
-                "userDefined": false
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
             },
             {
                 "text": " ",
                 "userDefined": false
             },
             {
-                "text": "7",
+                "text": "5",
                 "userDefined": true,
                 "alias": "queryQuantity1",
                 "meta": "@queryQuantity1"
@@ -1878,74 +188,18 @@
                 "userDefined": false
             },
             {
-                "text": "random",
+                "text": "times",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "event egg machine",
                 "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "none",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "normal",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "card",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "the",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "bleach",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
-                "userDefined": false
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
             }
         ]
     },
@@ -1955,15 +209,17 @@
         "updated": null,
         "data": [
             {
-                "text": "gimme",
-                "userDefined": false
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
             },
             {
                 "text": " ",
                 "userDefined": false
             },
             {
-                "text": "14",
+                "text": "13",
                 "userDefined": true,
                 "alias": "queryQuantity1",
                 "meta": "@queryQuantity1"
@@ -1973,37 +229,7 @@
                 "userDefined": false
             },
             {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "split evo",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "cards",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
+                "text": "times",
                 "userDefined": false
             },
             {
@@ -2019,17 +245,139 @@
                 "userDefined": false
             },
             {
-                "text": "yugioh",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
+                "text": "current",
+                "userDefined": false
             },
             {
                 "text": " ",
                 "userDefined": false
             },
             {
-                "text": "series",
+                "text": "rare egg machine",
+                "userDefined": true,
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "5",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "in",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "current",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "cem",
+                "userDefined": true,
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "current",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "cem",
+                "userDefined": true,
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "6",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
                 "userDefined": false
             }
         ]
@@ -2040,8 +388,20 @@
         "updated": null,
         "data": [
             {
-                "text": "gimme",
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
                 "userDefined": false
+            },
+            {
+                "text": "collab egg machine",
+                "userDefined": true,
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
             },
             {
                 "text": " ",
@@ -2058,20 +418,8 @@
                 "userDefined": false
             },
             {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
+                "text": "times",
                 "userDefined": false
-            },
-            {
-                "text": "cards",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
             }
         ]
     },
@@ -2081,210 +429,10 @@
         "updated": null,
         "data": [
             {
-                "text": "i",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "need",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "11",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
+                "text": "roll",
                 "userDefined": true,
                 "alias": "queryAdditionalTypes",
                 "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "fire",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "x",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "awoken",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "dragon bound dragon callers",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "i",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "need",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "15",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "water",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": "/",
-                "userDefined": false
-            },
-            {
-                "text": "fire",
-                "userDefined": true,
-                "alias": "monsterAttribute2",
-                "meta": "@monsterAttribute2"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "reincarnated",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "cards",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "beach",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "i",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "need",
-                "userDefined": false
             },
             {
                 "text": " ",
@@ -2301,47 +449,7 @@
                 "userDefined": false
             },
             {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "dark",
-                "userDefined": true,
-                "alias": "monsterAttribute1",
-                "meta": "@monsterAttribute1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "equip",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "card",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
+                "text": "times",
                 "userDefined": false
             },
             {
@@ -2349,10 +457,10 @@
                 "userDefined": false
             },
             {
-                "text": "bleach",
+                "text": "cem",
                 "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
             }
         ]
     },
@@ -2362,93 +470,10 @@
         "updated": null,
         "data": [
             {
-                "text": "i",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "need",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "11",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "random",
+                "text": "roll",
                 "userDefined": true,
                 "alias": "queryAdditionalTypes",
                 "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "awoken",
-                "userDefined": true,
-                "alias": "queryEvoType",
-                "meta": "@queryEvoType"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "beach",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "i",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "need",
-                "userDefined": false
             },
             {
                 "text": " ",
@@ -2465,49 +490,6 @@
                 "userDefined": false
             },
             {
-                "text": "random",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster",
-                "userDefined": true,
-                "alias": "targetObject",
-                "meta": "@targetObject"
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "roll",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "11",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
                 "text": "times",
                 "userDefined": false
             },
@@ -2516,7 +498,7 @@
                 "userDefined": false
             },
             {
-                "text": "from",
+                "text": "the",
                 "userDefined": false
             },
             {
@@ -2524,10 +506,18 @@
                 "userDefined": false
             },
             {
-                "text": "power ranger",
+                "text": "current",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "rem",
                 "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
+                "alias": "eggMachines",
+                "meta": "@eggMachines"
             }
         ]
     },
@@ -2547,64 +537,7 @@
                 "userDefined": false
             },
             {
-                "text": "15",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "times",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "monster hunter",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "collab",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "roll",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "8",
+                "text": "12",
                 "userDefined": true,
                 "alias": "queryQuantity1",
                 "meta": "@queryQuantity1"
@@ -2634,14 +567,6 @@
                 "userDefined": true,
                 "alias": "monsterSeries",
                 "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "machine",
-                "userDefined": false
             }
         ]
     },
@@ -2655,220 +580,6 @@
                 "userDefined": true,
                 "alias": "queryAdditionalTypes",
                 "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "10",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "times",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "from",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "valentine",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "roll",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "dragon bound dragon callers",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "2",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "times",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "roll",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "dragon bound dragon callers",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "series",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "14",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "times",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "roll",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "god fest exclusive",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "collab",
-                "userDefined": false
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "5",
-                "userDefined": true,
-                "alias": "queryQuantity1",
-                "meta": "@queryQuantity1"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "times",
-                "userDefined": false
-            }
-        ]
-    },
-    {
-        "isTemplate": false,
-        "count": 0,
-        "updated": null,
-        "data": [
-            {
-                "text": "roll",
-                "userDefined": true,
-                "alias": "queryAdditionalTypes",
-                "meta": "@queryAdditionalTypes"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "power ranger",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
-            },
-            {
-                "text": " ",
-                "userDefined": false
-            },
-            {
-                "text": "machine",
-                "userDefined": false
             },
             {
                 "text": " ",
@@ -2887,6 +598,32 @@
             {
                 "text": "times",
                 "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "god fest exclusive",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "collab",
+                "userDefined": false
             }
         ]
     },
@@ -2932,18 +669,18 @@
                 "userDefined": false
             },
             {
-                "text": "the",
-                "userDefined": false
+                "text": "beach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
             },
             {
                 "text": " ",
                 "userDefined": false
             },
             {
-                "text": "god fest exclusive",
-                "userDefined": true,
-                "alias": "monsterSeries",
-                "meta": "@monsterSeries"
+                "text": "machine",
+                "userDefined": false
             }
         ]
     },
@@ -2989,7 +726,89 @@
                 "userDefined": false
             },
             {
-                "text": "the",
+                "text": "valentine",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "11",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "power ranger",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
                 "userDefined": false
             },
             {
@@ -2997,7 +816,38 @@
                 "userDefined": false
             },
             {
-                "text": "monster hunter",
+                "text": "9",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "beach",
                 "userDefined": true,
                 "alias": "monsterSeries",
                 "meta": "@monsterSeries"
@@ -3009,6 +859,130 @@
             {
                 "text": "collab",
                 "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "6",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "machine",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "7",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "2",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "pad academy",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
             }
         ]
     },
@@ -3062,7 +1036,7 @@
                 "userDefined": false
             },
             {
-                "text": "valentine",
+                "text": "dragon bound dragon callers",
                 "userDefined": true,
                 "alias": "monsterSeries",
                 "meta": "@monsterSeries"
@@ -3072,7 +1046,7 @@
                 "userDefined": false
             },
             {
-                "text": "machine",
+                "text": "collab",
                 "userDefined": false
             }
         ]
@@ -3093,7 +1067,7 @@
                 "userDefined": false
             },
             {
-                "text": "5",
+                "text": "12",
                 "userDefined": true,
                 "alias": "queryQuantity1",
                 "meta": "@queryQuantity1"
@@ -3137,6 +1111,71 @@
                 "userDefined": false
             },
             {
+                "text": "machine",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "12",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "dragon bound dragon callers",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
                 "text": "series",
                 "userDefined": false
             }
@@ -3166,7 +1205,7 @@
                 "userDefined": false
             },
             {
-                "text": "bleach",
+                "text": "power ranger",
                 "userDefined": true,
                 "alias": "monsterSeries",
                 "meta": "@monsterSeries"
@@ -3176,7 +1215,64 @@
                 "userDefined": false
             },
             {
-                "text": "12",
+                "text": "14",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "times",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "roll",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "valentine",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "10",
                 "userDefined": true,
                 "alias": "queryQuantity1",
                 "meta": "@queryQuantity1"
@@ -3225,7 +1321,7 @@
                 "userDefined": false
             },
             {
-                "text": "series",
+                "text": "collab",
                 "userDefined": false
             },
             {
@@ -3233,7 +1329,7 @@
                 "userDefined": false
             },
             {
-                "text": "7",
+                "text": "13",
                 "userDefined": true,
                 "alias": "queryQuantity1",
                 "meta": "@queryQuantity1"
@@ -3272,7 +1368,7 @@
                 "userDefined": false
             },
             {
-                "text": "beach",
+                "text": "god fest exclusive",
                 "userDefined": true,
                 "alias": "monsterSeries",
                 "meta": "@monsterSeries"
@@ -3282,7 +1378,7 @@
                 "userDefined": false
             },
             {
-                "text": "collab",
+                "text": "machine",
                 "userDefined": false
             },
             {
@@ -3290,7 +1386,7 @@
                 "userDefined": false
             },
             {
-                "text": "2",
+                "text": "13",
                 "userDefined": true,
                 "alias": "queryQuantity1",
                 "meta": "@queryQuantity1"
@@ -3311,10 +1407,1145 @@
         "updated": null,
         "data": [
             {
-                "text": "roll",
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": ", ",
+                "userDefined": false
+            },
+            {
+                "text": "give",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "13",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
                 "userDefined": true,
                 "alias": "queryAdditionalTypes",
                 "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "x",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "r",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monster hunter",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": ", ",
+                "userDefined": false
+            },
+            {
+                "text": "give",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "8",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "l",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": "/",
+                "userDefined": false
+            },
+            {
+                "text": "d",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "card",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": ", ",
+                "userDefined": false
+            },
+            {
+                "text": "give",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "5",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "green",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "cards",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": ", ",
+                "userDefined": false
+            },
+            {
+                "text": "give",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "4",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "8",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "l",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "red",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "card",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "8",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "red",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": "/",
+                "userDefined": false
+            },
+            {
+                "text": "l",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "1",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "blue",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "beach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "15",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "cards",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "god fest exclusive",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "7",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "cards",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "5",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "cards",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "power ranger",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "2",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "water",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "dark",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "uevo",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "card",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "god fest exclusive",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "collab",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "7",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "l",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": "/",
+                "userDefined": false
+            },
+            {
+                "text": "water",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "equip",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "collab",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "8",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "water",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "assist",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "valentine",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "collab",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "show",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "13",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "super reincarnated",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
             },
             {
                 "text": " ",
@@ -3339,7 +2570,18 @@
                 "userDefined": false
             },
             {
-                "text": "machine",
+                "text": "collab",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "give",
                 "userDefined": false
             },
             {
@@ -3347,7 +2589,15 @@
                 "userDefined": false
             },
             {
-                "text": "10",
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "4",
                 "userDefined": true,
                 "alias": "queryQuantity1",
                 "meta": "@queryQuantity1"
@@ -3357,8 +2607,1280 @@
                 "userDefined": false
             },
             {
-                "text": "times",
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
                 "userDefined": false
+            },
+            {
+                "text": "r",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "fire",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "awoken",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monster",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "valentine",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "give",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "1",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "none",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": "/",
+                "userDefined": false
+            },
+            {
+                "text": "d",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "normal",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "card",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monster hunter",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "give",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "13",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "b",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "ultimate evolution",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "valentine",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "give",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "6",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "ultimate",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monster",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "dragon bound dragon callers",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "give",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "me",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "9",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monster",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "gimme",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "8",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "blue",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "g",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "base",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "god fest exclusive",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "gimme",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "5",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "b",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": "/",
+                "userDefined": false
+            },
+            {
+                "text": "fire",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "ultimate evo",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monster",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "pad academy",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "gimme",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "8",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "l",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "uevo",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "card",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "gimme",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "1",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "assist",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "the",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "bleach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "series",
+                "userDefined": false
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "gimme",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "11",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "cards",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "i",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "need",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "14",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "none",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "light",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "ultimate evolution",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "monsters",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "power ranger",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "i",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "need",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "8",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "green",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": "/",
+                "userDefined": false
+            },
+            {
+                "text": "fire",
+                "userDefined": true,
+                "alias": "monsterAttribute2",
+                "meta": "@monsterAttribute2"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "reincarnated",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "card",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "power ranger",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "i",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "need",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "4",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "l",
+                "userDefined": true,
+                "alias": "monsterAttribute1",
+                "meta": "@monsterAttribute1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "super reincarnated",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "card",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "valentine",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "i",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "need",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "5",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "reincarnated",
+                "userDefined": true,
+                "alias": "queryEvoType",
+                "meta": "@queryEvoType"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "card",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "from",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "beach",
+                "userDefined": true,
+                "alias": "monsterSeries",
+                "meta": "@monsterSeries"
+            }
+        ]
+    },
+    {
+        "isTemplate": false,
+        "count": 0,
+        "updated": null,
+        "data": [
+            {
+                "text": "i",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "need",
+                "userDefined": false
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "6",
+                "userDefined": true,
+                "alias": "queryQuantity1",
+                "meta": "@queryQuantity1"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "random",
+                "userDefined": true,
+                "alias": "queryAdditionalTypes",
+                "meta": "@queryAdditionalTypes"
+            },
+            {
+                "text": " ",
+                "userDefined": false
+            },
+            {
+                "text": "cards",
+                "userDefined": true,
+                "alias": "targetObject",
+                "meta": "@targetObject"
             }
         ]
     }

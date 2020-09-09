@@ -23,7 +23,9 @@ const firestore = admin.firestore();
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
-highestValidMonsterId = endNumber;
+// startNumber = 3538;
+// endNumber = 3550;
+// highestValidMonsterId = endNumber;
 let data = [];
 let evoTreeData = [];
 
@@ -59,10 +61,13 @@ let evoTreeData = [];
 			//We can get around this by checking cooldown of an active skill
 			//It should never be 0
 			if (monster.getActiveSkill().cooldown === 0 && monster.isRegularMonster()) {
-				try {
-					monster = new MonsterParser(id, true);
-				} catch (error) {
-					console.log('Unable to use Japanese database for monster id ' + id);
+				//The clever eggs don't have skills
+				if (![3538, 3540, 3542, 3544, 3546].includes(monster.getId())) {
+					try {
+						monster = new MonsterParser(id, true);
+					} catch (error) {
+						console.log('Unable to use Japanese database for monster id ' + id);
+					}
 				}
 			}
 
@@ -226,7 +231,7 @@ let evoTreeData = [];
 		if (!entry) continue;
 
 		try {
-			// await firestore.collection('Monsters').doc(i.toString()).set(entry);
+			await firestore.collection('Monsters').doc(i.toString()).set(entry);
 			console.log('Data written for monster id ' + i);
 		} catch (error) {
 			console.log(error.message);

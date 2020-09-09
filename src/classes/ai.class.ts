@@ -162,6 +162,10 @@ export interface QueryResultInterface {
 					stringValue: 'hp' | 'attack' | 'recover';
 					kind: 'stringValue';
 				};
+				eggMachines: {
+					stringValue: 'event' | 'collab' | 'rare';
+					kind: 'stringValue';
+				};
 			};
 		};
 	};

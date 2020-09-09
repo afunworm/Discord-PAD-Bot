@@ -6,6 +6,8 @@ import { Common } from './common.class';
 import * as admin from 'firebase-admin';
 import { DMChannel, MessageReaction, MessageEmbed, Message, DiscordAPIError } from 'discord.js';
 import { Cache } from './cache.class';
+import { RARE_EGG_MACHINE, EVENT_EGG_MACHINE, COLLAB_EGG_MACHINE } from './eggMachines';
+const moment = require('moment');
 const _ = require('lodash');
 const Discord = require('discord.js');
 const fs = require('fs');
@@ -1274,15 +1276,15 @@ export class Helper {
 		let { queryQuantity1, queryEvoType, monsterSeries, type } = data;
 		queryQuantity1 = Number(queryQuantity1) || 1;
 
-		if (queryQuantity1 > 8) {
+		if (queryQuantity1 > 20) {
 			if (type === 'random') {
 				await this.sendMessage(
-					"Due to Discord's limitation on embed messages, I can only give you at most 8 monsters. Wanna try again?"
+					"Due to Discord's limitation on embed messages, I can only give you at most 20 monsters. Wanna try again?"
 				);
 				return;
 			} else {
 				await this.sendMessage(
-					"Due to Discord's limitation on embed messages, you can only roll 8 monsters at a time. Wanna try again?"
+					"Due to Discord's limitation on embed messages, you can only roll 20 monsters at a time. Wanna try again?"
 				);
 				return;
 			}
@@ -1453,5 +1455,161 @@ export class Helper {
 			);
 			await this.sendMessageList(`Monsters that match your criteria`, result);
 		}
+	}
+
+	public async sendRandomRolls(data) {
+		let { machine, queryQuantity1 } = data;
+		queryQuantity1 = Number(queryQuantity1) || 1;
+
+		if (!['event', 'collab', 'rare'].includes(machine)) {
+			await this.sendMessage(
+				"I can't seem to find that machine type. For real-rate rolling, you can only do `event`, `collab` or `rare` egg machines. Try again!"
+			);
+			return;
+		}
+
+		if (queryQuantity1 > 20) {
+			await this.sendMessage(
+				"Due to Discord's limitation on embed messages, you can only roll 20 monsters at a time. Wanna try again?"
+			);
+		}
+
+		let machineData;
+		if (machine === 'event') machineData = EVENT_EGG_MACHINE;
+		else if (machine === 'collab') machineData = COLLAB_EGG_MACHINE;
+		else machineData = RARE_EGG_MACHINE;
+
+		let from = moment(machineData.startDate).format('MM/DD/YYYY');
+		let to = moment(machineData.endDate).format('MM/DD/YYYY');
+		let by = machineData.rateBy;
+		let lineup = machineData.lineup || {};
+		let updatedAt = moment(machineData.updatedAt).format('MM/DD/YYYY');
+		let machineName = machineData.name;
+
+		//Construct lineup
+		let lineups = [];
+		for (let id in lineup) {
+			let rate = lineup[id];
+			let amount = rate * 100;
+			for (let i = 0; i < amount; i++) {
+				lineups.push(id);
+			}
+		}
+
+		//Shuffle it
+		for (let i = lineups.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * i);
+			const temp = lineups[i];
+			lineups[i] = lineups[j];
+			lineups[j] = temp;
+		}
+		if (Object.keys(lineup).length === 0 || lineups.length === 0) {
+			await this.sendMessage(
+				`This egg machine is not currently active or there is no data yet. Last data was updated on ${updatedAt}.`
+			);
+			return;
+		}
+
+		let monsters = [];
+		//Get random amount, up to the quantity
+		do {
+			let index = Common.randomBetween(0, lineups.length - 1);
+			let monsterId = Number(lineups[index]);
+			try {
+				let monster = new Monster(monsterId);
+				await monster.init();
+
+				monsters.push(monster.getFullData());
+			} catch (error) {
+				// console.log(error);
+				continue;
+			}
+		} while (monsters.length < queryQuantity1);
+
+		//Map to id & url only
+		let monsterIconData = monsters.map((monster) => {
+			return {
+				id: monster.id,
+				url: Common.getThumbnailUrl(monster.id),
+			};
+		});
+		//Get datanames
+		let temp = {};
+		let rarity = {};
+		monsters.forEach((monster) => {
+			//Record rarity
+			if (!Number.isInteger(rarity[monster.rarity])) {
+				rarity[monster.rarity] = 1;
+			} else {
+				rarity[monster.rarity] = rarity[monster.rarity] + 1;
+			}
+
+			//Convert duplicated monsters to number for quantity
+			if (!Number.isInteger(temp[monster.id]?.quantity)) {
+				temp[monster.id] = {
+					name: monster.name,
+					id: monster.id,
+					quantity: 1,
+				};
+			} else {
+				temp[monster.id] = {
+					name: monster.name,
+					id: monster.id,
+					quantity: temp[monster.id].quantity + 1,
+				};
+			}
+		});
+
+		let monsterNameData = [];
+		let analysis = [];
+		for (let id in temp) {
+			let roll = temp[id];
+			monsterNameData.push(
+				`${roll.id}. ${roll.name} **x${roll.quantity}** - \`${machineData.lineup[id]}% chance\``
+			);
+		}
+		for (let star in rarity) {
+			let quantity = rarity[star];
+			let percentage = ((quantity / monsters.length) * 100).toFixed(2);
+			analysis.push(`- ${star} stars - ${quantity} rolls (\`~${percentage}%\`)`);
+		}
+
+		let imagePath;
+		try {
+			//We wrap it in here so we can re-run the whole function if something went wrong
+			imagePath = await Common.displayCardIcons(monsterIconData);
+		} catch (error) {
+			console.log(error);
+			this.sendRandomCard(data);
+			return;
+		}
+
+		let embed = new Discord.MessageEmbed()
+			.setAuthor(`${from} - ${to}`)
+			.setTitle(`${machineName} (using real in-game rate)`)
+			.addFields({
+				name: `Your Roll Result`,
+				value: monsterNameData.join('\n'),
+			})
+			.addFields({
+				name: `Roll Rate Analysis`,
+				value: analysis.join('\n'),
+			})
+			.attachFiles([
+				{
+					attachment: imagePath,
+					name: 'rolledMonsters.png',
+				},
+			])
+			.setImage('attachment://rolledMonsters.png')
+			.setFooter(
+				`In-game rate data was input on ${updatedAt} by ${by}.\nThis is just a simulator of what the machine rolls would be with provided in-game rates; and is in no way affiliated with Gungho's drop algorithms.`
+			);
+
+		await this.sendMessage(
+			`I rolled ${monsters.length} times for you in the current **${machineName}** machine! Here is the result!`
+		);
+		await this.sendMessage(embed);
+		await fs.unlinkSync(imagePath);
 	}
 }

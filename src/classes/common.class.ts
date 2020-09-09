@@ -238,10 +238,10 @@ export class Common {
 	}
 
 	static displayCardIcons(monsters: { id: number; url: string }[]): Promise<string> {
-		let hPadding = 5;
+		let hPadding = monsters.length <= 8 ? 5 : 3;
 		let vPadding = 3;
-		let maxPerRow = 4;
-		monsters = monsters.slice(0, 8);
+		let maxPerRow = monsters.length <= 8 ? 4 : 5;
+		// monsters = monsters.slice(0, 8);
 
 		return new Promise(async (resolve, reject) => {
 			try {
@@ -263,7 +263,9 @@ export class Common {
 						if (data.length > maxPerRow) maxWidth = 100 * maxPerRow + hPadding * (maxPerRow - 1);
 						else maxWidth = 100 * data.length + hPadding * (data.length - 1);
 
+						let numberOfRows = Math.ceil(data.length / maxPerRow);
 						let maxHeight = data.length <= maxPerRow ? 100 : 200 + vPadding;
+						maxHeight = numberOfRows * 100 + vPadding * (numberOfRows - 1);
 
 						let canvas = createCanvas(maxWidth, maxHeight);
 						let context = canvas.getContext('2d');
@@ -278,13 +280,8 @@ export class Common {
 						data.forEach((icon, index) => {
 							let startX, endX, startY, endY;
 
-							if (index < maxPerRow) {
-								startY = 0;
-								endY = 100;
-							} else {
-								startY = 100 + vPadding;
-								endY = 200 + vPadding;
-							}
+							startY = Math.floor(index / maxPerRow) * 100 + vPadding * Math.floor(index / maxPerRow);
+							endY = startY + 100;
 
 							startX = 100 * (index % maxPerRow) + hPadding * (index % maxPerRow);
 							endX = startX + 100;
