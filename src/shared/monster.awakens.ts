@@ -79,6 +79,7 @@ export const AWAKENINGS = {
 };
 
 export const AWAKEN_EMOTES = {
+	0: '<:transparent_awake:753301312233406743>',
 	1: '<:01_:744007511102717952>',
 	2: '<:02:744007511027220500>',
 	3: '<:03:744007510842671115>',
