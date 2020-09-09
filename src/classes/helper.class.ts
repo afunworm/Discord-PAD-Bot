@@ -1376,7 +1376,10 @@ export class Helper {
 
 		let embed = new Discord.MessageEmbed()
 			.addFields({
-				name: type === 'random' ? `Random Monsters` : `Your Roll Result`,
+				name:
+					type === 'random'
+						? `Random Monsters`
+						: `Your Roll Result (**NOT** real in-game rate, read footer for more)`,
 				value: monsterNameData.join('\n'),
 			})
 			.attachFiles([
@@ -1386,6 +1389,12 @@ export class Helper {
 				},
 			])
 			.setImage('attachment://randomMonsters.png');
+
+		if (type === 'roll') {
+			embed.setFooter(
+				`For real in-game rate simulation of currently active machines, try \`roll 10 times current rare egg machine\`, \`roll 10 times current collab machine\` or \`roll 20 times current event egg machine\``
+			);
+		}
 
 		if (type === 'random') {
 			await this.sendMessage(
