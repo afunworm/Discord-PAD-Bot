@@ -208,16 +208,7 @@ client.on('message', async (message: any) => {
 				monsterSeries: parameters.monsterSeries?.stringValue || null,
 			};
 
-			if (parameters.queryAdditionalTypes?.stringValue === 'random') {
-				await helper.sendRandomCard({
-					queryQuantity1: parameters.queryQuantity1?.stringValue,
-					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
-					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
-					queryEvoType: parameters.queryEvoType?.stringValue || null,
-					monsterSeries: parameters.monsterSeries?.stringValue || null,
-				});
-				return;
-			} else if (parameters.queryEvoType?.stringValue && baseMonsterId !== null) {
+			if (parameters.queryEvoType?.stringValue && baseMonsterId !== null) {
 				await helper.sendCardByEvoType({
 					monsterId: baseMonsterId,
 					queryEvoType: parameters.queryEvoType?.stringValue,
@@ -260,6 +251,19 @@ client.on('message', async (message: any) => {
 				});
 				return;
 			}
+		} else if (action === 'card.query.random') {
+			let parameters = result.queryResult.parameters.fields;
+			let queryAddtionalTypes = parameters.queryAdditionalTypes?.stringValue;
+
+			await helper.sendRandomCard({
+				type: queryAddtionalTypes,
+				queryQuantity1: parameters.queryQuantity1?.stringValue,
+				monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
+				monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+				queryEvoType: parameters.queryEvoType?.stringValue || null,
+				monsterSeries: parameters.monsterSeries?.stringValue || null,
+			});
+			return;
 		}
 
 		if (process.env.MODE === 'PRODUCTION') {

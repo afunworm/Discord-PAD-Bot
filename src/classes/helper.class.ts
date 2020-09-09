@@ -1271,14 +1271,21 @@ export class Helper {
 	}
 
 	public async sendRandomCard(data) {
-		let { queryQuantity1, queryEvoType, monsterSeries } = data;
+		let { queryQuantity1, queryEvoType, monsterSeries, type } = data;
 		queryQuantity1 = Number(queryQuantity1) || 1;
 
 		if (queryQuantity1 > 8) {
-			await this.sendMessage(
-				"Due to Discord's limitation on embed messages, I can only give you at most 8 monsters. Wanna try again?"
-			);
-			return;
+			if (type === 'random') {
+				await this.sendMessage(
+					"Due to Discord's limitation on embed messages, I can only give you at most 8 monsters. Wanna try again?"
+				);
+				return;
+			} else {
+				await this.sendMessage(
+					"Due to Discord's limitation on embed messages, you can only roll 8 monsters at a time. Wanna try again?"
+				);
+				return;
+			}
 		}
 
 		//Fix attribute detection
@@ -1308,7 +1315,14 @@ export class Helper {
 
 				do {
 					let index = Common.randomBetween(0, monsters.length - 1);
-					temp.push(monsters[index]);
+
+					if (type === 'random') {
+						temp.push(monsters[index]);
+					} else {
+						if (monsters[index].monsterPoints >= 1000) {
+							temp.push(monsters[index]);
+						}
+					}
 					monsters.splice(index, 1);
 				} while (temp.length < queryQuantity1 && monsters.length > 0);
 
@@ -1325,7 +1339,13 @@ export class Helper {
 					//Filter out Japanese names
 					if (monster.getName().includes('*') || monster.getName().includes('??')) continue;
 
-					monsters.push(monster.getFullData());
+					if (type === 'random') {
+						monsters.push(monster.getFullData());
+					} else {
+						if (monster.getMonsterPoints() >= 1000) {
+							monsters.push(monster.getFullData());
+						}
+					}
 				} catch (error) {
 					console.log(error);
 					continue;
@@ -1354,7 +1374,7 @@ export class Helper {
 
 		let embed = new Discord.MessageEmbed()
 			.addFields({
-				name: `Random Monsters`,
+				name: type === 'random' ? `Random Monsters` : `Your Roll Result`,
 				value: monsterNameData.join('\n'),
 			})
 			.attachFiles([
@@ -1364,11 +1384,16 @@ export class Helper {
 				},
 			])
 			.setImage('attachment://randomMonsters.png');
-		await this.sendMessage(
-			`Here ${monsters.length > 1 ? 'are' : 'is'} ${monsters.length} random ${
-				monsters.length > 1 ? 'monsters' : 'monster'
-			} for you!`
-		);
+
+		if (type === 'random') {
+			await this.sendMessage(
+				`Here ${monsters.length > 1 ? 'are' : 'is'} ${monsters.length} random ${
+					monsters.length > 1 ? 'monsters' : 'monster'
+				} for you!`
+			);
+		} else {
+			await this.sendMessage(`I rolled ${monsters.length} times for you! Here is the result!`);
+		}
 		await this.sendMessage(embed);
 		await fs.unlinkSync(imagePath);
 	}

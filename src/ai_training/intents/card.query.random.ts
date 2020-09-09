@@ -1,0 +1,32 @@
+export const CARD_QUERY_RANDOM_TRAINING_PHRASES = [
+	//Asking for random card
+	`from {{monsterSeries}}, give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}} from {{monsterSeries}}`,
+	`show me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} collab`,
+	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
+	`give me {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`gimme {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from the {{monsterSeries}} series`,
+	`gimme {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}}`,
+	`i need {{queryQuantity1}} {{queryAdditionalTypes}} {{targetObject}}`,
+
+	//Rolling
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from {{monsterSeries}}`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from {{monsterSeries}} collab`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from {{monsterSeries}} machine`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from {{monsterSeries}} series`,
+	`{{queryAdditionalTypes:roll}} {{monsterSeries}} {{queryQuantity1}} times`,
+	`{{queryAdditionalTypes:roll}} {{monsterSeries}} series {{queryQuantity1}} times `,
+	`{{queryAdditionalTypes:roll}} {{monsterSeries}} collab {{queryQuantity1}} times`,
+	`{{queryAdditionalTypes:roll}} {{monsterSeries}} machine {{queryQuantity1}} times `,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from the {{monsterSeries}}`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from the {{monsterSeries}} collab`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from the {{monsterSeries}} machine`,
+	`{{queryAdditionalTypes:roll}} {{queryQuantity1}} times from the {{monsterSeries}} series`,
+	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} {{queryQuantity1}} times`,
+	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} series {{queryQuantity1}} times `,
+	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} collab {{queryQuantity1}} times`,
+	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} machine {{queryQuantity1}} times `,
+];
