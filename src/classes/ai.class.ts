@@ -154,6 +154,10 @@ export interface QueryResultInterface {
 					stringValue: 'random';
 					kind: 'stringValue';
 				};
+				queryMonsterStats: {
+					stringValue: 'hp' | 'attack' | 'recover';
+					kind: 'stringValue';
+				};
 			};
 		};
 	};

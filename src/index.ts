@@ -208,21 +208,7 @@ client.on('message', async (message: any) => {
 				monsterSeries: parameters.monsterSeries?.stringValue || null,
 			};
 
-			if (['min', 'max'].includes(parameters.queryMinMax?.stringValue)) {
-				await helper.sendMessage('Please wait while I am looking into that...');
-				await helper.sendMonstersMinMax({
-					monsterAwakenings1: parameters.monsterAwakenings1?.stringValue || null,
-					monsterAwakenings2: parameters.monsterAwakenings2?.stringValue || null, //Sometimes AI detects it in the wrong order
-					monsterAwakenings3: parameters.monsterAwakenings3?.stringValue || null, //Sometimes AI detects it in the wrong order
-					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
-					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
-					queryMinMax: parameters.queryMinMax?.stringValue,
-					monsterSeries: parameters.monsterSeries?.stringValue || null,
-					queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
-					queryEvoType: parameters.queryEvoType?.stringValue || null,
-				});
-				return;
-			} else if (parameters.queryAdditionalTypes?.stringValue === 'random') {
+			if (parameters.queryAdditionalTypes?.stringValue === 'random') {
 				await helper.sendRandomCard({
 					queryQuantity1: parameters.queryQuantity1?.stringValue,
 					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
@@ -244,11 +230,34 @@ client.on('message', async (message: any) => {
 				await helper.sendQueryResult(data);
 				return;
 			}
+		} else if (action === 'card.query.minMax') {
+			let parameters = result.queryResult.parameters.fields;
+
+			if (parameters.queryMonsterStats?.stringValue) {
+				await helper.sendMessage('Please wait while I am looking into that...');
+				return;
+			} else if (parameters.monsterAwakenings1?.stringValue) {
+				await helper.sendMessage('Please wait while I am looking into that...');
+				await helper.sendMonstersMinMax({
+					monsterAwakenings1: parameters.monsterAwakenings1?.stringValue || null,
+					monsterAwakenings2: parameters.monsterAwakenings2?.stringValue || null, //Sometimes AI detects it in the wrong order
+					monsterAwakenings3: parameters.monsterAwakenings3?.stringValue || null, //Sometimes AI detects it in the wrong order
+					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
+					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+					queryMinMax: parameters.queryMinMax?.stringValue,
+					monsterSeries: parameters.monsterSeries?.stringValue || null,
+					queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
+					queryEvoType: parameters.queryEvoType?.stringValue || null,
+				});
+				return;
+			}
 		}
 
-		await helper.bugLog(
-			`Sorry. I haven't been trained with that command yet, but I have requested the dev to train me with this command. Check back in a few days and I will be able to handle your request!`
-		);
+		if (process.env.MODE === 'PRODUCTION') {
+			await helper.bugLog(
+				`Sorry. I haven't been trained with that command yet, but I have requested the dev to train me with this command. Check back in a few days and I will be able to handle your request!`
+			);
+		}
 	} catch (error) {
 		await helper.sendMessage(
 			`It looks like something went wrong. I can't seem to understand your request. Can you try it again?`

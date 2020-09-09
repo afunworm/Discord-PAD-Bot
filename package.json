@@ -3,7 +3,7 @@
 	"scripts": {
 		"lint": "tslint --project tsconfig.json",
 		"build": "tsc src/index --outdir dist",
-		"copy": "rm -rf dist/temp && mkdir dist/temp && rm -rf dist/raw && mkdir dist/raw && cp src/raw/download_card_data.json dist/raw/download_card_data.json && cp src/raw/download_card_data.jp.json dist/raw/download_card_data.jp.json && cp src/raw/download_skill_data.json dist/raw/download_skill_data.json && cp src/raw/arrow.png dist/raw/arrow.png && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp -n src/.env dist/.env || true",
+		"copy": "rm -rf dist/temp && mkdir dist/temp && rm -rf dist/raw && mkdir dist/raw && cp src/raw/download_card_data.json dist/raw/download_card_data.json && cp src/raw/download_card_data.jp.json dist/raw/download_card_data.jp.json && cp src/raw/download_skill_data.json dist/raw/download_skill_data.json && cp src/raw/download_skill_data.jp.json dist/raw/download_skill_data.jp.json && cp src/raw/arrow.png dist/raw/arrow.png && cp src/serviceAccount.json dist/serviceAccount.json && cp src/AIServiceAccount.json dist/AIServiceAccount.json && cp -n src/.env dist/.env || true",
 		"start": "npm run build && npm run copy && forever stopall && forever start dist/index.js",
 		"update": "git pull && npm run start",
 		"test-windows": "npm run build && node dist/index.js"

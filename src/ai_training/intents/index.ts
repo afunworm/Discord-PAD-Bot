@@ -2,18 +2,24 @@ export {};
 
 const fs = require('fs');
 import { CARD_QUERY_TRAINING_PHRASES } from './card.query';
+import { CARD_QUERY_MINMAX_TRAINING_PHRASES } from './card.query.minMax';
 import { CARD_INFO_TRAINING_PHRASES } from './card.info';
 
-let currentlyTraining = CARD_INFO_TRAINING_PHRASES;
+let currentlyTraining = CARD_QUERY_TRAINING_PHRASES;
 
 let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 let placers = {
 	actionType: () => ['call', 'name', 'sell', 'inherit', 'list', 'evolve', 'devolve'][r(0, 6)],
-	queryMinMax: () => ['the most', 'the least'][r(0, 1)],
+	queryMinMax: () => ['the most', 'the least', 'the highest', 'the lowest', 'most', 'least'][r(0, 5)],
 	queryAdditionalTypes: () => ['random'][0],
-	questionType: () => ['what', 'how'][r(0, 1)],
+	questionType: () => ['what', 'how', 'which'][r(0, 1)],
 	targetActionType: () => ['look', 'take', 'sell'][r(0, 2)],
 	targetPronoun: () => ['it', 'him', 'her', 'them', 'they', 'he', 'she'][r(0, 6)],
+	queryMonsterStats: () => ['atk', 'attack', 'hp', 'health', 'rcv', 'recover'][r(0, 5)],
+	queryIncludeLB: () =>
+		['after 110', 'after limit break', 'when lb', 'without limit break', 'without lb', 'without limitbreak'][
+			r(0, 5)
+		],
 	monsterName: () => {
 		let prefixes = [
 			'sr ',
@@ -281,11 +287,30 @@ let guid = () => {
 					let name = singleTerm.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '').replace(`'s`, '');
 
 					if (typeof placers[name] !== 'function') {
-						entry.data.push({
-							text: term,
-							userDefined: false,
-						});
-						str += term;
+						if (name.includes(':')) {
+							//If name is specifically defined (entityName:phrase1:phrase2, etc,) train it that way
+							let parts = name.split(':');
+							let entityName = parts[0];
+							let options = [];
+							parts.forEach((part, index) => {
+								if (index !== 0) options.push(part);
+							});
+							let word = options[r(0, options.length - 1)];
+							word = word.replace(/_/gi, ' ');
+							entry.data.push({
+								text: word,
+								userDefined: true,
+								alias: entityName,
+								meta: `@${entityName}`,
+							});
+							str += word;
+						} else {
+							entry.data.push({
+								text: term,
+								userDefined: false,
+							});
+							str += term;
+						}
 					} else {
 						entry.data.push({
 							text: placers[name].call().toString(),
@@ -307,11 +332,30 @@ let guid = () => {
 				let name = term.replace(/\{/gi, '').replace(/\}/gi, '').replace(',', '').replace(`'s`, '');
 
 				if (typeof placers[name] !== 'function') {
-					entry.data.push({
-						text: term,
-						userDefined: false,
-					});
-					str += term;
+					if (name.includes(':')) {
+						//If name is specifically defined (entityName:phrase1:phrase2, etc,) train it that way
+						let parts = name.split(':');
+						let entityName = parts[0];
+						let options = [];
+						parts.forEach((part, index) => {
+							if (index !== 0) options.push(part);
+						});
+						let word = options[r(0, options.length - 1)];
+						word = word.replace(/_/gi, ' ');
+						entry.data.push({
+							text: word,
+							userDefined: true,
+							alias: entityName,
+							meta: `@${entityName}`,
+						});
+						str += word;
+					} else {
+						entry.data.push({
+							text: term,
+							userDefined: false,
+						});
+						str += term;
+					}
 				} else {
 					entry.data.push({
 						text: placers[name].call().toString(),
