@@ -29,6 +29,8 @@ client.on('message', async (message: any) => {
 	//Do not run if it is from the bot itself
 	if (message.author.bot) return;
 
+	message.channel.send(`I am being maintained and will be able to work again in 15 mins!`);
+
 	//If message is NOT DM, and it is also not a message that mentioned the bot, then do nothing
 	if (
 		message.channel.type !== 'dm' &&

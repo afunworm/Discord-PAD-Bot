@@ -306,6 +306,15 @@ let guid = () => {
 								meta: `@${entityName}`,
 							});
 							str += word;
+						} else if (name === 'sysNumber') {
+							let number = r(1, 500);
+							entry.data.push({
+								text: number,
+								userDefined: false,
+								alias: 'number',
+								meta: '@sys.number',
+							});
+							str += number;
 						} else {
 							entry.data.push({
 								text: term,
@@ -351,6 +360,15 @@ let guid = () => {
 							meta: `@${entityName}`,
 						});
 						str += word;
+					} else if (name === 'sysNumber') {
+						let number = r(1, 500);
+						entry.data.push({
+							text: number,
+							userDefined: false,
+							alias: 'number',
+							meta: '@sys.number',
+						});
+						str += number;
 					} else {
 						entry.data.push({
 							text: term,
