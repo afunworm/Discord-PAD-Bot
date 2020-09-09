@@ -4,6 +4,7 @@ export const COLLAB_EGG_MACHINE = {
 	startDate: new Date('September 7, 2020 00:00'),
 	endDate: new Date('September 20, 2020 23:59'),
 	updatedAt: new Date('September 9, 2020 13:21'),
+	cost: 5,
 	lineup: {
 		//I just need you to help inputting the lineups
 		6376: 2.5,
@@ -24,11 +25,12 @@ export const COLLAB_EGG_MACHINE = {
 };
 
 export const EVENT_EGG_MACHINE = {
-	name: 'Persona Egg Machine',
+	name: 'Event Egg Machine',
 	rateBy: 'Xolse',
 	startDate: new Date('September 7, 2020 00:00'),
 	endDate: new Date('September 20, 2020 23:59'),
 	updatedAt: new Date('September 9, 2020 13:21'),
+	cost: 5,
 	lineup: {
 		//I just need you to help inputting the lineups
 		3272: 20,
@@ -45,6 +47,7 @@ export const RARE_EGG_MACHINE = {
 	startDate: new Date('September 04, 2020 00:00'),
 	endDate: new Date('September 10, 2020 23:59'),
 	updatedAt: new Date('September 9, 2020 13:21'),
+	cost: 5,
 	lineup: {
 		3746: 1.4,
 		3748: 1.4,

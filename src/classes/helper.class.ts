@@ -1485,6 +1485,7 @@ export class Helper {
 		let lineup = machineData.lineup || {};
 		let updatedAt = moment(machineData.updatedAt).format('MM/DD/YYYY');
 		let machineName = machineData.name;
+		let cost = machineData.cost;
 
 		//Construct lineup
 		let lineups = [];
@@ -1606,8 +1607,10 @@ export class Helper {
 				`In-game rate data was input on ${updatedAt} by ${by}.\nThis is just a simulator of what the machine rolls would be with provided in-game rates; and is in no way affiliated with Gungho's drop algorithms.`
 			);
 
+		cost = cost * monsters.length;
+		let dollar = ((46.99 * cost) / 85).toFixed(2);
 		await this.sendMessage(
-			`I rolled ${monsters.length} times for you in the current **${machineName}** machine! Here is the result!`
+			`<@!${this._message.author.id}> I just spent **${cost}** stones (**~$${dollar}**, assuming you buy packs?) to roll ${monsters.length} times for you in the current **${machineName}** machine! Here is the result!`
 		);
 		await this.sendMessage(embed);
 		await fs.unlinkSync(imagePath);
