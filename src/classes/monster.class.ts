@@ -128,11 +128,11 @@ export class Monster {
 
 	public getAwakenEmotes(): string {
 		let awakenings = this.getAwakenings();
-		if (awakenings.length < 9) {
-			for (let i = 0; i < 9 - awakenings.length; i++) {
-				awakenings.push(0);
-			}
-		}
+		// if (awakenings.length < 9) {
+		// 	for (let i = 0; i < 9 - awakenings.length; i++) {
+		// 		awakenings.push(0);
+		// 	}
+		// }
 		return awakenings.length ? Common.awakenEmotesMapping(awakenings).join(' ') : 'No Awakenings';
 	}
 
@@ -142,11 +142,11 @@ export class Monster {
 
 	public getSuperAwakenEmotes(): string {
 		let superAwakenings = this.getSuperAwakenings();
-		if (superAwakenings.length < 9) {
-			for (let i = 0; i < 9 - superAwakenings.length; i++) {
-				superAwakenings.push(0);
-			}
-		}
+		// if (superAwakenings.length < 9) {
+		// 	for (let i = 0; i < 9 - superAwakenings.length; i++) {
+		// 		superAwakenings.push(0);
+		// 	}
+		// }
 		return superAwakenings.length ? Common.awakenEmotesMapping(superAwakenings).join(' ') : 'No Super Awakenings';
 	}
 
