@@ -1199,14 +1199,12 @@ export class Helper {
 			if (stat === 'hp') fieldName = 'HP';
 			if (stat === 'attack') fieldName = 'ATK';
 			if (stat === 'recover') fieldName = 'RCV';
-			let withLB = monsters.sort(
-				(a: MonsterData, b: MonsterData) => b['limitBreak' + fieldName] - a['limitBreak' + fieldName]
-			);
-			let withoutLB = monsters.sort(
-				(a: MonsterData, b: MonsterData) => b['max' + fieldName] - a['max' + fieldName]
-			);
+			let withLB = monsters.map((monster) => monster.limitBreakRCV || 0);
+			let withoutLB = monsters.map((monster) => monster.maxRCV || 0);
+			withLB = withLB.sort((a, b) => b - a);
+			withoutLB = withoutLB.sort((a, b) => b - a);
 
-			max = Math.max(withLB[0]['limitBreak' + fieldName], withoutLB[0]['max' + fieldName]);
+			max = Math.max(withLB[0], withoutLB[0]);
 
 			monsters = monsters.filter(
 				(monster) => monster['limitBreak' + fieldName] === max || monster['max' + fieldName] === max
