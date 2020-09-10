@@ -12,6 +12,9 @@ let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
 let endPoint = process.env.JAPANESE_NAMES_SCRAPING_URL;
 
+// startNumber = 6475;
+// endNumber = 6476;
+
 class Browser {
 	private _browser;
 	private _page;
@@ -46,6 +49,7 @@ class Browser {
 	}
 }
 
+let total = 0;
 (async () => {
 	let data = JAPANESE_NAMES;
 	let browser = new Browser();
@@ -54,36 +58,40 @@ class Browser {
 	for (let id = startNumber; id <= highestValidMonsterId; id++) {
 		let monster = new MonsterParser(id);
 		let name = monster.getName();
+		console.log(name);
 
-		if (name.includes('*') || name.includes('??')) {
+		if (!/^[A-Za-z0-9\.\,\"\'\(\)&\?\- \!\+éóáí\%\:\/\[\]★=]*$/gi.test(name)) {
 			//Indication of Japanese characters
-			if (data[id] !== undefined) continue; //Already got those names before
+			if (data[id] !== undefined) {
+				//Already got those names before
+				console.log('Japanese name existed for monster id ' + id);
+				continue;
+			}
 
-			console.log('Getting name for monster id ' + id);
-
+			console.log('Getting name for monster ' + name);
 			try {
 				let name = await browser.getJapaneseName(id);
 				name = name.toString().replace('&amp;', '&');
 				data[id.toString()] = name;
+				total++;
 
 				//Write it down because this process takes forever...
 				await fs.writeFileSync(
-					'../shared/monster.japanese.ts',
+					'../../shared/monster.japanese.ts',
 					'export const JAPANESE_NAMES = ' + JSON.stringify(data, null, 4)
 				);
 
 				console.log('Name found. Database updated with ' + id + '. ' + name);
 			} catch (error) {
-				console.log(error);
+				// console.log(error);
+				console.log('Cannot parse name for monster id ' + id);
 				continue;
 			}
 		}
 	}
 
 	console.log(
-		`Japanese Names database parsing completed. ${
-			Object.keys(data).length
-		} names parsed. You can now run the monster parsers.`
+		`Japanese Names database parsing completed. ${total} names parsed. You can now run the monster parsers.`
 	);
 
 	browser.close();

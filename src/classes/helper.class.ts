@@ -7,6 +7,7 @@ import * as admin from 'firebase-admin';
 import { DMChannel, MessageReaction, MessageEmbed, Message, DiscordAPIError } from 'discord.js';
 import { Cache } from './cache.class';
 import { RARE_EGG_MACHINE, EVENT_EGG_MACHINE, COLLAB_EGG_MACHINE } from './eggMachines';
+import { MONSTER_TYPES } from '../shared/monster.types';
 const moment = require('moment');
 const _ = require('lodash');
 const Discord = require('discord.js');
@@ -924,6 +925,7 @@ export class Helper {
 			monsterAttribute1,
 			monsterAttribute2,
 			monsterSeries,
+			monsterTypes,
 		} = data;
 
 		let conditions = Monster.constructFilterConditions(data);
@@ -944,8 +946,9 @@ export class Helper {
 
 		embed.addFields(
 			{ name: 'Series Specified', value: monsterSeries ? monsterSeries : 'None' },
-			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
 			{ name: 'Attributes Requested', value: attributesSpecified },
+			{ name: 'Type Requested', value: monsterTypes === null ? 'None' : MONSTER_TYPES[monsterTypes] },
+			{ name: 'Evolution Type Requested', value: queryEvoType ? queryEvoType : 'None' },
 			{ name: 'Super Awakenings', value: `The results ${includingSA}.` }
 		);
 
@@ -1005,6 +1008,7 @@ export class Helper {
 			monsterSeries,
 			queryIncludeSA,
 			queryEvoType,
+			monsterTypes,
 		} = data;
 
 		if (monsterAwakenings1 === null) {
@@ -1035,8 +1039,9 @@ export class Helper {
 
 		embed.addFields(
 			{ name: 'Series Specified', value: monsterSeries ? monsterSeries : 'None' },
-			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
 			{ name: 'Attributes Requested', value: attributesSpecified },
+			{ name: 'Type Request', value: monsterTypes === null ? 'None' : MONSTER_TYPES[monsterTypes] },
+			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
 			{ name: 'Super Awakenings', value: `The results ${includingSA}.` },
 			{ name: 'Searching for Monsters with The Most', value: Common.awakenEmotesMapping([monsterAwakenings1])[0] }
 		);
@@ -1045,7 +1050,7 @@ export class Helper {
 		let max = 0;
 		let monsters: MonsterData[] = [];
 		let fieldName = queryIncludeSA === 'includeSA' ? 'computedAwakeningsWithSA' : 'computedAwakeningsWithoutSA';
-		if (monsterSeries !== null || monsterAttribute1 !== null || queryEvoType !== null) {
+		if (monsterSeries !== null || monsterAttribute1 !== null || queryEvoType !== null || monsterTypes !== null) {
 			//Construct conditions
 			let conditions = Monster.constructFilterConditions(data);
 
@@ -1057,6 +1062,7 @@ export class Helper {
 				'series',
 				'attribute',
 				'evoType',
+				'type',
 			]);
 
 			//Run through the list of monsters to choose the one with the highest amount of awakenings
@@ -1097,6 +1103,12 @@ export class Helper {
 			}
 
 			snapshot.forEach((monster: FirebaseFirestore.DocumentData) => monsters.push(monster.data()));
+
+			//Filter
+			monsters = Monster.filterBySeries(monsters, monsterSeries);
+			monsters = Monster.filterByAttributes(monsters, monsterAttribute1, monsterAttribute2);
+			monsters = Monster.filterByEvoType(monsters, queryEvoType);
+			monsters = Monster.filterByType(monsters, monsterTypes);
 		}
 
 		//Filter Japanese
@@ -1124,7 +1136,7 @@ export class Helper {
 	}
 
 	public async sendMonstersMinMaxStats(data) {
-		let { queryMinMax, stat, monsterSeries, queryIncludeLB, queryEvoType } = data;
+		let { queryMinMax, stat, monsterSeries, queryIncludeLB, queryEvoType, monsterTypes } = data;
 
 		if (!['hp', 'attack', 'recover'].includes(stat)) {
 			await this.sendMessage(`I can't seem to find the stat you are looking for. Can you please try again?`);
@@ -1156,8 +1168,9 @@ export class Helper {
 
 		embed.addFields(
 			{ name: 'Series Specified', value: monsterSeries ? monsterSeries : 'None' },
-			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
 			{ name: 'Attributes Requested', value: attributesSpecified },
+			{ name: 'Type Requested', value: monsterTypes === null ? 'None' : MONSTER_TYPES[monsterTypes] },
+			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
 			{ name: 'Super Awakenings', value: `The results ${includingLB}.` },
 			{ name: 'Searching for Monsters with The Highest', value: stat.toUpperCase() }
 		);
@@ -1177,6 +1190,7 @@ export class Helper {
 				'series',
 				'attribute',
 				'evoType',
+				'type',
 			]);
 
 			//Run through the list of monsters to choose the one with the highest amount of awakenings
@@ -1248,8 +1262,12 @@ export class Helper {
 			snapshotWithoutLB.forEach((monster: FirebaseFirestore.DocumentData) => monsters.push(monster.data()));
 		}
 
-		//Filter Japanese
+		//Filters
 		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
+		monsters = Monster.filterBySeries(monsters, monsterSeries);
+		monsters = Monster.filterByAttributes(monsters, monsterAttribute1, monsterAttribute2);
+		monsters = Monster.filterByEvoType(monsters, queryEvoType);
+		monsters = Monster.filterByType(monsters, monsterTypes);
 
 		let dataToSend = [];
 		monsters.forEach((monster) => {
@@ -1410,9 +1428,10 @@ export class Helper {
 	}
 
 	public async sendCardByEvoType(data) {
-		let { monsterId, queryEvoType } = data;
+		let { monsterId, queryEvoType, monsterTypes } = data;
 
 		monsterId = Number(monsterId);
+		monsterTypes = monsterTypes !== null ? Number(monsterTypes) : null;
 
 		//Fix attribute detection
 		let { monsterAttribute1, monsterAttribute2 } = Monster.fixAttributeDetection(data);
@@ -1433,10 +1452,11 @@ export class Helper {
 
 		monsters = Monster.filterByAttributes(monsters, monsterAttribute1, monsterAttribute2);
 		monsters = Monster.filterByEvoType(monsters, queryEvoType);
+		monsters = Monster.filterByType(monsters, monsterTypes);
 
 		if (monsters.length === 0) {
 			await this.sendMessage(
-				`I was able to find the monster you were asking for, but it looks like that evolution type or attribute doesn't exist on this monster!`
+				`I was able to find the monster you were asking for, but it looks like that evolution type, monster type or attribute doesn't exist on this monster!`
 			);
 		} else if (monsters.length === 1) {
 			let monster = new Monster(monsters[0].id);

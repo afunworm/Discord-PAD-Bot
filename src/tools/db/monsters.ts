@@ -60,7 +60,10 @@ let evoTreeData = [];
 			//Check to see if the monster is present in the NA database, if not, switch to JP database
 			//We can get around this by checking cooldown of an active skill
 			//It should never be 0
-			if (monster.getActiveSkill().cooldown === 0 && monster.isRegularMonster()) {
+			if (
+				(monster.getActiveSkill().cooldown === 0 && monster.isRegularMonster()) ||
+				monster.getName().toLowerCase().startsWith('alt.')
+			) {
 				//The clever eggs don't have skills
 				if (![3538, 3540, 3542, 3544, 3546].includes(monster.getId())) {
 					try {
@@ -248,7 +251,7 @@ let evoTreeData = [];
 	});
 	console.log('Data written for precalculated stats.');
 
-	// await fs.writeFileSync('./database.json', JSON.stringify(data, null, 4));
+	await fs.writeFileSync('./database.json', JSON.stringify(data, null, 4));
 
 	console.log('Database parsing completed');
 	process.exit();

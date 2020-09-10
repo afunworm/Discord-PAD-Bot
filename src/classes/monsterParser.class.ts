@@ -17,10 +17,15 @@ export class MonsterParser {
 	private useJP: boolean = false;
 	private rawSkillData;
 
+	public static shouldUseJP(id: number): boolean {
+		let name = MONSTER_DATA[id][1].toLowerCase();
+		return name.startsWith('alt.') || !/^[A-Za-z0-9\.\,\"\'\(\)&\?\- \!\+éóáí\%\:\/\[\]★=]*$/gi.test(name);
+	}
+
 	constructor(id: number, useJP: boolean = false) {
 		this.id = id;
 
-		if (useJP) {
+		if (useJP || MonsterParser.shouldUseJP(id)) {
 			if (!Number.isInteger(id) || id > JP_MONSTER_DATA.length || id < 1) {
 				throw new Error('Invalid id');
 			}
@@ -30,11 +35,18 @@ export class MonsterParser {
 			this.rawSkillData = JP_SKILL_DATA;
 		} else {
 			if (!Number.isInteger(id) || id > MONSTER_DATA.length || id < 1) {
-				throw new Error('Invalid id');
+				//Attempt to use JP
+				if (!Number.isInteger(id) || id > JP_MONSTER_DATA.length || id < 1) {
+					throw new Error('Invalid id');
+				} else {
+					this.useJP = true;
+					this.data = JP_MONSTER_DATA[id];
+					this.rawSkillData = JP_SKILL_DATA;
+				}
+			} else {
+				this.data = MONSTER_DATA[id];
+				this.rawSkillData = SKILL_DATA;
 			}
-
-			this.data = MONSTER_DATA[id];
-			this.rawSkillData = SKILL_DATA;
 		}
 	}
 
@@ -95,7 +107,12 @@ export class MonsterParser {
 
 	public getName(): string {
 		let monsterName = this.data[1];
-		if (monsterName.includes['*'] || monsterName.includes('??') || this.useJP) {
+		if (
+			monsterName.includes['*'] ||
+			monsterName.includes('??') ||
+			this.useJP ||
+			!/^[A-Za-z0-9\.\,\"\'\(\)&\?\- \!\+éóáí\%\:\/\[\]★=]*$/gi.test(monsterName)
+		) {
 			if (typeof JAPANESE_NAMES[this.id.toString()] === 'string') {
 				monsterName = JAPANESE_NAMES[this.id.toString()];
 			}

@@ -208,15 +208,20 @@ client.on('message', async (message: any) => {
 				monsterAwakenings3: parameters.monsterAwakenings3?.stringValue || null,
 				monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
 				monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+				monsterTypes: parameters.monsterTypes?.stringValue || null,
 				monsterSeries: parameters.monsterSeries?.stringValue || null,
 			};
 
-			if (parameters.queryEvoType?.stringValue && baseMonsterId !== null) {
+			if (
+				(parameters.queryEvoType?.stringValue || parameters.monsterTypes?.stringValue) &&
+				baseMonsterId !== null
+			) {
 				await helper.sendCardByEvoType({
 					monsterId: baseMonsterId,
 					queryEvoType: parameters.queryEvoType?.stringValue,
 					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
 					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+					monsterTypes: parameters.monsterTypes?.stringValue || null,
 				});
 				return;
 			} else {
@@ -239,6 +244,7 @@ client.on('message', async (message: any) => {
 					monsterSeries: parameters.monsterSeries?.stringValue || null,
 					queryIncludeSA: parameters.queryIncludeSA?.stringValue || 'includeSA',
 					queryEvoType: parameters.queryEvoType?.stringValue || null,
+					monsterTypes: parameters.monsterTypes?.stringValue || null,
 				});
 				return;
 			} else if (parameters.queryMonsterStats?.stringValue) {
@@ -251,6 +257,7 @@ client.on('message', async (message: any) => {
 					monsterSeries: parameters.monsterSeries?.stringValue || null,
 					queryIncludeLB: parameters.queryIncludeLB?.stringValue || 'includeLB',
 					queryEvoType: parameters.queryEvoType?.stringValue || null,
+					monsterTypes: parameters.monsterTypes?.stringValue || null,
 				});
 				return;
 			}

@@ -30,14 +30,14 @@ let placers = {
 			'awoken ',
 			'reincarnated ',
 			'equip ',
-			'assist',
-			'weapon',
+			'assist ',
+			'weapon ',
 			'equip ',
-			'assist',
-			'weapon',
+			'assist ',
+			'weapon ',
 			'equip ',
-			'assist',
-			'weapon',
+			'assist ',
+			'weapon ',
 		];
 		let prefix = Math.random() > 0.5 ? prefixes[r(0, prefixes.length - 1)] : '';
 		let names = [
@@ -185,6 +185,21 @@ let placers = {
 		['at least', 'at most', 'exactly', 'no more than', 'no less than', 'more than', 'less than'][r(0, 6)],
 	queryCompare2: () => placers.queryCompare1(),
 	queryCompare3: () => placers.queryCompare1(),
+	monsterTypes: () =>
+		[
+			'evo material',
+			'balanced',
+			'physical',
+			'healer',
+			'dragon',
+			'god',
+			'attacker',
+			'devil',
+			'machine',
+			'awaken material',
+			'enhance material',
+			'redeemable material',
+		][r(0, 11)],
 };
 
 let guid = () => {
@@ -265,12 +280,26 @@ let guid = () => {
 		);
 	});
 
+	let fourth = [];
+	//Run through MONSTERQUERYTYPE{{monsterTypes}} {{queryEvoType}}
+	third.forEach((phrase) => {
+		let regex = new RegExp('{{ *MONSTERQUERYTYPE *}}', 'g');
+		if (phrase.match(regex)) {
+			fourth.push(phrase.replace(regex, '{{monsterTypes}} {{queryEvoType}}'));
+			fourth.push(phrase.replace(regex, '{{monsterTypes}}'));
+			fourth.push(phrase.replace(regex, '{{queryEvoType}}'));
+			fourth.push(phrase.replace(regex, '{{queryEvoType}} {{monsterTypes}}'));
+		} else {
+			fourth.push(phrase);
+		}
+	});
+
 	//Trim all phrases
-	third = third.map((phrase) => phrase.trim().replace(/\s\s+/g, ' '));
+	fourth = fourth.map((phrase) => phrase.trim().replace(/\s\s+/g, ' '));
 
 	//Finally, run through pre-defined replacers
 	let data = [];
-	third.forEach((phrase) => {
+	fourth.forEach((phrase) => {
 		let entry = {
 			isTemplate: false,
 			count: 0,

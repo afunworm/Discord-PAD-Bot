@@ -116,7 +116,10 @@ async function writeMaterialIcons(
 		let mats = monster.getEvoMaterials();
 		mats = mats.filter((mat) => mat !== 0);
 
-		if (mats.length === 0) continue;
+		if (mats.length === 0) {
+			console.log('No material found for monster ' + id);
+			continue;
+		}
 
 		if (await fileExists(assetsPath + '/evos/' + id.toString().padStart(5, '0') + '.png')) {
 			console.log('Evo image exists for monster id ' + id + '..');

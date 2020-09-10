@@ -24,7 +24,8 @@ const firestore = admin.firestore();
 const cache = new Cache('monsters');
 
 export interface FilterCondition {
-	type: 'series' | 'evoType' | 'awakening' | 'attribute';
+	type: 'series' | 'evoType' | 'awakening' | 'attribute' | 'type';
+	monsterType?: number;
 	monsterSeries?: string;
 	queryEvoType?: string;
 	queryCompare?: string;
@@ -128,8 +129,10 @@ export class Monster {
 
 	public getAwakenEmotes(): string {
 		let awakenings = this.getAwakenings();
-		// if (awakenings.length < 9) {
-		// 	for (let i = 0; i < 9 - awakenings.length; i++) {
+		// if (awakenings.length < 8) {
+		// 	let more = 8 - awakenings.length;
+		// 	for (let i = 0; i < more; i++) {
+		// 		console.log('Pushing...');
 		// 		awakenings.push(0);
 		// 	}
 		// }
@@ -141,12 +144,14 @@ export class Monster {
 	}
 
 	public getSuperAwakenEmotes(): string {
+		console.log('---\nFor ' + this.id + '\n');
 		let superAwakenings = this.getSuperAwakenings();
-		// if (superAwakenings.length < 9) {
-		// 	for (let i = 0; i < 9 - superAwakenings.length; i++) {
-		// 		superAwakenings.push(0);
-		// 	}
-		// }
+		if (superAwakenings.length < 9) {
+			for (let i = 0; i < 9 - superAwakenings.length; i++) {
+				superAwakenings.push(0);
+			}
+		}
+		console.log(superAwakenings);
 		return superAwakenings.length ? Common.awakenEmotesMapping(superAwakenings).join(' ') : 'No Super Awakenings';
 	}
 
@@ -513,6 +518,26 @@ export class Monster {
 		});
 	}
 
+	public static getAllCardsWithType(type: number): Promise<MonsterData[]> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let ref = firestore.collection('Monsters').where('types', 'array-contains', type);
+				let snapshot = await ref.get();
+
+				if (snapshot.empty) resolve([]);
+
+				let result = [];
+				snapshot.forEach((doc) => {
+					result.push(doc.data() as MonsterData);
+				});
+
+				resolve(result);
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
+
 	public static getCalculatedMaxStats(): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
@@ -552,6 +577,7 @@ export class Monster {
 			monsterAwakenings1,
 			monsterAwakenings2,
 			monsterAwakenings3,
+			monsterTypes,
 			queryCompare1,
 			queryCompare2,
 			queryCompare3,
@@ -573,6 +599,7 @@ export class Monster {
 		monsterAwakenings1 = monsterAwakenings1 === null ? monsterAwakenings1 : Number(monsterAwakenings1);
 		monsterAwakenings2 = monsterAwakenings2 === null ? monsterAwakenings2 : Number(monsterAwakenings2);
 		monsterAwakenings3 = monsterAwakenings3 === null ? monsterAwakenings3 : Number(monsterAwakenings3);
+		monsterTypes = monsterTypes === null ? null : Number(monsterTypes);
 
 		//Do some prerequisite manipulation
 		//If there is awakening but no compare or quantity (monster with skill boosts) => compare = min, quantity = 1
@@ -645,6 +672,12 @@ export class Monster {
 				attribute2: monsterAttribute2,
 			});
 		}
+		if (monsterTypes !== null) {
+			conditions.push({
+				type: 'type',
+				monsterType: monsterTypes,
+			});
+		}
 
 		return conditions;
 	}
@@ -703,14 +736,30 @@ export class Monster {
 		return monsterList;
 	}
 
+	public static filterByType(monsterList: MonsterData[], type): MonsterData[] {
+		if (!type && type !== 0) return monsterList;
+		monsterList = monsterList.filter((monster) => monster.types.includes(Number(type)));
+
+		return monsterList;
+	}
+
+	public static filterBySeries(monsterList: MonsterData[], series): MonsterData[] {
+		if (!series && series !== 0 && series !== '0') return monsterList;
+
+		return monsterList.filter(
+			(monster: MonsterData) => monster.series === series || monster.collab === Number(series)
+		);
+	}
+
 	public static filterByEvoType(monsterList: MonsterData[], evoType): MonsterData[] {
+		if (!evoType && evoType !== 0) return monsterList;
 		return monsterList.filter((monster: MonsterData) => monster.evolutionType === evoType);
 	}
 
 	public static getAllCardsWithMultipleConditions(
 		conditions: FilterCondition[],
 		queryIncludeSA: boolean = true,
-		conditionsToRun: string[] = ['series', 'evoType', 'awakening', 'attribute']
+		conditionsToRun: string[] = ['series', 'evoType', 'awakening', 'attribute', 'type']
 	): Promise<MonsterData[]> {
 		//Replace common condition type
 		conditionsToRun = conditionsToRun.map((condition) => {
@@ -720,6 +769,7 @@ export class Monster {
 				return 'awakening';
 			if (condition === 'attributes ' || condition === 'monsterAttributes' || condition === 'monsterAttribute')
 				return 'attribute';
+			if (condition === 'types ' || condition === 'monsterTypes' || condition === 'monsterType') return 'type';
 			return condition;
 		});
 
@@ -745,9 +795,7 @@ export class Monster {
 							monsters.push(...monsterList);
 						} else {
 							//Filter from monsters
-							monsters = monsters.filter(
-								(monster: MonsterData) => monster.series === series || monster.collab === Number(series)
-							);
+							monsters = this.filterBySeries(monsters, series);
 						}
 					} else if (condition.type === 'evoType' && conditionsToRun.includes('evoType')) {
 						console.log('Running evoType filter...');
@@ -822,6 +870,19 @@ export class Monster {
 						} else {
 							//Filter from monsters
 							monsters = this.filterByAttributes(monsters, attribute1, attribute2);
+						}
+					} else if (condition.type === 'type' && conditionsToRun.includes('type')) {
+						console.log('Running type filter...');
+						let type = condition.monsterType;
+
+						if (monsters.length === 0) {
+							//Get new data
+							let monsterList = await Monster.getAllCardsWithType(type);
+
+							monsters.push(...monsterList);
+						} else {
+							//Filter from monsters
+							monsters = this.filterByType(monsters, type);
 						}
 					}
 				}
