@@ -1171,14 +1171,14 @@ export class Helper {
 			{ name: 'Attributes Requested', value: attributesSpecified },
 			{ name: 'Type Requested', value: monsterTypes === null ? 'None' : MONSTER_TYPES[monsterTypes] },
 			{ name: 'Evolution Type', value: queryEvoType ? queryEvoType : 'None' },
-			{ name: 'Super Awakenings', value: `The results ${includingLB}.` },
+			{ name: 'Limit Break', value: `The results ${includingLB}.` },
 			{ name: 'Searching for Monsters with The Highest', value: stat.toUpperCase() }
 		);
 		await this.sendMessage(embed);
 
 		let max = 0;
 		let monsters: MonsterData[] = [];
-		if (monsterSeries !== null || monsterAttribute1 !== null || queryEvoType !== null) {
+		if (monsterSeries !== null || monsterAttribute1 !== null || queryEvoType !== null || monsterTypes !== null) {
 			//Construct conditions
 			let conditions = Monster.constructFilterConditions(data);
 
@@ -1262,12 +1262,8 @@ export class Helper {
 			snapshotWithoutLB.forEach((monster: FirebaseFirestore.DocumentData) => monsters.push(monster.data()));
 		}
 
-		//Filters
+		//Filter Japanese
 		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
-		monsters = Monster.filterBySeries(monsters, monsterSeries);
-		monsters = Monster.filterByAttributes(monsters, monsterAttribute1, monsterAttribute2);
-		monsters = Monster.filterByEvoType(monsters, queryEvoType);
-		monsters = Monster.filterByType(monsters, monsterTypes);
 
 		let dataToSend = [];
 		monsters.forEach((monster) => {
