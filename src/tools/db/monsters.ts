@@ -23,8 +23,8 @@ const firestore = admin.firestore();
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
-// startNumber = 3538;
-// endNumber = 3550;
+// startNumber = 6437;
+// endNumber = 6443;
 // highestValidMonsterId = endNumber;
 let data = [];
 let evoTreeData = [];
@@ -219,6 +219,7 @@ let evoTreeData = [];
 	/**
 	 * MERGE EVO LISTS TO DATA
 	 */
+	console.log(evoTreeData);
 	evoTreeData.forEach((tree) => {
 		tree.forEach((monsterId) => {
 			data[monsterId]['evoTree'] = tree;

@@ -19,7 +19,11 @@ export class MonsterParser {
 
 	public static shouldUseJP(id: number): boolean {
 		let name = MONSTER_DATA[id][1].toLowerCase();
-		return name.startsWith('alt.') || !/^[A-Za-z0-9\.\,\"\'\(\)&\?\- \!\+éóáí\%\:\/\[\]★=]*$/gi.test(name);
+		return (
+			name.startsWith('alt.') ||
+			!/^[A-Za-z0-9\.\,\"\'\(\)&\?\- \!\+éóáí\%\:\/\[\]★=]*$/gi.test(name) ||
+			name.includes('??')
+		);
 	}
 
 	constructor(id: number, useJP: boolean = false) {
