@@ -8,16 +8,18 @@ import { CUSTOM_NAMES } from './customNames';
 import { ADDITIONAL_NAMES } from './additionalNames';
 import { MANUAL_LIST } from './manualList';
 import { JAPANESE_NAMES } from '../../shared/monster.japanese';
+import { map } from 'lodash';
 const fs = require('fs');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.HIGHEST_VALID_MONSTER_ID);
-// startNumber = 3113;
+// startNumber = 982;
 // endNumber = startNumber + 1;
 let data = [];
 let computedNameTracker = [];
 let limitedAttributeTraining = [2514];
 let numberOfNamesTrained = 0;
+let mainNames = ['valkyrie'];
 
 function computeCustomNames(monsterName: string, monster: MonsterParser): string[] {
 	let synonyms = [];
@@ -105,23 +107,34 @@ function trainAttributeReading(
 				}
 
 				//For case like dark anubis
-				if (subAttributeAlia === '') {
+				if (
+					(subAttributeAlia === '' || subAttributeAlia === 'x' || subAttributeAlia === 'none') &&
+					mainAttributeAlia !== 'x' &&
+					mainAttributeAlia !== '' &&
+					mainAttributeAlia !== 'none'
+				) {
 					trainedName = mainAttributeAlia + ' ' + name;
 					synonyms.push(trainedName);
 					return;
 				}
 
-				//Train for ab
-				trainedName = mainAttributeAlia + subAttributeAlia + ' ' + name;
-				synonyms.push(trainedName);
+				//Train for ab IF a is not none
+				if (mainAttributeAlia !== 'x' && mainAttributeAlia !== 'none' && mainAttributeAlia !== '') {
+					trainedName = mainAttributeAlia + subAttributeAlia + ' ' + name;
+					synonyms.push(trainedName);
+				}
 
-				//Train for a/b
-				trainedName = mainAttributeAlia + '/' + subAttributeAlia + ' ' + name;
-				synonyms.push(trainedName);
+				//Train for a/b IF a is not none
+				if (mainAttributeAlia !== 'x' && mainAttributeAlia !== 'none' && mainAttributeAlia !== '') {
+					trainedName = mainAttributeAlia + '/' + subAttributeAlia + ' ' + name;
+					synonyms.push(trainedName);
+				}
 
-				//Train for a b
-				trainedName = mainAttributeAlia + ' ' + subAttributeAlia + ' ' + name;
-				synonyms.push(trainedName);
+				//Train for a b IF a is not none
+				if (mainAttributeAlia !== 'x' && mainAttributeAlia !== 'none' && mainAttributeAlia !== '') {
+					trainedName = mainAttributeAlia + ' ' + subAttributeAlia + ' ' + name;
+					synonyms.push(trainedName);
+				}
 			});
 		});
 	});
@@ -130,6 +143,13 @@ function trainAttributeReading(
 }
 
 function guessName(fullName: string, withParenthesesContent: boolean = false): string {
+	//If card already includes the name precomputed above, it is the name
+	let mapped = '';
+	mainNames.forEach((name) => {
+		if (fullName.includes(name)) mapped = name;
+	});
+	if (mapped.length) return mapped;
+
 	//Calculated by splitting ',' and determining real name WITHOUT the content inside ()
 	let nameParts = withParenthesesContent
 		? fullName.replace('(', '').replace(')', '').trim().split(',')

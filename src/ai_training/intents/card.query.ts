@@ -7,12 +7,12 @@ export const CARD_QUERY_TRAINING_PHRASES = [
 	`{{ATTRIBUTES}} {{MONSTER}} {{queryEvoType}}`,
 	`{{ATTRIBUTES}} {{queryEvoType}} of {{MONSTER}}`,
 	`{{ATTRIBUTES}} {{queryEvoType}} for {{MONSTER}}`,
-	`{{ATTRIBUTES}} {{MONSTER}} {{queryEvoType}}`, //Multiple trainings of the same phrase to make it learn better
-	`{{ATTRIBUTES}} {{queryEvoType}} of {{MONSTER}}`, //Multiple trainings of the same phrase to make it learn better
-	`{{ATTRIBUTES}} {{queryEvoType}} for {{MONSTER}}`, //Multiple trainings of the same phrase to make it learn better
-	`{{ATTRIBUTES}} {{MONSTER}} {{queryEvoType}}`, //Multiple trainings of the same phrase to make it learn better
-	`{{ATTRIBUTES}} {{queryEvoType}} of {{MONSTER}}`, //Multiple trainings of the same phrase to make it learn better
-	`{{ATTRIBUTES}} {{queryEvoType}} for {{MONSTER}}`, //Multiple trainings of the same phrase to make it learn better
+	// `{{ATTRIBUTES}} {{MONSTER}} {{queryEvoType}}`, //Multiple trainings of the same phrase to make it learn better
+	// `{{ATTRIBUTES}} {{queryEvoType}} of {{MONSTER}}`, //Multiple trainings of the same phrase to make it learn better
+	// `{{ATTRIBUTES}} {{queryEvoType}} for {{MONSTER}}`, //Multiple trainings of the same phrase to make it learn better
+	// `{{ATTRIBUTES}} {{MONSTER}} {{queryEvoType}}`, //Multiple trainings of the same phrase to make it learn better
+	// `{{ATTRIBUTES}} {{queryEvoType}} of {{MONSTER}}`, //Multiple trainings of the same phrase to make it learn better
+	// `{{ATTRIBUTES}} {{queryEvoType}} for {{MONSTER}}`, //Multiple trainings of the same phrase to make it learn better
 	`{{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
 	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}}`,
 	`{{ATTRIBUTES}} {{queryEvoType}} {{targetObject}} from {{monsterSeries}} series`,

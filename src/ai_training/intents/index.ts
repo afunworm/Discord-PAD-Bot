@@ -6,7 +6,7 @@ import { CARD_QUERY_MINMAX_TRAINING_PHRASES } from './card.query.minMax';
 import { CARD_INFO_TRAINING_PHRASES } from './card.info';
 import { CARD_QUERY_RANDOM_TRAINING_PHRASES } from './card.query.random';
 
-let currentlyTraining = CARD_QUERY_RANDOM_TRAINING_PHRASES;
+let currentlyTraining = CARD_QUERY_TRAINING_PHRASES;
 
 let r = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 let placers = {

@@ -1481,6 +1481,7 @@ export class Helper {
 			await this.sendMessage(
 				"Due to Discord's limitation on embed messages, you can only roll 20 monsters at a time. Wanna try again?"
 			);
+			return;
 		}
 
 		let machineData;
