@@ -1274,7 +1274,7 @@ export class Helper {
 
 		if (monsters.length === 0) {
 			await this.sendMessage(
-				`I cannot process that query at the moment. Please let my dev know to update the database.`
+				`There is no monster in the database that fits the criteria you were looking for. Try again!`
 			);
 		} else {
 			//Display result
