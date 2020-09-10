@@ -1199,8 +1199,8 @@ export class Helper {
 			if (stat === 'hp') fieldName = 'HP';
 			if (stat === 'attack') fieldName = 'ATK';
 			if (stat === 'recover') fieldName = 'RCV';
-			let withLB = monsters.map((monster) => monster.limitBreakRCV || 0);
-			let withoutLB = monsters.map((monster) => monster.maxRCV || 0);
+			let withLB = monsters.map((monster) => monster['limitBreak' + fieldName] || 0);
+			let withoutLB = monsters.map((monster) => monster['max' + fieldName] || 0);
 			withLB = withLB.sort((a, b) => b - a);
 			withoutLB = withoutLB.sort((a, b) => b - a);
 
