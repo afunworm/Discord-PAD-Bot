@@ -2446,7 +2446,7 @@ export class LeaderSkill {
 		let RCVMultiplier = this.multiFloor(data[2]);
 		let shield = data[3];
 
-		return [1, ATKMultiplier, RCVMultiplier, shield];
+		return [1, ATKMultiplier, RCVMultiplier, this.mult(shield)];
 	}
 
 	public LSLMatchBoost(): string {
