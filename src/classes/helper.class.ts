@@ -6,7 +6,7 @@ import { Common } from './common.class';
 import * as admin from 'firebase-admin';
 import { DMChannel, MessageReaction, MessageEmbed, Message, DiscordAPIError } from 'discord.js';
 import { Cache } from './cache.class';
-import { RARE_EGG_MACHINE, EVENT_EGG_MACHINE, COLLAB_EGG_MACHINE } from './eggMachines';
+import { RARE_EGG_MACHINE, EVENT_EGG_MACHINE, COLLAB_EGG_MACHINE, SUPER_GODFEST_MACHINE } from './eggMachines';
 import { MONSTER_TYPES } from '../shared/monster.types';
 const moment = require('moment');
 const _ = require('lodash');
@@ -1484,7 +1484,7 @@ export class Helper {
 		let { machine, quantity } = data;
 		quantity = Number(quantity) || 1;
 
-		if (!['event', 'collab', 'rare'].includes(machine)) {
+		if (!['event', 'collab', 'rare', 'sgfe'].includes(machine)) {
 			await this.sendMessage(
 				"I can't seem to find that machine type. For real-rate rolling, you can only do `event`, `collab` or `rare` egg machines. Try again!"
 			);
@@ -1501,6 +1501,7 @@ export class Helper {
 		let machineData;
 		if (machine === 'event') machineData = EVENT_EGG_MACHINE;
 		else if (machine === 'collab') machineData = COLLAB_EGG_MACHINE;
+        else if (machine === 'sgfe') machineData = SUPER_GODFEST_MACHINE;
 		else machineData = RARE_EGG_MACHINE;
 
 		let from = moment(machineData.startDate).format('MM/DD/YYYY');
