@@ -10,6 +10,7 @@ import { MonsterParser } from './monsterParser.class';
 import { Common } from './common.class';
 import { Cache } from './cache.class';
 import { WhereFilterOp } from '@firebase/firestore-types';
+import { AWAKENINGS } from '../../dist/shared/monster.awakens';
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -129,13 +130,12 @@ export class Monster {
 
 	public getAwakenEmotes(): string {
 		let awakenings = this.getAwakenings();
-		// if (awakenings.length < 8) {
-		// 	let more = 8 - awakenings.length;
-		// 	for (let i = 0; i < more; i++) {
-		// 		console.log('Pushing...');
-		// 		awakenings.push(0);
-		// 	}
-		// }
+		if (awakenings.length < 8 && awakenings.length > 0) {
+			let more = 8 - awakenings.length;
+			for (let i = 0; i < more; i++) {
+				awakenings.push(0);
+			}
+		}
 		return awakenings.length ? Common.awakenEmotesMapping(awakenings).join(' ') : 'No Awakenings';
 	}
 
@@ -144,14 +144,14 @@ export class Monster {
 	}
 
 	public getSuperAwakenEmotes(): string {
-		console.log('---\nFor ' + this.id + '\n');
+		//console.log('---\nFor ' + this.id + '\n');
 		let superAwakenings = this.getSuperAwakenings();
-		if (superAwakenings.length < 9) {
-			for (let i = 0; i < 9 - superAwakenings.length; i++) {
+		if (superAwakenings.length < 8 && superAwakenings.length > 0) {
+			let more = 8 - superAwakenings.length;
+			for (let i = 0; i < more; i++) {
 				superAwakenings.push(0);
 			}
 		}
-		console.log(superAwakenings);
 		return superAwakenings.length ? Common.awakenEmotesMapping(superAwakenings).join(' ') : 'No Super Awakenings';
 	}
 
@@ -368,6 +368,12 @@ export class Monster {
 
 	public getAvailableKillers(): string {
 		let killerLatents = this.getLatentKillers();
+		if (killerLatents.length < 8 && killerLatents.length > 0) {
+			let more = 8 - killerLatents.length;
+			for (let i = 0; i < more; i++) {
+				killerLatents.push(0);
+			}
+		}
 		return Common.killerEmotesMapping(killerLatents).join(' ') || 'No Killers Available';
 	}
 
