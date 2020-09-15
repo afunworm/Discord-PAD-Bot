@@ -37,6 +37,10 @@ client.on('message', async (message: any) => {
 	) {
 		return;
 	}
+	//If message is just an empty string, return
+	if (message.content.startsWith(COMMAND_PREFIX) && message.content.replace('?', '').trim().length === 0) {
+		return;
+	}
 
 	// message.channel.send(`I am being maintained and will be able to work again in 15 mins!`);
 	// return;
