@@ -6,5 +6,9 @@ src/environment.ts
 src/.env
 assets
 dist
-src/ai_training/*.json
-src/parsers/*.json
+src/ai_training/entities/*.json
+src/ai_training/intents/*.json
+src/tools/db/*.json
+dist/ai_training/entities/*.json
+dist/ai_training/intents/*.json
+dist/tools/db/*.json
