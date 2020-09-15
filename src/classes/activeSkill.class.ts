@@ -643,9 +643,18 @@ export class ActiveSkill {
 		let skillIds = this.params;
 		let result = [];
 
-		skillIds.forEach((skillId) => result.push('{{' + skillId + '}} ' + SKILL_DATA[skillId][0]));
+		result.push('Activate a random skill from the following:');
 
-		return result.join('\n');
+		skillIds.forEach((skillId) => {
+			let skillData = SKILL_DATA[skillId];
+			let activeSkill = new ActiveSkill(skillData);
+			let description = activeSkill.getDetailDescription() === null ? 'None' : activeSkill.getDetailDescription();
+			result.push(SKILL_DATA[skillId][0] + ': ' + description);
+		});
+
+		//skillIds.forEach((skillId) => result.push('{{' + skillId + '}} ' + SKILL_DATA[skillId][0]));
+
+		return result.join('\n - ');
 	}
 
 	public ASIncreasedSkyfallChance(): string {
