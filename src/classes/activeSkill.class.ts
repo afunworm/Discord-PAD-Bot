@@ -646,10 +646,31 @@ export class ActiveSkill {
 		result.push('Activate a random skill from the following:');
 
 		skillIds.forEach((skillId) => {
-			let skillData = SKILL_DATA[skillId];
-			let activeSkill = new ActiveSkill(skillData);
-			let description = activeSkill.getDetailDescription() === null ? 'None' : activeSkill.getDetailDescription();
-			result.push(SKILL_DATA[skillId][0] + ': ' + description);
+			if (SKILL_DATA[skillId][2] === 116) {
+				// Multipart
+				let skills = SKILL_DATA[skillId];
+				let skillIds = [];
+				let subresult = [];
+
+				for (let i = 6; i < skills.length; i++) {
+					skillIds.push(skills[i]);
+				}
+
+				skillIds.forEach((skillId) => {
+					let skillData = SKILL_DATA[skillId];
+					let activeSkill = new ActiveSkill(skillData);
+					subresult.push(
+						activeSkill.getDetailDescription() === null ? 'None' : activeSkill.getDetailDescription()
+					);
+				});
+				result.push(SKILL_DATA[skillId][0] + ': ' + subresult.join(' '));
+			} else {
+				let skillData = SKILL_DATA[skillId];
+				let activeSkill = new ActiveSkill(skillData);
+				let description =
+					activeSkill.getDetailDescription() === null ? 'None' : activeSkill.getDetailDescription();
+				result.push(SKILL_DATA[skillId][0] + ': ' + description);
+			}
 		});
 
 		//skillIds.forEach((skillId) => result.push('{{' + skillId + '}} ' + SKILL_DATA[skillId][0]));
