@@ -38,7 +38,7 @@ client.on('message', async (message: any) => {
 		return;
 	}
 	//If message is just an empty string, return
-	let reg = new RegExp(`[\${COMMAND_PREFIX}]+`);
+	let reg = new RegExp(`[\\${COMMAND_PREFIX}]+`);
 	if (message.content.startsWith(COMMAND_PREFIX) && message.content.replace(reg, '').trim().length === 0) {
 		return;
 	}
