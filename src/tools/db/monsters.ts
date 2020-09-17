@@ -23,6 +23,7 @@ const firestore = admin.firestore();
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
+let databaseStartId = Number(process.env.DATABASE_WRITE_START_ID);
 // startNumber = 5881;
 // endNumber = 5882;
 // highestValidMonsterId = endNumber;
@@ -235,8 +236,12 @@ let evoTreeData = [];
 		if (!entry) continue;
 
 		try {
-			await firestore.collection('Monsters').doc(i.toString()).set(entry);
-			console.log('Data written for monster id ' + i);
+			if (i >= databaseStartId) {
+				await firestore.collection('Monsters').doc(i.toString()).set(entry);
+				console.log('Data written for monster id ' + i);
+			} else {
+				console.log('Skip data writing for id ' + i);
+			}
 		} catch (error) {
 			console.log(error.message);
 			console.log('An error has occurred.');
