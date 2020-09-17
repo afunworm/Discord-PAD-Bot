@@ -279,7 +279,7 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 }
 
 (async () => {
-	for (let id = startNumber; id < endNumber; id++) {
+	for (let id = startNumber; id <= endNumber; id++) {
 		try {
 			let monster = new MonsterParser(id);
 			let synonyms = [];
