@@ -2177,7 +2177,7 @@ export class LeaderSkill {
 		let ATKMultiplier = this.multiFloor(data[4]);
 		let RCVMultiplier = this.multiFloor(data[5]);
 
-		return `HP x${HPMultiplier}, ATK x${ATKMultiplier}, RCV ${RCVMultiplier} when all subs are from {{${MONSTER_COLLABS[collabId]}}} Collab.`;
+		return `HP x${HPMultiplier}, ATK x${ATKMultiplier}, RCV ${RCVMultiplier} when all subs are from ${MONSTER_COLLABS[collabId]} Collab.`;
 	}
 
 	public LSOrbRemainingMultiplierMultiplier(): number[] {
@@ -2581,7 +2581,7 @@ export class LeaderSkill {
 		let RCVMultiplier = this.multiFloor(data[3]);
 		let boost = this.stringifyBoost(HPMultiplier, ATKMultiplier, RCVMultiplier);
 
-		return `${boost} when all subs are from {{${MONSTER_GROUPS[groupId]}}}.`;
+		return `${boost} when all subs are ${MONSTER_GROUPS[groupId]}.`;
 	}
 
 	public LSColorComboBonusComboMultiplier(): number[] {
