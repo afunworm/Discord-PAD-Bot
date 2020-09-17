@@ -427,7 +427,7 @@ export class Helper {
 
 		//Added a separate line to navigate between the monster's evos
 		let evoList = card.getEvoTree();
-		if (evoList.length <= 1) return;
+		if (!evoList || evoList.length <= 1) return;
 
 		let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
@@ -1501,7 +1501,7 @@ export class Helper {
 		let machineData;
 		if (machine === 'event') machineData = EVENT_EGG_MACHINE;
 		else if (machine === 'collab') machineData = COLLAB_EGG_MACHINE;
-        else if (machine === 'sgfe') machineData = SUPER_GODFEST_MACHINE;
+		else if (machine === 'sgfe') machineData = SUPER_GODFEST_MACHINE;
 		else machineData = RARE_EGG_MACHINE;
 
 		let from = moment(machineData.startDate).format('MM/DD/YYYY');
