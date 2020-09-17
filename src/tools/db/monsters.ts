@@ -195,7 +195,7 @@ let evoTreeData = [];
 	/**
 	 * PARSE MONSTER EVO LIST - ONLY UP TO VALID MONSTER ID
 	 */
-	for (let id = startNumber; id < highestValidMonsterId; id++) {
+	for (let id = startNumber; id <= highestValidMonsterId; id++) {
 		try {
 			let monster = new MonsterParser(id);
 			let previousEvoId = monster.getPreviousEvo();
@@ -220,7 +220,7 @@ let evoTreeData = [];
 	/**
 	 * MERGE EVO LISTS TO DATA
 	 */
-	console.log(evoTreeData);
+	// console.log(evoTreeData);
 	evoTreeData.forEach((tree) => {
 		tree.forEach((monsterId) => {
 			data[monsterId]['evoTree'] = tree;
