@@ -1288,6 +1288,15 @@ export class Helper {
 		let { quantity, queryEvoType, monsterSeries, type } = data;
 		quantity = Number(quantity) || 1;
 
+		/* Real Rate Manipulator */
+		if (monsterSeries === 'padIsland') {
+			await this.sendRandomRolls({
+				machine: 'event',
+				quantity: quantity,
+			});
+			return;
+		}
+
 		if (quantity > 20) {
 			if (type === 'random') {
 				await this.sendMessage(
