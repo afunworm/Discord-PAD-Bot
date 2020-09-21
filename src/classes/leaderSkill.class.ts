@@ -2,6 +2,8 @@
 import { LEADERSKILL_MAP } from './leaderSkill.map';
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { MONSTER_TYPES } from '../shared/monster.types';
+import { MONSTER_GROUPS } from '../shared/monster.groups';
+import { MONSTER_COLLABS } from '../shared/monster.collabs';
 
 export class LeaderSkill {
 	private type: number;
@@ -2175,7 +2177,7 @@ export class LeaderSkill {
 		let ATKMultiplier = this.multiFloor(data[4]);
 		let RCVMultiplier = this.multiFloor(data[5]);
 
-		return `HP x${HPMultiplier}, ATK x${ATKMultiplier}, RCV ${RCVMultiplier} when all subs are from {{${collabId}}} Collab.`;
+		return `HP x${HPMultiplier}, ATK x${ATKMultiplier}, RCV ${RCVMultiplier} when all subs are from ${MONSTER_COLLABS[collabId]} Collab.`;
 	}
 
 	public LSOrbRemainingMultiplierMultiplier(): number[] {
@@ -2579,7 +2581,7 @@ export class LeaderSkill {
 		let RCVMultiplier = this.multiFloor(data[3]);
 		let boost = this.stringifyBoost(HPMultiplier, ATKMultiplier, RCVMultiplier);
 
-		return `${boost} when all subs are from {{${groupId}}}.`;
+		return `${boost} when all subs are ${MONSTER_GROUPS[groupId]}.`;
 	}
 
 	public LSColorComboBonusComboMultiplier(): number[] {
