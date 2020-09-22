@@ -43,7 +43,7 @@ export const COLLAB_EGG_MACHINE = {
 
 export const EVENT_EGG_MACHINE = {
 	name: 'PAD Island Series Machine',
-	rateBy: 'afunworm',
+	rateBy: 'Xolse',
 	startDate: new Date('September 21, 2020 00:00'),
 	endDate: new Date('October 04, 2020 23:59'),
 	updatedAt: new Date('September 21, 2020 01:48'),
