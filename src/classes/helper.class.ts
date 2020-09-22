@@ -1680,6 +1680,8 @@ export class Helper {
 	}
 
 	public static isDadJokeable(input: string): boolean {
+		return false;
+
 		let query = input.toLowerCase();
 		let guessedName: any = query.split('im');
 		if (guessedName.length !== 2) guessedName = query.split("i'm");
@@ -1688,7 +1690,7 @@ export class Helper {
 		if (guessedName.length === 2) guessedName = guessedName[1];
 		else return false;
 
-		if (typeof guessedName === 'string' && guessedName.split(' ').length <= 6) return true;
+		if (typeof guessedName === 'string' && guessedName.split(' ').length <= 4) return true;
 
 		return false;
 	}
@@ -1697,15 +1699,15 @@ export class Helper {
 		let toTitleCase = (str: string) =>
 			str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
-		let input = message.content.trim();
+		let input = message.content.trim().toLowerCase();
 		input = input.startsWith(COMMAND_PREFIX) ? input.substring(1) : input;
 
 		//Try to extract the joke ourselves
-		let guessedName: any = input.toLowerCase().split('im');
+		let guessedName: any = input.split('im');
 		if (guessedName.length !== 2) guessedName = input.toLowerCase().split("i'm");
-		if (guessedName.length !== 2) guessedName = input.toLowerCase().split('i am');
+		if (guessedName.length !== 2) guessedName = input.split('i am');
 		if (guessedName.length === 2) guessedName = guessedName[1];
-		if (guessedName.split(' ').length > 6) return;
+		if (guessedName.split(' ').length > 4) return;
 
 		//Capitalize first letter, because it's a name
 		let name = toTitleCase(guessedName.replace(/[\.]+/gi, '').replace(/[\,]+/gi, ''));
