@@ -98,4 +98,21 @@ export const RESPONSE_PHRASES = {
 	ON_RECOVER_REQUEST_NO_LB: [
 		`The RCV of **{{name}}** (#{{id}}) is {{maxRCV}} ({{maxRCVWithPluses}} with pluses) at max level.`,
 	],
+	ON_I_AM_DAD_JOKES: [
+		`Hi, {{name}}! I'm Sworm!`,
+		`Hi, {{name}}! Nice to meet you!`,
+		`Ey yo, {{name}}! Nice to meet you!`,
+		`Hello, {{name}}! I'm Sworm!`,
+		`Ey yo, {{name}}! I'm Sworm!`,
+		`Hello, {{name}}! Nice to meet you!`,
+		`Ey yo, {{name}}! Nice to meet you!`,
+		`It's nice to meet you, {{name}}!`,
+		`Hi {{name}}, I'm Sworm! Let's talk sometime!`,
+		`Hi {{name}}, I'm Sworm! Drop over sometime!`,
+		`Hello {{name}}, I'm Sworm! Let's talk sometime!`,
+		`Hello {{name}}, I'm Sworm! Drop over sometime!`,
+		`Ey yo, {{name}}, I'm Sworm! Let's talk sometime!`,
+		`Ey yo, {{name}}, I'm Sworm! Drop over sometime!`,
+		`Ey yo, {{name}}, it's me, Sworm!`,
+	],
 };

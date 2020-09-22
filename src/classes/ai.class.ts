@@ -3,7 +3,7 @@ const AIEnv = require('../' + process.env.AI_SERVICE_ACCOUNT);
 
 export interface QueryResultInterface {
 	queryResult: {
-		action: 'card.info' | 'card.query';
+		action: 'card.info' | 'card.query' | 'troll.dadJokes';
 		queryText: string;
 		parameters: {
 			fields: {
@@ -163,6 +163,10 @@ export interface QueryResultInterface {
 				};
 				eggMachines: {
 					stringValue: 'event' | 'collab' | 'rare';
+					kind: 'stringValue';
+				};
+				trollNames: {
+					stringValue: string;
 					kind: 'stringValue';
 				};
 			};
