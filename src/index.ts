@@ -302,10 +302,12 @@ client.on('message', async (message: any) => {
 			);
 		}
 	} catch (error) {
-		await helper.sendMessage(
-			`It looks like something went wrong. I can't seem to understand your request. Can you try it again?`
-		);
-		console.log('ERROR: ', error);
+		//Image only, no text input
+		if (error.code !== 3) {
+			await helper.sendMessage(
+				`It looks like something went wrong. I can't seem to understand your request. Can you try it again?`
+			);
+		}
 	}
 });
 
