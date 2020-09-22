@@ -113,6 +113,5 @@ export const RESPONSE_PHRASES = {
 		`Hello {{name}}, I'm Sworm! Drop over sometime!`,
 		`Ey yo, {{name}}, I'm Sworm! Let's talk sometime!`,
 		`Ey yo, {{name}}, I'm Sworm! Drop over sometime!`,
-		`Ey yo, {{name}}, it's me, Sworm!`,
 	],
 };

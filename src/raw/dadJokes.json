@@ -1,0 +1,523 @@
+{
+  "id": "63258b74-6163-4c26-b4d4-45a76cc0a184",
+  "name": "dadJokes",
+  "auto": true,
+  "condition": "",
+  "conditionalFollowupEvents": [],
+  "conditionalResponses": [],
+  "context": [],
+  "contexts": [],
+  "endInteraction": false,
+  "events": [],
+  "fallbackIntent": false,
+  "liveAgentHandoff": false,
+  "parentId": null,
+  "followUpIntents": [],
+  "priority": 500000,
+  "responses": [
+    {
+      "action": "troll.dadJokes",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "noInputPromptMessages": [],
+          "noMatchPromptMessages": [],
+          "promptMessages": [],
+          "defaultValue": "",
+          "name": "trollNames",
+          "dataType": "@trollNames",
+          "isList": false,
+          "required": false,
+          "prompts": [],
+          "value": "$trollNames.original",
+          "outputDialogContexts": []
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "messages": [
+        {
+          "type": "message",
+          "condition": "",
+          "speech": []
+        }
+      ],
+      "resetContexts": false
+    }
+  ],
+  "rootParentId": null,
+  "templates": [],
+  "userSays": [
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "more than levit right now",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "7bb2bf3c-6706-4c24-8d83-954afa754177",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im really ",
+          "userDefined": false
+        },
+        {
+          "text": "annoyed right now",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "00b7fc27-c7d7-4f88-bf67-5a73d228116b",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "gonna sleep",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "f91edcdf-e3f8-4459-a9f3-4ca32761c23d",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "gonna go",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "de9791bf-1710-4d04-82d0-1aa41cf05e66",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "surprised",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "cefd2565-1121-403d-b1b6-7a5e555ac05b",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "i am ",
+          "userDefined": false
+        },
+        {
+          "text": "interested",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "7092ddf8-d785-4cef-b92a-d28a3208b1f3",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "so happy with this",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "eed82376-89c3-410d-8129-f33583177be8",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "i am ",
+          "userDefined": false
+        },
+        {
+          "text": "amazing",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "b377cd32-29ee-4d87-bcbd-bba287f48418",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "craving tacos",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "af287a62-04a9-496f-9c4b-29e4ebac7e98",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "i'm such a ",
+          "userDefined": false
+        },
+        {
+          "text": "disappointment",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "4fa46b04-5cb3-41e2-80c3-f90efbafc846",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "really happy",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "485e27ef-f183-4a77-bf1c-2faf2914b977",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "amazing",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "0e5860cf-1109-4a2b-90c8-14fa28406ce4",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "i am ",
+          "userDefined": false
+        },
+        {
+          "text": "excited",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "eab7e86a-4398-4bba-a392-bf18c789d36c",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "disappointed",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "9d7a6d5d-997d-4a3a-9a3f-9e367f2a1697",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "really bad",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "1622b4a7-70b8-4990-b43b-ba306fec8c1b",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "i",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": " ",
+          "userDefined": false
+        },
+        {
+          "text": "am",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": " ",
+          "userDefined": false
+        },
+        {
+          "text": "sorry",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "d552ed55-e2fe-4e76-ad5f-55b957fb7001",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "i",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": "'",
+          "userDefined": false
+        },
+        {
+          "text": "m",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": " ",
+          "userDefined": false
+        },
+        {
+          "text": "so bad",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "9232186e-f52f-4d86-9099-624a1bfaeb23",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "really sorry",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "94686474-436c-4fba-ab65-c4a3c9e08547",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "i'm ",
+          "userDefined": false
+        },
+        {
+          "text": "so sorry",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "1f8e6b99-ecc8-4bac-91fe-ecf3fc465e36",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "im ",
+          "userDefined": false
+        },
+        {
+          "text": "a",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": " ",
+          "userDefined": false
+        },
+        {
+          "text": "disappointment",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "4f7b4014-3682-468c-89b0-98e0842b332a",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "I",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": "'",
+          "userDefined": false
+        },
+        {
+          "text": "m",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": " ",
+          "userDefined": false
+        },
+        {
+          "text": "sad",
+          "userDefined": true,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "4391d61f-1e5c-4a52-aa13-f95497cdba1e",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "I",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": "'",
+          "userDefined": false
+        },
+        {
+          "text": "m",
+          "userDefined": false,
+          "meta": "@sys.ignore",
+          "alias": null
+        },
+        {
+          "text": " ",
+          "userDefined": false
+        },
+        {
+          "text": "sorry",
+          "userDefined": false,
+          "alias": "trollNames",
+          "meta": "@trollNames"
+        }
+      ],
+      "count": 0,
+      "id": "db9d922e-82dd-4040-a504-78bd554cadc7",
+      "updated": null
+    }
+  ],
+  "webhookForSlotFilling": false,
+  "webhookUsed": false
+}
