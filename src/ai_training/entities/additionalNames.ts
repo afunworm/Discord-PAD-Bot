@@ -345,4 +345,5 @@ export const ADDITIONAL_NAMES = {
 	],
 	'5780': ['yugi', 'yugioh'],
 	'5787': ['marik'],
+	'6521': ['scheherazade dragon', 'sche dragon'],
 };

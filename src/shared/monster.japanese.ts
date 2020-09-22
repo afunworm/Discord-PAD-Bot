@@ -1150,6 +1150,11 @@ export const JAPANESE_NAMES = {
     "6446": "Cursed Key of Sloth",
     "6447": "Cursed Key of Pride",
     "6448": "Cursed Key of Gluttony",
+    "6451": "灼月夜の魔王・ジル＝レガート",
+    "6452": "灼月夜の魔王・ジル＝レガートの希石",
+    "6453": "紫の冥石柱",
+    "6454": "蒼の冥石柱",
+    "6458": "Safi’jiiva",
     "6459": "Safi’s Shatterblade",
     "6460": "Safi’s Drakshield",
     "6461": "Lagiacrus",
@@ -1159,6 +1164,7 @@ export const JAPANESE_NAMES = {
     "6465": "Regal Daruq",
     "6466": "Altheos Altrusta",
     "6467": "Harvest Lute",
+    "6468": "Tsautsau",
     "6469": "Flashbang Thunderclaw",
     "6470": "Eradication Flame",
     "6471": "True Fatalis Dyaus",
@@ -1168,6 +1174,7 @@ export const JAPANESE_NAMES = {
     "6475": "影嵐の武芸師, Scathach",
     "6476": "Awoken Hamal",
     "6477": "Super Reincarnated Idunn & Idunna",
+    "6518": "ジル＝レガートの耳飾り",
     "6519": "孔雀王・ユリシャ",
     "6520": "破毒の孔雀王・ユリシャ"
 }
