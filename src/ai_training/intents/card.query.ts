@@ -1,4 +1,16 @@
 export const CARD_QUERY_TRAINING_PHRASES = [
+	/* The Dark request */
+	`what {{targetObject}} are in {{monsterSeries}} collab`,
+	`what {{targetObject}} are in {{monsterSeries}} series`,
+	`what {{targetObject}} are in {{monsterSeries}}`,
+	`show me {{monsterSeries}} {{targetObject}}`,
+	`show me {{monsterSeries}} collab {{targetObject}}`,
+	`show me {{monsterSeries}} series {{targetObject}}`,
+	`what {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{monsterSeries}} collab {{targetObject}} have {{FILTERS}}`,
+	`what {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{monsterSeries}} series {{targetObject}} have {{FILTERS}}`,
+	`what {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{monsterSeries}} {{targetObject}} have {{FILTERS}}`,
+	`what {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{targetObject}} in {{monsterSeries}} have {{FILTERS}}`,
+
 	`{{monsterName:shelling_ford}} {{queryEvoType:equip:assist:weapon}}`,
 	`{{monsterAttribute1:red}} {{monsterName:shelling_ford}} {{queryEvoType:equip:assist:weapon}}`,
 	`{{monsterAttribute1:green}} {{monsterName:shelling_ford}} {{queryEvoType:equip:assist:weapon}}`,
@@ -6,6 +18,7 @@ export const CARD_QUERY_TRAINING_PHRASES = [
 	`{{monsterName:shelling_ford}} {{queryEvoType:equip:assist:weapon}}`,
 	`{{monsterSeries}} series`,
 	`{{monsterSeries}} collab`,
+	`{{monsterSeries}} {{targetObject}}`,
 	`{{targetObject}} from {{monsterSeries}} collab`,
 	`{{targetObject}} from {{monsterSeries}} series`,
 
@@ -20,6 +33,10 @@ export const CARD_QUERY_TRAINING_PHRASES = [
 	`What are the {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{targetObject}} that have {{FILTERS}} from bleach series`,
 	`Find me all {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{targetObject}} with {{FILTERS}} from {{monsterSeries}} collab`,
 	`Show me a list of {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{targetObject}} that have {{FILTERS}} from {{monsterSeries}} series`,
+	`Show me {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{targetObject}} that have {{FILTERS}} from {{monsterSeries}} series`,
+	`Show me {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{monsterSeries}} {{targetObject}} that have {{FILTERS}}`,
+	`Show me {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{monsterSeries}} series {{targetObject}} that have {{FILTERS}}`,
+	`Show me {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{monsterSeries}} collab {{targetObject}} that have {{FILTERS}}`,
 	`Search for all {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} with {{FILTERS}} from {{monsterSeries}} collab`,
 	`Help me find all {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{targetObject}} with {{FILTERS}} from {{monsterSeries}} collab`,
 	`Search {{monsterSeries}} series for all {{ATTRIBUTES}} {{MONSTERQUERYTYPE}} {{targetObject}} that have {{FILTERS}}`,
