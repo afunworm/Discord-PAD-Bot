@@ -1688,6 +1688,23 @@ export class Helper {
 			name: name,
 		});
 
-		await this.sendMessage(response);
+		let sentEmbed = await this._channel.send(response);
+		await sentEmbed.react('❌');
+
+		let collector = sentEmbed
+			.createReactionCollector(() => true, { time: 6000000 })
+			.on('end', async (collected) => {
+				try {
+					await sentEmbed.reactions.removeAll();
+				} catch (error) {
+					console.log('Unable to remove all reactions when collector dies.');
+				}
+			});
+
+		collector.on('collect', (react: MessageReaction, user) => {
+			if (react.emoji.name === '❌') {
+				react.message.delete();
+			}
+		});
 	}
 }
