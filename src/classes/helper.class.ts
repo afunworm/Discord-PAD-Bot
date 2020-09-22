@@ -13,6 +13,8 @@ const _ = require('lodash');
 const Discord = require('discord.js');
 const fs = require('fs');
 
+const COMMAND_PREFIX = process.env.COMMAND_PREFIX;
+
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
  *-------------------------------------------------------*/
@@ -1677,18 +1679,42 @@ export class Helper {
 		await fs.unlinkSync(imagePath);
 	}
 
-	public async sendIAmDadJoke(name: string) {
-		//Capitalize first letter, because it's a name
+	public static isDadJokeable(input: string): boolean {
+		let query = input.toLowerCase();
+		let guessedName: any = query.split('im');
+		if (guessedName.length !== 2) guessedName = query.split("i'm");
+		if (guessedName.length !== 2) guessedName = query.split('i am');
+
+		if (guessedName.length === 2) guessedName = guessedName[1];
+		else return false;
+
+		if (typeof guessedName === 'string' && guessedName.split(' ').length <= 6) return true;
+
+		return false;
+	}
+
+	static async sendIAmDadJoke(message: Message) {
 		let toTitleCase = (str: string) =>
 			str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
-		name = toTitleCase(name.replace(/[\.]+/gi, '').replace(/[\,]+/gi, ''));
+		let input = message.content.trim();
+		input = input.startsWith(COMMAND_PREFIX) ? input.substring(1) : input;
+
+		//Try to extract the joke ourselves
+		let guessedName: any = input.toLowerCase().split('im');
+		if (guessedName.length !== 2) guessedName = input.toLowerCase().split("i'm");
+		if (guessedName.length !== 2) guessedName = input.toLowerCase().split('i am');
+		if (guessedName.length === 2) guessedName = guessedName[1];
+		if (guessedName.split(' ').length > 6) return;
+
+		//Capitalize first letter, because it's a name
+		let name = toTitleCase(guessedName.replace(/[\.]+/gi, '').replace(/[\,]+/gi, ''));
 
 		let response = Common.dynamicResponse('ON_I_AM_DAD_JOKES', {
 			name: name,
 		});
 
-		let sentEmbed = await this._channel.send(response);
+		let sentEmbed = await message.channel.send(response);
 		await sentEmbed.react('❌');
 
 		let collector = sentEmbed

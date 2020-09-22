@@ -3,7 +3,7 @@ const AIEnv = require('../' + process.env.AI_SERVICE_ACCOUNT);
 
 export interface QueryResultInterface {
 	queryResult: {
-		action: 'card.info' | 'card.query' | 'troll.dadJokes';
+		action: 'card.info' | 'card.query';
 		queryText: string;
 		parameters: {
 			fields: {
