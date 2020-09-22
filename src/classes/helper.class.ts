@@ -1676,4 +1676,18 @@ export class Helper {
 		await this.sendMessage(embed);
 		await fs.unlinkSync(imagePath);
 	}
+
+	public async sendIAmDadJoke(name: string) {
+		//Capitalize first letter, because it's a name
+		let toTitleCase = (str: string) =>
+			str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+
+		name = toTitleCase(name.replace(/[\.]+/gi, '').replace(/[\,]+/gi, ''));
+
+		let response = Common.dynamicResponse('ON_I_AM_DAD_JOKES', {
+			name: name,
+		});
+
+		await this.sendMessage(response);
+	}
 }
