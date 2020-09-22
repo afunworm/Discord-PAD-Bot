@@ -988,7 +988,16 @@ export class Helper {
 			let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
 			let attributes =
 				Common.attributeEmotesMapping([mainAttribute])[0] + Common.attributeEmotesMapping([subAttribute])[0];
-			dataToSend.push(`${attributes}| ${monster.id}. ${monster.name}`);
+
+			if (
+				this._queryText.toLowerCase().includes('text only') ||
+				this._queryText.toLowerCase().includes('textonly') ||
+				this._queryText.toLowerCase().includes('only text')
+			) {
+				dataToSend.push(`${monster.id}. ${monster.name}`);
+			} else {
+				dataToSend.push(`${attributes}| ${monster.id}. ${monster.name}`);
+			}
 		});
 
 		//Display result
@@ -1120,7 +1129,16 @@ export class Helper {
 			let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
 			let attributes =
 				Common.attributeEmotesMapping([mainAttribute])[0] + Common.attributeEmotesMapping([subAttribute])[0];
-			dataToSend.push(`${attributes}| ${monster.id}. ${monster.name}`);
+
+			if (
+				this._queryText.toLowerCase().includes('text only') ||
+				this._queryText.toLowerCase().includes('textonly') ||
+				this._queryText.toLowerCase().includes('only text')
+			) {
+				dataToSend.push(`${monster.id}. ${monster.name}`);
+			} else {
+				dataToSend.push(`${attributes}| ${monster.id}. ${monster.name}`);
+			}
 		});
 
 		let awakeningEmote = Common.awakenEmotesMapping([monsterAwakenings1])[0];
@@ -1269,7 +1287,16 @@ export class Helper {
 			let subAttribute = monster.subAttribute === null ? -1 : monster.subAttribute;
 			let attributes =
 				Common.attributeEmotesMapping([mainAttribute])[0] + Common.attributeEmotesMapping([subAttribute])[0];
-			dataToSend.push(`${attributes}| ${monster.id}. ${monster.name}`);
+
+			if (
+				this._queryText.toLowerCase().includes('text only') ||
+				this._queryText.toLowerCase().includes('textonly') ||
+				this._queryText.toLowerCase().includes('only text')
+			) {
+				dataToSend.push(`${monster.id}. ${monster.name}`);
+			} else {
+				dataToSend.push(`${attributes}| ${monster.id}. ${monster.name}`);
+			}
 		});
 
 		if (monsters.length === 0) {
