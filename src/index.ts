@@ -275,25 +275,24 @@ client.on('message', async (message: any) => {
 		} else if (action === 'card.query.random') {
 			let parameters = result.queryResult.parameters.fields;
 			let queryAddtionalTypes = parameters.queryAdditionalTypes?.stringValue;
-			let eggMachines = parameters.eggMachines?.stringValue;
 
-			if (eggMachines) {
-				await helper.sendRandomRolls({
-					machine: eggMachines,
-					quantity: parameters.number.numberValue,
-				});
-				return;
-			} else {
-				await helper.sendRandomCard({
-					type: queryAddtionalTypes,
-					quantity: parameters.number.numberValue,
-					monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
-					monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
-					queryEvoType: parameters.queryEvoType?.stringValue || null,
-					monsterSeries: parameters.monsterSeries?.stringValue || null,
-				});
-				return;
-			}
+			await helper.sendRandomCard({
+				type: queryAddtionalTypes,
+				quantity: parameters.number.numberValue,
+				monsterAttribute1: parameters.monsterAttribute1?.stringValue || null,
+				monsterAttribute2: parameters.monsterAttribute2?.stringValue || null,
+				queryEvoType: parameters.queryEvoType?.stringValue || null,
+				monsterSeries: parameters.monsterSeries?.stringValue || null,
+			});
+			return;
+		} else if (action === 'card.roll') {
+			let parameters = result.queryResult.parameters.fields;
+
+			await helper.sendRandomRolls({
+				quantity: parameters.number.numberValue,
+				machine: parameters.monsterSeries?.stringValue || parameters.eggMachines?.stringValue,
+			});
+			return;
 		}
 
 		if (process.env.MODE === 'PRODUCTION') {

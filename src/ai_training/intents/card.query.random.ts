@@ -1,35 +1,4 @@
 export const CARD_QUERY_RANDOM_TRAINING_PHRASES = [
-	//Rolling egg machine
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times in the current {{eggMachines}}`,
-	`{{queryAdditionalTypes:roll}} the current {{eggMachines}} {{sysNumber}} times`,
-	`{{queryAdditionalTypes:roll}} {{eggMachines}} {{sysNumber}} times`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times {{eggMachines}}`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times the current {{eggMachines}}`,
-
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times in the current {{eggMachines:rem:cem:eem}}`,
-	`{{queryAdditionalTypes:roll}} the current {{eggMachines:rem:cem:eem}} {{sysNumber}} times`,
-	`{{queryAdditionalTypes:roll}} {{eggMachines}} {{sysNumber}} times`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times {{eggMachines:rem:cem:eem}}`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times the current {{eggMachines:rem:cem:eem}}`,
-
-	//Rolling randomly
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times from {{monsterSeries}}`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times from {{monsterSeries}} collab`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times from {{monsterSeries}} machine`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times from {{monsterSeries}} series`,
-	`{{queryAdditionalTypes:roll}} {{monsterSeries}} {{sysNumber}} times`,
-	`{{queryAdditionalTypes:roll}} {{monsterSeries}} series {{sysNumber}} times `,
-	`{{queryAdditionalTypes:roll}} {{monsterSeries}} collab {{sysNumber}} times`,
-	`{{queryAdditionalTypes:roll}} {{monsterSeries}} machine {{sysNumber}} times `,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times from the {{monsterSeries}}`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times from the {{monsterSeries}} collab`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times from the {{monsterSeries}} machine`,
-	`{{queryAdditionalTypes:roll}} {{sysNumber}} times from the {{monsterSeries}} series`,
-	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} {{sysNumber}} times`,
-	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} series {{sysNumber}} times `,
-	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} collab {{sysNumber}} times`,
-	`{{queryAdditionalTypes:roll}} the {{monsterSeries}} machine {{sysNumber}} times `,
-
 	//Asking for random card
 	`from {{monsterSeries}}, give me {{sysNumber}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}}`,
 	`show me {{sysNumber}} {{queryAdditionalTypes}} {{ATTRIBUTES}} {{targetObject}} from {{monsterSeries}}`,
