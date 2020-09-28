@@ -288,7 +288,7 @@ export const MACHINES = {
 		startDate: new Date('January 28, 2019 00:00'),
 		endDate: new Date('February 10, 2019 23:59'),
 		updatedAt: new Date('September 28, 2020 14:26'),
-		cost: 10,
+		cost: 5,
 		lineup: {
 			6135: 2.5,
 			5001: 2.5,
