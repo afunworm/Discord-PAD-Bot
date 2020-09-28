@@ -788,11 +788,12 @@ export class Helper {
 
 	public async sendCollabList(series: string, attribute1 = null, attribute2 = null) {
 		let monsters: MonsterData[] = [];
+		let monsterSeries = Monster.fixCollabId(series).toString();
 
 		try {
 			//Get all monsters with that series
-			let seriesMonsters = await Monster.getAllCardsFromSeries(series);
-			let collabMonsters = await Monster.getAllCardsFromCollab(Number(series));
+			let seriesMonsters = await Monster.getAllCardsFromSeries(monsterSeries);
+			let collabMonsters = await Monster.getAllCardsFromCollab(Number(monsterSeries));
 
 			if (seriesMonsters.length === 0 && collabMonsters.length === 0) {
 				await this.sendMessage(
@@ -930,6 +931,7 @@ export class Helper {
 			monsterSeries,
 			monsterTypes,
 		} = data;
+		data.monsterSeries = monsterSeries = Monster.fixCollabId(monsterSeries);
 
 		let conditions = Monster.constructFilterConditions(data);
 
@@ -1025,6 +1027,7 @@ export class Helper {
 			queryEvoType,
 			monsterTypes,
 		} = data;
+		data.monsterSeries = monsterSeries = Monster.fixCollabId(monsterSeries);
 
 		if (monsterAwakenings1 === null) {
 			await this.sendMessage(`I can't seem to find the awakening you are looking for. Can you please try again?`);
@@ -1165,6 +1168,7 @@ export class Helper {
 
 	public async sendMonstersMinMaxStats(data) {
 		let { queryMinMax, stat, monsterSeries, queryIncludeLB, queryEvoType, monsterTypes } = data;
+		data.monsterSeries = monsterSeries = Monster.fixCollabId(monsterSeries);
 
 		if (!['hp', 'attack', 'recover'].includes(stat)) {
 			await this.sendMessage(`I can't seem to find the stat you are looking for. Can you please try again?`);
@@ -1328,6 +1332,7 @@ export class Helper {
 	public async sendRandomCard(data) {
 		let { quantity, queryEvoType, monsterSeries, type } = data;
 		quantity = Number(quantity) || 1;
+		data.monsterSeries = monsterSeries = Monster.fixCollabId(monsterSeries);
 
 		if (quantity > 20) {
 			if (type === 'random') {
@@ -1534,7 +1539,7 @@ export class Helper {
 		quantity = Number(quantity) || 1;
 
 		//Manually filter out MH
-		if (Number(machine) === 21) machine = 61; //Monster Hunter 1 & Monster Hunter 2 = Monster Hunter
+		machine = Monster.fixCollabId(machine);
 
 		//Machine is also monster series
 		//Or event, collab, rare, sfge

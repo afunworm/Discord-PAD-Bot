@@ -903,4 +903,10 @@ export class Monster {
 			}
 		});
 	}
+
+	public static fixCollabId(collab: number | string) {
+		if (collab === 21 || collab === '21') return 61; //Monster Hunter 1 & Monster Hunter 2 = Monster Hunter
+
+		return collab;
+	}
 }
