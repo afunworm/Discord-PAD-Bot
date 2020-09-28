@@ -24,8 +24,8 @@ let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
 let databaseStartId = Number(process.env.DATABASE_WRITE_START_ID);
-// startNumber = 5881;
-// endNumber = 5882;
+// startNumber = 6528;
+// endNumber = 6528;
 // highestValidMonsterId = endNumber;
 let data = [];
 let evoTreeData = [];
@@ -54,7 +54,7 @@ let evoTreeData = [];
 		attack: 0,
 		recover: 0,
 	};
-	for (let id = startNumber; id < endNumber; id++) {
+	for (let id = startNumber; id <= endNumber; id++) {
 		try {
 			let monster = new MonsterParser(id);
 
@@ -223,7 +223,7 @@ let evoTreeData = [];
 	// console.log(evoTreeData);
 	evoTreeData.forEach((tree) => {
 		tree.forEach((monsterId) => {
-			data[monsterId]['evoTree'] = tree;
+			if (data[monsterId]) data[monsterId]['evoTree'] = tree;
 		});
 	});
 
