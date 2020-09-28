@@ -14,6 +14,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 
 const COMMAND_PREFIX = process.env.COMMAND_PREFIX;
+const HIGHEST_VALID_MONSTER_ID_NA = Number(process.env.HIGHEST_VALID_MONSTER_ID_NA);
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -982,7 +983,10 @@ export class Helper {
 		);
 
 		//Filter Japanese
-		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
+		monsters = monsters.filter(
+			(monster) =>
+				!monster.name.includes('*') && !monster.name.includes('??') && monster.id < HIGHEST_VALID_MONSTER_ID_NA
+		);
 
 		let dataToSend = [];
 		monsters.forEach((monster) => {
@@ -1123,7 +1127,11 @@ export class Helper {
 		}
 
 		//Filter Japanese
-		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
+		monsters = monsters.filter((monster) => {
+			if (monster.id > HIGHEST_VALID_MONSTER_ID_NA) return true;
+
+			return !monster.name.includes('*') && !monster.name.includes('??');
+		});
 
 		let dataToSend = [];
 		monsters.forEach((monster) => {
@@ -1281,7 +1289,11 @@ export class Helper {
 		}
 
 		//Filter Japanese
-		monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
+		monsters = monsters.filter((monster) => {
+			if (monster.id > HIGHEST_VALID_MONSTER_ID_NA) return true;
+
+			return !monster.name.includes('*') && !monster.name.includes('??');
+		});
 
 		let dataToSend = [];
 		monsters.forEach((monster) => {
@@ -1359,7 +1371,11 @@ export class Helper {
 			]);
 
 			//Filter Japanese
-			monsters = monsters.filter((monster) => !monster.name.includes('*') && !monster.name.includes('??'));
+			monsters = monsters.filter((monster) => {
+				if (monster.id > HIGHEST_VALID_MONSTER_ID_NA) return true;
+
+				return !monster.name.includes('*') && !monster.name.includes('??');
+			});
 
 			//If the number of monsters retrieved is > the quantity, just pick random
 			if (monsters.length > quantity) {
@@ -1389,7 +1405,11 @@ export class Helper {
 					await monster.init();
 
 					//Filter out Japanese names
-					if (monster.getName().includes('*') || monster.getName().includes('??')) continue;
+					if (
+						(monster.getName().includes('*') || monster.getName().includes('??')) &&
+						monster.id < HIGHEST_VALID_MONSTER_ID_NA
+					)
+						continue;
 
 					if (type === 'random') {
 						monsters.push(monster.getFullData());
