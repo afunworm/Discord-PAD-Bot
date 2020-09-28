@@ -244,7 +244,7 @@ export const MACHINES = {
 	//MONSTER HUNTER
 	'61': {
 		name: 'Monster Hunter Egg Machine',
-		rateBY: 'Xolse',
+		rateBy: 'Xolse',
 		startDate: new Date('September 28, 2020 00:00'),
 		endDate: new Date('October 11, 2020 23:59'),
 		updatedAt: new Date('September 28, 2020 14:14'),
@@ -284,7 +284,7 @@ export const MACHINES = {
 	//Fate
 	'79': {
 		name: "Fate/Stay Night [Heaven's Feel] Machine",
-		rateBY: 'Xolse',
+		rateBy: 'Xolse',
 		startDate: new Date('January 28, 2019 00:00'),
 		endDate: new Date('February 10, 2019 23:59'),
 		updatedAt: new Date('September 28, 2020 14:26'),
