@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const { card: MONSTER_DATA } = require('../raw/download_card_data.json');
 const { card: JP_MONSTER_DATA } = require('../raw/download_card_data.jp.json');
 const { skill: SKILL_DATA } = require('../raw/download_skill_data.json');
@@ -11,6 +13,8 @@ import { ActiveSkill } from './activeSkill.class';
 import { Common } from './common.class';
 import { JAPANESE_NAMES } from '../shared/monster.japanese';
 
+const HIGHEST_VALID_MONSTER_ID_NA = Number(process.env.HIGHEST_VALID_MONSTER_ID_NA);
+
 export class MonsterParser {
 	private id;
 	private data;
@@ -22,7 +26,8 @@ export class MonsterParser {
 		return (
 			name.startsWith('alt.') ||
 			!/^[A-Za-z0-9\.\,\"\'\(\)&\?\- \!\+éóáí\%\:\/\[\]★=]*$/gi.test(name) ||
-			name.includes('??')
+			name.includes('??') ||
+			id > HIGHEST_VALID_MONSTER_ID_NA
 		);
 	}
 
