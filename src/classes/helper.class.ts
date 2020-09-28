@@ -6,7 +6,7 @@ import { Common } from './common.class';
 import * as admin from 'firebase-admin';
 import { DMChannel, MessageReaction, MessageEmbed, Message, DiscordAPIError } from 'discord.js';
 import { Cache } from './cache.class';
-import { RARE_EGG_MACHINE, EVENT_EGG_MACHINE, COLLAB_EGG_MACHINE, SUPER_GODFEST_MACHINE } from './eggMachines';
+import { MACHINES, CURRENT_MACHINES } from './eggMachines';
 import { MONSTER_TYPES } from '../shared/monster.types';
 const moment = require('moment');
 const _ = require('lodash');
@@ -1329,15 +1329,6 @@ export class Helper {
 		let { quantity, queryEvoType, monsterSeries, type } = data;
 		quantity = Number(quantity) || 1;
 
-		/* Real Rate Manipulator */
-		if (monsterSeries === 'padIsland') {
-			await this.sendRandomRolls({
-				machine: 'event',
-				quantity: quantity,
-			});
-			return;
-		}
-
 		if (quantity > 20) {
 			if (type === 'random') {
 				await this.sendMessage(
@@ -1462,7 +1453,7 @@ export class Helper {
 
 		if (type === 'roll') {
 			embed.setFooter(
-				`For real in-game rate simulation of currently active machines, try \`roll 10 times current rare egg machine\`, \`roll 10 times current collab machine\` or \`roll 20 times current event egg machine\``
+				`There is no available in-game rate data for this machine yet. It will be updated as soon as the machine arrives in NA or JP.`
 			);
 		}
 
@@ -1542,12 +1533,12 @@ export class Helper {
 		let { machine, quantity } = data;
 		quantity = Number(quantity) || 1;
 
-		if (!['event', 'collab', 'rare', 'sgfe'].includes(machine)) {
-			await this.sendMessage(
-				"I can't seem to find that machine type. For real-rate rolling, you can only do `event`, `collab` or `rare` egg machines. Try again!"
-			);
-			return;
-		}
+		//Manually filter out MH
+		if (Number(machine) === 21) machine = 61; //Monster Hunter 1 & Monster Hunter 2 = Monster Hunter
+
+		//Machine is also monster series
+		//Or event, collab, rare, sfge
+		if (CURRENT_MACHINES[machine]) machine = CURRENT_MACHINES[machine];
 
 		if (quantity > 20) {
 			await this.sendMessage(
@@ -1556,11 +1547,20 @@ export class Helper {
 			return;
 		}
 
-		let machineData;
-		if (machine === 'event') machineData = EVENT_EGG_MACHINE;
-		else if (machine === 'collab') machineData = COLLAB_EGG_MACHINE;
-		else if (machine === 'sgfe') machineData = SUPER_GODFEST_MACHINE;
-		else machineData = RARE_EGG_MACHINE;
+		let machineData = MACHINES[machine];
+
+		if (!machineData) {
+			//There is no rate yet
+			await this.sendRandomCard({
+				type: 'roll',
+				quantity: quantity,
+				monsterAttribute1: null,
+				monsterAttribute2: null,
+				queryEvoType: null,
+				monsterSeries: machine,
+			});
+			return;
+		}
 
 		let from = moment(machineData.startDate).format('MM/DD/YYYY');
 		let to = moment(machineData.endDate).format('MM/DD/YYYY');
