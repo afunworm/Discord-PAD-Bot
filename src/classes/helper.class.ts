@@ -1407,7 +1407,7 @@ export class Helper {
 					//Filter out Japanese names
 					if (
 						(monster.getName().includes('*') || monster.getName().includes('??')) &&
-						monster.id < HIGHEST_VALID_MONSTER_ID_NA
+						monster.getId() < HIGHEST_VALID_MONSTER_ID_NA
 					)
 						continue;
 
