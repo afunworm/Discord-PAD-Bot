@@ -175,6 +175,10 @@ export class Monster {
 		return this.monsterData.isInheritable;
 	}
 
+	public isExtraSlottable(): boolean {
+		return this.monsterData.isExtraSlottable;
+	}
+
 	public isLimitBreakable(): boolean {
 		return this.monsterData.isLimitBreakable;
 	}
