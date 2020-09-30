@@ -83,6 +83,7 @@ function trainAttributeReading(
 		light: ['light', 'l'],
 		dark: ['dark', 'd'],
 		none: ['x', ''],
+		jammer: ['x', ''],
 	};
 	let synonyms = nameList; //Return the original entries back too!
 	if (!subAttribute) subAttribute = 'none';

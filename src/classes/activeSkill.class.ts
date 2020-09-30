@@ -808,7 +808,7 @@ export class ActiveSkill {
 		let turns = data[0];
 		let maxTurns = data[1] || turns;
 
-		if (maxTurns) {
+		if (maxTurns != turns) {
 			return `Team skills charged by ${turns} to ${maxTurns} turns.`;
 		} else {
 			return `Team skills charged by ${turns} turns.`;
@@ -1054,6 +1054,6 @@ export class ActiveSkill {
 		let speed = this.mult(data[1]);
 		let count = data[7];
 
-		return `Randomly spawns spinner orbs for a certain number of turns.`;
+		return `Randomly spawns ${count} spinner orbs on a ${speed} second duration for ${count} turns.`;
 	}
 }
