@@ -1,0 +1,6 @@
+{
+	"allowSignUp": false,
+	"serviceAccount": "paddata-dda55-firebase-adminsdk-fyu7o-2179ab8dff.json",
+	"databaseURL": "https://paddata-dda55.firebaseio.com",
+	"storageBucket": "paddata-dda55.appspot.com"
+}
