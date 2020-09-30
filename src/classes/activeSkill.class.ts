@@ -1054,6 +1054,6 @@ export class ActiveSkill {
 		let speed = this.mult(data[1]);
 		let count = data[7];
 
-		return `Randomly spawns spinner orbs for a certain number of turns.`;
+		return `Randomly spawns ${count} spinner orbs on a ${speed} second duration for ${count} turns.`;
 	}
 }
