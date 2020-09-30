@@ -3177,6 +3177,7 @@ export const MONSTER_SERIES = [
 			'key hero sin dragon',
 			'khsd',
 			'key heroes sin dragons',
+			'sins',
 		],
 		group: null,
 		cards: [
