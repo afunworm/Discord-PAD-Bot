@@ -808,7 +808,7 @@ export class ActiveSkill {
 		let turns = data[0];
 		let maxTurns = data[1] || turns;
 
-		if (maxTurns) {
+		if (maxTurns != turns) {
 			return `Team skills charged by ${turns} to ${maxTurns} turns.`;
 		} else {
 			return `Team skills charged by ${turns} turns.`;
