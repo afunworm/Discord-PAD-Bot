@@ -1137,14 +1137,24 @@ export class LeaderSkill {
 	public LSHpReductionMultiplier(): number[] {
 		let data = this.params;
 		let HPMultiplier = this.mult(data[0]);
+		let ATKMultiplier = data.length > 1 ? this.mult(data[2]) : 1;
 
-		return [HPMultiplier, 1, 1, 1];
+		return [HPMultiplier, ATKMultiplier, 1, 1];
 	}
 
 	public LSHpReduction(): string {
 		let data = this.params;
 		let HPMultiplier = this.mult(data[0]);
 		let boost = this.stringifyBoost(HPMultiplier);
+
+		if (data.length > 1) {
+			let attributes = this.getAttributesFromBinary(data[1]);
+			let attributeString = this.toAttributeString(attributes);
+			let ATKMultiplier = this.mult(data[2]);
+			let boost2 = this.stringifyBoost(1, ATKMultiplier);
+
+			return `All Attribute cards ${boost}. ${attributeString} Attribute cards ${boost2}.`;
+		}
 
 		return `All Attribute cards ${boost}.`;
 	}
