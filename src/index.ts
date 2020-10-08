@@ -303,6 +303,7 @@ client.on('message', async (message: any) => {
 	} catch (error) {
 		//Image only, no text input
 		if (error.code !== 3) {
+			console.log(error);
 			await helper.sendMessage(
 				`It looks like something went wrong. I can't seem to understand your request. Can you try it again?`
 			);

@@ -1547,9 +1547,8 @@ export class Helper {
 
 		if (quantity > 20) {
 			await this.sendMessage(
-				"Due to Discord's limitation on embed messages, you can only roll 20 monsters at a time. Wanna try again?"
+				"Roll request with more than 20 rolls will only come with result & analysis (no image) due to Discord's limitation. **Please wait while I am processing the data...**"
 			);
-			return;
 		}
 
 		let machineData = MACHINES[machine];
@@ -1664,36 +1663,51 @@ export class Helper {
 		}
 
 		let imagePath;
-		try {
-			//We wrap it in here so we can re-run the whole function if something went wrong
-			imagePath = await Common.displayCardIcons(monsterIconData);
-		} catch (error) {
-			console.log(error);
-			this.sendRandomCard(data);
-			return;
+		if (quantity <= 20) {
+			try {
+				//We wrap it in here so we can re-run the whole function if something went wrong
+				imagePath = await Common.displayCardIcons(monsterIconData);
+			} catch (error) {
+				console.log(error);
+				this.sendRandomCard(data);
+				return;
+			}
 		}
 
 		let embed = new Discord.MessageEmbed()
 			.setAuthor(`${from} - ${to}`)
-			.setTitle(`${machineName} (using real in-game rate)`)
-			.addFields({
-				name: `Your Roll Result`,
-				value: monsterNameData.join('\n'),
-			})
-			.addFields({
-				name: `Roll Rate Analysis`,
-				value: analysis.join('\n'),
-			})
-			.attachFiles([
-				{
-					attachment: imagePath,
-					name: 'rolledMonsters.png',
-				},
-			])
-			.setImage('attachment://rolledMonsters.png')
-			.setFooter(
-				`In-game rate data was input on ${updatedAt} by ${by}.\nThis is just a simulator of what the machine rolls would be with provided in-game rates; and is in no way affiliated with Gungho's drop algorithms.`
-			);
+			.setTitle(`${machineName} (using real in-game rate)`);
+
+		let total = Math.ceil(monsterNameData.length / 20);
+		let currentResultPage = 0;
+		do {
+			let current = monsterNameData.splice(0, monsterNameData.length >= 20 ? 20 : monsterNameData.length);
+			currentResultPage++;
+
+			embed.addFields({
+				name: `Your Roll Result (${currentResultPage} of ${total})`,
+				value: current.join('\n'),
+			});
+		} while (monsterNameData.length !== 0);
+
+		embed.addFields({
+			name: `Roll Rate Analysis`,
+			value: analysis.join('\n'),
+		});
+
+		if (imagePath) {
+			embed
+				.attachFiles([
+					{
+						attachment: imagePath,
+						name: 'rolledMonsters.png',
+					},
+				])
+				.setImage('attachment://rolledMonsters.png');
+		}
+		embed.setFooter(
+			`In-game rate data was input on ${updatedAt} by ${by}.\nThis is just a simulator of what the machine rolls would be with provided in-game rates; and is in no way affiliated with Gungho's drop algorithms.`
+		);
 
 		cost = cost * monsters.length;
 		let dollar = ((46.99 * cost) / 85).toFixed(2);
@@ -1701,7 +1715,8 @@ export class Helper {
 			`<@!${this._message.author.id}> I just spent **${cost}** stones (**~$${dollar}**, assuming you buy packs?) to roll ${monsters.length} times for you in the current **${machineName}** machine! Here is the result!`
 		);
 		await this.sendMessage(embed);
-		await fs.unlinkSync(imagePath);
+
+		if (quantity <= 20) await fs.unlinkSync(imagePath);
 	}
 
 	public static isDadJokeable(input: string): boolean {
