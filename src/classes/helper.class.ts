@@ -1678,10 +1678,10 @@ export class Helper {
 			.setAuthor(`${from} - ${to}`)
 			.setTitle(`${machineName} (using real in-game rate)`);
 
-		let total = Math.ceil(monsterNameData.length / 20);
+		let total = Math.ceil(monsterNameData.length / 15);
 		let currentResultPage = 0;
 		do {
-			let current = monsterNameData.splice(0, monsterNameData.length >= 20 ? 20 : monsterNameData.length);
+			let current = monsterNameData.splice(0, monsterNameData.length >= 15 ? 15 : monsterNameData.length);
 			currentResultPage++;
 
 			embed.addFields({
