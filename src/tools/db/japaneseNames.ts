@@ -8,7 +8,6 @@ import { JAPANESE_NAMES } from '../../shared/monster.japanese';
 const fs = require('fs');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
-let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
 let endPoint = process.env.JAPANESE_NAMES_SCRAPING_URL;
 

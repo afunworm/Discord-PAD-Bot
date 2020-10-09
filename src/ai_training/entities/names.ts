@@ -8,13 +8,12 @@ import { CUSTOM_NAMES } from './customNames';
 import { ADDITIONAL_NAMES } from './additionalNames';
 import { MANUAL_LIST } from './manualList';
 import { JAPANESE_NAMES } from '../../shared/monster.japanese';
-import { map } from 'lodash';
 const fs = require('fs');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.HIGHEST_VALID_MONSTER_ID);
-// startNumber = 982;
-// endNumber = startNumber + 1;
+// startNumber = 4787;
+// endNumber = startNumber;
 let data = [];
 let computedNameTracker = [];
 let limitedAttributeTraining = [2514];
@@ -70,21 +69,13 @@ function shouldLimitAttributeTraining(monster: MonsterParser) {
 	return limitedAttributeTraining.includes(monster.getId());
 }
 
-function trainAttributeReading(
+function trainAttributeReadingWithCustomGroups(
 	nameList: string[],
 	mainAttribute: string,
 	subAttribute: string | null = null,
-	limitedTraining: boolean = false
+	limitedTraining: boolean = false,
+	groups = {}
 ): string[] {
-	let groups = {
-		fire: ['fire', 'red', 'r'],
-		water: ['water', 'blue', 'b'],
-		wood: ['wood', 'green', 'g'],
-		light: ['light', 'l'],
-		dark: ['dark', 'd'],
-		none: ['x', ''],
-		jammer: ['x', ''],
-	};
 	let synonyms = nameList; //Return the original entries back too!
 	if (!subAttribute) subAttribute = 'none';
 
@@ -119,8 +110,14 @@ function trainAttributeReading(
 					return;
 				}
 
-				//Train for ab IF a is not none
-				if (mainAttributeAlia !== 'x' && mainAttributeAlia !== 'none' && mainAttributeAlia !== '') {
+				//Train for ab IF a is not none OR alia is not fully spelled of an attribute
+				if (
+					mainAttributeAlia !== 'x' &&
+					mainAttributeAlia !== 'none' &&
+					mainAttributeAlia !== '' &&
+					!['fire', 'red', 'wood', 'green', 'water', 'blue', 'light', 'dark'].includes(mainAttributeAlia) &&
+					!['fire', 'red', 'wood', 'green', 'water', 'blue', 'light', 'dark'].includes(subAttributeAlia)
+				) {
 					trainedName = mainAttributeAlia + subAttributeAlia + ' ' + name;
 					synonyms.push(trainedName);
 				}
@@ -139,6 +136,39 @@ function trainAttributeReading(
 			});
 		});
 	});
+
+	return synonyms;
+}
+
+function trainAttributeReading(
+	nameList: string[],
+	mainAttribute: string,
+	subAttribute: string | null = null,
+	limitedTraining: boolean = false,
+	customGroup = {}
+): string[] {
+	let synonyms = nameList; //Return the original entries back too!
+	synonyms = [
+		...synonyms,
+		...trainAttributeReadingWithCustomGroups(nameList, mainAttribute, subAttribute, limitedTraining, {
+			fire: ['fire', 'red'],
+			water: ['water', 'blue'],
+			wood: ['wood', 'green'],
+			light: ['light'],
+			dark: ['dark'],
+			none: ['x', ''],
+			jammer: ['x', ''],
+		}),
+		...trainAttributeReadingWithCustomGroups(nameList, mainAttribute, subAttribute, limitedTraining, {
+			fire: ['r'],
+			water: ['b'],
+			wood: ['g'],
+			light: ['l'],
+			dark: ['d'],
+			none: ['x', ''],
+			jammer: ['x', ''],
+		}),
+	];
 
 	return synonyms;
 }
@@ -216,42 +246,102 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 	//Train for series in general
 	if (monster.getMonsterSeries() !== null) {
 		let series = monster.getMonsterSeries();
-		let prefixes = [monster.getReadableMonsterSeries().toLowerCase() + ' '];
+		let prefixes = [];
 
-		if (series === 'academy') prefixes = ['academy ', 'school '];
-		if (series === 'valentine') prefixes = ['valentine ', 'valentines ', 'v'];
-		if (series === 'xmas') prefixes = ['xmas ', 'christmas '];
-		if (series === 'ny') prefixes = ['ny ', 'new year ', 'newyear '];
-		if (series === 'juneBride') prefixes = ['bride ', 'wedding '];
-		if (series === 'padIsland') prefixes = ['beach ', 'bikini '];
+		if (series === 'dbdc') prefixes = ['dbdc '];
 		if (series === 'heroine') prefixes = ['heroine ', 'heroin '];
+		if (series === 'dbdc') prefixes = ['dbdc '];
+		if (series === 'chibi') prefixes = ['chibi ', 'mini '];
+		if (series === 'xmas') prefixes = ['xmas ', 'christmas '];
+		if (series === 'academy') prefixes = ['academy ', 'school ', 'pad academy '];
+		if (series === 'beach') prefixes = ['beach ', 'b', 'bikini ', 'pad island '];
+		if (series === 'halloween') prefixes = ['halloween '];
+		if (series === 'ny') prefixes = ['ny ', 'new year ', 'newyear '];
+		if (series === 'bride') prefixes = ['bride ', 'wedding '];
+		if (series === 'valentine') prefixes = ['v ', 'valentine ', 'v', 'valentines '];
 
-		if (fullName.includes(',')) {
-			let name = guessName(fullName, true); //Without ( and ) only, keep content inside
+		if (prefixes.length > 0) {
+			if (fullName.includes(',')) {
+				let name = guessName(fullName, true); //Without ( and ) only, keep content inside
 
-			computePrefixes(name, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		} else {
-			computePrefixes(fullName, prefixes).forEach((computedName) => {
-				synonyms.push(computedName);
-			});
-		}
-
-		if (fullName.split(' ').length === 2) {
-			//Just train a litte bit extra
-			let names = fullName.split(' ');
-			names.forEach((name) => {
 				computePrefixes(name, prefixes).forEach((computedName) => {
 					synonyms.push(computedName);
 				});
-			});
+			} else {
+				computePrefixes(fullName, prefixes).forEach((computedName) => {
+					synonyms.push(computedName);
+				});
+			}
+
+			if (fullName.split(' ').length === 2) {
+				//Just train a litte bit extra
+				let names = fullName.split(' ');
+				names.forEach((name) => {
+					computePrefixes(name, prefixes).forEach((computedName) => {
+						synonyms.push(computedName);
+					});
+				});
+			}
 		}
 	}
 
 	//Train for collab in general
 	if (monster.getCollabId() !== 0) {
+		let collab = monster.getCollabId();
 		let prefixes = [monster.getReadableCollab().toLowerCase() + ' '];
+
+		//Manually replace training
+		if (collab === 2) prefixes = ['taiko', 'donchan', 'don chan'].map((n) => n + ' ');
+		if (collab === 6) prefixes = ['ffcd', 'defender'].map((n) => n + ' ');
+		if (collab === 8) prefixes = ['punt', 'princess punt'].map((n) => n + ' ');
+		if (collab === 10) prefixes = ['shinrabansho', 'shinra'].map((n) => n + ' ');
+		if (collab === 11) prefixes = ['kapibara', 'kapybara', 'kapi', 'kapy'].map((n) => n + ' ');
+		if (collab === 14) prefixes = ['eva', 'evagelion', 'evangelion'].map((n) => n + ' ');
+		if (collab === 16) prefixes = ['coc', 'clash of clans'].map((n) => n + ' ');
+		if (collab === 26) prefixes = ['hxh'].map((n) => n + ' ');
+		if (collab === 27) prefixes = ['sanrio', 'hello kitty', 'kitty', 'hello'].map((n) => n + ' ');
+		if (collab === 30) prefixes = ['dbz', 'db'].map((n) => n + ' ');
+		if (collab === 26) prefixes = ['hxh'].map((n) => n + ' ');
+		if (
+			collab === 32 ||
+			collab === 33 ||
+			collab === 34 ||
+			collab === 34 ||
+			collab === 71 ||
+			collab === 72 ||
+			collab === 73
+		)
+			prefixes = ['gungho', 'gh'].map((n) => n + ' ');
+		if (collab === 38 || collab === 53) prefixes = ['dc'].map((n) => n + ' ');
+		if (collab === 40) prefixes = ['fotns', 'fist'].map((n) => n + ' ');
+		if (collab === 41 || collab === 44) prefixes = ['chibi', 'mini'].map((n) => n + ' ');
+		if (collab === 45) prefixes = ['ff'].map((n) => n + ' ');
+		if (collab === 46) prefixes = ['gits'];
+		if (collab === 47) prefixes = ['dm', 'duel masters'].map((n) => n + ' ');
+		if (collab === 48) prefixes = ['aot'].map((n) => n + ' ');
+		if (collab === 50) prefixes = ['sunday', 'shonen', 'jump'].map((n) => n + ' ');
+		if (collab === 51) prefixes = ['crow'].map((n) => n + ' ');
+		if (collab === 48) prefixes = ['aot'].map((n) => n + ' ');
+		if (collab === 56) prefixes = ['kenshin'].map((n) => n + ' ');
+		if (collab === 48) prefixes = ['aot'].map((n) => n + ' ');
+		if (collab === 61) prefixes = ['mh', 'monhun'].map((n) => n + ' ');
+		if (collab === 65) prefixes = ['fma'].map((n) => n + ' ');
+		if (collab === 66) prefixes = ['kof'].map((n) => n + ' ');
+		if (collab === 67) prefixes = ['yyh', 'yuyu', 'yusuke'].map((n) => n + ' ');
+		if (collab === 70) prefixes = ['magic', 'mtg'].map((n) => n + ' ');
+		if (collab === 76) prefixes = ['sao'].map((n) => n + ' ');
+		if (collab === 77) prefixes = ['kamen', 'rider', 'kr'].map((n) => n + ' ');
+		if (collab === 78 || collab === 86) prefixes = ['pr', 'mmpr'].map((n) => n + ' ');
+		if (collab === 79) prefixes = ['fate'].map((n) => n + ' ');
+		if (collab === 81) prefixes = ['sf', 'sfv', 'sf5', 'street fighter', 'streetfighter'].map((n) => n + ' ');
+		if (collab === 82) prefixes = ['mc', 'mcdonald'].map((n) => n + ' ');
+		if (collab === 83) prefixes = ['sk', 'shaman'].map((n) => n + ' ');
+		if (collab === 85) prefixes = ['ss', 'samurai shodown', 'samurai showdown', 'samsho'].map((n) => n + ' ');
+		if (collab === 87) prefixes = ['fujimi', 'fantasia'].map((n) => n + ' ');
+		if (collab === 89) prefixes = ['ygo', 'yugioh', 'yugi'].map((n) => n + ' ');
+		if (collab === 90) prefixes = ['mickey', 'disney'].map((n) => n + ' ');
+		if (collab === 91) prefixes = ['devil may cry', 'dmc'].map((n) => n + ' ');
+		if (collab === 92) prefixes = ['mha'].map((n) => n + ' ');
 
 		if (fullName.includes(',')) {
 			let name = guessName(fullName, true); //Without ( and ) only, keep content inside

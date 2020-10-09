@@ -59,4 +59,8 @@ export const CUSTOM_NAMES = [
 		name: 'shelling ford',
 		alias: ['ford', 'shelling'],
 	},
+	{
+		name: 'yog-sothoth',
+		alias: ['yog'],
+	},
 ];
