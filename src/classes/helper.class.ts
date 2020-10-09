@@ -171,6 +171,11 @@ export class Helper {
 		//Trim it
 		message = message.trim();
 
+		//Replace the word 'yolo'
+		if (message.toLowerCase().startsWith('yolo')) {
+			return message.replace('yolo', 'roll 1 time');
+		}
+
 		//Replace terms
 		for (let replaceWhat in dict) {
 			let byWhat = dict[replaceWhat];
