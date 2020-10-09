@@ -1720,9 +1720,13 @@ export class Helper {
 		);
 
 		cost = cost * monsters.length;
-		let dollar = ((46.99 * cost) / 85).toFixed(2);
+		let dollar = Number(((46.99 * cost) / 85).toFixed(2));
 		await this.sendMessage(
-			`<@!${this._message.author.id}> I just spent **${cost}** stones (**~$${dollar}**, assuming you buy packs?) to roll ${monsters.length} times for you in the current **${machineName}** machine! Here is the result!`
+			`<@!${this._message.author.id}> I just spent **${this.numberWithCommas(
+				cost
+			)}** stones (**~$${this.numberWithCommas(dollar)}**, assuming you buy packs?) to roll ${
+				monsters.length
+			} times for you in the current **${machineName}** machine! Here is the result!`
 		);
 		await this.sendMessage(embed);
 
@@ -1796,10 +1800,33 @@ export class Helper {
 
 		let originalCost = cost;
 		cost = cost * totalRolls;
-		let dollar = ((46.99 * cost) / 85).toFixed(2);
-		await this.sendMessage(
-			`<@!${this._message.author.id}> To get ${quantity} of it (${originalCost} stones per roll), you have spent **${cost}** stones (**~$${dollar}**, assuming you buy packs?)! You got everything you need on the #${totalRolls} roll! (This was calculated using real in-game rate)`
-		);
+		let dollar = Number(((46.99 * cost) / 85).toFixed(2));
+
+		let monster = new Monster(monsterId);
+		await monster.init();
+
+		let embed = new Discord.MessageEmbed()
+			.setColor('#0099ff')
+			.setTitle(`${monster.getId()}. ${monster.getName()}`)
+			.setURL(monster.getUrl())
+			.setThumbnail(monster.getThumbnailUrl())
+			.addFields({
+				name: 'Description',
+				value: `${originalCost} stones per rol. Using real in-game rate.`,
+			})
+			.addFields({
+				name: 'Condition',
+				value: `Roll until ${quantity} ${quantity > 1 ? 'copies' : 'copy'} obtained`,
+			})
+			.addFields({
+				name: 'Result',
+				value: `You have spent **${this.numberWithCommas(cost)}** stones (**~$${this.numberWithCommas(
+					dollar
+				)}**, assuming you buy packs?)! You got everything you need on the #${totalRolls} roll!`,
+			});
+
+		await this.sendMessage(`<@!${this._message.author.id}>`);
+		await this.sendMessage(embed);
 	}
 
 	public static isDadJokeable(input: string): boolean {
