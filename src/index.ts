@@ -101,9 +101,6 @@ client.on('message', async (message: any) => {
 		let targetPronoun = result.queryResult.parameters.fields?.targetPronoun?.stringValue || null;
 
 		if (action === 'card.info') {
-			//Is this the exact query?
-			let isExactIdQuery = rawInput.includes(baseMonsterId);
-
 			//If the ID is not provided, try to see if we can get the ID from guessing the name
 			//But the monster name has to exists
 			// console.log(result.queryResult.parameters);
@@ -289,8 +286,17 @@ client.on('message', async (message: any) => {
 			let parameters = result.queryResult.parameters.fields;
 
 			await helper.sendRandomRolls({
-				quantity: parameters.number.numberValue,
+				quantity: parameters.number.numberValue || 1,
 				machine: parameters.monsterSeries?.stringValue || parameters.eggMachines?.stringValue,
+			});
+			return;
+		} else if (action === 'card.roll.until') {
+			let parameters = result.queryResult.parameters.fields;
+
+			await helper.sendRandomRollsUntil({
+				quantity: parameters.number.numberValue || 1,
+				machine: parameters.monsterSeries?.stringValue || parameters.eggMachines?.stringValue,
+				monsterId: parameters.monsterName?.stringValue || 1,
 			});
 			return;
 		}

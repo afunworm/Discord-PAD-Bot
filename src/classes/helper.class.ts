@@ -1729,6 +1729,78 @@ export class Helper {
 		if (quantity <= 20) await fs.unlinkSync(imagePath);
 	}
 
+	public async sendRandomRollsUntil(data) {
+		let { machine, quantity, monsterId } = data;
+		quantity = Number(quantity) || 1;
+		monsterId = Number(monsterId);
+
+		//Manually filter out MH
+		machine = Monster.fixCollabId(machine);
+
+		//Machine is also monster series
+		//Or event, collab, rare, sfge
+		if (CURRENT_MACHINES[machine]) machine = CURRENT_MACHINES[machine];
+
+		let machineData = MACHINES[machine];
+
+		let from = moment(machineData.startDate).format('MM/DD/YYYY');
+		let to = moment(machineData.endDate).format('MM/DD/YYYY');
+		let by = machineData.rateBy;
+		let lineup = machineData.lineup || {};
+		let updatedAt = moment(machineData.updatedAt).format('MM/DD/YYYY');
+		let machineName = machineData.name;
+		let cost = machineData.cost;
+
+		//Check if monster ID is actually inside the machine, if not, show error
+		if (!lineup[monsterId]) {
+			await this.sendMessage(`The monster you requested isn't in this machine's lineup.`);
+			return;
+		}
+
+		//Construct lineup
+		let lineups = [];
+		for (let id in lineup) {
+			let rate = lineup[id];
+			let amount = rate * 100;
+			for (let i = 0; i < amount; i++) {
+				lineups.push(id);
+			}
+		}
+
+		//Shuffle it
+		for (let i = lineups.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * i);
+			const temp = lineups[i];
+			lineups[i] = lineups[j];
+			lineups[j] = temp;
+		}
+		if (Object.keys(lineup).length === 0 || lineups.length === 0) {
+			await this.sendMessage(
+				`This egg machine is not currently active or there is no data yet. Last data was updated on ${updatedAt}.`
+			);
+			return;
+		}
+
+		let totalRolls = 0;
+		let rolled = 0;
+
+		//Get random amount, untilt the quantity is met
+		do {
+			let index = Common.randomBetween(0, lineups.length - 1);
+			let rolledMonsterId = Number(lineups[index]);
+
+			totalRolls++;
+
+			if (monsterId === rolledMonsterId) rolled++;
+		} while (rolled !== quantity);
+
+		cost = cost * totalRolls;
+		let dollar = ((46.99 * cost) / 85).toFixed(2);
+		await this.sendMessage(
+			`<@!${this._message.author.id}> To get ${quantity} of it, you have spent **${cost}** stones (**~$${dollar}**, assuming you buy packs?)! You got everything you need on the #${totalRolls} roll!`
+		);
+	}
+
 	public static isDadJokeable(input: string): boolean {
 		return false;
 
