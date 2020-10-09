@@ -1747,6 +1747,11 @@ export class Helper {
 
 		let machineData = MACHINES[machine];
 
+		if (!machineData) {
+			await this.sendMessage(`Sorry. I do not have the in-game rate for this machine yet.`);
+			return;
+		}
+
 		let from = moment(machineData.startDate).format('MM/DD/YYYY');
 		let to = moment(machineData.endDate).format('MM/DD/YYYY');
 		let by = machineData.rateBy;
