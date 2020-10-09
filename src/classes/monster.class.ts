@@ -11,6 +11,7 @@ import { Common } from './common.class';
 import { Cache } from './cache.class';
 import { WhereFilterOp } from '@firebase/firestore-types';
 import { AWAKENINGS } from '../../dist/shared/monster.awakens';
+const database = require('../../database.json');
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -76,6 +77,15 @@ export class Monster {
 
 			//If the monster data is not in cache, grab it from Firestore
 			let monsterId = this.id.toString();
+
+			//Use local database if able to
+			if (typeof database[monsterId] === 'object') {
+				console.log('Local database used.');
+				//Assign cache of data
+				this.monsterData = database[this.id];
+				cache.set(monsterId, this.monsterData);
+				return resolve(this);
+			}
 			try {
 				let doc = await firestore.collection('Monsters').doc(monsterId).get();
 
