@@ -7,7 +7,6 @@ const fs = require('fs');
 const https = require('https');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
-let endNumber = Number(process.env.PARSER_MONSTER_END_NUMBER);
 let highestValidMonsterId = Number(process.env.HIGHEST_VALID_MONSTER_ID);
 let endPoint = process.env.MEDIA_SCRAPING_URL;
 

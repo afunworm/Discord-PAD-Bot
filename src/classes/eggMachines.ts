@@ -209,7 +209,7 @@ export const MACHINES = {
 		},
 	},
 	//BEACH
-	padIsland: {
+	beach: {
 		name: 'PAD Island Series Machine',
 		rateBy: 'Xolse',
 		startDate: new Date('September 21, 2020 00:00'),
@@ -307,7 +307,7 @@ export const MACHINES = {
 		},
 	},
 	//Sin Dragons Key Heroes
-	sinDragonsHeroesOfKeysSeries: {
+	sdkh: {
 		name: 'Sin Dragons & Hero of Keys Egg Machine Week 1',
 		rateBy: 'Xolse',
 		startDate: new Date('August 03, 2020 00:00'),

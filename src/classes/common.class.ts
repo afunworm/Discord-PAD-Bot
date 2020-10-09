@@ -99,7 +99,7 @@ export class Common {
 
 		MONSTER_SERIES.forEach((series) => {
 			let name = series.name;
-			let slug = this.camelize(name);
+			let slug = series.series;
 			let cards = series.cards;
 
 			if (cards.includes(cardId)) {

@@ -2555,7 +2555,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'PAD Academy',
-		series: 'acedamy',
+		series: 'academy',
 		aliases: ['academy', 'acedamy', 'school', 'pad academy', 'pad acedamy'],
 		group: null,
 		cards: [
