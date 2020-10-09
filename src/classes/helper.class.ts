@@ -1550,10 +1550,15 @@ export class Helper {
 		//Or event, collab, rare, sfge
 		if (CURRENT_MACHINES[machine]) machine = CURRENT_MACHINES[machine];
 
-		if (quantity > 20) {
+		if (quantity > 20 && quantity <= 500) {
 			await this.sendMessage(
 				"Roll request with more than 20 rolls will only come with result & analysis (no image) due to Discord's limitation. **Please wait while I am processing the data...**"
 			);
+		}
+
+		if (quantity > 500) {
+			await this.sendMessage('Sorry. I am a tiny bot that can only handle up to 500 rolls at a time...');
+			return;
 		}
 
 		let machineData = MACHINES[machine];
