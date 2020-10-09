@@ -1812,11 +1812,11 @@ export class Helper {
 			.setThumbnail(monster.getThumbnailUrl())
 			.addFields({
 				name: 'Description',
-				value: `${originalCost} stones per rol. Using real in-game rate.`,
+				value: `${originalCost} stones per roll. Using real in-game rate.`,
 			})
 			.addFields({
 				name: 'Condition',
-				value: `Roll until ${quantity} ${quantity > 1 ? 'copies' : 'copy'} obtained`,
+				value: `Roll until ${quantity} ${quantity > 1 ? 'copies' : 'copy'} obtained.`,
 			})
 			.addFields({
 				name: 'Result',
