@@ -13,7 +13,7 @@ export const MONSTER_COLLABS = {
 	11: { name: 'Kapibara-San', group: null, aliases: ['kapybara', 'kapibara', 'kapibara san'] },
 	12: { name: 'Cathy', group: null, aliases: [] },
 	//13: Unknown
-	14: { name: 'Evagelion', group: null, aliases: ['eva'] },
+	14: { name: 'Evagelion', group: null, aliases: ['eva', 'evangelion'] },
 	15: { name: '7-11', group: null, aliases: ['711'] },
 	16: { name: 'Clash of Clans', group: null, aliases: ['coc'] },
 	17: { name: 'Groove Coaster', group: null, aliases: [] },
@@ -21,9 +21,9 @@ export const MONSTER_COLLABS = {
 	19: { name: "Dragon's Dogma Quest", group: null, aliases: [] },
 	20: { name: 'Takaoka City', group: null, aliases: ['takaoka'] },
 	21: {
-		name: 'Monster Hunter 1',
+		name: 'Monster Hunter 4G',
 		group: 'monsterHunter',
-		aliases: ['mh', 'monhun', 'mon hun', 'mh1', 'mh 1', 'monhun 1', 'mon hun 1', 'mh1'],
+		aliases: ['mh 4g'],
 	},
 	22: { name: 'Batman', group: null, aliases: ['bat man'] },
 	23: { name: 'Baskin Robbins', group: null, aliases: ['br'] },
@@ -48,10 +48,10 @@ export const MONSTER_COLLABS = {
 	38: { name: 'DC', group: 'dc', aliases: ['dc comics'] },
 	39: { name: 'Sangoku Tenka Trigger', group: null, aliases: ['chibi 3k'] },
 	40: { name: 'Fist of the North Stars', group: null, aliases: ['fotns', 'fist', 'north star'] },
-	41: { name: 'Chibi', group: null, aliases: ['mini'] },
+	41: { name: 'Chibi', group: 'chibi', aliases: ['mini'] },
 	42: { name: 'Diagoldos', group: null, aliases: [] },
 	// 43: Unknown
-	44: { name: 'Chibi 2', group: null, aliases: ['mini 2'] },
+	44: { name: 'Chibi 2', group: 'chibi', aliases: ['mini 2'] },
 	45: { name: 'Final Fantasy', group: null, aliases: ['ff'] },
 	46: { name: 'Ghost in the Shell', group: null, aliases: ['gits', 'rojikoma', 'newport'] },
 	47: { name: 'Duel Masters', group: null, aliases: ['dm'] },

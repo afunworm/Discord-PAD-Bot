@@ -24,7 +24,7 @@ let numberOfNamesTrained = 0;
 	MONSTER_SERIES.forEach((series) => {
 		let name = series.name.toLowerCase().replace(/[^a-zA-Z0-9]/gi, ' ');
 		let alias = series.aliases;
-		let id = camelize(name);
+		let id = series.series;
 		let synonyms = [];
 
 		//Train for full name

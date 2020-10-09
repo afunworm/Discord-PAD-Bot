@@ -20,6 +20,7 @@
 export const MONSTER_SERIES = [
 	{
 		name: 'Dragonbounds & Dragon Callers',
+		series: 'dbdc',
 		aliases: ['dbdc', 'dcdb'],
 		group: null,
 		cards: [
@@ -100,6 +101,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Ex-Godfest Exclusive',
+		series: 'exgfe',
 		aliases: ['exgfe', '5* gfe', '5 star gf', 'ex-gfe'],
 		group: null,
 		cards: [
@@ -206,6 +208,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Godfest Exclusives',
+		series: 'gfe',
 		aliases: ['gfe'],
 		group: null,
 		cards: [
@@ -449,6 +452,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'MP Monsters',
+		series: 'mpMonsters',
 		aliases: ['mp', 'monster points'],
 		group: null,
 		cards: [
@@ -494,24 +498,28 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Marionette',
+		series: 'puppets',
 		aliases: ['marionette', 'puppetteers', 'puppets', 'cheese machines'],
 		group: null,
 		cards: [2293, 2294, 2295, 2296, 2297, 2298],
 	},
 	{
 		name: 'Four Noble Ones',
+		series: 'gentlemen',
 		aliases: ['four noble ones', 'four gentlemen', 'four seasons'],
 		group: null,
 		cards: [2755, 2756, 5864, 4008, 2757, 2758, 5865, 4009, 2759, 2760, 5866, 4010, 2761, 2762, 5867, 4011],
 	},
 	{
 		name: 'Legendary Heroes',
+		series: 'legendaryHeroes',
 		aliases: ['legendary heroes'],
 		group: null,
 		cards: [2915, 2916, 2917, 2918, 2919, 2920, 2921, 2922, 2923, 2924],
 	},
 	{
 		name: 'Promotion Series',
+		series: 'promotionSeries',
 		aliases: ['promotion series'],
 		group: null,
 		cards: [
@@ -575,6 +583,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Heroine',
+		series: 'heroine',
 		aliases: ['heroine', 'heroines', 'heroin'],
 		group: null,
 		cards: [
@@ -655,6 +664,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Three Kingdoms 2',
+		series: '3k2',
 		aliases: ['three kindoms 2', '3k2'],
 		group: '3k',
 		cards: [
@@ -682,12 +692,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Brave 2',
+		series: 'weapons2',
 		aliases: ['brave 2', 'weapons 2'],
 		group: null,
 		cards: [3548, 4237, 3549, 4238, 3550, 4239, 3551, 4240, 3552, 4241],
 	},
 	{
 		name: 'Samurai Gods 2',
+		series: 'sam2',
 		aliases: ['samurai god 2', 'samurai 2'],
 		group: 'samurai',
 		cards: [
@@ -715,24 +727,28 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Greco-Roman Gods 3',
+		series: 'greek3',
 		aliases: ['greco roman gods 3', 'roman 3', 'greek 3', 'gr3'],
 		group: 'greek',
 		cards: [3746, 5058, 3747, 3748, 5059, 3749, 3750, 5060, 3751, 3752, 3753, 5061, 3754, 3755, 5062],
 	},
 	{
 		name: 'Celtic Gods',
+		series: 'celtic',
 		aliases: ['celtic gods', 'celtic', 'celts'],
 		group: null,
 		cards: [4176, 4177, 5746, 4178, 5747, 4179, 4180, 5748, 4181, 4183, 5749, 4182, 5750, 4185, 4184],
 	},
 	{
 		name: 'Mesopotamian Gods',
+		series: 'meso',
 		aliases: ['mesopotamian gods', 'meso gods', 'mesop'],
 		group: null,
 		cards: [4359, 4360, 4361, 4362, 4363, 4364, 4365, 6355, 6355, 4366, 4367, 4368, 6356],
 	},
 	{
 		name: 'Greco-Roman Gods 1',
+		series: 'greek1',
 		aliases: ['greco roman gods 1', 'roman 1', 'greek 1', 'gr1'],
 		group: 'greek',
 		cards: [
@@ -774,6 +790,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Japanese Gods 1',
+		series: 'jp1',
 		aliases: ['japanese gods 1', 'japanese 1', 'japan 1', 'jp1'],
 		group: 'japanese',
 		cards: [
@@ -815,6 +832,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Indian Gods 1',
+		series: 'indian1',
 		aliases: ['indian gods 1', 'indian 1'],
 		group: 'indian',
 		cards: [
@@ -857,6 +875,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Norse Gods',
+		series: 'norse',
 		aliases: ['norse gods', 'norse', 'nordic'],
 		group: null,
 		cards: [
@@ -896,12 +915,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Riders 1',
+		series: 'riders1',
 		aliases: ['riders 1', 'beast riders 1'],
 		group: 'riders',
 		cards: [378, 379, 1301, 380, 381, 1302, 382, 383, 1303, 384, 385, 1304, 386, 387, 1305],
 	},
 	{
 		name: 'Egyptian Gods 1',
+		series: 'egyptian1',
 		aliases: ['egyptian gods 1', 'egyptian', 'egypt'],
 		group: 'egyptian',
 		cards: [
@@ -946,6 +967,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Ninjas',
+		series: 'ninjas',
 		aliases: ['ninjas', 'sengoku', 'ninja'],
 		group: null,
 		cards: [
@@ -977,6 +999,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Greco-Roman Gods 2',
+		series: 'greek2',
 		aliases: ['greco roman gods 2', 'roman 2', 'greek 2', 'gr2'],
 		group: 'greek',
 		cards: [
@@ -1015,6 +1038,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Archangels',
+		series: 'archangels',
 		aliases: ['archangels'],
 		group: null,
 		cards: [
@@ -1055,6 +1079,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Archdemons',
+		series: 'archdemons',
 		aliases: ['archdemons', 'demons', 'devils'],
 		group: null,
 		cards: [
@@ -1096,6 +1121,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Chinese Gods',
+		series: 'chinese',
 		aliases: ['chinese gods', 'chinese', 'five elements', '5 elements', '5 ele', 'five ele'],
 		group: null,
 		cards: [
@@ -1149,6 +1175,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Japanese Gods 2',
+		series: 'jp2',
 		aliases: ['japanese gods 2', 'japanese 2', 'jp2'],
 		group: 'japanese',
 		cards: [
@@ -1186,6 +1213,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Heroes Gods',
+		series: 'heroes',
 		aliases: ['heroes gods', 'heroes'],
 		group: null,
 		cards: [
@@ -1224,6 +1252,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Three Kingdoms 1',
+		series: '3k1',
 		aliases: ['three kingdoms 1', '3k 1'],
 		group: '3k',
 		cards: [
@@ -1279,6 +1308,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Indian Gods 2',
+		series: 'indian2',
 		aliases: ['indian gods 2', 'indian'],
 		group: 'indian',
 		cards: [
@@ -1316,6 +1346,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Wizards',
+		series: 'wizards',
 		aliases: ['wizards', 'witches', 'witch', 'sorcerer'],
 		group: null,
 		cards: [
@@ -1341,12 +1372,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Armoured Knights',
+		series: 'amoredKnights',
 		aliases: ['armoured knights', 'knights', 'armored knights', 'armor knights', 'amour knights'],
 		group: null,
 		cards: [1649, 1650, 1651, 1652, 1653, 1654, 1655, 1656, 1657, 1658],
 	},
 	{
 		name: 'Egyptian Gods 2',
+		series: 'egyptian2',
 		aliases: ['egyptian gods 2'],
 		group: 'egyptian',
 		cards: [
@@ -1384,12 +1417,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Grimoires',
+		series: 'grimoires',
 		aliases: ['grimoires'],
 		group: null,
 		cards: [1749, 1750, 1751, 1752, 1753, 1754, 1755, 1756, 3536, 1757, 1758, 3537],
 	},
 	{
 		name: 'Angels',
+		series: 'angels',
 		aliases: ['angels'],
 		group: null,
 		cards: [
@@ -1427,30 +1462,35 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Braves 1',
+		series: 'weapons1',
 		aliases: ['brave 1', 'weapons 1'],
 		group: null,
 		cards: [1881, 4232, 1882, 4233, 1883, 4234, 1884, 4235, 1885, 4236],
 	},
 	{
-		name: 'Riders ',
+		name: 'Riders 2',
+		series: 'riders2',
 		aliases: ['riders 2', 'beast riders 2'],
 		group: 'riders',
 		cards: [2093, 2094, 2095, 2096, 2097, 2098, 2099, 2100, 2101, 2102],
 	},
 	{
 		name: 'Cyberdragons',
+		series: 'cyberDragons',
 		aliases: ['cyberdragons, cyber dragons'],
 		group: null,
 		cards: [2185, 2186, 2187, 2188, 2189],
 	},
 	{
 		name: 'Cyberbeasts',
+		series: 'cyberBeasts',
 		aliases: ['cyberbeasts', 'cyberbeasts'],
 		group: null,
 		cards: [2190, 2191, 2192, 2193, 2194],
 	},
 	{
 		name: 'Samurai Gods 1',
+		series: 'sam1',
 		aliases: ['samurai gods 1'],
 		group: 'samurai',
 		cards: [
@@ -1488,6 +1528,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Mechanical Star Gods 1',
+		series: 'mechanicalStarGods1',
 		aliases: ['mechanical star gods 1', 'mechanical gods 1', 'star gods 1'],
 		group: 'mechanical',
 		cards: [
@@ -1521,6 +1562,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Mechanical Star God 2',
+		series: 'mechanicalStarGods2',
 		aliases: ['mechanical star gods 2', 'mechanical gods 2', 'star gods 2'],
 		group: 'mechanical',
 		cards: [
@@ -1550,6 +1592,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Gemstone Princesses',
+		series: 'gem',
 		aliases: [
 			'gemstone',
 			'gemstone princess',
@@ -1563,6 +1606,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Wisdom Kings',
+		series: 'wisdomKings',
 		aliases: ['wisdom kings'],
 		group: null,
 		cards: [
@@ -1595,12 +1639,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Wisedragons',
+		series: 'wiseDragons',
 		aliases: ['wisedragons', 'wise dragons'],
 		group: null,
 		cards: [3538, 3539, 3540, 3541, 3542, 3543, 3544, 3545, 3546, 3547],
 	},
 	{
 		name: 'Valkyries',
+		series: 'valkyries',
 		aliases: ['valkyries'],
 		group: null,
 		cards: [
@@ -1655,6 +1701,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Healer Girls',
+		series: 'healerGirls',
 		aliases: ['healer girls'],
 		group: null,
 		cards: [
@@ -1690,6 +1737,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Chibi',
+		series: 'chibi',
 		aliases: ['chibi', 'mini'],
 		group: null,
 		cards: [
@@ -1753,30 +1801,35 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Toy Dragons',
+		series: 'toyDragons',
 		aliases: ['toy dragons'],
 		group: null,
 		cards: [288, 289, 290, 757, 291, 292, 293, 758, 294, 295, 296, 759, 297, 298, 299, 760, 300, 301, 302, 761],
 	},
 	{
 		name: 'Elemental Spirits',
+		series: 'elementalSpirits',
 		aliases: ['elemental spirits', 'elemental'],
 		group: null,
 		cards: [352, 353, 919, 354, 355, 920, 356, 357, 921, 358, 359, 922, 360, 361, 923],
 	},
 	{
 		name: 'Mythical Beasts',
+		series: 'mythicalBeasts',
 		aliases: ['mythical beasts'],
 		group: null,
 		cards: [398, 399, 1210, 400, 401, 1211, 402, 403, 1212, 404, 405, 1213, 406, 407, 1214],
 	},
 	{
 		name: 'Legendary Dragons',
+		series: 'legendaryDragons',
 		aliases: ['legendary dragons'],
 		group: null,
 		cards: [142, 408, 143, 409, 413, 144, 410, 145, 411, 146, 412],
 	},
 	{
 		name: 'Sticker Girls',
+		series: 'stickerGirls',
 		aliases: ['sticker girls'],
 		group: null,
 		cards: [
@@ -1802,9 +1855,16 @@ export const MONSTER_SERIES = [
 			1515,
 		],
 	},
-	{ name: 'Ancient Dragons', aliases: ['ancient dragons'], group: null, cards: [441, 442, 443, 444, 445] },
+	{
+		name: 'Ancient Dragons',
+		series: 'ancientDragons',
+		aliases: ['ancient dragons'],
+		group: null,
+		cards: [441, 442, 443, 444, 445],
+	},
 	{
 		name: 'Heart Converter - Attack Stance',
+		series: 'attackStance',
 		aliases: ['heart converter', 'attack stance'],
 		group: null,
 		cards: [
@@ -1859,13 +1919,15 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Snowglobes',
+		series: 'globes',
 		aliases: ['snowglobes', 'snow globes'],
 		group: null,
 		cards: [517, 520, 518, 521, 519, 522, 1003, 1005, 3973, 1004, 1006],
 	},
-	{ name: 'War Dragons', aliases: [], group: null, cards: [540, 541, 542, 543, 544, 2130] },
+	{ name: 'War Dragons', series: 'warDragons', aliases: [], group: null, cards: [540, 541, 542, 543, 544, 2130] },
 	{
 		name: 'Metal Dragons',
+		series: 'metalDragons',
 		aliases: ['metal dragons'],
 		group: null,
 		cards: [
@@ -1900,31 +1962,42 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Mythic Stone Dragons',
+		series: 'mythicalStoneDragons',
 		aliases: ['mythical stone dragons'],
 		group: null,
 		cards: [737, 1713, 738, 739, 740, 741],
 	},
 	{
 		name: 'Sky Dragons',
+		series: 'skyDragons',
 		aliases: ['sky dragons'],
 		group: null,
 		cards: [216, 772, 217, 773, 218, 774, 719, 219, 775, 220, 776],
 	},
 	{
 		name: 'Mystic Dragons',
+		series: 'mysticDragons',
 		aliases: ['mythical dragons'],
 		group: null,
 		cards: [782, 787, 788, 783, 1458, 789, 790, 784, 791, 792, 793, 794, 785, 1459, 786, 795, 796],
 	},
-	{ name: 'Chasers', aliases: ['chasers'], group: null, cards: [896, 897, 898, 899, 900, 901, 902, 903, 904, 905] },
+	{
+		name: 'Chasers',
+		series: 'chasers',
+		aliases: ['chasers'],
+		group: null,
+		cards: [896, 897, 898, 899, 900, 901, 902, 903, 904, 905],
+	},
 	{
 		name: 'Fruit Dragons',
+		series: 'fruitDragons',
 		aliases: ['fruit dragons'],
 		group: null,
 		cards: [1075, 1076, 1077, 1078, 1079, 1080, 1081, 1082, 1083, 1084],
 	},
 	{
 		name: 'Flower Dragons',
+		series: 'flowerDragons',
 		aliases: ['flower dragons'],
 		group: null,
 		cards: [
@@ -1954,6 +2027,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Fairies',
+		series: 'fairies',
 		aliases: ['fairies'],
 		group: null,
 		cards: [
@@ -1983,6 +2057,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Number Dragons',
+		series: 'numberDragons',
 		aliases: ['number dragons', '# dragons', 'numbered dragons'],
 		group: null,
 		cards: [
@@ -2014,37 +2089,43 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Dragon Knights',
+		series: 'dragonKnights',
 		aliases: ['dragon knights'],
 		group: null,
 		cards: [1361, 1366, 1362, 1367, 1363, 3237, 1368, 1364, 1369, 1365, 1370],
 	},
 	{
 		name: 'Fairy Tale',
+		series: 'fairyTale',
 		aliases: ['fairytale', 'fairy tale'],
 		group: null,
 		cards: [1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421],
 	},
 	{
 		name: 'Dragon Swordsmans',
+		series: 'swordmans',
 		aliases: ['dragon swordmans'],
 		group: null,
 		cards: [1502, 1503, 1504, 1505, 1896, 1897, 1506, 1507, 1898, 1899],
 	},
 	{
 		name: 'Shieldras',
+		series: 'shieldDras',
 		aliases: ['shieldras', 'shield dra'],
 		group: null,
 		cards: [1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546],
 	},
-	{ name: 'Pys', aliases: [], group: null, cards: [1547, 1548, 1549, 1550, 3891, 1551, 3974] },
+	{ name: 'Pys', series: 'pys', aliases: [], group: null, cards: [1547, 1548, 1549, 1550, 3891, 1551, 3974] },
 	{
 		name: 'Insect Dragons',
+		series: 'insectDragons',
 		aliases: ['insect dragons'],
 		group: null,
 		cards: [1591, 1596, 1592, 1597, 1593, 1598, 1594, 1599, 1595, 1601, 1600],
 	},
 	{
 		name: 'Bowl Dragons',
+		series: 'bowlDragons',
 		aliases: ['bowl dragons'],
 		group: null,
 		cards: [
@@ -2072,6 +2153,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Mug Dragons',
+		series: 'mugDragons',
 		aliases: ['mug dragons'],
 		group: null,
 		cards: [
@@ -2099,9 +2181,58 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Descended Loots',
+		series: 'descendedLoots',
 		aliases: ['descended loots'],
 		group: null,
 		cards: [
+			1231,
+			1232,
+			2901,
+			1738,
+			1739,
+			3497,
+			1243,
+			1244,
+			5906,
+			1589,
+			1590,
+			1233,
+			2902,
+			1234,
+			3498,
+			1741,
+			1740,
+			2103,
+			2104,
+			1235,
+			1743,
+			1236,
+			2903,
+			1742,
+			3499,
+			1241,
+			1242,
+			1372,
+			1373,
+			1424,
+			1425,
+			1710,
+			1711,
+			1237,
+			1238,
+			1745,
+			2904,
+			1744,
+			3500,
+			1374,
+			1375,
+			5907,
+			1239,
+			1746,
+			2905,
+			4075,
+			6115,
+			1240,
 			1589,
 			1590,
 			2205,
@@ -2125,6 +2256,7 @@ export const MONSTER_SERIES = [
 			6143,
 			6145,
 			6146,
+			6453,
 			1306,
 			1307,
 			1460,
@@ -2152,6 +2284,7 @@ export const MONSTER_SERIES = [
 			5118,
 			5119,
 			5121,
+			6454,
 			1222,
 			1223,
 			2738,
@@ -2219,6 +2352,10 @@ export const MONSTER_SERIES = [
 			3745,
 			3567,
 			3568,
+			4121,
+			6518,
+			4122,
+			6451,
 			4634,
 			4635,
 			6336,
@@ -2227,22 +2364,27 @@ export const MONSTER_SERIES = [
 			5317,
 			5319,
 			5318,
+			6474,
+			6475,
 		],
 	},
 	{
 		name: 'Cat Dragons',
+		series: 'catDragons',
 		aliases: ['cat dragons'],
 		group: null,
 		cards: [1957, 1962, 1958, 1963, 1959, 1964, 1960, 1965, 1961, 1966],
 	},
 	{
 		name: 'Lits',
+		series: 'lits',
 		aliases: ['lits', 'spirits'],
 		group: null,
 		cards: [246, 155, 156, 247, 157, 248, 158, 249, 915, 2413, 2414, 159, 160, 251, 250, 916],
 	},
 	{
 		name: 'Latent Tamadras',
+		series: 'latentTamadras',
 		aliases: ['latent tamadras'],
 		group: null,
 		cards: [
@@ -2290,6 +2432,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Puzzle & Dragons Z',
+		series: 'padz',
 		aliases: ['puzzle & dragons z', 'puzzle dragon z', 'pad z', 'padz'],
 		group: null,
 		cards: [
@@ -2340,12 +2483,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Spirit Jewels',
+		series: 'jewels',
 		aliases: ['spirit jewels', 'jewels'],
 		group: null,
 		cards: [1325, 1326, 1327, 1328, 3911, 1329],
 	},
 	{
 		name: 'Christmas',
+		series: 'xmas',
 		aliases: ['xmas', 'christmas', 'x-mas'],
 		group: null,
 		cards: [
@@ -2410,6 +2555,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'PAD Academy',
+		series: 'acedamy',
 		aliases: ['academy', 'acedamy', 'school', 'pad academy', 'pad acedamy'],
 		group: null,
 		cards: [
@@ -2468,6 +2614,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'PAD Island',
+		series: 'beach',
 		aliases: ['beach', 'bikini', 'pad island'],
 		group: null,
 		cards: [
@@ -2529,12 +2676,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Armored Dragons',
+		series: 'armoredDragons',
 		aliases: ['armoured dragons', 'armored dragons', 'armour dragons', 'armor dragons'],
 		group: null,
 		cards: [2333, 2531, 2334, 2532, 2336, 2529, 2337, 2335, 2338, 2530],
 	},
 	{
 		name: 'Halloween',
+		series: 'halloween',
 		aliases: ['halloween'],
 		group: null,
 		cards: [
@@ -2583,6 +2732,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'New Year',
+		series: 'ny',
 		aliases: ['new year', 'newyear', 'ny'],
 		group: null,
 		cards: [
@@ -2624,30 +2774,35 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Prehistoric Dragons',
+		series: 'preHistoryDragons',
 		aliases: ['prehistoric dragons'],
 		group: null,
 		cards: [2575, 2581, 2582, 2577, 2579, 2583, 2584, 2576, 2585, 2586, 2578, 2587, 2588, 2580, 2589, 2590],
 	},
 	{
 		name: 'Metallic Star Dragons',
+		series: 'metallicStarDragons',
 		aliases: ['metallic star dragons', 'metallic dragons'],
 		group: null,
 		cards: [2642, 2652, 2647, 2643, 2653, 2648, 2644, 2654, 2649, 2645, 2655, 2650, 2646, 2656, 2651],
 	},
 	{
 		name: 'Radar Dragons',
+		series: 'radarDragons',
 		aliases: ['radar dragons'],
 		group: null,
 		cards: [2716, 2939, 3331, 3332, 3447, 2717, 2940, 2718, 2941, 3335, 3336, 3566, 2719, 2720],
 	},
 	{
 		name: 'Contract Dragons',
+		series: 'contractDragons',
 		aliases: ['contract dragons'],
 		group: null,
 		cards: [2875, 2880, 2876, 2881, 2877, 2882, 2878, 2883, 2879, 2884],
 	},
 	{
 		name: 'PAD X',
+		series: 'padx',
 		aliases: ['padx'],
 		group: null,
 		cards: [
@@ -2673,6 +2828,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'June Bride',
+		series: 'bride',
 		aliases: ['wedding', 'bride'],
 		group: null,
 		cards: [
@@ -2726,30 +2882,35 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Guardian Dragons',
+		series: 'guardianDragons',
 		aliases: ['guardian dragons'],
 		group: null,
 		cards: [3212, 3207, 3213, 3208, 3209, 3214, 3210, 3215, 3211, 3216],
 	},
 	{
 		name: 'Lovecraftian',
+		series: 'lovecraft',
 		aliases: ['lovecraftian', 'lovecraft', 'love craft'],
 		group: null,
 		cards: [3637, 3638, 3639, 3640, 3641, 3642],
 	},
 	{
 		name: 'Orb Dragons',
+		series: 'orbDragons',
 		aliases: ['orb dragons'],
 		group: null,
 		cards: [3721, 3726, 3722, 3727, 3723, 3728, 3724, 3729, 3725, 3730],
 	},
 	{
 		name: 'Warchief Dragons',
+		series: 'warchiefDragons',
 		aliases: ['warchief dragons', 'war chief dragons'],
 		group: null,
 		cards: [3835, 3836, 3837, 3838, 3839],
 	},
 	{
 		name: 'Valentine',
+		series: 'valentine',
 		aliases: ['valentine', 'v'],
 		group: null,
 		cards: [
@@ -2791,6 +2952,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Gems',
+		series: 'gems',
 		aliases: ['gems', 'evo gems'],
 		group: null,
 		cards: [
@@ -2808,9 +2970,11 @@ export const MONSTER_SERIES = [
 			4456,
 			4461,
 			4466,
+			6522,
 			4457,
 			4462,
 			4467,
+			6452,
 			4487,
 			4526,
 			4522,
@@ -2951,12 +3115,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Miscellaneous',
+		series: 'misc',
 		aliases: ['miscellaneous', 'misc'],
 		group: null,
 		cards: [4654, 4653, 3188, 3189, 3190, 3191, 4895, 4897, 4896, 4898, 5154, 5636, 5959, 5155, 5298, 5297],
 	},
 	{
 		name: 'PAD Radar Series', //Use Series to avoid abbreviation collisions with Power Ranger
+		series: 'padRadarSeries',
 		aliases: ['pad radar', 'puzzle & dragons radar', 'puzzle dragons radar'],
 		group: null,
 		cards: [
@@ -3004,12 +3170,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Companion Dragons',
+		series: 'companionDragons',
 		aliases: ['companion dragons'],
 		group: null,
 		cards: [4637, 4638, 4639, 4640, 4641, 4642, 4643, 4644, 4645, 4646],
 	},
 	{
 		name: 'Samurai Gods 3',
+		series: 'sam3',
 		aliases: ['samurai gods 3', 'samurai 3'],
 		group: 'samurai',
 		cards: [
@@ -3037,6 +3205,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Draconic Orchestra',
+		series: 'orchestra',
 		aliases: ['orchestra', 'draconic orchestra'],
 		group: null,
 		cards: [
@@ -3103,12 +3272,14 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Design Contest Dragons',
+		series: 'designContestDragons',
 		aliases: ['design contests dragons', 'design dragons', 'contest dragons'],
 		group: null,
 		cards: [5877, 5878, 5879, 5880, 5881],
 	},
 	{
 		name: 'Sacred Relic Dragon Saga',
+		series: 'relic',
 		aliases: ['relic', 'sacred relic dragon saga', 'sacred relic', 'relic dragons'],
 		group: null,
 		cards: [
@@ -3155,6 +3326,7 @@ export const MONSTER_SERIES = [
 	},
 	{
 		name: 'Sin Dragons & Heroes of Keys Series',
+		series: 'sdkh',
 		aliases: [
 			'sinDragons',
 			'sin dragon',
