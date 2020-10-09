@@ -1797,7 +1797,7 @@ export class Helper {
 		cost = cost * totalRolls;
 		let dollar = ((46.99 * cost) / 85).toFixed(2);
 		await this.sendMessage(
-			`<@!${this._message.author.id}> To get ${quantity} of it, you have spent **${cost}** stones (**~$${dollar}**, assuming you buy packs?)! You got everything you need on the #${totalRolls} roll!\n_(This was calculated using real in-game rate)_`
+			`<@!${this._message.author.id}> To get ${quantity} of it (${cost} stones per roll), you have spent **${cost}** stones (**~$${dollar}**, assuming you buy packs?)! You got everything you need on the #${totalRolls} roll! _(This was calculated using real in-game rate)_`
 		);
 	}
 
