@@ -12,11 +12,11 @@ const fs = require('fs');
 
 let startNumber = Number(process.env.PARSER_MONSTER_START_NUMBER);
 let endNumber = Number(process.env.HIGHEST_VALID_MONSTER_ID);
-// startNumber = 4787;
+// startNumber = 5892;
 // endNumber = startNumber;
 let data = [];
 let computedNameTracker = [];
-let limitedAttributeTraining = [2514];
+let limitedAttributeTraining = [];
 let numberOfNamesTrained = 0;
 let mainNames = ['valkyrie'];
 
@@ -76,7 +76,7 @@ function trainAttributeReadingWithCustomGroups(
 	limitedTraining: boolean = false,
 	groups = {}
 ): string[] {
-	let synonyms = nameList; //Return the original entries back too!
+	let synonyms = [];
 	if (!subAttribute) subAttribute = 'none';
 
 	//Find groups of main & sub attributes
@@ -148,6 +148,7 @@ function trainAttributeReading(
 	customGroup = {}
 ): string[] {
 	let synonyms = nameList; //Return the original entries back too!
+
 	synonyms = [
 		...synonyms,
 		...trainAttributeReadingWithCustomGroups(nameList, mainAttribute, subAttribute, limitedTraining, {
@@ -180,6 +181,8 @@ function guessName(fullName: string, withParenthesesContent: boolean = false): s
 		if (fullName.includes(name)) mapped = name;
 	});
 	if (mapped.length) return mapped;
+
+	if (!fullName.includes(',')) return fullName;
 
 	//Calculated by splitting ',' and determining real name WITHOUT the content inside ()
 	let nameParts = withParenthesesContent
@@ -233,14 +236,43 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 		}
 	});
 
-	//Train for Super Reincarnated
-	if (fullName.includes('super reincarnated')) {
-		let processedName = fullName.replace('super reincarnated', '').trim();
-		let prefixes = ['sr ', 'srevo '];
+	//Train for evo types
+	if (monster.getEvolutionType()) {
+		let map = {
+			equip: ['equip', 'weapon'],
+			normal: ['evolved', 'evo'],
+			base: ['base'],
+			ultimate: ['ultimate evolution', 'uevo'],
+			awoken: ['awoken', 'awaken'],
+			pixel: ['pixel'],
+			reincarnated: ['reincarnated', 'revo'],
+			superUltimate: ['super ultimate', 'suevo', 'super uevo'],
+			superReincarnated: ['super reincarnated', 'sr', 'srevo'],
+			transform: ['base'], //If the monster is a transform monster, it is in its base form
+		};
+		//If a monster has
+		let prefixes = map[monster.getEvolutionType()].map((p) => p + ' ');
+		if (Array.isArray(prefixes) && prefixes.length) {
+			let nameWithoutEvoType = fullName;
+			let includedInName = ['pixel', 'reincarnated', 'super reincarnated', 'awoken'];
+			includedInName.forEach((type) => {
+				if (fullName.toLowerCase().includes(type)) {
+					nameWithoutEvoType = fullName.toLowerCase().replace(type + ' ', '');
+				}
+			});
 
-		computePrefixes(processedName, prefixes).forEach((computedName) => {
-			synonyms.push(computedName);
-		});
+			if (nameWithoutEvoType.includes(',')) {
+				let name = guessName(nameWithoutEvoType, true); //Without ( and ) only, keep content inside
+
+				computePrefixes(name, prefixes).forEach((computedName) => {
+					synonyms.push(computedName);
+				});
+			} else {
+				computePrefixes(nameWithoutEvoType, prefixes).forEach((computedName) => {
+					synonyms.push(computedName);
+				});
+			}
+		}
 	}
 
 	//Train for series in general
@@ -286,7 +318,7 @@ function computeNames(fullName: string, monster: MonsterParser): string[] {
 	}
 
 	//Train for collab in general
-	if (monster.getCollabId() !== 0) {
+	if (monster.getCollabId() !== 0 && monster.getReadableCollab().toLowerCase() !== 'unknown') {
 		let collab = monster.getCollabId();
 		let prefixes = [monster.getReadableCollab().toLowerCase() + ' '];
 
