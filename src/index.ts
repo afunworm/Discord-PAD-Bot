@@ -311,8 +311,6 @@ client.on('message', async (message: any) => {
 			await helper.updateRankingGuide(parameters.url?.stringValue);
 			return;
 		} else if (action === 'guide.show.ranking') {
-			let parameters = result.queryResult.parameters.fields;
-
 			await helper.showRankingGuide();
 			return;
 		}
