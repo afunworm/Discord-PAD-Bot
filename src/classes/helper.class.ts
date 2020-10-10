@@ -1904,6 +1904,11 @@ export class Helper {
 				return;
 			}
 
+			if (quantity > 9000) {
+				await this.sendMessage(`<@!${this._message.author.id}> How many box spaces do you think you have?`);
+				return;
+			}
+
 			let from = moment(machineData.startDate).format('MM/DD/YYYY');
 			let to = moment(machineData.endDate).format('MM/DD/YYYY');
 			let by = machineData.rateBy;
