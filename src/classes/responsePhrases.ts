@@ -116,7 +116,7 @@ export const RESPONSE_PHRASES = {
 	],
 	ON_RANKING_GUIDE_REQUEST: [
 		`Ranking guide, by {{author}}:\n{{url}}`,
-		`*ow to crown this ranking dungeon, by {{author}}:\n{{url}}`,
+		`How to crown this ranking dungeon, by {{author}}:\n{{url}}`,
 		`{{author}}'s guide to this ranking dungeon:\n{{url}}`,
 		`A guide to a good rank in this ranking dungeon, by {{author}}:\n{{url}}`,
 		`From {{author}}, a guide to a crown this ranking dungeon:\n{{url}}`,
