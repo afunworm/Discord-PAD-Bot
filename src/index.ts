@@ -299,12 +299,6 @@ client.on('message', async (message: any) => {
 				monsterId: parameters.monsterName?.stringValue || 1,
 			});
 			return;
-		}
-
-		if (process.env.MODE === 'PRODUCTION') {
-			await helper.bugLog(
-				`Sorry. I haven't been trained with that command yet, but I have requested the dev to train me with this command. Check back in a few days and I will be able to handle your request!`
-			);
 		} else if (action === 'guide.update.ranking') {
 			let parameters = result.queryResult.parameters.fields;
 
@@ -315,11 +309,11 @@ client.on('message', async (message: any) => {
 			return;
 		}
 
-		if (process.env.MODE === 'PRODUCTION') {
-			// await helper.bugLog(
-			// 	`Sorry. I haven't been trained with that command yet, but I have requested the dev to train me with this command. Check back in a few days and I will be able to handle your request!`
-			// );
-		}
+		// if (process.env.MODE === 'PRODUCTION') {
+		// await helper.bugLog(
+		// 	`Sorry. I haven't been trained with that command yet, but I have requested the dev to train me with this command. Check back in a few days and I will be able to handle your request!`
+		// );
+		// }
 	} catch (error) {
 		//Image only, no text input
 		if (error.code !== 3) {
