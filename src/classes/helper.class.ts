@@ -1476,7 +1476,7 @@ export class Helper {
 	public async sendRandomCard(data) {
 		try {
 			let { quantity, queryEvoType, monsterSeries, type } = data;
-			quantity = Number(quantity) || 1;
+			quantity = Math.abs(Math.ceil(Number(quantity))) || 1;
 			data.monsterSeries = monsterSeries = Monster.fixCollabId(monsterSeries);
 
 			if (quantity > 20) {
@@ -1689,7 +1689,7 @@ export class Helper {
 	public async sendRandomRolls(data) {
 		try {
 			let { machine, quantity } = data;
-			quantity = Number(quantity) || 1;
+			quantity = Math.abs(Math.ceil(Number(quantity))) || 1;
 
 			//Manually filter out MH
 			machine = Monster.fixCollabId(machine);
@@ -1887,7 +1887,7 @@ export class Helper {
 	public async sendRandomRollsUntil(data) {
 		try {
 			let { machine, quantity, monsterId } = data;
-			quantity = Number(quantity) || 1;
+			quantity = Math.abs(Math.ceil(Number(quantity))) || 1;
 			monsterId = Number(monsterId);
 
 			//Manually filter out MH
