@@ -305,6 +305,22 @@ client.on('message', async (message: any) => {
 			await helper.bugLog(
 				`Sorry. I haven't been trained with that command yet, but I have requested the dev to train me with this command. Check back in a few days and I will be able to handle your request!`
 			);
+		} else if (action === 'guide.update.ranking') {
+			let parameters = result.queryResult.parameters.fields;
+
+			await helper.updateRankingGuide(parameters.url?.stringValue);
+			return;
+		} else if (action === 'guide.show.ranking') {
+			let parameters = result.queryResult.parameters.fields;
+
+			await helper.showRankingGuide();
+			return;
+		}
+
+		if (process.env.MODE === 'PRODUCTION') {
+			// await helper.bugLog(
+			// 	`Sorry. I haven't been trained with that command yet, but I have requested the dev to train me with this command. Check back in a few days and I will be able to handle your request!`
+			// );
 		}
 	} catch (error) {
 		//Image only, no text input

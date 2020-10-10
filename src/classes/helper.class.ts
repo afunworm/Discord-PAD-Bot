@@ -8,6 +8,7 @@ import { DMChannel, MessageReaction, MessageEmbed, Message, DiscordAPIError } fr
 import { Cache } from './cache.class';
 import { MACHINES, CURRENT_MACHINES } from './eggMachines';
 import { MONSTER_TYPES } from '../shared/monster.types';
+import { request } from 'http';
 const moment = require('moment');
 const _ = require('lodash');
 const Discord = require('discord.js');
@@ -2050,6 +2051,53 @@ export class Helper {
 					react.message.delete();
 				}
 			});
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	public async updateRankingGuide(url: string) {
+		let authorized = [
+			353574447149481996, //DatDude
+			190276489806086144, //afunworm
+		];
+		let requester = this._message.author.id;
+
+		try {
+			if (!authorized.includes(requester) && !authorized.includes(Number(requester))) {
+				return await this.sendMessage('You are not authorized to perform this action.');
+			}
+
+			if (!url) {
+				return await this.sendMessage('I cannot detect the URL in your command. Can you try again?');
+			}
+
+			await firestore.collection('Guides').doc('ranking').set({
+				url: url,
+			});
+
+			await this.sendMessage('New ranking has been updated. Thank you so much!');
+		} catch (error) {
+			console.log(error);
+			return await this.sendMessage('I cannot complete your request. An error has occurred.');
+		}
+	}
+
+	public async showRankingGuide() {
+		try {
+			let rankingDoc = await firestore.collection('Guides').doc('ranking').get();
+
+			if (!rankingDoc.exists) {
+				return await this.sendMessage('No ranking data found in the database.');
+			}
+
+			let data = rankingDoc.data();
+
+			let response = Common.dynamicResponse('ON_RANKING_GUIDE_REQUEST', {
+				author: 'DatDude',
+				url: data.url,
+			});
+			await this.sendMessage(response);
 		} catch (error) {
 			console.log(error);
 		}

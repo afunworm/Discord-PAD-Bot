@@ -165,6 +165,10 @@ export interface QueryResultInterface {
 					stringValue: 'event' | 'collab' | 'rare';
 					kind: 'stringValue';
 				};
+				url: {
+					stringValue: string;
+					kind: 'stringValue';
+				};
 				trollNames: {
 					stringValue: string;
 					kind: 'stringValue';
