@@ -2446,6 +2446,9 @@ export class LeaderSkill {
 		let ATKMultiplier = this.multiFloor(data[2]);
 
 		if (ATKMultiplier !== 1) {
+			if (bonusCombo === 0) {
+				return `All Attribute cards ATK x${ATKMultiplier} when matching ${minMatch}+ connected ${attributeString} orbs.`;
+			}
 			return `All Attribute cards ATK x${ATKMultiplier} and +${bonusCombo} combo when matching ${minMatch}+ connected ${attributeString} orbs.`;
 		} else {
 			return `+${bonusCombo} combo when matching ${minMatch}+ connected ${attributeString} orbs.`;
