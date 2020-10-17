@@ -95,9 +95,6 @@ client.on('message', async (message: any) => {
 		//Monster name, if any
 		let baseMonsterId = result.queryResult.parameters.fields?.monsterName?.stringValue || null;
 
-		//Monster series/collab, if any
-		let monsterSeries = result.queryResult.parameters.fields?.monsterSeries?.stringValue || null;
-
 		//If the target pronoun exists, it indicates the continuous conversation
 		let targetPronoun = result.queryResult.parameters.fields?.targetPronoun?.stringValue || null;
 
