@@ -403,38 +403,38 @@ export class Helper {
 		try {
 			//Added a separate line to navigate between the monster's evos
 			let evoList = card.getEvoTree();
+			let evoEmbeds = [];
 			if (Array.isArray(evoList) && evoList.length > 1) {
 				let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
 				let message = await this._channel.send(
 					`To navigate between all forms of **${card.getId()}. ${card.getName()}**, react to the numbers below.`
 				);
-				let evoEmbeds = [];
 				await message.react('❌');
+
+				for (let i = 0; i < evoList.length; i++) {
+					let monsterId = evoList[i];
+					let monster = new Monster(monsterId);
+					await monster.init();
+
+					message.react(emojis[i]);
+					evoEmbeds.push(await this.constructMonsterInfo(monster));
+				}
+
+				let messageReactor = (message: Message) => {
+					this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
+						if (react.emoji.name === '❌') {
+							await react.message.delete();
+							return;
+						}
+						let index = emojis.indexOf(react.emoji.name);
+						let embed = evoEmbeds[index];
+
+						sentEmbed.edit(embed);
+					});
+				};
+				messageReactor(message);
 			}
-
-			for (let i = 0; i < evoList.length; i++) {
-				let monsterId = evoList[i];
-				let monster = new Monster(monsterId);
-				await monster.init();
-
-				message.react(emojis[i]);
-				evoEmbeds.push(await this.constructMonsterInfo(monster));
-			}
-
-			let messageReactor = (message: Message) => {
-				this.createCollector(message).on('collect', async (react: MessageReaction, user) => {
-					if (react.emoji.name === '❌') {
-						await react.message.delete();
-						return;
-					}
-					let index = emojis.indexOf(react.emoji.name);
-					let embed = evoEmbeds[index];
-
-					sentEmbed.edit(embed);
-				});
-			};
-			messageReactor(message);
 
 			let embeds = [];
 
