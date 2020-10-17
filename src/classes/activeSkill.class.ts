@@ -1054,6 +1054,15 @@ export class ActiveSkill {
 		let speed = this.mult(data[1]);
 		let count = data[7];
 
-		return `Randomly spawns ${count} spinner orbs on a ${speed} second duration for ${count} turns.`;
+		return `For ${turns} ${turns > 1 ? 'turns' : 'turn'}, randomly spawns ${count} spinner ${
+			count > 1 ? 'orbs' : 'orb'
+		} on a ${speed} second duration.`;
+	}
+
+	public ASSelfSkillBind() {
+		let data = this.mergeDefaults([0]);
+		let turns = data[0];
+
+		return `Unable to use active skills for ${turns} ${turns > 1 ? 'turns' : 'turn'}.`;
 	}
 }

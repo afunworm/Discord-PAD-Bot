@@ -72,4 +72,5 @@ export const ACTIVESKILL_MAP = {
 	202: 'ASChangeMonster',
 	205: 'ASSkyfallLock',
 	207: 'ASSpawnSpinner',
+	214: 'ASSelfSkillBind',
 };
