@@ -403,15 +403,15 @@ export class Helper {
 		try {
 			//Added a separate line to navigate between the monster's evos
 			let evoList = card.getEvoTree();
-			if (!evoList || evoList.length <= 0) return;
+			if (Array.isArray(evoList) && evoList.length > 1) {
+				let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
-			let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
-
-			let message = await this._channel.send(
-				`To navigate between all forms of **${card.getId()}. ${card.getName()}**, react to the numbers below.`
-			);
-			let evoEmbeds = [];
-			await message.react('❌');
+				let message = await this._channel.send(
+					`To navigate between all forms of **${card.getId()}. ${card.getName()}**, react to the numbers below.`
+				);
+				let evoEmbeds = [];
+				await message.react('❌');
+			}
 
 			for (let i = 0; i < evoList.length; i++) {
 				let monsterId = evoList[i];
