@@ -67,6 +67,7 @@ client.on('message', async (message: any) => {
 		let rawInput = result.queryResult.queryText;
 		let action = result.queryResult.action;
 		helper.assignQueryText(result.queryResult.queryText);
+		//console.log(JSON.stringify(result, null, 2));
 
 		//What information is being requestd? For example: show me Anubis IMAGE
 		let infoType = result.queryResult.parameters.fields?.infoType?.stringValue || null;

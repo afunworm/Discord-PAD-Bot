@@ -403,7 +403,7 @@ export class Helper {
 		try {
 			//Added a separate line to navigate between the monster's evos
 			let evoList = card.getEvoTree();
-			if (!evoList || evoList.length <= 1) return;
+			if (!evoList || evoList.length <= 0) return;
 
 			let emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
