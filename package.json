@@ -27,16 +27,22 @@
 		"forever": "^3.0.2",
 		"fuse.js": "^6.4.1",
 		"lodash": "^4.17.20",
+<<<<<<< HEAD
 		"moment": "^2.29.1",
 		"node-cache": "^5.1.2",
 		"puppeteer": "^5.3.1"
+=======
+		"moment": "^2.29.0",
+		"node-cache": "^5.1.2"
+>>>>>>> 68af1def8ce47707be9da36765b9eab36c4e5197
 	},
 	"devDependencies": {
 		"@types/puppeteer": "^3.0.2",
 		"firebase-functions-test": "^0.2.2",
 		"ts-loader": "^8.0.5",
 		"tslint": "^5.12.0",
-		"typescript": "^3.9.7"
+		"typescript": "^3.9.7",
+		"puppeteer": "^5.3.1"
 	},
 	"private": true
 }
