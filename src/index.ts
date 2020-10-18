@@ -26,8 +26,8 @@ client.once('ready', () => {
 });
 
 client.on('message', async (message: any) => {
-	//Do not run if it is from the bot itself
-	if (message.author.bot) return;
+	//Do not run if it is from the bot itself, or if it includes @everyone or @here
+	if (message.author.bot || message.content.includes('@everyone') || message.content.includes('@here')) return;
 
 	//Let's do some dadjokes - put it above the checking to make sure it can be activated anywhere
 	if (Helper.isDadJokeable(message.content.trim())) {
@@ -63,6 +63,35 @@ client.on('message', async (message: any) => {
 	input = Helper.replaceCommonAbbreviation(input); //Replace commonly confusing terms
 
 	try {
+		//MANUAL COMMANDS RECOGNITION
+		let nameSearchFilters = [
+			'name search',
+			'namesearch',
+			'search for name',
+			'searchforname',
+			'search name',
+			'searchname',
+			'names search',
+			'searchfornames',
+			'searchnames',
+		];
+		let nameFiltered = false;
+		nameSearchFilters.forEach((filter) => {
+			if (input.toLowerCase().includes(filter)) nameFiltered = true;
+		});
+		if (nameFiltered) {
+			//Name search command
+			let pattern = input;
+			nameSearchFilters.forEach((filter) => {
+				if (input.toLowerCase().startsWith(filter)) {
+					pattern = pattern.replace(filter, '').trim();
+				}
+			});
+
+			await helper.searchNames(pattern);
+			return;
+		}
+
 		let result: QueryResultInterface = await ai.detectIntent(input);
 		let rawInput = result.queryResult.queryText;
 		let action = result.queryResult.action;
