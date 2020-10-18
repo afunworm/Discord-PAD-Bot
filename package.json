@@ -28,7 +28,7 @@
 		"fuse.js": "^6.4.1",
 		"lodash": "^4.17.20",
 		"moment": "^2.29.1",
-		"node-cache": "^5.1.2",
+		"node-cache": "^5.1.2"
 	},
 	"devDependencies": {
 		"@types/puppeteer": "^3.0.2",
