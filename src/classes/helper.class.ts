@@ -8,14 +8,26 @@ import { DMChannel, MessageReaction, MessageEmbed, Message, DiscordAPIError } fr
 import { Cache } from './cache.class';
 import { MACHINES, CURRENT_MACHINES } from './eggMachines';
 import { MONSTER_TYPES } from '../shared/monster.types';
-import { request } from 'http';
 const moment = require('moment');
 const _ = require('lodash');
 const Discord = require('discord.js');
 const fs = require('fs');
+import { SearchEngine } from './searchEngine.class';
+import { MonsterParser } from '../../dist/classes/monsterParser.class';
 
 const COMMAND_PREFIX = process.env.COMMAND_PREFIX;
 const HIGHEST_VALID_MONSTER_ID_NA = Number(process.env.HIGHEST_VALID_MONSTER_ID_NA);
+
+//Build search engine
+console.log('Building search engine...');
+let searchEngine = new SearchEngine();
+
+(async () => {
+	console.log('Building indexes...');
+	await searchEngine.buildIndex();
+
+	console.log('Search engine started');
+})();
 
 /*-------------------------------------------------------*
  * FIREBASE ADMIN
@@ -2098,6 +2110,37 @@ export class Helper {
 				url: data.url,
 			});
 			await this.sendMessage(response);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	public async searchNames(pattern: string) {
+		try {
+			if (pattern.length < 3) {
+				return await this.sendMessage(`A search string must contain at least 3 characters.`);
+			}
+
+			let searchResult = await searchEngine.search(pattern, true);
+			let result = [];
+
+			if (searchResult.length < 1) {
+				return await this.sendMessage(`I cannot find any name for '${pattern}'. Please try again.`);
+			}
+
+			searchResult.forEach((searchEntry) => {
+				let monster = new MonsterParser(searchEntry.id);
+
+				let mainAttribute = monster.getMainAttribute();
+				let subAttribute = monster.getSubAttribute() === null ? -1 : monster.getSubAttribute();
+				let attributes =
+					Common.attributeEmotesMapping([mainAttribute])[0] +
+					Common.attributeEmotesMapping([subAttribute])[0];
+				result.push(`${attributes}| ${monster.id}. ${searchEntry.name}`);
+			});
+
+			let title = `Search Result for '${pattern}'`;
+			await this.sendMessageList(title, result);
 		} catch (error) {
 			console.log(error);
 		}

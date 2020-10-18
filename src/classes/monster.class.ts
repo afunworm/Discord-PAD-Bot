@@ -80,18 +80,21 @@ export class Monster {
 
 			//Use local database if able to
 			if (typeof database[monsterId] === 'object') {
-				console.log('Local database used.');
+				console.log('Local database used for monster id ' + monsterId);
 				//Assign cache of data
 				this.monsterData = database[this.id];
 				cache.set(monsterId, this.monsterData);
 				return resolve(this);
 			}
+
 			try {
 				let doc = await firestore.collection('Monsters').doc(monsterId).get();
 
 				if (!doc.exists) reject(`Unable to find monster with the ID ${monsterId} from the database.`);
 
 				let monsterData = doc.data() as MonsterData;
+
+				console.log('Remote database used for monster id ' + monsterId);
 
 				//Assign cache of data
 				this.monsterData = monsterData;
