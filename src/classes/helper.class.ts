@@ -14,6 +14,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 import { SearchEngine } from './searchEngine.class';
 import { MonsterParser } from '../../dist/classes/monsterParser.class';
+const { evaluate } = require('mathjs');
 
 const COMMAND_PREFIX = process.env.COMMAND_PREFIX;
 const HIGHEST_VALID_MONSTER_ID_NA = Number(process.env.HIGHEST_VALID_MONSTER_ID_NA);
@@ -2144,5 +2145,37 @@ export class Helper {
 		} catch (error) {
 			console.log(error);
 		}
+	}
+
+	public async mathOpEvaluate(ops: string) {
+		let result;
+		let numberWithCommas = (x: Number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+		try {
+			let newOps = ops.replace(/\%/g, '/100');
+			result = evaluate(newOps);
+		} catch (error) {
+			result = error.message;
+		}
+
+		let embed = new Discord.MessageEmbed()
+			.addFields({
+				name: `Input`,
+				value: ops,
+			})
+			.addFields({
+				name: `Result`,
+				value: result,
+			})
+			.addFields({
+				name: `Formatted Result`,
+				value: numberWithCommas(result),
+			})
+			.setFooter(`This message will be deleted after 30 seconds.`);
+
+		let sentEmbed = await this.sendMessage(embed);
+		setTimeout(() => {
+			sentEmbed.delete();
+		}, 30000);
 	}
 }

@@ -74,7 +74,7 @@ client.on('message', async (message: any) => {
 			'names search',
 			'searchfornames',
 			'searchnames',
-		];
+		].sort((a, b) => b.length - a.length);
 		let nameFiltered = false;
 		nameSearchFilters.forEach((filter) => {
 			if (input.toLowerCase().includes(filter)) nameFiltered = true;
@@ -89,6 +89,31 @@ client.on('message', async (message: any) => {
 			});
 
 			await helper.searchNames(pattern);
+			return;
+		}
+
+		let mathOpsFilters = [
+			'calc',
+			'calculate',
+			'calculation',
+			'calculator',
+			'calculate for me',
+			'calculateforme',
+		].sort((a, b) => b.length - a.length);
+		let mathOpsFiltered = false;
+		mathOpsFilters.forEach((filter) => {
+			if (input.toLowerCase().includes(filter)) mathOpsFiltered = true;
+		});
+		if (mathOpsFiltered) {
+			//Math Ops
+			let pattern = input;
+			mathOpsFilters.forEach((filter) => {
+				if (input.toLowerCase().startsWith(filter)) {
+					pattern = pattern.replace(filter, '').trim();
+				}
+			});
+
+			await helper.mathOpEvaluate(pattern);
 			return;
 		}
 
