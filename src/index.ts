@@ -359,6 +359,11 @@ client.on('message', async (message: any) => {
 		} else if (action === 'guide.show.ranking') {
 			await helper.showRankingGuide();
 			return;
+		} else if (action === 'random.dice') {
+			let parameters = result.queryResult.parameters.fields;
+
+			await helper.rollDice(parameters.number.numberValue);
+			return;
 		}
 
 		// if (process.env.MODE === 'PRODUCTION') {

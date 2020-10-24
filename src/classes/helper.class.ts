@@ -2173,9 +2173,48 @@ export class Helper {
 			})
 			.setFooter(`This message will be deleted after 30 seconds.`);
 
-		let sentEmbed = await this.sendMessage(embed);
-		setTimeout(() => {
-			sentEmbed.delete();
-		}, 30000);
+		try {
+			let sentEmbed = await this.sendMessage(embed);
+			setTimeout(() => {
+				sentEmbed.delete();
+			}, 30000);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	public async rollDice(times: Number) {
+		if (!times) times = 1;
+		times = Number(times);
+
+		let result = [];
+		let random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+		for (let i = 0; i < times; i++) {
+			result[i] = random(1, 6);
+		}
+
+		let response;
+		if (result.length === 1) response = result[0];
+		else if (result.length === 2) response = result[0] + ' and ' + result[1];
+		else {
+			let last = result.splice(-1, 1);
+			let first = result;
+
+			response = first.join(', ') + ' and ' + last;
+		}
+
+		let embed = new Discord.MessageEmbed()
+			.setTitle(`Rolling a die ${times} ${times > 1 ? 'times' : 'time'}`)
+			.addFields({
+				name: `Result`,
+				value: response,
+			});
+
+		try {
+			await this.sendMessage(embed);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }
