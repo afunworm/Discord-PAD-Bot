@@ -2205,7 +2205,7 @@ export class Helper {
 		}
 
 		let embed = new Discord.MessageEmbed()
-			.setTitle(`Rolling a die ${times} ${times > 1 ? 'times' : 'time'}`)
+			.setTitle(`Rolling a Die ${times} ${times > 1 ? 'Times' : 'Time'}`)
 			.addFields({
 				name: `Result`,
 				value: response,
