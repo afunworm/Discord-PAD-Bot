@@ -2187,6 +2187,11 @@ export class Helper {
 		if (!times) times = 1;
 		times = Number(times);
 
+		if (times > 100) {
+			await this.sendMessage(`Sorry. I am a tiny bot that can only handle up to 100 rolls at a time...`);
+			return;
+		}
+
 		let result = [];
 		let random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
