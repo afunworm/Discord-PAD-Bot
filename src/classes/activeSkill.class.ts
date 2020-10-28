@@ -833,7 +833,7 @@ export class ActiveSkill {
 		let attribute = data[0];
 		let attributeString = this.toAttributeString(attribute);
 
-		return `Change all enemies attributes to ${attributeString}, iIgnoring status shield.`;
+		return `Change all enemies attributes to ${attributeString}, ignoring status shield.`;
 	}
 
 	public ASThreeAttrtoOneAttr(): string {
@@ -1049,7 +1049,6 @@ export class ActiveSkill {
 
 	public ASSpawnSpinner(): string {
 		let data = this.mergeDefaults([1, 100, 0, 0, 0, 0, 0, 1]);
-		//Only one example of this so far, so these are all just guesses
 		let turns = data[0];
 		let speed = this.mult(data[1]);
 		let count = data[7];
