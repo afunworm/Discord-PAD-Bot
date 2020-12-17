@@ -7,7 +7,8 @@
 		"start": "npm run build && npm run copy && forever stopall && forever start dist/index.js",
 		"update": "git pull && npm update && npm run start",
 		"parse-windows": "cd ./src/tools/db/ && tsc japaneseNames && node japaneseNames && cd ../media/ && tsc images && node images && tsc materials && node materials && cd ../db/ && tsc monsters && node monsters && cd ../../ai_training/entities/ && tsc names && node names && cd ../../../",
-		"test-windows": "npm run build && node dist/index.js"
+		"test-windows": "npm run build && node dist/index.js",
+		"login": "ssh -v root@45.33.51.226"
 	},
 	"engines": {
 		"node": "10"
