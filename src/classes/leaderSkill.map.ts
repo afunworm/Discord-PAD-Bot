@@ -106,4 +106,6 @@ export const LEADERSKILL_MAP = {
 	201: 'LSColorComboBonusDamage',
 	203: 'LSGroupConditionalBoost',
 	206: 'LSColorComboBonusCombo',
+	209: 'LSHeartCrossCombo',
+	210: 'LSColorCrossCombo',
 };

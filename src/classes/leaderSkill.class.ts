@@ -1,4 +1,5 @@
 //Reference: https://github.com/nachoapps/dadguide-data/blob/master/etl/pad/raw/skills/leader_skill_info.py
+//Reference: https://github.com/TsubakiBotPad/pad-data-pipeline/blob/master/etl/pad/raw/skills/leader_skill_info.py
 import { LEADERSKILL_MAP } from './leaderSkill.map';
 import { MONSTER_ATTRIBUTES } from '../shared/monster.attributes';
 import { MONSTER_TYPES } from '../shared/monster.types';
@@ -2609,5 +2610,28 @@ export class LeaderSkill {
 		let bonusCombo = data[6];
 
 		return `+${bonusCombo} combo when ${attributeString} attack at once.`;
+	}
+
+	public LSHeartCrossComboMultiplier(): number[] {
+		return [1, 1, 1, 1];
+	}
+
+	public LSHeartCrossCombo(): string {
+		let data = this.mergeDefaults([0]);
+		let bonusCombo = data[0];
+		return `+${bonusCombo} combo after matching a heart cross.`;
+	}
+
+	public LSColorCrossComboMultiplier(): number[] {
+		return [1, 1, 1, 1];
+	}
+
+	public LSColorCrossCombo(): string {
+		let data = this.mergeDefaults([0, 0, 1]);
+		let attributes = this.getAttributesFromBinary(data[0]);
+		let attributeString = this.toAttributeString(attributes, 'or');
+		let bonusCombo = data[2];
+
+		return `+${bonusCombo} combo for each cross of ${attributeString} orbs`;
 	}
 }
