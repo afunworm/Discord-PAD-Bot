@@ -76,6 +76,11 @@ export const AWAKENINGS = {
 	70: 'Resistance-Poison+',
 	71: 'Blessing of Jammers',
 	72: 'Blessing of Poison Orbs',
+	73: 'Enhanced Fire Combos',
+	74: 'Enhanced Water Combos',
+	75: 'Enhanced Wood Combos',
+	76: 'Enhanced Light Combos',
+	77: 'Enhanced Dark Combos',
 };
 
 export const AWAKEN_EMOTES = {
@@ -152,6 +157,11 @@ export const AWAKEN_EMOTES = {
 	70: '<:70:755300312851415060>',
 	71: '<:71:755300330475880498>',
 	72: '<:72:755300353125253181>',
+	73: '<:73:789256501365178368>',
+	74: '<:74:789256546840215564>',
+	75: '<:75:789256600173936641>',
+	76: '<:76:789256804902502400>',
+	77: '<:77:789256846329511978>',
 };
 
 export const KILLER_EMOTES_RECT = {
