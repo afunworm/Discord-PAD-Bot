@@ -235,7 +235,7 @@ let evoTreeData = [];
 
 		try {
 			if (i >= databaseStartId) {
-				await firestore.collection('Monsters').doc(i.toString()).set(entry);
+				// await firestore.collection('Monsters').doc(i.toString()).set(entry);
 				console.log('Data written for monster id ' + i);
 			} else {
 				console.log('Skip data writing for id ' + i);
@@ -255,7 +255,7 @@ let evoTreeData = [];
 	});
 	console.log('Data written for precalculated stats.');
 
-	await fs.writeFileSync('../../../database.json', JSON.stringify(data));
+	await fs.writeFileSync('../../../database.json', JSON.stringify(data, null, 4));
 
 	console.log('Database parsing completed. Local database is at @root/database.json');
 	process.exit();
