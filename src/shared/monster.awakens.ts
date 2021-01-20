@@ -81,6 +81,7 @@ export const AWAKENINGS = {
 	75: 'Enhanced Wood Combos',
 	76: 'Enhanced Light Combos',
 	77: 'Enhanced Dark Combos',
+	78: 'Cross Attack Boost',
 };
 
 export const AWAKEN_EMOTES = {
@@ -162,6 +163,7 @@ export const AWAKEN_EMOTES = {
 	75: '<:75:789256600173936641>',
 	76: '<:76:789256804902502400>',
 	77: '<:77:789256846329511978>',
+	78: '<:78:801314566675497050>',
 };
 
 export const KILLER_EMOTES_RECT = {
